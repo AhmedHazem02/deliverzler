@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -55,7 +56,7 @@ Future<void> requestLocationPermission(
     );
   }
 
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     final alwaysGranted = await locationService.requestAlwaysPermission();
     if (!alwaysGranted) {
       Error.throwWithStackTrace(

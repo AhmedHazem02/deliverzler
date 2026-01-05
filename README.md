@@ -50,11 +50,16 @@ branches that implement TDD and Clean Architecture approach if you're interested
 
 ## Instructions to run the project
 
-1. Create Firebase project and add it to your Flutter app (
-   Follow https://firebase.google.com/docs/flutter/setup instructions).
-2. Add user manually at Firebase Auth to login with (This for testing as registration should be done
+1. Create a Firebase project and add the platforms you intend to run
+   (follow https://firebase.google.com/docs/flutter/setup to register Android, iOS, Web, etc.).
+2. Copy the desired file from `configs.template/` to `configs/` (for example `dev.json`) and fill in:
+   - The Google Maps keys (`ANDROID_GOOGLE_MAPS_API_KEY` / `IOS_GOOGLE_MAPS_API_KEY`).
+   - The Firebase configuration that appears under **Project settings ⟶ Your apps** (API key, App ID,
+     Sender ID, project ID, storage bucket, auth domain and bundle ID per platform). These values are
+     read at runtime through `--dart-define-from-file`, so they never have to be committed.
+3. Add user manually at Firebase Auth to login with (This for testing as registration should be done
    with another Admin app).
-3. Add user data (id field from previous step - User UID) and some orders to show at your Firebase
+4. Add user data (id field from previous step - User UID) and some orders to show at your Firebase
    Firestore similar to the following model architecture:
 
 <p align="center">
@@ -62,13 +67,13 @@ branches that implement TDD and Clean Architecture approach if you're interested
     <img src="/.github/images/firebase_2.png" alt="Image" width="350"/>
 </p>
 
-4. Configure an API project with the Google Maps Platform and enable Maps SDK for Android/iOS (FREE)
+5. Configure an API project with the Google Maps Platform and enable Maps SDK for Android/iOS (FREE)
    to be able to open the map. Also, enable Directions/ Geolocation/Places APIs to enable other map
    features as search and live tracking (You have to create a billing account to use these APIs).
-5. Add your Google Map API Keys to the `configs.template` folder then rename the folder to `configs`.
 6. [Optional]: deploy functions within the project to Firebase Cloud Functions to receive FCM
    notifications when new order is ready to be delivered.
-7. Run the project using the command `flutter run --dart-define-from-file=configs/{flavor}.json`, or from VSCode using the predefined launch configurations.
+7. Run the project using the command `flutter run --dart-define-from-file=configs/{flavor}.json`,
+   or from VSCode using the predefined launch configurations.
 
 ## Features
 

@@ -39,6 +39,24 @@ class AuthRemoteDataSource {
     return UserDto.fromUserCredential(userCredential.user!);
   }
 
+  Future<UserDto> registerWithEmail({
+    required String email,
+    required String password,
+    String? name,
+  }) async {
+    final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    final userDto = UserDto.fromUserCredential(userCredential.user!);
+
+    // If a name was provided, set it on the Firestore user doc as well
+    final updated = userDto.copyWith(name: name ?? userDto.name);
+    await setUserData(updated);
+    return updated;
+  }
+
   Future<String> getUserAuthUid() async {
     final currentUser = await firebaseAuth.getCurrentUser();
     return currentUser.uid;

@@ -20,21 +20,35 @@ class OrdersRepo {
   OrdersRepo(this.ref);
 
   final Ref ref;
-  OrdersRemoteDataSource get remoteDataSource => ref.read(ordersRemoteDataSourceProvider);
+  OrdersRemoteDataSource get remoteDataSource =>
+      ref.read(ordersRemoteDataSourceProvider);
 
   Stream<List<AppOrder>> getUpcomingOrders(String userId) {
+    print(
+        '🏪 OrdersRepo.getUpcomingOrders called for userId: $userId'); // DEBUG
     return remoteDataSource.getUpcomingOrders().map(
-          (orders) => orders
-              .where(
-                (order) {
-                  final status = order.deliveryStatus;
-                  return status == DeliveryStatus.upcoming ||
-                      (status == DeliveryStatus.onTheWay && order.deliveryId == userId);
-                },
-              )
-              .map((o) => o.toDomain())
-              .toList(),
-        );
+      (orders) {
+        print('📦 Raw orders from remote: ${orders.length}'); // DEBUG
+        final filtered = orders
+            .where(
+              (order) {
+                final status = order.deliveryStatus;
+                // Show all upcoming orders (available for any delivery to take)
+                // OR orders that are on the way and assigned to this delivery
+                final shouldInclude = status == DeliveryStatus.upcoming ||
+                    (status == DeliveryStatus.onTheWay &&
+                        order.deliveryId == userId);
+                print(
+                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude'); // DEBUG
+                return shouldInclude;
+              },
+            )
+            .map((o) => o.toDomain())
+            .toList();
+        print('✅ Filtered orders: ${filtered.length}'); // DEBUG
+        return filtered;
+      },
+    );
   }
 
   Future<AppOrder> getOrder(String orderId) async {
@@ -50,5 +64,12 @@ class OrdersRepo {
   Future<void> updateDeliveryGeoPoint(UpdateDeliveryGeoPoint params) async {
     final dto = UpdateDeliveryGeoPointDto.fromDomain(params);
     await remoteDataSource.updateDeliveryGeoPoint(dto);
+  }
+
+  /// Get orders assigned to a specific delivery user (on the way or delivered)
+  Stream<List<AppOrder>> getMyOrders(String userId) {
+    return remoteDataSource.getMyOrders(userId).map(
+          (orders) => orders.map((o) => o.toDomain()).toList(),
+        );
   }
 }

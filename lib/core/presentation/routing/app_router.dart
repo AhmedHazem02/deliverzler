@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../auth/domain/user.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../auth/presentation/screens/sign_in_screen/sign_in_screen.dart';
+import '../../../auth/presentation/screens/sign_up_screen/sign_up_screen.dart';
 import '../../../features/home/presentation/screens/home_screen/home_screen.dart';
+import '../../../features/home/presentation/screens/my_orders_screen/my_orders_screen.dart';
 import '../../../features/home_shell/presentation/screens/home_shell_screen.dart';
 import '../../../features/map/presentation/screens/map_screen/map_screen.dart';
 import '../../../features/profile/presentation/screens/profile_screen/profile_screen.dart';
@@ -53,7 +55,8 @@ GoRouter goRouter(GoRouterRef ref) {
     redirect: (BuildContext context, GoRouterState state) {
       final authState = ref.read(authStateProvider);
       final routeAuthority = state.routeAuthority;
-      final isLegitRoute = routeAuthority.contains(RouteAuthority.fromAuthState(authState));
+      final isLegitRoute =
+          routeAuthority.contains(RouteAuthority.fromAuthState(authState));
 
       if (!isLegitRoute) {
         return switch (authState) {

@@ -23,3 +23,15 @@ class MapRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) =>
       NoTransitionPage(key: state.pageKey, child: const MapScreen());
 }
+
+class MyOrdersRoute extends GoRouteData {
+  const MyOrdersRoute();
+
+  static const routes = [
+    TypedGoRoute<MyOrdersRoute>(path: '/my-orders'),
+  ];
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const MyOrdersScreen();
+}

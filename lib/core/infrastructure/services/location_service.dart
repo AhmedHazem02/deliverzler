@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_android/src/types/foreground_settings.dart';
 import 'package:location/location.dart' as loc;
@@ -41,6 +42,9 @@ class LocationService {
     if (serviceEnabled) {
       return true;
     } else {
+      // loc.Location().requestService() is not supported on web
+      // On web, location is handled through browser permissions
+      if (kIsWeb) return true;
       return loc.Location().requestService();
     }
   }
@@ -68,6 +72,13 @@ class LocationService {
     int? interval,
     int? distanceFilter,
   }) {
+    // Web and other platforms use default LocationSettings
+    if (kIsWeb) {
+      return LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: distanceFilter ?? AppLocationSettings.locationChangeDistance,
+      );
+    }
     if (Platform.isAndroid) {
       return AndroidSettings(
         accuracy: LocationAccuracy.high,

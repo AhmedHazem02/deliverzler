@@ -11,7 +11,7 @@ import '../../../../../core/presentation/widgets/loading_widgets.dart';
 import '../../../../home/presentation/components/retry_again_component.dart';
 import '../../../../home/presentation/providers/location_stream_provider.dart';
 import '../../../../home/presentation/utils/location_error.dart';
-import '../../components/google_map_component.dart';
+import '../../components/platform_aware_map_component.dart';
 import '../../components/map_confirm_button_component.dart';
 import '../../components/map_directions_info_component.dart';
 import '../../components/map_floating_action_button.dart';
@@ -66,7 +66,8 @@ class MapScreenCompact extends HookConsumerWidget {
       body: locationAsync.when(
         skipLoadingOnReload: true,
         skipLoadingOnRefresh: !locationAsync.hasError,
-        loading: () => TitledLoadingIndicator(message: tr(context).determine_location),
+        loading: () =>
+            TitledLoadingIndicator(message: tr(context).determine_location),
         error: (error, st) => RetryAgainComponent(
           description: (error as LocationError).getErrorText(context),
           onPressed: () {
@@ -77,7 +78,7 @@ class MapScreenCompact extends HookConsumerWidget {
           alignment: Alignment.topCenter,
           fit: StackFit.expand,
           children: [
-            GoogleMapComponent(),
+            PlatformAwareMapComponent(),
             MapDirectionsInfoComponent(),
             MapPhoneCallComponent(),
             MapConfirmButtonComponent(),

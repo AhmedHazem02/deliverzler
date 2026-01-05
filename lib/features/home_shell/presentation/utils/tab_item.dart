@@ -6,6 +6,7 @@ import '../../../../core/presentation/widgets/platform_widgets/platform_icons.da
 
 enum TabItem {
   home,
+  myOrders,
   profile,
   settings;
 
@@ -22,6 +23,7 @@ enum TabItem {
   IconData _getTabIconData(BuildContext context) {
     return switch (this) {
       TabItem.home => AppPlatformIcons.platformIcons(context).home,
+      TabItem.myOrders => Icons.list_alt,
       TabItem.profile => AppPlatformIcons.platformIcons(context).accountCircleSolid,
       TabItem.settings => AppPlatformIcons.platformIcons(context).settingsSolid,
     };
@@ -42,6 +44,7 @@ enum TabItem {
   String getTabItemLabel(BuildContext context) {
     return switch (this) {
       TabItem.home => tr(context).home,
+      TabItem.myOrders => tr(context).myOrders,
       TabItem.profile => tr(context).myProfile,
       TabItem.settings => tr(context).settings,
     };

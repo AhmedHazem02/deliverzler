@@ -113,5 +113,13 @@
   "searchForAPlace": "Search for a place...",
   "myCurrentLocation": "My current location",
   "pleaseSearchForLocation": "Please search for the location!",
-  "userHasNotProvidedLocation": "User hasn't provided his location point."
+  "userHasNotProvidedLocation": "User hasn't provided his location point.",
+  "mapNotAvailableOnWeb": "Map Not Available on Web",
+  "pleaseUseMobileAppForMapFeatures": "Please use the mobile app (Android/iOS) to access map features and navigation.",
+  "@_MY_ORDERS": {},
+  "myOrders": "My Orders",
+  "all": "All",
+  "onTheWay": "On The Way",
+  "delivered": "Delivered",
+  "noOrdersFound": "No orders found."
 }

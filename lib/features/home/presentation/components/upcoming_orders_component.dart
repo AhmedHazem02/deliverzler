@@ -26,7 +26,9 @@ class UpcomingOrdersComponent extends ConsumerWidget {
         state.whenOrNull(
           success: (orderId, deliveryStatus) async {
             if (deliveryStatus != DeliveryStatus.onTheWay) return;
-            ref.read(selectedOrderIdProvider.notifier).update((_) => Some(orderId));
+            ref
+                .read(selectedOrderIdProvider.notifier)
+                .update((_) => Some(orderId));
             const MapRoute().go(context);
           },
         );
@@ -34,6 +36,8 @@ class UpcomingOrdersComponent extends ConsumerWidget {
     );
 
     final upcomingOrdersAsync = ref.watch(upcomingOrdersProvider);
+    print(
+        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}'); // DEBUG
 
     Future<void> refresh() async {
       return ref.refresh(upcomingOrdersProvider.future).suppressError();
@@ -43,6 +47,7 @@ class UpcomingOrdersComponent extends ConsumerWidget {
       skipLoadingOnReload: true,
       skipLoadingOnRefresh: !upcomingOrdersAsync.hasError,
       data: (upcomingOrders) {
+        print('✨ UI received orders: ${upcomingOrders.length}'); // DEBUG
         return PlatformRefreshIndicator(
           onRefresh: refresh,
           slivers: [

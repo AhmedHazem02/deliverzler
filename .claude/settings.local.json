@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cmd /c \"mkdir d:\\\\deliverzler\\\\configs 2>nul & echo Created configs folder\")",
+      "Bash(cmd /c \"cd /d d:\\\\deliverzler && flutter pub deps | findstr google_maps\")",
+      "Bash(cmd /c \"cd /d d:\\\\deliverzler && flutter pub add google_maps_flutter_web\")",
+      "Bash(cmd /c \"cd /d d:\\\\deliverzler && dart run build_runner build --delete-conflicting-outputs\")",
+      "Bash(cmd /c \"cd /d d:\\\\deliverzler && dart run build_runner build --delete-conflicting-outputs 2>&1\")",
+      "Bash(cmd /c \"mkdir d:\\\\deliverzler\\\\lib\\\\features\\\\home\\\\presentation\\\\screens\\\\my_orders_screen 2>nul & echo Created folder\")",
+      "Bash(cmd /c \"cd /d d:\\\\deliverzler && flutter gen-l10n\")",
+      "Bash(cmd /c:*)"
+    ]
+  }
+}

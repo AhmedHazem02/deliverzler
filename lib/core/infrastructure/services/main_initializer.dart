@@ -48,6 +48,8 @@ Future<void> _initFirebase() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // Seed sample data for development (only adds data if orders collection is empty)
+  await FirestoreSeeder.seedIfEmpty();
 }
 
 Future<void> _precacheAssets(BuildContext context) async {

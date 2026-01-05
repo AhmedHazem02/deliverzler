@@ -37,6 +37,20 @@ class FirebaseAuthFacade {
     );
   }
 
+  Future<UserCredential> createUserWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    return _errorHandler(
+      () async {
+        return firebaseAuth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      },
+    );
+  }
+
   Future<User> getCurrentUser() async {
     return _errorHandler(
       () async {

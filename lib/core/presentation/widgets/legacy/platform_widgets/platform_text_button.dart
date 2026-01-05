@@ -37,8 +37,7 @@ class PlatformTextButton extends PlatformBaseWidget<TextButton, CupertinoButton>
       onPressed: onPressed,
       color: cupertinoData?.color,
       padding: cupertinoData?.padding,
-      borderRadius: cupertinoData?.borderRadius,
-      minSize: cupertinoData?.minSize,
+      borderRadius: cupertinoData?.borderRadius, minimumSize: Size(cupertinoData?.minSize, cupertinoData?.minSize),
       child: child,
     );
   }

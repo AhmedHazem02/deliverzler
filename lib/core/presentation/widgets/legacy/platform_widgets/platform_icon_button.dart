@@ -40,8 +40,7 @@ class PlatformIconButton extends PlatformBaseWidget<IconButton, CupertinoButton>
       key: widgetKey,
       onPressed: onPressed,
       padding: padding,
-      minSize: cupertinoData?.minSize,
-      alignment: cupertinoData?.alignment ?? Alignment.center,
+      alignment: cupertinoData?.alignment ?? Alignment.center, minimumSize: Size(cupertinoData?.minSize, cupertinoData?.minSize),
       child: icon,
     );
   }

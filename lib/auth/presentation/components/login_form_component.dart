@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/presentation/helpers/localization_helper.dart';
 import '../../../core/presentation/styles/styles.dart';
+import '../../../core/presentation/routing/app_router.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../../core/presentation/widgets/platform_widgets/platform_icons.dart';
@@ -38,7 +39,11 @@ class LoginFormComponent extends HookConsumerWidget {
               hintText: tr(context).email,
               suffixIcon: Padding(
                 padding: EdgeInsetsDirectional.only(
-                  end: Theme.of(context).inputDecorationTheme.contentPadding!.horizontal / 2,
+                  end: Theme.of(context)
+                          .inputDecorationTheme
+                          .contentPadding!
+                          .horizontal /
+                      2,
                 ),
                 child: Icon(AppPlatformIcons.platformIcons(context).mail),
               ),
@@ -58,7 +63,11 @@ class LoginFormComponent extends HookConsumerWidget {
               hintText: tr(context).password,
               suffixIcon: Padding(
                 padding: EdgeInsetsDirectional.only(
-                  end: Theme.of(context).inputDecorationTheme.contentPadding!.horizontal / 2,
+                  end: Theme.of(context)
+                          .inputDecorationTheme
+                          .contentPadding!
+                          .horizontal /
+                      2,
                 ),
                 child: const Icon(Icons.password),
               ),
@@ -67,7 +76,8 @@ class LoginFormComponent extends HookConsumerWidget {
             validator: SignInWithEmail.validatePassword(context),
             textInputAction: TextInputAction.go,
             obscureText: true,
-            onFieldSubmitted: ref.isLoading(signInStateProvider) ? null : (_) => signIn(),
+            onFieldSubmitted:
+                ref.isLoading(signInStateProvider) ? null : (_) => signIn(),
           ),
           const SizedBox(
             height: Sizes.marginV40,
@@ -79,6 +89,11 @@ class LoginFormComponent extends HookConsumerWidget {
               tr(context).signIn.toUpperCase(),
               style: TextStyles.coloredElevatedButton(context),
             ),
+          ),
+          const SizedBox(height: Sizes.marginV12),
+          TextButton(
+            onPressed: () => const SignUpRoute().go(context),
+            child: const Text('Don\'t have an account? Sign up'),
           ),
         ],
       ),

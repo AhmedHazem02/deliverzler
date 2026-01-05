@@ -1,14 +1,1 @@
-{
-  "functions": [
-    {
-      "source": "functions",
-      "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log"
-      ]
-    }
-  ]
-}
+{"functions":[{"source":"functions","codebase":"default","ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log"]}],"flutter":{"platforms":{"android":{"buildConfigurations":{".":{"projectId":"studio-2837415731-5df0e","appId":"1:375279382498:android:a495fcbcf81015ccfd13bb","fileOutput":"android/app/google-services.json"}}},"dart":{"lib/firebase_options.dart":{"projectId":"studio-2837415731-5df0e","configurations":{"android":"1:375279382498:android:a495fcbcf81015ccfd13bb","ios":"1:375279382498:ios:1cbb243ab759a9b5fd13bb","web":"1:375279382498:web:26510d8257dbc59ffd13bb"}}}}}}

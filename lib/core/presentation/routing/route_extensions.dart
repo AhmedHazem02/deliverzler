@@ -7,17 +7,22 @@ extension GoRouterStateX on GoRouterState {
   List<RouteAuthority> get routeAuthority {
     const defaultAuthority = [RouteAuthority.user, RouteAuthority.admin];
 
-    final publicRoutes = [const SplashRoute().location, const NoInternetRoute().location];
+    final publicRoutes = [
+      const SplashRoute().location,
+      const NoInternetRoute().location
+    ];
     if (publicRoutes.any(routeLocation.startsWith)) {
       return RouteAuthority.values;
     }
 
-    if (routeLocation.startsWith(const SignInRoute().location)) {
+    if (routeLocation.startsWith('/login') ||
+        routeLocation.startsWith('/signup')) {
       return const [RouteAuthority.unauthenticated];
     }
 
     final homeRoutes = [
       const HomeRoute().location,
+      const MyOrdersRoute().location,
       const ProfileRoute().location,
       const SettingsRoute().location,
     ];

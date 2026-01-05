@@ -8,3 +8,12 @@ class SignInRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) =>
       FadeTransitionPage(state.pageKey, const SignInScreen());
 }
+
+@TypedGoRoute<SignUpRoute>(path: '/signup')
+class SignUpRoute extends GoRouteData {
+  const SignUpRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      FadeTransitionPage(state.pageKey, const SignUpScreen());
+}

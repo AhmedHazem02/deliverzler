@@ -15,6 +15,7 @@ class HomeShellAppBar extends StatelessWidget {
 
   static final IList<String> _noAppBarLocations = IListConst([
     const MapRoute().location,
+    const MyOrdersRoute().location,
   ]);
 
   @override

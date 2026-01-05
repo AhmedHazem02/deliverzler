@@ -174,9 +174,17 @@ class NotificationService {
 
   Future<RemoteMessage?> getInitialMessage() => _fcm.getInitialMessage();
 
-  Future<void> subscribeToTopic(String topic) => _fcm.subscribeToTopic(topic);
+  Future<void> subscribeToTopic(String topic) async {
+    // subscribeToTopic is not supported on web
+    if (kIsWeb) return;
+    return _fcm.subscribeToTopic(topic);
+  }
 
-  Future<void> unsubscribeFromTopic(String topic) => _fcm.unsubscribeFromTopic(topic);
+  Future<void> unsubscribeFromTopic(String topic) async {
+    // unsubscribeFromTopic is not supported on web
+    if (kIsWeb) return;
+    return _fcm.unsubscribeFromTopic(topic);
+  }
 }
 
 @Riverpod(keepAlive: true)

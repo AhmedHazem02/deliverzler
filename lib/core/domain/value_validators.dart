@@ -16,17 +16,21 @@ class ValueValidators {
     };
   }
 
-  static FormFieldValidator<String?> validateLoginPassword(BuildContext context) {
+  static FormFieldValidator<String?> validateLoginPassword(
+      BuildContext context) {
     return (value) {
       if (value!.isEmpty) {
         return tr(context).thisFieldIsEmpty;
+      } else if (value.length < 6) {
+        return 'Password must be at least 6 characters';
       } else {
         return null;
       }
     };
   }
 
-  static FormFieldValidator<String?> validateMobileNumber(BuildContext context) {
+  static FormFieldValidator<String?> validateMobileNumber(
+      BuildContext context) {
     const patternMobileNumber = r'^(?:[+0]9)?[0-9|٩|٠|١|٢|٣|٤|٥|٦|٧|٨]{10,15}$';
     return (value) {
       value = value?.trim();

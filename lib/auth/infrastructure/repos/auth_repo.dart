@@ -33,6 +33,19 @@ class AuthRepo {
     return userFromCredential.toDomain();
   }
 
+  Future<User> registerWithEmail({
+    required String email,
+    required String password,
+    String? name,
+  }) async {
+    final userDto = await remoteDataSource.registerWithEmail(
+      email: email,
+      password: password,
+      name: name,
+    );
+    return userDto.toDomain();
+  }
+
   Future<String> getUserAuthUid() async {
     final uid = await remoteDataSource.getUserAuthUid();
     return uid;

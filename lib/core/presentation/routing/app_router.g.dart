@@ -10,6 +10,7 @@ List<RouteBase> get $appRoutes => [
       $splashRoute,
       $noInternetRoute,
       $signInRoute,
+      $signUpRoute,
       $homeShellRouteData,
     ];
 
@@ -80,6 +81,28 @@ extension $SignInRouteExtension on SignInRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $signUpRoute => GoRouteData.$route(
+      path: '/signup',
+      factory: $SignUpRouteExtension._fromState,
+    );
+
+extension $SignUpRouteExtension on SignUpRoute {
+  static SignUpRoute _fromState(GoRouterState state) => const SignUpRoute();
+
+  String get location => GoRouteData.$location(
+        '/signup',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 RouteBase get $homeShellRouteData => StatefulShellRouteData.$route(
       restorationScopeId: HomeShellRouteData.$restorationScopeId,
       factory: $HomeShellRouteDataExtension._fromState,
@@ -96,6 +119,15 @@ RouteBase get $homeShellRouteData => StatefulShellRouteData.$route(
                   factory: $MapRouteExtension._fromState,
                 ),
               ],
+            ),
+          ],
+        ),
+        StatefulShellBranchData.$branch(
+          restorationScopeId: MyOrdersBranchData.$restorationScopeId,
+          routes: [
+            GoRouteData.$route(
+              path: '/my-orders',
+              factory: $MyOrdersRouteExtension._fromState,
             ),
           ],
         ),
@@ -153,6 +185,23 @@ extension $MapRouteExtension on MapRoute {
 
   String get location => GoRouteData.$location(
         '/home/map',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $MyOrdersRouteExtension on MyOrdersRoute {
+  static MyOrdersRoute _fromState(GoRouterState state) => const MyOrdersRoute();
+
+  String get location => GoRouteData.$location(
+        '/my-orders',
       );
 
   void go(BuildContext context) => context.go(location);

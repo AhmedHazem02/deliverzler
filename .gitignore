@@ -48,6 +48,7 @@ app.*.map.json
 # Firebase configs
 google-services.json
 GoogleService-Info.plist
+rami-project-99c21-firebase-adminsdk-fbsvc-c8f89763e1.json
 lib/firebase_options.dart
 
 # APIs configs
@@ -56,3 +57,11 @@ configs/
 # Ignoring generated files "Avoid for speeding up CI/CD"
 # *.g.dart
 # *.freezed.dart
+.clinerules/byterover-rules.md
+.kilocode/rules/byterover-rules.md
+.roo/rules/byterover-rules.md
+.windsurf/rules/byterover-rules.md
+.cursor/rules/byterover-rules.mdc
+.kiro/steering/byterover-rules.md
+.qoder/rules/byterover-rules.md
+.augment/rules/byterover-rules.md

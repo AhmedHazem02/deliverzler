@@ -9,13 +9,25 @@ part 'upcoming_orders_provider.g.dart';
 
 @riverpod
 Stream<List<AppOrder>> upcomingOrders(UpcomingOrdersRef ref) {
-  final userId = ref.watch(currentUserProvider.select((user) => user.id));
-  final ordersStream = ref.watch(ordersRepoProvider).getUpcomingOrders(userId);
-  return ordersStream.distinct((previous, next) {
-    //Compare prev,next streams by deep equals and skip if they're not equal,
-    //while ignoring deliveryGeoPoint in Order entity's equality implementation.
-    //This avoid updating the stream when the delivery updates his own deliveryGeoPoint
-    //which will lead to unnecessary api calls.
-    return previous.lock == next.lock;
-  });
+  print('🔍 upcomingOrders provider called'); // DEBUG
+  try {
+    final userId = ref.watch(currentUserProvider.select((user) => user.id));
+    print('👤 Current userId: $userId'); // DEBUG
+    final ordersStream =
+        ref.watch(ordersRepoProvider).getUpcomingOrders(userId);
+    return ordersStream.map((orders) {
+      print('📊 Orders stream emitted: ${orders.length} orders'); // DEBUG
+      return orders;
+    }).distinct((previous, next) {
+      //Compare prev,next streams by deep equals and skip if they're not equal,
+      //while ignoring deliveryGeoPoint in Order entity's equality implementation.
+      //This avoid updating the stream when the delivery updates his own deliveryGeoPoint
+      //which will lead to unnecessary api calls.
+      return previous.lock == next.lock;
+    });
+  } catch (e, st) {
+    print('❌ Error in upcomingOrders provider: $e'); // DEBUG
+    print('Stack: $st'); // DEBUG
+    rethrow;
+  }
 }

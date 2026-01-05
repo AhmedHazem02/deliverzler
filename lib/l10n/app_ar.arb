@@ -113,5 +113,13 @@
   "searchForAPlace": "ابحث عن موقع...",
   "myCurrentLocation": "موقعي الحالي",
   "pleaseSearchForLocation": "الرجاء البحث عن الموقع!",
-  "userHasNotProvidedLocation": "المستخدم لم يوفر موقعه الشخصي."
+  "userHasNotProvidedLocation": "المستخدم لم يوفر موقعه الشخصي.",
+  "mapNotAvailableOnWeb": "الخريطة غير متاحة على الويب",
+  "pleaseUseMobileAppForMapFeatures": "يرجى استخدام تطبيق الهاتف (أندرويد/iOS) للوصول إلى ميزات الخريطة والملاحة.",
+  "@_MY_ORDERS": {},
+  "myOrders": "طلباتي",
+  "all": "الكل",
+  "onTheWay": "في الطريق",
+  "delivered": "تم التوصيل",
+  "noOrdersFound": "لا توجد طلبات."
 }
