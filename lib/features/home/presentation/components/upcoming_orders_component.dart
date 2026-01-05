@@ -37,7 +37,7 @@ class UpcomingOrdersComponent extends ConsumerWidget {
 
     final upcomingOrdersAsync = ref.watch(upcomingOrdersProvider);
     print(
-        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}'); // DEBUG
+        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}',); // DEBUG
 
     Future<void> refresh() async {
       return ref.refresh(upcomingOrdersProvider.future).suppressError();

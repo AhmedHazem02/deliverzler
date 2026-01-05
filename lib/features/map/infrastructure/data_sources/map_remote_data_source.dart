@@ -47,7 +47,8 @@ class MapRemoteDataSource {
       ),
       cancelToken: cancelToken,
     );
-    return PlaceAutocompleteDto.parseListOfMap(response.data!['predictions'] as List<dynamic>);
+    return PlaceAutocompleteDto.parseListOfMap(
+        response.data!['predictions'] as List<dynamic>);
   }
 
   Future<PlaceDetailsDto> getPlaceDetails(
@@ -65,19 +66,36 @@ class MapRemoteDataSource {
       ),
       cancelToken: cancelToken,
     );
-    return PlaceDetailsDto.fromJson(response.data!['result'] as Map<String, dynamic>);
+    return PlaceDetailsDto.fromJson(
+        response.data!['result'] as Map<String, dynamic>);
   }
 
   Future<PlaceDirectionsDto> getPlaceDirections(
     PlaceDirectionsQueryDto query, {
     required CancelToken? cancelToken,
   }) async {
-    final response = await googleMapApi.getData<Map<String, dynamic>>(
-      path: googleMapDirectionsPath,
-      queryParameters: query.toJson(),
-      cancelToken: cancelToken,
-    );
-    // ignore: avoid_dynamic_calls
-    return PlaceDirectionsDto.fromJson(response.data!['routes'][0] as Map<String, dynamic>);
+    print('🌐 MapRemoteDataSource.getPlaceDirections called');
+    print('🌐 Query params: ${query.toJson()}');
+    try {
+      final response = await googleMapApi.getData<Map<String, dynamic>>(
+        path: googleMapDirectionsPath,
+        queryParameters: query.toJson(),
+        cancelToken: cancelToken,
+      );
+      print('🌐 API Response status: ${response.statusCode}');
+      print('🌐 API Response data keys: ${response.data?.keys}');
+      print(
+          '🌐 Routes count: ${(response.data?['routes'] as List?)?.length ?? 0}');
+      if ((response.data?['routes'] as List?)?.isEmpty ?? true) {
+        print('🌐 ❌ No routes in response! Full response: ${response.data}');
+      }
+      // ignore: avoid_dynamic_calls
+      return PlaceDirectionsDto.fromJson(
+          response.data!['routes'][0] as Map<String, dynamic>);
+    } catch (e, stack) {
+      print('🌐 ❌ API Error: $e');
+      print('🌐 Stack: $stack');
+      rethrow;
+    }
   }
 }

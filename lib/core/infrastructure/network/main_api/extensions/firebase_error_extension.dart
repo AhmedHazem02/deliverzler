@@ -46,23 +46,23 @@ extension _FirebaseAuthErrorExtension on FirebaseAuthException {
           type: ServerExceptionType.authUserDisabled,
           message: message ?? 'User account disabled',
         ),
-      'email-already-in-use' => ServerException(
+      'email-already-in-use' => const ServerException(
           type: ServerExceptionType.unknown,
           message: 'This email is already registered. Please log in instead.',
         ),
-      'weak-password' => ServerException(
+      'weak-password' => const ServerException(
           type: ServerExceptionType.unknown,
           message: 'Password is too weak. Please use a stronger password.',
         ),
-      'operation-not-allowed' => ServerException(
+      'operation-not-allowed' => const ServerException(
           type: ServerExceptionType.unknown,
           message: 'Sign up is currently disabled. Please try again later.',
         ),
       _ => ServerException(
           type: ServerExceptionType.unknown,
-          message: message?.isNotEmpty == true
+          message: message?.isNotEmpty ?? false
               ? message!
-              : (code?.isNotEmpty == true)
+              : (code.isNotEmpty ?? false)
                   ? 'Error: $code'
                   : 'An error occurred during sign up. Please try again.',
         ),

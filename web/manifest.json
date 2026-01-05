@@ -5,9 +5,24 @@
     "display": "standalone",
     "background_color": "#0175c2",
     "theme_color": "#0175c2",
-    "description": "Delivery App for Restaurants",
+    "description": "Delivery App for Restaurants with full Web Support",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "scope": "/",
+    "categories": ["food", "delivery", "business"],
+    "lang": "en",
+    "dir": "ltr",
+    "permissions": [
+        "geolocation",
+        "notifications"
+    ],
+    "features": [
+        "Cross Platform",
+        "Push Notifications",
+        "Real-time Location Tracking",
+        "Google Maps Integration",
+        "Offline Support"
+    ],
     "icons": [
         {
             "src": "icons/Icon-192.png",
@@ -31,5 +46,8 @@
             "type": "image/png",
             "purpose": "maskable"
         }
-    ]
+    ],
+    "screenshots": [],
+    "related_applications": [],
+    "prefer_related_applications": false
 }

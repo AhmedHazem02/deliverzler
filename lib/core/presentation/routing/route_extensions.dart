@@ -9,7 +9,7 @@ extension GoRouterStateX on GoRouterState {
 
     final publicRoutes = [
       const SplashRoute().location,
-      const NoInternetRoute().location
+      const NoInternetRoute().location,
     ];
     if (publicRoutes.any(routeLocation.startsWith)) {
       return RouteAuthority.values;

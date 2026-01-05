@@ -1,4 +1,12 @@
 {
+  "name": "deliverzler",
+  "version": "1.0.0",
+  "description": "Delivery App for Restaurants",
+  "scripts": {
+    "generate-web-config": "node scripts/generate-firebase-config.js",
+    "prebuild": "npm run generate-web-config",
+    "predev": "npm run generate-web-config"
+  },
   "dependencies": {
     "firebase-admin": "^13.6.0"
   }

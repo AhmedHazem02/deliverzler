@@ -7,7 +7,6 @@ import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../../core/presentation/widgets/loading_widgets.dart';
 import '../../../../core/presentation/widgets/platform_widgets/platform_refresh_indicator.dart';
 import '../../../../core/presentation/widgets/seperated_sliver_child_builder_delegate.dart';
-import '../../domain/value_objects.dart';
 import '../providers/my_orders_provider.dart';
 import 'my_order_card_component.dart';
 

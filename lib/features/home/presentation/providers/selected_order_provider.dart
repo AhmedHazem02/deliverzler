@@ -15,6 +15,13 @@ class SelectedOrderId extends _$SelectedOrderId with NotifierUpdate {
   @override
   Option<String> build() {
     ref.keepAliveUntilNoListeners();
+
+    // Auto-select first delivering order if none selected
+    final deliveringOrders = ref.watch(myDeliveringOrdersProvider);
+    if (deliveringOrders.isNotEmpty) {
+      return Some(deliveringOrders.first.id);
+    }
+
     return const None();
   }
 }

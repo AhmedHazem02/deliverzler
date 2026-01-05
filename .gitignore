@@ -32,7 +32,6 @@
 /build/
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -54,6 +53,18 @@ lib/firebase_options.dart
 
 # APIs configs
 configs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+
+# Generated web config files (generated from .env.local)
+web/firebase-config.js
+web/index.html
 
 # Ignoring generated files "Avoid for speeding up CI/CD"
 # *.g.dart

@@ -9,7 +9,8 @@ import '../place_details_provider.dart';
 part 'target_location_geo_point_provider.g.dart';
 
 @riverpod
-class TargetLocationGeoPoint extends _$TargetLocationGeoPoint with NotifierUpdate {
+class TargetLocationGeoPoint extends _$TargetLocationGeoPoint
+    with NotifierUpdate {
   @override
   Option<GeoPoint> build() {
     final currentPlaceDetails = ref.watch(currentPlaceDetailsProvider);

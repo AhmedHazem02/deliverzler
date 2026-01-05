@@ -17,7 +17,7 @@ class ValueValidators {
   }
 
   static FormFieldValidator<String?> validateLoginPassword(
-      BuildContext context) {
+      BuildContext context,) {
     return (value) {
       if (value!.isEmpty) {
         return tr(context).thisFieldIsEmpty;
@@ -30,7 +30,7 @@ class ValueValidators {
   }
 
   static FormFieldValidator<String?> validateMobileNumber(
-      BuildContext context) {
+      BuildContext context,) {
     const patternMobileNumber = r'^(?:[+0]9)?[0-9|٩|٠|١|٢|٣|٤|٥|٦|٧|٨]{10,15}$';
     return (value) {
       value = value?.trim();

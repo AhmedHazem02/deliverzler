@@ -3,7 +3,7 @@ import 'dart:js' as js;
 import 'dart:ui_web' as ui_web;
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'
-    show Marker, Circle, Polyline;
+    show Circle, Marker, Polyline;
 
 import '../../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../../core/core_features/theme/presentation/utils/app_theme.dart';
@@ -96,7 +96,8 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
 
   String _getDarkMapStyle() {
     // Dark map style for Google Maps
-    return '''[
+    return '''
+[
       {"elementType": "geometry", "stylers": [{"color": "#242f3e"}]},
       {"elementType": "labels.text.stroke", "stylers": [{"color": "#242f3e"}]},
       {"elementType": "labels.text.fill", "stylers": [{"color": "#746855"}]},
@@ -148,11 +149,11 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
           js.JsObject.jsify({
             'position': {
               'lat': marker.position.latitude,
-              'lng': marker.position.longitude
+              'lng': marker.position.longitude,
             },
             'map': _map,
             'title': marker.markerId.value,
-          })
+          }),
         ]);
         _markers[marker.markerId.value] = jsMarker;
       } catch (e) {
@@ -178,7 +179,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
           js.JsObject.jsify({
             'center': {
               'lat': circle.center.latitude,
-              'lng': circle.center.longitude
+              'lng': circle.center.longitude,
             },
             'radius': circle.radius,
             'fillColor':
@@ -189,7 +190,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
             'strokeOpacity': circle.strokeColor.opacity,
             'strokeWeight': circle.strokeWidth,
             'map': _map,
-          })
+          }),
         ]);
         _circles[circle.circleId.value] = jsCircle;
       } catch (e) {
@@ -223,7 +224,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
             'strokeOpacity': polyline.color.opacity,
             'strokeWeight': polyline.width,
             'map': _map,
-          })
+          }),
         ]);
         _polylines[polyline.polylineId.value] = jsPolyline;
       } catch (e) {
@@ -236,7 +237,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
     if (_map == null) return;
     try {
       _map!.callMethod('panTo', [
-        js.JsObject.jsify({'lat': lat, 'lng': lng})
+        js.JsObject.jsify({'lat': lat, 'lng': lng}),
       ]);
     } catch (e) {
       print('Error panning map: $e');
@@ -250,7 +251,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
           ? js.context.callMethod('eval', ['(${_getDarkMapStyle()})'])
           : js.JsArray();
       _map!.callMethod('setOptions', [
-        js.JsObject.jsify({'styles': styles})
+        js.JsObject.jsify({'styles': styles}),
       ]);
     } catch (e) {
       print('Error updating map style: $e');

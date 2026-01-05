@@ -9,6 +9,7 @@ import 'package:location/location.dart' as loc;
 import 'package:logging/logging.dart';
 
 import '../../presentation/utils/riverpod_framework.dart';
+import 'web/web_location_service.dart';
 
 part 'location_service.g.dart';
 
@@ -20,17 +21,23 @@ abstract class AppLocationSettings {
 
 @Riverpod(keepAlive: true)
 LocationService locationService(LocationServiceRef ref) {
-  return LocationService();
+  return LocationService(
+    webLocationService: kIsWeb ? WebLocationService() : null,
+  );
 }
 
 class LocationService {
+  LocationService({this.webLocationService});
+
+  final WebLocationService? webLocationService;
   Future<bool> isLocationServiceEnabled() async {
     return Geolocator.isLocationServiceEnabled();
   }
 
   Future<bool> isWhileInUsePermissionGranted() async {
     final permission = await Geolocator.checkPermission();
-    return [LocationPermission.whileInUse, LocationPermission.always].any((p) => p == permission);
+    return [LocationPermission.whileInUse, LocationPermission.always]
+        .any((p) => p == permission);
   }
 
   Future<bool> isAlwaysPermissionGranted() async {
@@ -42,9 +49,10 @@ class LocationService {
     if (serviceEnabled) {
       return true;
     } else {
-      // loc.Location().requestService() is not supported on web
-      // On web, location is handled through browser permissions
-      if (kIsWeb) return true;
+      // Web location is handled through browser permissions
+      if (kIsWeb) {
+        return webLocationService?.isSupported ?? false;
+      }
       return loc.Location().requestService();
     }
   }
@@ -53,6 +61,10 @@ class LocationService {
     if (await isWhileInUsePermissionGranted()) {
       return true;
     } else {
+      // Web permission is requested automatically when accessing location
+      if (kIsWeb) {
+        return await webLocationService?.requestPermission() ?? false;
+      }
       final permissionGranted = await Geolocator.requestPermission();
       return permissionGranted == LocationPermission.whileInUse;
     }
@@ -76,18 +88,23 @@ class LocationService {
     if (kIsWeb) {
       return LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: distanceFilter ?? AppLocationSettings.locationChangeDistance,
+        distanceFilter:
+            distanceFilter ?? AppLocationSettings.locationChangeDistance,
       );
     }
     if (Platform.isAndroid) {
       return AndroidSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: distanceFilter ?? AppLocationSettings.locationChangeDistance,
-        intervalDuration: Duration(seconds: interval ?? AppLocationSettings.locationChangeInterval),
+        distanceFilter:
+            distanceFilter ?? AppLocationSettings.locationChangeDistance,
+        intervalDuration: Duration(
+          seconds: interval ?? AppLocationSettings.locationChangeInterval,
+        ),
         //Set foreground notification config to keep app alive in background
         foregroundNotificationConfig: const ForegroundNotificationConfig(
           notificationTitle: 'Deliverzler Delivery Service',
-          notificationText: 'Deliverzler will receive your location in background.',
+          notificationText:
+              'Deliverzler will receive your location in background.',
           notificationIcon: AndroidResource(name: 'notification_icon'),
           enableWakeLock: true,
         ),
@@ -95,7 +112,8 @@ class LocationService {
     } else if (Platform.isIOS || Platform.isMacOS) {
       return AppleSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: distanceFilter ?? AppLocationSettings.locationChangeDistance,
+        distanceFilter:
+            distanceFilter ?? AppLocationSettings.locationChangeDistance,
         activityType: ActivityType.automotiveNavigation,
         pauseLocationUpdatesAutomatically: true,
         //Set to true to keep app alive in background
@@ -104,20 +122,75 @@ class LocationService {
     } else {
       return LocationSettings(
         accuracy: LocationAccuracy.high,
-        distanceFilter: distanceFilter ?? AppLocationSettings.locationChangeDistance,
+        distanceFilter:
+            distanceFilter ?? AppLocationSettings.locationChangeDistance,
       );
     }
   }
 
   Future<Position?> getLocation() async {
     try {
+      // Use web location service for web platform
+      if (kIsWeb) {
+        return await webLocationService?.getCurrentPosition();
+      }
+
       return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: AppLocationSettings.getLocationTimeLimit),
+        timeLimit:
+            const Duration(seconds: AppLocationSettings.getLocationTimeLimit),
       );
     } catch (e) {
       Logger.root.severe(e, StackTrace.current);
       return null;
+    }
+  }
+
+  /// Get location stream - works on all platforms including web
+  Stream<Position> getLocationStream({
+    int? intervalSeconds,
+    double? distanceFilter,
+  }) {
+    if (kIsWeb) {
+      return webLocationService!.getPositionStream(
+        intervalSeconds:
+            intervalSeconds ?? AppLocationSettings.locationChangeInterval,
+        distanceFilter: distanceFilter,
+      );
+    }
+
+    return Geolocator.getPositionStream(
+      locationSettings: getLocationSettings(
+        interval: intervalSeconds,
+        distanceFilter: distanceFilter?.toInt(),
+      ),
+    );
+  }
+
+  /// Enable background location tracking (web-specific)
+  void enableBackgroundTracking({
+    required void Function(Position) onLocationUpdate,
+    int intervalSeconds = 5,
+  }) {
+    if (kIsWeb) {
+      webLocationService?.enableBackgroundTracking(
+        onLocationUpdate: onLocationUpdate,
+        intervalSeconds: intervalSeconds,
+      );
+    }
+  }
+
+  /// Disable background location tracking (web-specific)
+  void disableBackgroundTracking() {
+    if (kIsWeb) {
+      webLocationService?.disableBackgroundTracking();
+    }
+  }
+
+  /// Dispose resources
+  void dispose() {
+    if (kIsWeb) {
+      webLocationService?.dispose();
     }
   }
 }

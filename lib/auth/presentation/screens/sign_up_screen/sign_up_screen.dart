@@ -17,11 +17,11 @@ class SignUpScreen extends ConsumerWidget {
           padding: const EdgeInsets.all(24),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
-            child: Column(
+            child: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 12),
-                const SignupFormComponent(),
+                SizedBox(height: 12),
+                SignupFormComponent(),
               ],
             ),
           ),

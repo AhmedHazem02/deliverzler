@@ -25,7 +25,7 @@ class OrdersRepo {
 
   Stream<List<AppOrder>> getUpcomingOrders(String userId) {
     print(
-        '🏪 OrdersRepo.getUpcomingOrders called for userId: $userId'); // DEBUG
+        '🏪 OrdersRepo.getUpcomingOrders called for userId: $userId',); // DEBUG
     return remoteDataSource.getUpcomingOrders().map(
       (orders) {
         print('📦 Raw orders from remote: ${orders.length}'); // DEBUG
@@ -39,7 +39,7 @@ class OrdersRepo {
                     (status == DeliveryStatus.onTheWay &&
                         order.deliveryId == userId);
                 print(
-                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude'); // DEBUG
+                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude',); // DEBUG
                 return shouldInclude;
               },
             )

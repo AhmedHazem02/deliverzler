@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
@@ -12,29 +14,68 @@ part 'target_location_directions_provider.g.dart';
 Option<PlaceDirections> targetLocationDirections(
   TargetLocationDirectionsRef ref,
 ) {
-  return ref.watch(getTargetLocationDirectionsProvider).maybeWhen(
-        skipError: true,
-        skipLoadingOnReload: true,
-        skipLoadingOnRefresh: true,
-        data: Some.new,
-        orElse: () => const None(),
-      );
+  final asyncValue = ref.watch(getTargetLocationDirectionsProvider);
+  debugPrint('🧭 targetLocationDirections asyncValue: $asyncValue');
+
+  return asyncValue.maybeWhen(
+    skipError: true,
+    skipLoadingOnReload: true,
+    skipLoadingOnRefresh: true,
+    data: (data) {
+      debugPrint(
+          '🧭 ✅ Got directions with ${data.polylinePoints.length} points');
+      return Some(data);
+    },
+    orElse: () {
+      debugPrint('🧭 ❌ No directions yet (loading or error)');
+      return const None();
+    },
+  );
 }
 
 @riverpod
 Future<PlaceDirections> getTargetLocationDirections(
   GetTargetLocationDirectionsRef ref,
 ) async {
-  final myLocation = ref.watch(locationStreamProvider.select((value) => value.valueOrNull));
-  if (myLocation == null) throw AbortedException();
+  debugPrint('🧭 getTargetLocationDirections called');
 
-  final targetLocation =
-      ref.watch(targetLocationGeoPointProvider).getOrElse(() => throw AbortedException());
+  final myLocation =
+      ref.watch(locationStreamProvider.select((value) => value.valueOrNull));
+  debugPrint(
+      '🧭 myLocation: ${myLocation != null ? "${myLocation.latitude}, ${myLocation.longitude}" : "null"}');
+  if (myLocation == null) {
+    debugPrint('🧭 ❌ Aborting: No myLocation');
+    throw AbortedException();
+  }
+
+  final targetLocationOpt = ref.watch(targetLocationGeoPointProvider);
+  debugPrint(
+      '🧭 targetLocationOpt: ${targetLocationOpt is Some ? "Some" : "None"}');
+
+  final targetLocation = targetLocationOpt.getOrElse(() {
+    debugPrint('🧭 ❌ Aborting: No targetLocation');
+    throw AbortedException();
+  });
+  debugPrint(
+      '🧭 targetLocation: ${targetLocation.latitude}, ${targetLocation.longitude}');
 
   final cancelToken = ref.cancelToken();
   final query = PlaceDirectionsQuery(
     origin: myLocation,
     destination: targetLocation,
   );
-  return ref.watch(mapRepoProvider).getPlaceDirections(query, cancelToken: cancelToken);
+
+  debugPrint('🧭 Fetching directions from Google API...');
+  try {
+    final result = await ref
+        .watch(mapRepoProvider)
+        .getPlaceDirections(query, cancelToken: cancelToken);
+    debugPrint(
+        '🧭 ✅ Got ${result.polylinePoints.length} polyline points, distance: ${result.distance}m');
+    return result;
+  } catch (e, st) {
+    debugPrint('🧭 ❌ Error fetching directions: $e');
+    debugPrint('🧭 Stack trace: $st');
+    rethrow;
+  }
 }

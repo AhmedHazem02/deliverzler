@@ -41,7 +41,7 @@ class OrdersRemoteDataSource {
             'deliveryStatus',
             whereIn: [
               DeliveryStatus.upcoming.name,
-              DeliveryStatus.onTheWay.name
+              DeliveryStatus.onTheWay.name,
             ],
           ),
         )

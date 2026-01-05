@@ -13,12 +13,12 @@ class SignUpState extends _$SignUpState {
   FutureOr<Option<User>> build() => const None();
 
   Future<void> signUp(
-      {required String email, required String password, String? name}) async {
+      {required String email, required String password, String? name,}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final authRepo = ref.read(authRepoProvider);
       final user = await authRepo.registerWithEmail(
-          email: email, password: password, name: name);
+          email: email, password: password, name: name,);
       final fullUser = await authRepo.getUserData(user.id);
       await ref.read(notificationServiceProvider).subscribeToTopic('general');
 
