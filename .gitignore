@@ -48,7 +48,8 @@ app.*.map.json
 # Firebase configs
 google-services.json
 GoogleService-Info.plist
-rami-project-99c21-firebase-adminsdk-fbsvc-c8f89763e1.json
+*firebase-adminsdk*.json
+studio-2837415731-5df0e-firebase-adminsdk-fbsvc-1b54822015.json
 lib/firebase_options.dart
 
 # APIs configs
