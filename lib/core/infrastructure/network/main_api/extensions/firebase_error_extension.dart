@@ -9,6 +9,7 @@ extension FirebaseErrorExtension on Object {
   ServerException firebaseErrorToServerException() {
     final exception = this;
 
+    // Handle FirebaseAuthException (used by Firebase Native SDKs)
     if (exception is FirebaseAuthException) {
       return exception.firebaseAuthToServerException();
     }
@@ -24,6 +25,52 @@ extension FirebaseErrorExtension on Object {
         code: 408,
       );
     }
+    
+    // Try to extract error code from the exception string (for web JS interop errors)
+    final errorString = exception.toString().toLowerCase();
+    if (errorString.contains('invalid-email')) {
+      return const ServerException(
+        type: ServerExceptionType.authInvalidEmail,
+        message: 'Please enter a valid email address',
+      );
+    }
+    if (errorString.contains('wrong-password') || errorString.contains('invalid-credential')) {
+      return const ServerException(
+        type: ServerExceptionType.authWrongPassword,
+        message: 'Invalid email or password',
+      );
+    }
+    if (errorString.contains('user-not-found')) {
+      return const ServerException(
+        type: ServerExceptionType.authUserNotFound,
+        message: 'User not found',
+      );
+    }
+    if (errorString.contains('user-disabled')) {
+      return const ServerException(
+        type: ServerExceptionType.authUserDisabled,
+        message: 'User account disabled',
+      );
+    }
+    if (errorString.contains('email-already-in-use')) {
+      return const ServerException(
+        type: ServerExceptionType.unknown,
+        message: 'This email is already registered. Please log in instead.',
+      );
+    }
+    if (errorString.contains('too-many-requests')) {
+      return const ServerException(
+        type: ServerExceptionType.unknown,
+        message: 'Too many attempts. Please try again later.',
+      );
+    }
+    if (errorString.contains('network-request-failed') || errorString.contains('network')) {
+      return const ServerException(
+        type: ServerExceptionType.general,
+        message: 'Network error. Please check your connection.',
+      );
+    }
+    
     return ServerException(
       type: ServerExceptionType.unknown,
       message: exception.toString(),

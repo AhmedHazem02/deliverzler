@@ -78,10 +78,27 @@ class FirebaseAuthFacade {
   Future<T> _errorHandler<T>(Future<T> Function() body) async {
     try {
       return await body();
+    } on ServerException {
+      rethrow;
     } catch (e, st) {
-      if (e is ServerException) rethrow;
-      final error = e.firebaseErrorToServerException();
-      throw Error.throwWithStackTrace(error, st);
+      // On web, Firebase may throw different exception types
+      // Try to convert to ServerException, but if it fails, wrap the original error
+      try {
+        final error = e.firebaseErrorToServerException();
+        throw Error.throwWithStackTrace(error, st);
+      } catch (conversionError) {
+        // If conversion fails, throw a generic server exception with the original error message
+        if (conversionError is ServerException) {
+          rethrow;
+        }
+        throw Error.throwWithStackTrace(
+          ServerException(
+            type: ServerExceptionType.unknown,
+            message: e.toString(),
+          ),
+          st,
+        );
+      }
     }
   }
 }

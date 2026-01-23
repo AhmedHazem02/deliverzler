@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../core/infrastructure/error/app_exception.dart';
 import '../../../core/infrastructure/network/main_api/api_callers/firebase_auth_facade.dart';
 import '../../../core/infrastructure/network/main_api/api_callers/firebase_firestore_facade.dart';
@@ -32,11 +34,23 @@ class AuthRemoteDataSource {
   static String userDocPath(String uid) => '$usersCollectionPath/$uid';
 
   Future<UserDto> signInWithEmail(SignInWithEmail params) async {
-    final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-      email: params.email,
-      password: params.password,
-    );
-    return UserDto.fromUserCredential(userCredential.user!);
+    try {
+      debugPrint('🔑 [AuthRemote] Calling firebaseAuth.signInWithEmailAndPassword...');
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+        email: params.email,
+        password: params.password,
+      );
+      debugPrint('🔑 [AuthRemote] Got userCredential, user: ${userCredential.user}');
+      debugPrint('🔑 [AuthRemote] User UID: ${userCredential.user?.uid}');
+      final userDto = UserDto.fromUserCredential(userCredential.user!);
+      debugPrint('🔑 [AuthRemote] Created UserDto: ${userDto.id}');
+      return userDto;
+    } catch (e, st) {
+      debugPrint('🔑 [AuthRemote] ERROR in signInWithEmail: $e');
+      debugPrint('🔑 [AuthRemote] Error type: ${e.runtimeType}');
+      debugPrint('🔑 [AuthRemote] Stack: $st');
+      rethrow;
+    }
   }
 
   Future<UserDto> registerWithEmail({
