@@ -31,8 +31,17 @@ fi
 echo "Getting Flutter dependencies..."
 flutter pub get
 
-# 7. Build Web
+# 7. Build Web with dart-define for Firebase configuration
 echo "Building Flutter Web (Release)..."
-flutter build web --release --base-href /
+flutter build web --release --base-href / \
+  --dart-define=FIREBASE_WEB_API_KEY="${FIREBASE_WEB_API_KEY}" \
+  --dart-define=FIREBASE_WEB_APP_ID="${FIREBASE_WEB_APP_ID}" \
+  --dart-define=FIREBASE_WEB_MESSAGING_SENDER_ID="${FIREBASE_WEB_MESSAGING_SENDER_ID}" \
+  --dart-define=FIREBASE_WEB_PROJECT_ID="${FIREBASE_WEB_PROJECT_ID}" \
+  --dart-define=FIREBASE_WEB_AUTH_DOMAIN="${FIREBASE_WEB_AUTH_DOMAIN}" \
+  --dart-define=FIREBASE_WEB_STORAGE_BUCKET="${FIREBASE_WEB_STORAGE_BUCKET}" \
+  --dart-define=FIREBASE_WEB_MEASUREMENT_ID="${FIREBASE_WEB_MEASUREMENT_ID:-}" \
+  --dart-define=SUPABASE_URL="${SUPABASE_URL}" \
+  --dart-define=SUPABASE_ANON_KEY="${SUPABASE_ANON_KEY}"
 
 echo "--- Build Finished! ---"
