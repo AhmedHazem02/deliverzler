@@ -379,4 +379,165 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOrdersFound => 'No orders found.';
+
+  @override
+  String get driverApplicationTitle => 'Driver Application';
+
+  @override
+  String get driverApplicationSubtitle =>
+      'Complete the form below to apply as a delivery driver';
+
+  @override
+  String get personalInfo => 'Personal Information';
+
+  @override
+  String get licenseInfo => 'License Information';
+
+  @override
+  String get vehicleInfo => 'Vehicle Information';
+
+  @override
+  String get documents => 'Documents';
+
+  @override
+  String get additionalNotes => 'Additional Notes';
+
+  @override
+  String get idNumber => 'ID Number';
+
+  @override
+  String get licenseNumber => 'License Number';
+
+  @override
+  String get licenseExpiryDate => 'License Expiry Date';
+
+  @override
+  String get vehicleType => 'Vehicle Type';
+
+  @override
+  String get vehiclePlate => 'Vehicle Plate';
+
+  @override
+  String get personalPhoto => 'Personal Photo';
+
+  @override
+  String get idDocument => 'ID Document';
+
+  @override
+  String get licenseDocument => 'License Document';
+
+  @override
+  String get vehicleRegistration => 'Vehicle Registration';
+
+  @override
+  String get vehicleInsurance => 'Vehicle Insurance';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get selectDate => 'Select Date';
+
+  @override
+  String get requiredField => 'This field is required';
+
+  @override
+  String get submitApplication => 'Submit Application';
+
+  @override
+  String get car => 'Car';
+
+  @override
+  String get motorcycle => 'Motorcycle';
+
+  @override
+  String get bicycle => 'Bicycle';
+
+  @override
+  String get noApplicationFound => 'No Application Found';
+
+  @override
+  String get submitApplicationToJoin =>
+      'Submit an application to join as a delivery driver';
+
+  @override
+  String get applicationPending => 'Application Pending';
+
+  @override
+  String get applicationUnderReview => 'Application Under Review';
+
+  @override
+  String get applicationApproved => 'Application Approved';
+
+  @override
+  String get applicationRejected => 'Application Rejected';
+
+  @override
+  String get applicationPendingMessage =>
+      'Your application has been submitted and is pending review';
+
+  @override
+  String get applicationUnderReviewMessage =>
+      'Your application is being reviewed by our team';
+
+  @override
+  String get applicationApprovedMessage =>
+      'Congratulations! Your application has been approved. You can now start working';
+
+  @override
+  String get applicationRejectedMessage =>
+      'Unfortunately, your application has been rejected. You can apply again';
+
+  @override
+  String get rejectionReason => 'Rejection Reason';
+
+  @override
+  String get resubmitApplication => 'Resubmit Application';
+
+  @override
+  String get signOut => 'Sign Out';
+
+  @override
+  String get applicationDetails => 'Application Details';
+
+  @override
+  String get submittedAt => 'Submitted At';
+
+  @override
+  String get accountInfo => 'Account Information';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get fillAllFields => 'Please fill all required fields';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign In';
+
+  @override
+  String get documentsUploadLater =>
+      'Document upload will be available after approval. You can continue without uploading documents now.';
+
+  @override
+  String get applicationSubmitted => 'Application Submitted Successfully!';
+
+  @override
+  String get applicationSubmittedDesc =>
+      'Your application will be reviewed by our team. You will receive an email notification once your application is approved. Please sign in after receiving the approval email.';
+
+  @override
+  String get dataUpdatedSuccessfully => 'Data updated successfully';
+
+  @override
+  String get editProfile => 'Edit Profile';
 }

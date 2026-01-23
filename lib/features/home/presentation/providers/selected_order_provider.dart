@@ -11,7 +11,7 @@ import 'my_delivering_orders_provider.dart';
 part 'selected_order_provider.g.dart';
 
 @riverpod
-class SelectedOrderId extends _$SelectedOrderId with NotifierUpdate {
+class SelectedOrderId extends _$SelectedOrderId {
   @override
   Option<String> build() {
     ref.keepAliveUntilNoListeners();
@@ -24,10 +24,13 @@ class SelectedOrderId extends _$SelectedOrderId with NotifierUpdate {
 
     return const None();
   }
+
+  void update(Option<String> Function(Option<String> state) fn) =>
+      state = fn(state);
 }
 
 @riverpod
-Option<AppOrder> selectedOrder(SelectedOrderRef ref) {
+Option<AppOrder> selectedOrder(Ref ref) {
   final selectedOrderId = ref.watch(selectedOrderIdProvider);
   return selectedOrderId.match(
     () => const None(),

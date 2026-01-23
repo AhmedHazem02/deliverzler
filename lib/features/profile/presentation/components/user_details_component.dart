@@ -31,3 +31,5 @@ class UserDetailsComponent extends ConsumerWidget {
     );
   }
 }
+
+

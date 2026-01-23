@@ -7,7 +7,7 @@ part of 'my_delivering_orders_provider.dart';
 // **************************************************************************
 
 String _$myDeliveringOrdersHash() =>
-    r'30af10ce4a44a05f5550005f36270ddf93b1a4f4';
+    r'3c1175ef1ef1a4a44b74364172d18d3af5b10201';
 
 /// See also [myDeliveringOrders].
 @ProviderFor(myDeliveringOrders)
@@ -22,4 +22,5 @@ final myDeliveringOrdersProvider = AutoDisposeProvider<List<AppOrder>>.internal(
 );
 
 typedef MyDeliveringOrdersRef = AutoDisposeProviderRef<List<AppOrder>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

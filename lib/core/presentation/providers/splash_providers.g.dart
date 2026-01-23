@@ -7,7 +7,7 @@ part of 'splash_providers.dart';
 // **************************************************************************
 
 String _$splashServicesWarmupHash() =>
-    r'a5b200293f98d9bb2fb4772908fe78c7258abab8';
+    r'36ba01e8e429d56670b74d99f482bb8e9e146673';
 
 /// See also [splashServicesWarmup].
 @ProviderFor(splashServicesWarmup)
@@ -22,7 +22,7 @@ final splashServicesWarmupProvider = AutoDisposeFutureProvider<void>.internal(
 );
 
 typedef SplashServicesWarmupRef = AutoDisposeFutureProviderRef<void>;
-String _$splashTargetHash() => r'0f4855488fa90a3ac0d1934fd6aed008d782eb29';
+String _$splashTargetHash() => r'c572fcbb2e7583c69c1b567797f1c6258fa5cffe';
 
 /// See also [splashTarget].
 @ProviderFor(splashTarget)
@@ -36,4 +36,5 @@ final splashTargetProvider = AutoDisposeFutureProvider<String>.internal(
 );
 
 typedef SplashTargetRef = AutoDisposeFutureProviderRef<String>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

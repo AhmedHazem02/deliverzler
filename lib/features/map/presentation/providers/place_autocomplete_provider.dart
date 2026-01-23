@@ -10,7 +10,7 @@ part 'place_autocomplete_provider.g.dart';
 
 @riverpod
 FutureOr<List<PlaceAutocomplete>> placeAutocompleteState(
-  PlaceAutocompleteStateRef ref,
+  Ref ref,
 ) {
   final query = ref.watch(placeAutocompleteQueryProvider);
   return query.match(
@@ -20,14 +20,17 @@ FutureOr<List<PlaceAutocomplete>> placeAutocompleteState(
 }
 
 @riverpod
-class PlaceAutocompleteQuery extends _$PlaceAutocompleteQuery with NotifierUpdate {
+class PlaceAutocompleteQuery extends _$PlaceAutocompleteQuery {
   @override
   Option<String> build() => const None();
+
+  void update(Option<String> Function(Option<String> state) fn) =>
+      state = fn(state);
 }
 
 @riverpod
 Future<List<PlaceAutocomplete>> getPlaceAutocomplete(
-  GetPlaceAutocompleteRef ref,
+  Ref ref,
   String autocompleteQuery,
 ) async {
   final cancelToken = ref.cancelToken();

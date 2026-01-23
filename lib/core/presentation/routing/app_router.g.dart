@@ -12,6 +12,9 @@ List<RouteBase> get $appRoutes => [
       $signInRoute,
       $signUpRoute,
       $homeShellRouteData,
+      $applicationStatusGateRoute,
+      $driverApplicationRoute,
+      $pendingApprovalRoute,
     ];
 
 RouteBase get $splashRoute => GoRouteData.$route(
@@ -265,11 +268,84 @@ extension $LanguageRouteExtension on LanguageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $applicationStatusGateRoute => GoRouteData.$route(
+      path: '/status-gate',
+      factory: $ApplicationStatusGateRouteExtension._fromState,
+    );
+
+extension $ApplicationStatusGateRouteExtension on ApplicationStatusGateRoute {
+  static ApplicationStatusGateRoute _fromState(GoRouterState state) =>
+      const ApplicationStatusGateRoute();
+
+  String get location => GoRouteData.$location(
+        '/status-gate',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $driverApplicationRoute => GoRouteData.$route(
+      path: '/driver-application/:userId',
+      factory: $DriverApplicationRouteExtension._fromState,
+    );
+
+extension $DriverApplicationRouteExtension on DriverApplicationRoute {
+  static DriverApplicationRoute _fromState(GoRouterState state) =>
+      DriverApplicationRoute(
+        userId: state.pathParameters['userId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/driver-application/${Uri.encodeComponent(userId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $pendingApprovalRoute => GoRouteData.$route(
+      path: '/pending-approval/:userId',
+      factory: $PendingApprovalRouteExtension._fromState,
+    );
+
+extension $PendingApprovalRouteExtension on PendingApprovalRoute {
+  static PendingApprovalRoute _fromState(GoRouterState state) =>
+      PendingApprovalRoute(
+        userId: state.pathParameters['userId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/pending-approval/${Uri.encodeComponent(userId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'cbc33c7f768920a91906a6c993a1fe68c700f5a0';
+String _$goRouterHash() => r'3ea4818bef43c20a43d01b7aff6d1570482b415c';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)
@@ -283,4 +359,5 @@ final goRouterProvider = AutoDisposeProvider<GoRouter>.internal(
 );
 
 typedef GoRouterRef = AutoDisposeProviderRef<GoRouter>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

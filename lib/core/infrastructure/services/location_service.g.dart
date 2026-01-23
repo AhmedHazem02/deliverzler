@@ -6,7 +6,7 @@ part of 'location_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$locationServiceHash() => r'656c951c27c11890bb58727952ecb6cde8a2100e';
+String _$locationServiceHash() => r'0c9de0efd34a3a7acb8bb94198d9321ef1f4e70f';
 
 /// See also [locationService].
 @ProviderFor(locationService)
@@ -21,4 +21,5 @@ final locationServiceProvider = Provider<LocationService>.internal(
 );
 
 typedef LocationServiceRef = ProviderRef<LocationService>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

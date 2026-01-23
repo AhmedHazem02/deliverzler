@@ -16,10 +16,7 @@ class User with _$User {
   const User._();
 
   User copyWithProfileDetails(ProfileDetails profileDetails) {
-    return copyWith(
-      name: profileDetails.name,
-      phone: profileDetails.phone,
-    );
+    return copyWith(name: profileDetails.name, phone: profileDetails.phone);
   }
 
   static const spareUserImage =

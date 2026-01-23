@@ -5,7 +5,7 @@ import 'target_location_providers/target_location_directions_provider.dart';
 part 'is_arrived_target_location_provider.g.dart';
 
 @riverpod
-bool isArrivedTargetLocation(IsArrivedTargetLocationRef ref) {
+bool isArrivedTargetLocation(Ref ref) {
   return ref.watch(
     targetLocationDirectionsProvider.select(
       (value) {
@@ -17,3 +17,4 @@ bool isArrivedTargetLocation(IsArrivedTargetLocationRef ref) {
     ),
   );
 }
+

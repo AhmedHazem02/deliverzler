@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../platform_widgets/platform_base_widget.dart';
 
-class PlatformIconButton extends PlatformBaseWidget<IconButton, CupertinoButton> {
+class PlatformIconButton
+    extends PlatformBaseWidget<IconButton, CupertinoButton> {
   const PlatformIconButton({
     required this.icon,
     required this.onPressed,
@@ -40,7 +41,11 @@ class PlatformIconButton extends PlatformBaseWidget<IconButton, CupertinoButton>
       key: widgetKey,
       onPressed: onPressed,
       padding: padding,
-      alignment: cupertinoData?.alignment ?? Alignment.center, minimumSize: Size(cupertinoData?.minSize, cupertinoData?.minSize),
+      alignment: cupertinoData?.alignment ?? Alignment.center,
+      minimumSize: Size(
+        cupertinoData?.minSize ?? 44.0,
+        cupertinoData?.minSize ?? 44.0,
+      ),
       child: icon,
     );
   }

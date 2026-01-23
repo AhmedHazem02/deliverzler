@@ -12,7 +12,7 @@ part of 'update_delivery_status_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UpdateDeliveryStatusState {
@@ -77,23 +77,24 @@ class _$UpdateDeliveryStatusStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$IdleCopyWith<$Res> {
-  factory _$$IdleCopyWith(_$Idle value, $Res Function(_$Idle) then) =
-      __$$IdleCopyWithImpl<$Res>;
+abstract class _$$IdleImplCopyWith<$Res> {
+  factory _$$IdleImplCopyWith(
+          _$IdleImpl value, $Res Function(_$IdleImpl) then) =
+      __$$IdleImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$IdleCopyWithImpl<$Res>
-    extends _$UpdateDeliveryStatusStateCopyWithImpl<$Res, _$Idle>
-    implements _$$IdleCopyWith<$Res> {
-  __$$IdleCopyWithImpl(_$Idle _value, $Res Function(_$Idle) _then)
+class __$$IdleImplCopyWithImpl<$Res>
+    extends _$UpdateDeliveryStatusStateCopyWithImpl<$Res, _$IdleImpl>
+    implements _$$IdleImplCopyWith<$Res> {
+  __$$IdleImplCopyWithImpl(_$IdleImpl _value, $Res Function(_$IdleImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$Idle implements Idle {
-  const _$Idle();
+class _$IdleImpl implements Idle {
+  const _$IdleImpl();
 
   @override
   String toString() {
@@ -101,9 +102,9 @@ class _$Idle implements Idle {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$Idle);
+        (other.runtimeType == runtimeType && other is _$IdleImpl);
   }
 
   @override
@@ -174,22 +175,24 @@ class _$Idle implements Idle {
 }
 
 abstract class Idle implements UpdateDeliveryStatusState {
-  const factory Idle() = _$Idle;
+  const factory Idle() = _$IdleImpl;
 }
 
 /// @nodoc
-abstract class _$$SuccessCopyWith<$Res> {
-  factory _$$SuccessCopyWith(_$Success value, $Res Function(_$Success) then) =
-      __$$SuccessCopyWithImpl<$Res>;
+abstract class _$$SuccessImplCopyWith<$Res> {
+  factory _$$SuccessImplCopyWith(
+          _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
+      __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String orderId, DeliveryStatus deliveryStatus});
 }
 
 /// @nodoc
-class __$$SuccessCopyWithImpl<$Res>
-    extends _$UpdateDeliveryStatusStateCopyWithImpl<$Res, _$Success>
-    implements _$$SuccessCopyWith<$Res> {
-  __$$SuccessCopyWithImpl(_$Success _value, $Res Function(_$Success) _then)
+class __$$SuccessImplCopyWithImpl<$Res>
+    extends _$UpdateDeliveryStatusStateCopyWithImpl<$Res, _$SuccessImpl>
+    implements _$$SuccessImplCopyWith<$Res> {
+  __$$SuccessImplCopyWithImpl(
+      _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -198,7 +201,7 @@ class __$$SuccessCopyWithImpl<$Res>
     Object? orderId = null,
     Object? deliveryStatus = null,
   }) {
-    return _then(_$Success(
+    return _then(_$SuccessImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
@@ -213,8 +216,8 @@ class __$$SuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Success implements Success {
-  const _$Success({required this.orderId, required this.deliveryStatus});
+class _$SuccessImpl implements Success {
+  const _$SuccessImpl({required this.orderId, required this.deliveryStatus});
 
   @override
   final String orderId;
@@ -227,10 +230,10 @@ class _$Success implements Success {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$Success &&
+            other is _$SuccessImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.deliveryStatus, deliveryStatus) ||
                 other.deliveryStatus == deliveryStatus));
@@ -242,8 +245,8 @@ class _$Success implements Success {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SuccessCopyWith<_$Success> get copyWith =>
-      __$$SuccessCopyWithImpl<_$Success>(this, _$identity);
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
+      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -312,11 +315,11 @@ class _$Success implements Success {
 abstract class Success implements UpdateDeliveryStatusState {
   const factory Success(
       {required final String orderId,
-      required final DeliveryStatus deliveryStatus}) = _$Success;
+      required final DeliveryStatus deliveryStatus}) = _$SuccessImpl;
 
   String get orderId;
   DeliveryStatus get deliveryStatus;
   @JsonKey(ignore: true)
-  _$$SuccessCopyWith<_$Success> get copyWith =>
+  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

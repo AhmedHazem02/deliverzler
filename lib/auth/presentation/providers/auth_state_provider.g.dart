@@ -6,7 +6,7 @@ part of 'auth_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserStateHash() => r'd16e022b3657f254a8e901a431c52311b73da818';
+String _$currentUserStateHash() => r'2b93039d1ff8690ca51ae05229d108d629275be7';
 
 /// See also [currentUserState].
 @ProviderFor(currentUserState)
@@ -21,7 +21,7 @@ final currentUserStateProvider = AutoDisposeFutureProvider<User>.internal(
 );
 
 typedef CurrentUserStateRef = AutoDisposeFutureProviderRef<User>;
-String _$currentUserHash() => r'a4c1c6b5d12d4eea16187cb31f05001c09d5839f';
+String _$currentUserHash() => r'd09be3f914f2a534685898b14f34f766f48ec8c1';
 
 /// See also [currentUser].
 @ProviderFor(currentUser)
@@ -49,4 +49,5 @@ final authStateProvider = NotifierProvider<AuthState, Option<User>>.internal(
 );
 
 typedef _$AuthState = Notifier<Option<User>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

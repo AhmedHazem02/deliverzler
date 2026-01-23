@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/infrastructure/network/google_map_api/api_callers/google_map_api_facade.dart';
 import '../../../../core/infrastructure/network/google_map_api/google_map_api_config.dart';
@@ -10,7 +11,7 @@ import '../dtos/place_directions_dto.dart';
 part 'map_remote_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
-MapRemoteDataSource mapRemoteDataSource(MapRemoteDataSourceRef ref) {
+MapRemoteDataSource mapRemoteDataSource(Ref ref) {
   return MapRemoteDataSource(
     ref,
     googleMapApi: ref.watch(googleMapApiFacadeProvider),
@@ -74,28 +75,30 @@ class MapRemoteDataSource {
     PlaceDirectionsQueryDto query, {
     required CancelToken? cancelToken,
   }) async {
-    print('🌐 MapRemoteDataSource.getPlaceDirections called');
-    print('🌐 Query params: ${query.toJson()}');
+    debugPrint('🌐 MapRemoteDataSource.getPlaceDirections called');
+    debugPrint('🌐 Query params: ${query.toJson()}');
     try {
       final response = await googleMapApi.getData<Map<String, dynamic>>(
         path: googleMapDirectionsPath,
         queryParameters: query.toJson(),
         cancelToken: cancelToken,
       );
-      print('🌐 API Response status: ${response.statusCode}');
-      print('🌐 API Response data keys: ${response.data?.keys}');
-      print(
+      debugPrint('🌐 API Response status: ${response.statusCode}');
+      debugPrint('🌐 API Response data keys: ${response.data?.keys}');
+      debugPrint(
           '🌐 Routes count: ${(response.data?['routes'] as List?)?.length ?? 0}');
       if ((response.data?['routes'] as List?)?.isEmpty ?? true) {
-        print('🌐 ❌ No routes in response! Full response: ${response.data}');
+        debugPrint(
+            '🌐 ❌ No routes in response! Full response: ${response.data}');
       }
       // ignore: avoid_dynamic_calls
       return PlaceDirectionsDto.fromJson(
           response.data!['routes'][0] as Map<String, dynamic>);
     } catch (e, stack) {
-      print('🌐 ❌ API Error: $e');
-      print('🌐 Stack: $stack');
+      debugPrint('🌐 ❌ API Error: $e');
+      debugPrint('🌐 Stack: $stack');
       rethrow;
     }
   }
 }
+

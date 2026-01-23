@@ -21,7 +21,7 @@ class AppColorsLight implements AppColors {
   @override
   Color get navBarColor => const Color(0xFFEFEFEF);
   @override
-  Color get navBarIndicatorColor => secondary.withOpacity(0.24);
+  Color get navBarIndicatorColor => secondary.withValues(alpha: 0.24);
 
   @override
   Color get textFieldSubtitle1Color => const Color(0xff333333);

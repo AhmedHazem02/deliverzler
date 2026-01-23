@@ -8,5 +8,6 @@ class ProfileRoute extends GoRouteData {
   ];
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const ProfileScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ProfileScreen();
 }

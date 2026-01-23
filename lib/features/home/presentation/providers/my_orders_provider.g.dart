@@ -6,12 +6,12 @@ part of 'my_orders_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myOrdersHash() => r'my_orders_provider_hash';
+String _$myOrdersHash() => r'80eead87e50a51e98629114465930cca5f5838fe';
 
 /// Provider for orders assigned to the current delivery user
 /// Shows orders that are either on the way or delivered
 ///
-/// See also [myOrders].
+/// Copied from [myOrders].
 @ProviderFor(myOrders)
 final myOrdersProvider = AutoDisposeStreamProvider<List<AppOrder>>.internal(
   myOrders,
@@ -23,11 +23,26 @@ final myOrdersProvider = AutoDisposeStreamProvider<List<AppOrder>>.internal(
 );
 
 typedef MyOrdersRef = AutoDisposeStreamProviderRef<List<AppOrder>>;
+String _$filteredMyOrdersHash() => r'dc9279d9a474fa62df2e66e09a0f2fdbb609add7';
 
-String _$myOrdersFilterStateHash() => r'my_orders_filter_state_hash';
-
-/// Filter for my orders - all, on the way, or delivered
+/// Filtered my orders based on the selected filter
 ///
+/// Copied from [filteredMyOrders].
+@ProviderFor(filteredMyOrders)
+final filteredMyOrdersProvider = AutoDisposeProvider<List<AppOrder>>.internal(
+  filteredMyOrders,
+  name: r'filteredMyOrdersProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$filteredMyOrdersHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FilteredMyOrdersRef = AutoDisposeProviderRef<List<AppOrder>>;
+String _$myOrdersFilterStateHash() =>
+    r'8e0ce949219b27cc59d8b4a189032bdf64cb3663';
+
 /// See also [MyOrdersFilterState].
 @ProviderFor(MyOrdersFilterState)
 final myOrdersFilterStateProvider =
@@ -42,22 +57,5 @@ final myOrdersFilterStateProvider =
 );
 
 typedef _$MyOrdersFilterState = AutoDisposeNotifier<MyOrdersFilter>;
-
-String _$filteredMyOrdersHash() => r'filtered_my_orders_hash';
-
-/// Filtered my orders based on the selected filter
-///
-/// See also [filteredMyOrders].
-@ProviderFor(filteredMyOrders)
-final filteredMyOrdersProvider = AutoDisposeProvider<List<AppOrder>>.internal(
-  filteredMyOrders,
-  name: r'filteredMyOrdersProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$filteredMyOrdersHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef FilteredMyOrdersRef = AutoDisposeProviderRef<List<AppOrder>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

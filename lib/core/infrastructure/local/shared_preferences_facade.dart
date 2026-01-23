@@ -6,17 +6,17 @@ import 'extensions/local_error_extension.dart';
 part 'shared_preferences_facade.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<SharedPreferences> sharedPrefsAsync(SharedPrefsAsyncRef ref) async {
+Future<SharedPreferences> sharedPrefsAsync(Ref ref) async {
   return SharedPreferences.getInstance();
 }
 
 @Riverpod(keepAlive: true)
-SharedPreferences _sharedPrefs(_SharedPrefsRef ref) {
+SharedPreferences _sharedPrefs(Ref ref) {
   return ref.watch(sharedPrefsAsyncProvider).requireValue;
 }
 
 @Riverpod(keepAlive: true)
-SharedPreferencesFacade sharedPreferencesFacade(SharedPreferencesFacadeRef ref) {
+SharedPreferencesFacade sharedPreferencesFacade(Ref ref) {
   return SharedPreferencesFacade(
     sharedPrefs: ref.watch(_sharedPrefsProvider),
   );
@@ -100,3 +100,4 @@ class SharedPreferencesFacade {
     }
   }
 }
+

@@ -12,7 +12,7 @@ part 'target_location_directions_provider.g.dart';
 
 @riverpod
 Option<PlaceDirections> targetLocationDirections(
-  TargetLocationDirectionsRef ref,
+  Ref ref,
 ) {
   final asyncValue = ref.watch(getTargetLocationDirectionsProvider);
   debugPrint('🧭 targetLocationDirections asyncValue: $asyncValue');
@@ -35,7 +35,7 @@ Option<PlaceDirections> targetLocationDirections(
 
 @riverpod
 Future<PlaceDirections> getTargetLocationDirections(
-  GetTargetLocationDirectionsRef ref,
+  Ref ref,
 ) async {
   debugPrint('🧭 getTargetLocationDirections called');
 
@@ -79,3 +79,4 @@ Future<PlaceDirections> getTargetLocationDirections(
     rethrow;
   }
 }
+

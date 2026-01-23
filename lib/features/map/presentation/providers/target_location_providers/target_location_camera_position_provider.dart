@@ -8,7 +8,7 @@ part 'target_location_camera_position_provider.g.dart';
 
 @riverpod
 CameraPosition targetLocationCameraPosition(
-  TargetLocationCameraPositionRef ref,
+  Ref ref,
 ) {
   final targetLocation = ref.watch(targetLocationGeoPointProvider);
 
@@ -20,3 +20,4 @@ CameraPosition targetLocationCameraPosition(
     zoom: defaultMapZoom,
   );
 }
+

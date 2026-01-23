@@ -7,7 +7,7 @@ part of 'update_delivery_geo_point_provider.dart';
 // **************************************************************************
 
 String _$updateDeliveryGeoPointStateHash() =>
-    r'175613a91e5b929a7376d930564462826f673e5f';
+    r'77523c18f803b69fb7aa8008b57e3f9ebba900ad';
 
 /// See also [updateDeliveryGeoPointState].
 @ProviderFor(updateDeliveryGeoPointState)
@@ -24,7 +24,7 @@ final updateDeliveryGeoPointStateProvider =
 
 typedef UpdateDeliveryGeoPointStateRef = AutoDisposeFutureProviderRef<void>;
 String _$updateDeliveryGeoPointHash() =>
-    r'4f01db6c2fc98d85dc92c5241c4491d21bd8d0ae';
+    r'12087cbe60b02e74b6cccf666b7bc62a6f88564e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,8 +46,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-typedef UpdateDeliveryGeoPointRef = AutoDisposeFutureProviderRef<void>;
 
 /// See also [updateDeliveryGeoPoint].
 @ProviderFor(updateDeliveryGeoPoint)
@@ -95,10 +93,10 @@ class UpdateDeliveryGeoPointFamily extends Family<AsyncValue<void>> {
 class UpdateDeliveryGeoPointProvider extends AutoDisposeFutureProvider<void> {
   /// See also [updateDeliveryGeoPoint].
   UpdateDeliveryGeoPointProvider(
-    this.deliveryGeoPoint,
-  ) : super.internal(
+    UpdateDeliveryGeoPoint deliveryGeoPoint,
+  ) : this._internal(
           (ref) => updateDeliveryGeoPoint(
-            ref,
+            ref as UpdateDeliveryGeoPointRef,
             deliveryGeoPoint,
           ),
           from: updateDeliveryGeoPointProvider,
@@ -110,9 +108,43 @@ class UpdateDeliveryGeoPointProvider extends AutoDisposeFutureProvider<void> {
           dependencies: UpdateDeliveryGeoPointFamily._dependencies,
           allTransitiveDependencies:
               UpdateDeliveryGeoPointFamily._allTransitiveDependencies,
+          deliveryGeoPoint: deliveryGeoPoint,
         );
 
+  UpdateDeliveryGeoPointProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.deliveryGeoPoint,
+  }) : super.internal();
+
   final UpdateDeliveryGeoPoint deliveryGeoPoint;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdateDeliveryGeoPointRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateDeliveryGeoPointProvider._internal(
+        (ref) => create(ref as UpdateDeliveryGeoPointRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        deliveryGeoPoint: deliveryGeoPoint,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdateDeliveryGeoPointProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -128,4 +160,20 @@ class UpdateDeliveryGeoPointProvider extends AutoDisposeFutureProvider<void> {
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+mixin UpdateDeliveryGeoPointRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `deliveryGeoPoint` of this provider.
+  UpdateDeliveryGeoPoint get deliveryGeoPoint;
+}
+
+class _UpdateDeliveryGeoPointProviderElement
+    extends AutoDisposeFutureProviderElement<void>
+    with UpdateDeliveryGeoPointRef {
+  _UpdateDeliveryGeoPointProviderElement(super.provider);
+
+  @override
+  UpdateDeliveryGeoPoint get deliveryGeoPoint =>
+      (origin as UpdateDeliveryGeoPointProvider).deliveryGeoPoint;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

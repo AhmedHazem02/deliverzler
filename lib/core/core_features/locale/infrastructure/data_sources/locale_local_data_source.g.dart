@@ -7,7 +7,7 @@ part of 'locale_local_data_source.dart';
 // **************************************************************************
 
 String _$localeLocalDataSourceHash() =>
-    r'4f0bd71bf24999c3d9bd22f9246a6b3b9912cf1c';
+    r'e692899cf2246c31a17dbabcd19a2221e4edd67c';
 
 /// See also [localeLocalDataSource].
 @ProviderFor(localeLocalDataSource)
@@ -22,4 +22,5 @@ final localeLocalDataSourceProvider = Provider<LocaleLocalDataSource>.internal(
 );
 
 typedef LocaleLocalDataSourceRef = ProviderRef<LocaleLocalDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

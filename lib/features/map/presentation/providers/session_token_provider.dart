@@ -9,4 +9,5 @@ part 'session_token_provider.g.dart';
 //For more details about using session token with google maps:
 //https://developers.google.com/maps/documentation/places/web-service/session-tokens
 @Riverpod(keepAlive: true)
-String sessionToken(SessionTokenRef ref) => const Uuid().v4();
+String sessionToken(Ref ref) => const Uuid().v4();
+

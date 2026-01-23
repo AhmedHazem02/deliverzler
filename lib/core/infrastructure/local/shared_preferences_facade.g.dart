@@ -6,7 +6,7 @@ part of 'shared_preferences_facade.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sharedPrefsAsyncHash() => r'4936c9d0c359581788200656aa350e7ab5c3ee38';
+String _$sharedPrefsAsyncHash() => r'18da0ed5cf3bcb0f595f35c0bede9a9b410b35f5';
 
 /// See also [sharedPrefsAsync].
 @ProviderFor(sharedPrefsAsync)
@@ -21,7 +21,7 @@ final sharedPrefsAsyncProvider = FutureProvider<SharedPreferences>.internal(
 );
 
 typedef SharedPrefsAsyncRef = FutureProviderRef<SharedPreferences>;
-String _$sharedPrefsHash() => r'8962559b56664f89983a3a585463fce23dd5717a';
+String _$sharedPrefsHash() => r'b82b9afe5bcbbee4ed08c2ad0295ac6c08f7ee9f';
 
 /// See also [_sharedPrefs].
 @ProviderFor(_sharedPrefs)
@@ -36,7 +36,7 @@ final _sharedPrefsProvider = Provider<SharedPreferences>.internal(
 
 typedef _SharedPrefsRef = ProviderRef<SharedPreferences>;
 String _$sharedPreferencesFacadeHash() =>
-    r'72adcc6265431ab4aeea928a93fe53bb839e70a4';
+    r'e716af68c977e50daaaa030ad200605b9d2ecad6';
 
 /// See also [sharedPreferencesFacade].
 @ProviderFor(sharedPreferencesFacade)
@@ -52,4 +52,5 @@ final sharedPreferencesFacadeProvider =
 );
 
 typedef SharedPreferencesFacadeRef = ProviderRef<SharedPreferencesFacade>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

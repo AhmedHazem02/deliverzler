@@ -5,7 +5,8 @@
   "scripts": {
     "generate-web-config": "node scripts/generate-firebase-config.js",
     "prebuild": "npm run generate-web-config",
-    "predev": "npm run generate-web-config"
+    "predev": "npm run generate-web-config",
+    "build": "bash scripts/vercel-build.sh"
   },
   "dependencies": {
     "firebase-admin": "^13.6.0"

@@ -6,7 +6,7 @@ import '../../../core/presentation/utils/riverpod_framework.dart';
 part 'profile_service.g.dart';
 
 @Riverpod(keepAlive: true)
-ProfileService profileService(ProfileServiceRef ref) {
+ProfileService profileService(Ref ref) {
   return ProfileService(
     ref: ref,
   );
@@ -15,7 +15,7 @@ ProfileService profileService(ProfileServiceRef ref) {
 class ProfileService {
   ProfileService({required this.ref});
 
-  final ProfileServiceRef ref;
+  final Ref ref;
 
   Future<File> pickProfileImage(PickSource pickSource) async {
     return ref.read(imagePickerFacadeProvider).pickImage(
@@ -25,3 +25,4 @@ class ProfileService {
         );
   }
 }
+

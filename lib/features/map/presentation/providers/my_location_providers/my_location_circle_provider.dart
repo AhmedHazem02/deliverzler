@@ -9,12 +9,12 @@ import 'my_location_camera_position_provider.dart';
 part 'my_location_circle_provider.g.dart';
 
 @riverpod
-Circle myLocationCircle(MyLocationCircleRef ref) {
+Circle myLocationCircle(Ref ref) {
   final cameraTarget = ref.watch(
     myLocationCameraPositionProvider.select((camera) => camera.target),
   );
   final myLocationAccuracy = ref.watch(
-    locationStreamProvider.select((position) => position.valueOrNull?.accuracy),
+    locationStreamProvider.select((position) => position.whenData((v) => v).value?.accuracy),
   );
 
   return MapStyleHelper.getMyLocationCircle(
@@ -22,3 +22,4 @@ Circle myLocationCircle(MyLocationCircleRef ref) {
     radius: myLocationAccuracy ?? defaultCircleRadius,
   );
 }
+

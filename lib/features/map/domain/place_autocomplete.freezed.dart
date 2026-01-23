@@ -12,7 +12,7 @@ part of 'place_autocomplete.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PlaceAutocomplete {
@@ -79,11 +79,11 @@ class _$PlaceAutocompleteCopyWithImpl<$Res, $Val extends PlaceAutocomplete>
 }
 
 /// @nodoc
-abstract class _$$_PlaceAutocompleteCopyWith<$Res>
+abstract class _$$PlaceAutocompleteImplCopyWith<$Res>
     implements $PlaceAutocompleteCopyWith<$Res> {
-  factory _$$_PlaceAutocompleteCopyWith(_$_PlaceAutocomplete value,
-          $Res Function(_$_PlaceAutocomplete) then) =
-      __$$_PlaceAutocompleteCopyWithImpl<$Res>;
+  factory _$$PlaceAutocompleteImplCopyWith(_$PlaceAutocompleteImpl value,
+          $Res Function(_$PlaceAutocompleteImpl) then) =
+      __$$PlaceAutocompleteImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -94,11 +94,11 @@ abstract class _$$_PlaceAutocompleteCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_PlaceAutocompleteCopyWithImpl<$Res>
-    extends _$PlaceAutocompleteCopyWithImpl<$Res, _$_PlaceAutocomplete>
-    implements _$$_PlaceAutocompleteCopyWith<$Res> {
-  __$$_PlaceAutocompleteCopyWithImpl(
-      _$_PlaceAutocomplete _value, $Res Function(_$_PlaceAutocomplete) _then)
+class __$$PlaceAutocompleteImplCopyWithImpl<$Res>
+    extends _$PlaceAutocompleteCopyWithImpl<$Res, _$PlaceAutocompleteImpl>
+    implements _$$PlaceAutocompleteImplCopyWith<$Res> {
+  __$$PlaceAutocompleteImplCopyWithImpl(_$PlaceAutocompleteImpl _value,
+      $Res Function(_$PlaceAutocompleteImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -109,7 +109,7 @@ class __$$_PlaceAutocompleteCopyWithImpl<$Res>
     Object? mainText = null,
     Object? secondaryText = null,
   }) {
-    return _then(_$_PlaceAutocomplete(
+    return _then(_$PlaceAutocompleteImpl(
       placeId: null == placeId
           ? _value.placeId
           : placeId // ignore: cast_nullable_to_non_nullable
@@ -132,8 +132,8 @@ class __$$_PlaceAutocompleteCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PlaceAutocomplete implements _PlaceAutocomplete {
-  const _$_PlaceAutocomplete(
+class _$PlaceAutocompleteImpl implements _PlaceAutocomplete {
+  const _$PlaceAutocompleteImpl(
       {required this.placeId,
       required this.description,
       required this.mainText,
@@ -154,10 +154,10 @@ class _$_PlaceAutocomplete implements _PlaceAutocomplete {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PlaceAutocomplete &&
+            other is _$PlaceAutocompleteImpl &&
             (identical(other.placeId, placeId) || other.placeId == placeId) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -174,8 +174,8 @@ class _$_PlaceAutocomplete implements _PlaceAutocomplete {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PlaceAutocompleteCopyWith<_$_PlaceAutocomplete> get copyWith =>
-      __$$_PlaceAutocompleteCopyWithImpl<_$_PlaceAutocomplete>(
+  _$$PlaceAutocompleteImplCopyWith<_$PlaceAutocompleteImpl> get copyWith =>
+      __$$PlaceAutocompleteImplCopyWithImpl<_$PlaceAutocompleteImpl>(
           this, _$identity);
 }
 
@@ -184,7 +184,7 @@ abstract class _PlaceAutocomplete implements PlaceAutocomplete {
       {required final String placeId,
       required final String description,
       required final String mainText,
-      required final String secondaryText}) = _$_PlaceAutocomplete;
+      required final String secondaryText}) = _$PlaceAutocompleteImpl;
 
   @override
   String get placeId;
@@ -196,6 +196,6 @@ abstract class _PlaceAutocomplete implements PlaceAutocomplete {
   String get secondaryText;
   @override
   @JsonKey(ignore: true)
-  _$$_PlaceAutocompleteCopyWith<_$_PlaceAutocomplete> get copyWith =>
+  _$$PlaceAutocompleteImplCopyWith<_$PlaceAutocompleteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

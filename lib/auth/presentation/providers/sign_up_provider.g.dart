@@ -6,7 +6,7 @@ part of 'sign_up_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signUpStateHash() => r'0000000000000000000000000000000000000000';
+String _$signUpStateHash() => r'531f040c27938e411b658fd9c14d30e07e43ea0f';
 
 /// See also [SignUpState].
 @ProviderFor(SignUpState)
@@ -21,4 +21,5 @@ final signUpStateProvider =
 );
 
 typedef _$SignUpState = AutoDisposeAsyncNotifier<Option<User>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -12,7 +12,7 @@ part '../extensions/device_info_extensions.dart';
 
 @Riverpod(keepAlive: true)
 FutureOr<Option<AndroidDeviceInfo>> androidDeviceInfo(
-  AndroidDeviceInfoRef ref,
+  Ref ref,
 ) async {
   if (kIsWeb) return const None();
   if (Platform.isAndroid) {
@@ -30,3 +30,4 @@ FutureOr<Option<WebDeviceInfo>> webDeviceInfo(
   final webDeviceInfoService = WebDeviceInfoService();
   return await webDeviceInfoService.getDeviceInfo().then(Some.new);
 }
+

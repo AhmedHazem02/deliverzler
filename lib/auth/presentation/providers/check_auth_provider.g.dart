@@ -6,7 +6,7 @@ part of 'check_auth_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkAuthHash() => r'52465aed77db3037ebbfe9da075e156d1643163a';
+String _$checkAuthHash() => r'e79aeb5fd23436fd3b181121fd485849c07bd054';
 
 /// See also [checkAuth].
 @ProviderFor(checkAuth)
@@ -20,4 +20,5 @@ final checkAuthProvider = AutoDisposeFutureProvider<User>.internal(
 );
 
 typedef CheckAuthRef = AutoDisposeFutureProviderRef<User>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

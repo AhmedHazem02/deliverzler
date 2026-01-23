@@ -12,7 +12,7 @@ part of 'update_delivery_status.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UpdateDeliveryStatus {
@@ -80,11 +80,11 @@ class _$UpdateDeliveryStatusCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpdateDeliveryStatusCopyWith<$Res>
+abstract class _$$UpdateDeliveryStatusImplCopyWith<$Res>
     implements $UpdateDeliveryStatusCopyWith<$Res> {
-  factory _$$_UpdateDeliveryStatusCopyWith(_$_UpdateDeliveryStatus value,
-          $Res Function(_$_UpdateDeliveryStatus) then) =
-      __$$_UpdateDeliveryStatusCopyWithImpl<$Res>;
+  factory _$$UpdateDeliveryStatusImplCopyWith(_$UpdateDeliveryStatusImpl value,
+          $Res Function(_$UpdateDeliveryStatusImpl) then) =
+      __$$UpdateDeliveryStatusImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -95,11 +95,11 @@ abstract class _$$_UpdateDeliveryStatusCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UpdateDeliveryStatusCopyWithImpl<$Res>
-    extends _$UpdateDeliveryStatusCopyWithImpl<$Res, _$_UpdateDeliveryStatus>
-    implements _$$_UpdateDeliveryStatusCopyWith<$Res> {
-  __$$_UpdateDeliveryStatusCopyWithImpl(_$_UpdateDeliveryStatus _value,
-      $Res Function(_$_UpdateDeliveryStatus) _then)
+class __$$UpdateDeliveryStatusImplCopyWithImpl<$Res>
+    extends _$UpdateDeliveryStatusCopyWithImpl<$Res, _$UpdateDeliveryStatusImpl>
+    implements _$$UpdateDeliveryStatusImplCopyWith<$Res> {
+  __$$UpdateDeliveryStatusImplCopyWithImpl(_$UpdateDeliveryStatusImpl _value,
+      $Res Function(_$UpdateDeliveryStatusImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -110,7 +110,7 @@ class __$$_UpdateDeliveryStatusCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? employeeCancelNote = freezed,
   }) {
-    return _then(_$_UpdateDeliveryStatus(
+    return _then(_$UpdateDeliveryStatusImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
@@ -133,8 +133,8 @@ class __$$_UpdateDeliveryStatusCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UpdateDeliveryStatus implements _UpdateDeliveryStatus {
-  const _$_UpdateDeliveryStatus(
+class _$UpdateDeliveryStatusImpl implements _UpdateDeliveryStatus {
+  const _$UpdateDeliveryStatusImpl(
       {required this.orderId,
       required this.deliveryStatus,
       this.deliveryId,
@@ -155,10 +155,10 @@ class _$_UpdateDeliveryStatus implements _UpdateDeliveryStatus {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateDeliveryStatus &&
+            other is _$UpdateDeliveryStatusImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.deliveryStatus, deliveryStatus) ||
                 other.deliveryStatus == deliveryStatus) &&
@@ -175,9 +175,10 @@ class _$_UpdateDeliveryStatus implements _UpdateDeliveryStatus {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateDeliveryStatusCopyWith<_$_UpdateDeliveryStatus> get copyWith =>
-      __$$_UpdateDeliveryStatusCopyWithImpl<_$_UpdateDeliveryStatus>(
-          this, _$identity);
+  _$$UpdateDeliveryStatusImplCopyWith<_$UpdateDeliveryStatusImpl>
+      get copyWith =>
+          __$$UpdateDeliveryStatusImplCopyWithImpl<_$UpdateDeliveryStatusImpl>(
+              this, _$identity);
 }
 
 abstract class _UpdateDeliveryStatus implements UpdateDeliveryStatus {
@@ -185,7 +186,7 @@ abstract class _UpdateDeliveryStatus implements UpdateDeliveryStatus {
       {required final String orderId,
       required final DeliveryStatus deliveryStatus,
       final String? deliveryId,
-      final String? employeeCancelNote}) = _$_UpdateDeliveryStatus;
+      final String? employeeCancelNote}) = _$UpdateDeliveryStatusImpl;
 
   @override
   String get orderId;
@@ -197,6 +198,6 @@ abstract class _UpdateDeliveryStatus implements UpdateDeliveryStatus {
   String? get employeeCancelNote;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateDeliveryStatusCopyWith<_$_UpdateDeliveryStatus> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UpdateDeliveryStatusImplCopyWith<_$UpdateDeliveryStatusImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

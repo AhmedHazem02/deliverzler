@@ -12,7 +12,7 @@ part of 'profile_details.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$ProfileDetails {
@@ -63,22 +63,22 @@ class _$ProfileDetailsCopyWithImpl<$Res, $Val extends ProfileDetails>
 }
 
 /// @nodoc
-abstract class _$$_UpdateProfileParamsCopyWith<$Res>
+abstract class _$$UpdateProfileParamsImplCopyWith<$Res>
     implements $ProfileDetailsCopyWith<$Res> {
-  factory _$$_UpdateProfileParamsCopyWith(_$_UpdateProfileParams value,
-          $Res Function(_$_UpdateProfileParams) then) =
-      __$$_UpdateProfileParamsCopyWithImpl<$Res>;
+  factory _$$UpdateProfileParamsImplCopyWith(_$UpdateProfileParamsImpl value,
+          $Res Function(_$UpdateProfileParamsImpl) then) =
+      __$$UpdateProfileParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String name, String phone});
 }
 
 /// @nodoc
-class __$$_UpdateProfileParamsCopyWithImpl<$Res>
-    extends _$ProfileDetailsCopyWithImpl<$Res, _$_UpdateProfileParams>
-    implements _$$_UpdateProfileParamsCopyWith<$Res> {
-  __$$_UpdateProfileParamsCopyWithImpl(_$_UpdateProfileParams _value,
-      $Res Function(_$_UpdateProfileParams) _then)
+class __$$UpdateProfileParamsImplCopyWithImpl<$Res>
+    extends _$ProfileDetailsCopyWithImpl<$Res, _$UpdateProfileParamsImpl>
+    implements _$$UpdateProfileParamsImplCopyWith<$Res> {
+  __$$UpdateProfileParamsImplCopyWithImpl(_$UpdateProfileParamsImpl _value,
+      $Res Function(_$UpdateProfileParamsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_UpdateProfileParamsCopyWithImpl<$Res>
     Object? name = null,
     Object? phone = null,
   }) {
-    return _then(_$_UpdateProfileParams(
+    return _then(_$UpdateProfileParamsImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -102,8 +102,8 @@ class __$$_UpdateProfileParamsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UpdateProfileParams implements _UpdateProfileParams {
-  const _$_UpdateProfileParams({required this.name, required this.phone});
+class _$UpdateProfileParamsImpl implements _UpdateProfileParams {
+  const _$UpdateProfileParamsImpl({required this.name, required this.phone});
 
   @override
   final String name;
@@ -116,10 +116,10 @@ class _$_UpdateProfileParams implements _UpdateProfileParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateProfileParams &&
+            other is _$UpdateProfileParamsImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phone, phone) || other.phone == phone));
   }
@@ -130,15 +130,15 @@ class _$_UpdateProfileParams implements _UpdateProfileParams {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateProfileParamsCopyWith<_$_UpdateProfileParams> get copyWith =>
-      __$$_UpdateProfileParamsCopyWithImpl<_$_UpdateProfileParams>(
+  _$$UpdateProfileParamsImplCopyWith<_$UpdateProfileParamsImpl> get copyWith =>
+      __$$UpdateProfileParamsImplCopyWithImpl<_$UpdateProfileParamsImpl>(
           this, _$identity);
 }
 
 abstract class _UpdateProfileParams implements ProfileDetails {
   const factory _UpdateProfileParams(
       {required final String name,
-      required final String phone}) = _$_UpdateProfileParams;
+      required final String phone}) = _$UpdateProfileParamsImpl;
 
   @override
   String get name;
@@ -146,6 +146,6 @@ abstract class _UpdateProfileParams implements ProfileDetails {
   String get phone;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateProfileParamsCopyWith<_$_UpdateProfileParams> get copyWith =>
+  _$$UpdateProfileParamsImplCopyWith<_$UpdateProfileParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -35,7 +35,7 @@ part 'fcm_remote_message_providers.g.dart';
 /// If it opened via notification, RemoteMessage will be returned, otherwise it will be null.
 /// Should be called in app initState or at home screen because we need context for navigation.
 @riverpod
-Future<Option<RemoteMessage>> getInitialMessage(GetInitialMessageRef ref) async {
+Future<Option<RemoteMessage>> getInitialMessage(Ref ref) async {
   final notificationService = ref.watch(notificationServiceProvider);
   final initialMsg = await notificationService.getInitialMessage();
   return Option.fromNullable(initialMsg);
@@ -43,13 +43,14 @@ Future<Option<RemoteMessage>> getInitialMessage(GetInitialMessageRef ref) async 
 
 /// Called when FCM payload is received while the app is in the foreground.
 @riverpod
-Stream<RemoteMessage> onMessage(OnMessageRef ref) {
+Stream<RemoteMessage> onMessage(Ref ref) {
   return FirebaseMessaging.onMessage;
 }
 
 /// Called when a user presses a notification message displayed via FCM.
 /// Only if the app has opened from background state (not foreground or terminated).
 @riverpod
-Stream<RemoteMessage> onMessageOpenedApp(OnMessageOpenedAppRef ref) {
+Stream<RemoteMessage> onMessageOpenedApp(Ref ref) {
   return FirebaseMessaging.onMessageOpenedApp;
 }
+

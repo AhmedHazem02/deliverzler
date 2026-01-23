@@ -11,7 +11,7 @@ part 'my_orders_provider.g.dart';
 /// Provider for orders assigned to the current delivery user
 /// Shows orders that are either on the way or delivered
 @riverpod
-Stream<List<AppOrder>> myOrders(MyOrdersRef ref) {
+Stream<List<AppOrder>> myOrders(Ref ref) {
   final userId = ref.watch(currentUserProvider.select((user) => user.id));
   return ref.watch(ordersRepoProvider).getMyOrders(userId);
 }
@@ -31,7 +31,7 @@ class MyOrdersFilterState extends _$MyOrdersFilterState {
 
 /// Filtered my orders based on the selected filter
 @riverpod
-List<AppOrder> filteredMyOrders(FilteredMyOrdersRef ref) {
+List<AppOrder> filteredMyOrders(Ref ref) {
   final ordersAsync = ref.watch(myOrdersProvider);
   final filter = ref.watch(myOrdersFilterStateProvider);
 
@@ -53,3 +53,4 @@ List<AppOrder> filteredMyOrders(FilteredMyOrdersRef ref) {
     orElse: () => [],
   );
 }
+

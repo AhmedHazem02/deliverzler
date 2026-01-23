@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart' show CancelToken;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../extensions/app_error_extension.dart';
@@ -13,3 +14,4 @@ export 'package:hooks_riverpod/hooks_riverpod.dart';
 export 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part '../extensions/widget_ref_extension.dart';
+part '../extensions/auto_dispose_ref_extension.dart';

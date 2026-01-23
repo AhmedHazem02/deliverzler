@@ -9,7 +9,7 @@ import 'my_location_camera_position_provider.dart';
 part 'my_location_marker_provider.g.dart';
 
 @riverpod
-Option<Marker> myLocationMarker(MyLocationMarkerRef ref) {
+Option<Marker> myLocationMarker(Ref ref) {
   final markerIcon = ref.watch(myLocationMarkerIconProvider).valueOrNull;
   if (markerIcon == null) return const None();
 
@@ -29,7 +29,9 @@ Option<Marker> myLocationMarker(MyLocationMarkerRef ref) {
 
 @riverpod
 Future<BitmapDescriptor> myLocationMarkerIcon(
-  MyLocationMarkerIconRef ref,
+  Ref ref,
 ) async {
   return MapStyleHelper.getMyLocationMarkerIcon();
 }
+
+

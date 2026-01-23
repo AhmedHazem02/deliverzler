@@ -202,3 +202,5 @@ class CardItemComponent extends ConsumerWidget {
     );
   }
 }
+
+

@@ -235,7 +235,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get myProfile => 'الملف الشخصي';
 
   @override
-  String get fullName => 'الاسم بالكامل';
+  String get fullName => 'الاسم الكامل';
 
   @override
   String get enterYourName => 'أدخل الاسم الشخصي';
@@ -375,4 +375,163 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noOrdersFound => 'لا توجد طلبات.';
+
+  @override
+  String get driverApplicationTitle => 'طلب الانضمام كسائق';
+
+  @override
+  String get driverApplicationSubtitle =>
+      'أكمل النموذج أدناه للتقدم كسائق توصيل';
+
+  @override
+  String get personalInfo => 'المعلومات الشخصية';
+
+  @override
+  String get licenseInfo => 'معلومات الرخصة';
+
+  @override
+  String get vehicleInfo => 'معلومات المركبة';
+
+  @override
+  String get documents => 'المستندات';
+
+  @override
+  String get additionalNotes => 'ملاحظات إضافية';
+
+  @override
+  String get idNumber => 'رقم الهوية';
+
+  @override
+  String get licenseNumber => 'رقم الرخصة';
+
+  @override
+  String get licenseExpiryDate => 'تاريخ انتهاء الرخصة';
+
+  @override
+  String get vehicleType => 'نوع المركبة';
+
+  @override
+  String get vehiclePlate => 'لوحة المركبة';
+
+  @override
+  String get personalPhoto => 'الصورة الشخصية';
+
+  @override
+  String get idDocument => 'صورة الهوية';
+
+  @override
+  String get licenseDocument => 'صورة الرخصة';
+
+  @override
+  String get vehicleRegistration => 'استمارة المركبة';
+
+  @override
+  String get vehicleInsurance => 'تأمين المركبة';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get requiredField => 'هذا الحقل مطلوب';
+
+  @override
+  String get submitApplication => 'تقديم الطلب';
+
+  @override
+  String get car => 'سيارة';
+
+  @override
+  String get motorcycle => 'دراجة نارية';
+
+  @override
+  String get bicycle => 'دراجة هوائية';
+
+  @override
+  String get noApplicationFound => 'لا يوجد طلب انضمام';
+
+  @override
+  String get submitApplicationToJoin => 'قدم طلباً للانضمام كسائق توصيل';
+
+  @override
+  String get applicationPending => 'الطلب قيد الانتظار';
+
+  @override
+  String get applicationUnderReview => 'الطلب قيد المراجعة';
+
+  @override
+  String get applicationApproved => 'تم قبول الطلب';
+
+  @override
+  String get applicationRejected => 'تم رفض الطلب';
+
+  @override
+  String get applicationPendingMessage =>
+      'تم تقديم طلبك بنجاح وهو قيد الانتظار للمراجعة';
+
+  @override
+  String get applicationUnderReviewMessage => 'طلبك قيد المراجعة من قبل فريقنا';
+
+  @override
+  String get applicationApprovedMessage =>
+      'مبروك! تم قبول طلبك ويمكنك الآن بدء العمل';
+
+  @override
+  String get applicationRejectedMessage =>
+      'للأسف تم رفض طلبك. يمكنك التقدم مرة أخرى';
+
+  @override
+  String get rejectionReason => 'سبب الرفض';
+
+  @override
+  String get resubmitApplication => 'إعادة تقديم الطلب';
+
+  @override
+  String get signOut => 'تسجيل الخروج';
+
+  @override
+  String get applicationDetails => 'تفاصيل الطلب';
+
+  @override
+  String get submittedAt => 'تاريخ التقديم';
+
+  @override
+  String get accountInfo => 'معلومات الحساب';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمات المرور غير متطابقة';
+
+  @override
+  String get fillAllFields => 'الرجاء ملء جميع الحقول المطلوبة';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get previous => 'السابق';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟ سجل دخول';
+
+  @override
+  String get documentsUploadLater =>
+      'سيتم رفع المستندات بعد الموافقة. يمكنك المتابعة بدون رفع المستندات الآن.';
+
+  @override
+  String get applicationSubmitted => 'تم تقديم الطلب بنجاح!';
+
+  @override
+  String get applicationSubmittedDesc =>
+      'سيتم مراجعة طلبك من قبل فريقنا. ستصلك رسالة بريد إلكتروني عند قبول طلبك. يرجى تسجيل الدخول بعد استلام رسالة الموافقة.';
+
+  @override
+  String get dataUpdatedSuccessfully => 'تم تحديث البيانات بنجاح';
+
+  @override
+  String get editProfile => 'تعديل الملف الشخصي';
 }

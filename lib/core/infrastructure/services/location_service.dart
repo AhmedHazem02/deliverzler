@@ -20,7 +20,7 @@ abstract class AppLocationSettings {
 }
 
 @Riverpod(keepAlive: true)
-LocationService locationService(LocationServiceRef ref) {
+LocationService locationService(Ref ref) {
   return LocationService(
     webLocationService: kIsWeb ? WebLocationService() : null,
   );
@@ -194,3 +194,4 @@ class LocationService {
     }
   }
 }
+

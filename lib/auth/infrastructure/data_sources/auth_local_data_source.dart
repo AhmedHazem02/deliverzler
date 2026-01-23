@@ -11,7 +11,7 @@ import '../dtos/user_dto.dart';
 part 'auth_local_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
-AuthLocalDataSource authLocalDataSource(AuthLocalDataSourceRef ref) {
+AuthLocalDataSource authLocalDataSource(Ref ref) {
   return AuthLocalDataSource(ref);
 }
 
@@ -50,3 +50,5 @@ class AuthLocalDataSource {
     await ref.read(appThemeControllerProvider.notifier).reCacheTheme().suppressError();
   }
 }
+
+

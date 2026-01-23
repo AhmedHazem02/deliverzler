@@ -8,7 +8,7 @@ import '../dtos/profile_details_dto.dart';
 part 'profile_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-ProfileRepo profileRepo(ProfileRepoRef ref) {
+ProfileRepo profileRepo(Ref ref) {
   return ProfileRepo(
     remoteDataSource: ref.watch(profileRemoteDataSourceProvider),
   );
@@ -34,3 +34,4 @@ class ProfileRepo {
     await remoteDataSource.updateProfileData(profileDto);
   }
 }
+

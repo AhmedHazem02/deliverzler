@@ -7,7 +7,7 @@ part of 'my_location_camera_position_provider.dart';
 // **************************************************************************
 
 String _$myLocationCameraPositionHash() =>
-    r'6f7dba71e6bfd69eab19d1d066b7fbda5efed032';
+    r'd03a4cda0eba222e6e0545c5a1949a244e9b7482';
 
 /// See also [myLocationCameraPosition].
 @ProviderFor(myLocationCameraPosition)
@@ -23,4 +23,5 @@ final myLocationCameraPositionProvider =
 );
 
 typedef MyLocationCameraPositionRef = AutoDisposeProviderRef<CameraPosition>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

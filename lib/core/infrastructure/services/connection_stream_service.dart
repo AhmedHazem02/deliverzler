@@ -14,16 +14,18 @@ enum ConnectionStatus { connected, disconnected }
 final _log = Logger('ConnectionLogger');
 
 @riverpod
-Stream<ConnectionStatus> connectionStream(ConnectionStreamRef ref) {
+Stream<ConnectionStatus> connectionStream(Ref ref) {
   final controller = StreamController<ConnectionStatus>();
 
   //connectivity_plus: check for cellular and wifi connection "Does not guarantee connection to Internet".
   //debounceTime temporary fixes an open issue: https://github.com/fluttercommunity/plus_plugins/issues/790
-  final connectivitySub =
-      Connectivity().onConnectivityChanged.debounceTime(const Duration(milliseconds: 300)).listen(
+  final connectivitySub = Connectivity()
+      .onConnectivityChanged
+      .debounceTime(const Duration(milliseconds: 300))
+      .listen(
     (status) {
       _log.fine('NetworkConnectivity status changed: $status');
-      if (status == ConnectivityResult.none) {
+      if (status.contains(ConnectivityResult.none)) {
         controller.sink.add(ConnectionStatus.disconnected);
       }
     },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/presentation/screens/full_screen_scaffold.dart';
 import '../../../../core/presentation/styles/styles.dart';
 import '../../../../gen/my_assets.dart';
+import '../../components/auth_settings_bar.dart';
 import '../../components/login_content_component.dart';
 import '../../components/login_logo_component.dart';
 
@@ -25,20 +26,22 @@ class SignInScreenCompact extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
                   vertical: Sizes.screenPaddingV16,
                   horizontal: Sizes.screenPaddingH28,
                 ),
                 child: Column(
                   children: [
-                    Flexible(
+                    // Settings bar (Theme & Language)
+                    const AuthSettingsBar(),
+                    const Flexible(
                       child: LoginLogoComponent(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: Sizes.marginV12,
                     ),
-                    Flexible(
+                    const Flexible(
                       flex: 2,
                       child: LoginContentComponent(),
                     ),

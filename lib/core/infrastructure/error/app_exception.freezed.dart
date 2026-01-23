@@ -12,7 +12,7 @@ part of 'app_exception.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AppException {
@@ -110,22 +110,22 @@ class _$AppExceptionCopyWithImpl<$Res, $Val extends AppException>
 }
 
 /// @nodoc
-abstract class _$$ServerExceptionCopyWith<$Res>
+abstract class _$$ServerExceptionImplCopyWith<$Res>
     implements $AppExceptionCopyWith<$Res> {
-  factory _$$ServerExceptionCopyWith(
-          _$ServerException value, $Res Function(_$ServerException) then) =
-      __$$ServerExceptionCopyWithImpl<$Res>;
+  factory _$$ServerExceptionImplCopyWith(_$ServerExceptionImpl value,
+          $Res Function(_$ServerExceptionImpl) then) =
+      __$$ServerExceptionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({ServerExceptionType type, String message, int? code});
 }
 
 /// @nodoc
-class __$$ServerExceptionCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$ServerException>
-    implements _$$ServerExceptionCopyWith<$Res> {
-  __$$ServerExceptionCopyWithImpl(
-      _$ServerException _value, $Res Function(_$ServerException) _then)
+class __$$ServerExceptionImplCopyWithImpl<$Res>
+    extends _$AppExceptionCopyWithImpl<$Res, _$ServerExceptionImpl>
+    implements _$$ServerExceptionImplCopyWith<$Res> {
+  __$$ServerExceptionImplCopyWithImpl(
+      _$ServerExceptionImpl _value, $Res Function(_$ServerExceptionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -135,7 +135,7 @@ class __$$ServerExceptionCopyWithImpl<$Res>
     Object? message = null,
     Object? code = freezed,
   }) {
-    return _then(_$ServerException(
+    return _then(_$ServerExceptionImpl(
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -154,8 +154,8 @@ class __$$ServerExceptionCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ServerException implements ServerException {
-  const _$ServerException(
+class _$ServerExceptionImpl implements ServerException {
+  const _$ServerExceptionImpl(
       {required this.type, required this.message, this.code});
 
   @override
@@ -171,10 +171,10 @@ class _$ServerException implements ServerException {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ServerException &&
+            other is _$ServerExceptionImpl &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.code, code) || other.code == code));
@@ -186,8 +186,9 @@ class _$ServerException implements ServerException {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ServerExceptionCopyWith<_$ServerException> get copyWith =>
-      __$$ServerExceptionCopyWithImpl<_$ServerException>(this, _$identity);
+  _$$ServerExceptionImplCopyWith<_$ServerExceptionImpl> get copyWith =>
+      __$$ServerExceptionImplCopyWithImpl<_$ServerExceptionImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -264,7 +265,7 @@ abstract class ServerException implements AppException {
   const factory ServerException(
       {required final ServerExceptionType type,
       required final String message,
-      final int? code}) = _$ServerException;
+      final int? code}) = _$ServerExceptionImpl;
 
   @override
   ServerExceptionType get type;
@@ -274,27 +275,27 @@ abstract class ServerException implements AppException {
   int? get code;
   @override
   @JsonKey(ignore: true)
-  _$$ServerExceptionCopyWith<_$ServerException> get copyWith =>
+  _$$ServerExceptionImplCopyWith<_$ServerExceptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CacheExceptionCopyWith<$Res>
+abstract class _$$CacheExceptionImplCopyWith<$Res>
     implements $AppExceptionCopyWith<$Res> {
-  factory _$$CacheExceptionCopyWith(
-          _$CacheException value, $Res Function(_$CacheException) then) =
-      __$$CacheExceptionCopyWithImpl<$Res>;
+  factory _$$CacheExceptionImplCopyWith(_$CacheExceptionImpl value,
+          $Res Function(_$CacheExceptionImpl) then) =
+      __$$CacheExceptionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({CacheExceptionType type, String message, int? code});
 }
 
 /// @nodoc
-class __$$CacheExceptionCopyWithImpl<$Res>
-    extends _$AppExceptionCopyWithImpl<$Res, _$CacheException>
-    implements _$$CacheExceptionCopyWith<$Res> {
-  __$$CacheExceptionCopyWithImpl(
-      _$CacheException _value, $Res Function(_$CacheException) _then)
+class __$$CacheExceptionImplCopyWithImpl<$Res>
+    extends _$AppExceptionCopyWithImpl<$Res, _$CacheExceptionImpl>
+    implements _$$CacheExceptionImplCopyWith<$Res> {
+  __$$CacheExceptionImplCopyWithImpl(
+      _$CacheExceptionImpl _value, $Res Function(_$CacheExceptionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -304,7 +305,7 @@ class __$$CacheExceptionCopyWithImpl<$Res>
     Object? message = null,
     Object? code = freezed,
   }) {
-    return _then(_$CacheException(
+    return _then(_$CacheExceptionImpl(
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -323,8 +324,8 @@ class __$$CacheExceptionCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CacheException implements CacheException {
-  const _$CacheException(
+class _$CacheExceptionImpl implements CacheException {
+  const _$CacheExceptionImpl(
       {required this.type, required this.message, this.code});
 
   @override
@@ -340,10 +341,10 @@ class _$CacheException implements CacheException {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CacheException &&
+            other is _$CacheExceptionImpl &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.message, message) || other.message == message) &&
             (identical(other.code, code) || other.code == code));
@@ -355,8 +356,9 @@ class _$CacheException implements CacheException {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CacheExceptionCopyWith<_$CacheException> get copyWith =>
-      __$$CacheExceptionCopyWithImpl<_$CacheException>(this, _$identity);
+  _$$CacheExceptionImplCopyWith<_$CacheExceptionImpl> get copyWith =>
+      __$$CacheExceptionImplCopyWithImpl<_$CacheExceptionImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -433,7 +435,7 @@ abstract class CacheException implements AppException {
   const factory CacheException(
       {required final CacheExceptionType type,
       required final String message,
-      final int? code}) = _$CacheException;
+      final int? code}) = _$CacheExceptionImpl;
 
   @override
   CacheExceptionType get type;
@@ -443,6 +445,6 @@ abstract class CacheException implements AppException {
   int? get code;
   @override
   @JsonKey(ignore: true)
-  _$$CacheExceptionCopyWith<_$CacheException> get copyWith =>
+  _$$CacheExceptionImplCopyWith<_$CacheExceptionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -10,7 +10,7 @@ part 'profile_remote_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
 ProfileRemoteDataSource profileRemoteDataSource(
-  ProfileRemoteDataSourceRef ref,
+  Ref ref,
 ) {
   return ProfileRemoteDataSource(
     ref,
@@ -26,7 +26,7 @@ class ProfileRemoteDataSource {
     required this.firebaseStorage,
   });
 
-  final ProfileRemoteDataSourceRef ref;
+  final Ref ref;
   final FirebaseFirestoreFacade firebaseFirestore;
   final FirebaseStorageFacade firebaseStorage;
 
@@ -66,3 +66,5 @@ class ProfileRemoteDataSource {
     );
   }
 }
+
+

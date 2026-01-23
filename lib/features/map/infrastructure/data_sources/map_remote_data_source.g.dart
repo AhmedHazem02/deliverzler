@@ -7,7 +7,7 @@ part of 'map_remote_data_source.dart';
 // **************************************************************************
 
 String _$mapRemoteDataSourceHash() =>
-    r'733b0638cca0f9951e90961f030608959456b946';
+    r'b788baee6486facfa09821e50f9f9e4c83fb8c20';
 
 /// See also [mapRemoteDataSource].
 @ProviderFor(mapRemoteDataSource)
@@ -22,4 +22,5 @@ final mapRemoteDataSourceProvider = Provider<MapRemoteDataSource>.internal(
 );
 
 typedef MapRemoteDataSourceRef = ProviderRef<MapRemoteDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

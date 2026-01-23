@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../platform_widgets/platform_base_widget.dart';
 
-class PlatformElevatedButton extends PlatformBaseWidget<ElevatedButton, CupertinoTheme> {
+class PlatformElevatedButton
+    extends PlatformBaseWidget<ElevatedButton, CupertinoTheme> {
   const PlatformElevatedButton({
     required this.child,
     required this.onPressed,
@@ -41,7 +42,7 @@ class PlatformElevatedButton extends PlatformBaseWidget<ElevatedButton, Cupertin
         onPressed: onPressed,
         padding: cupertinoData?.padding,
         borderRadius: cupertinoData?.borderRadius,
-        minSize: cupertinoData?.minSize,
+        minSize: cupertinoData?.minSize ?? 44.0,
         child: child,
       ),
     );

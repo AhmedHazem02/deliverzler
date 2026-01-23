@@ -1,4 +1,5 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
@@ -8,15 +9,15 @@ import '../../infrastructure/repos/orders_repo.dart';
 part 'upcoming_orders_provider.g.dart';
 
 @riverpod
-Stream<List<AppOrder>> upcomingOrders(UpcomingOrdersRef ref) {
-  print('🔍 upcomingOrders provider called'); // DEBUG
+Stream<List<AppOrder>> upcomingOrders(Ref ref) {
+  debugPrint('🔍 upcomingOrders provider called');
   try {
     final userId = ref.watch(currentUserProvider.select((user) => user.id));
-    print('👤 Current userId: $userId'); // DEBUG
+    debugPrint('👤 Current userId: $userId');
     final ordersStream =
         ref.watch(ordersRepoProvider).getUpcomingOrders(userId);
     return ordersStream.map((orders) {
-      print('📊 Orders stream emitted: ${orders.length} orders'); // DEBUG
+      debugPrint('📊 Orders stream emitted: ${orders.length} orders');
       return orders;
     }).distinct((previous, next) {
       //Compare prev,next streams by deep equals and skip if they're not equal,
@@ -26,8 +27,9 @@ Stream<List<AppOrder>> upcomingOrders(UpcomingOrdersRef ref) {
       return previous.lock == next.lock;
     });
   } catch (e, st) {
-    print('❌ Error in upcomingOrders provider: $e'); // DEBUG
-    print('Stack: $st'); // DEBUG
+    debugPrint('❌ Error in upcomingOrders provider: $e');
+    debugPrint('Stack: $st');
     rethrow;
   }
 }
+

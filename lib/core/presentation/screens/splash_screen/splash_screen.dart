@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -14,23 +16,31 @@ class SplashScreen extends HookConsumerWidget {
   const SplashScreen({super.key});
 
   static Future<void> precacheAssets(BuildContext context) async {
-    await precacheImage(const AssetImage(MyAssets.ASSETS_IMAGES_CORE_CUSTOM_SPLASH_PNG), context);
+    await precacheImage(
+        const AssetImage(MyAssets.ASSETS_IMAGES_CORE_CUSTOM_SPLASH_PNG),
+        context);
   }
 
   static const setOlderAndroidImmersiveMode = true;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isWarmedUp = !ref.isLoading(splashServicesWarmupProvider);
+    final warmupState = ref.watch(splashServicesWarmupProvider);
+    final isWarmedUp = warmupState.hasValue || warmupState.hasError;
+
+    dev.log('SplashScreen: warmupState=$warmupState, isWarmedUp=$isWarmedUp');
+
     if (isWarmedUp) {
       ref.listen<AsyncValue<String>>(
         splashTargetProvider,
         (prevState, newState) {
+          dev.log('SplashScreen: splashTarget newState=$newState');
           late String nextRoute;
           newState.whenOrNull(
             data: (next) => nextRoute = next,
             error: (e, st) => nextRoute = const NoInternetRoute().location,
           );
+          dev.log('SplashScreen: Navigating to $nextRoute');
           context.go(nextRoute);
         },
       );

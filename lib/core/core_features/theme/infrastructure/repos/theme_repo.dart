@@ -4,7 +4,7 @@ import '../data_sources/theme_local_data_source.dart';
 part 'theme_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-ThemeRepo themeRepo(ThemeRepoRef ref) {
+ThemeRepo themeRepo(Ref ref) {
   return ThemeRepo(
     localDataSource: ref.watch(themeLocalDataSourceProvider),
   );
@@ -20,3 +20,4 @@ class ThemeRepo {
   Future<void> cacheAppThemeMode(String themeString) =>
       localDataSource.cacheAppThemeMode(themeString);
 }
+

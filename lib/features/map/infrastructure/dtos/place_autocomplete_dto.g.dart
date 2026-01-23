@@ -6,9 +6,9 @@ part of 'place_autocomplete_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_PlaceAutocompleteDto _$$_PlaceAutocompleteDtoFromJson(
+_$PlaceAutocompleteDtoImpl _$$PlaceAutocompleteDtoImplFromJson(
         Map<String, dynamic> json) =>
-    _$_PlaceAutocompleteDto(
+    _$PlaceAutocompleteDtoImpl(
       placeId: json['place_id'] as String,
       description: json['description'] as String,
       mainText: _readMainText(json, 'mainText') as String,

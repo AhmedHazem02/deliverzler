@@ -12,7 +12,7 @@ part of 'order.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AppOrder {
@@ -162,10 +162,11 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
 }
 
 /// @nodoc
-abstract class _$$_AppOrderCopyWith<$Res> implements $AppOrderCopyWith<$Res> {
-  factory _$$_AppOrderCopyWith(
-          _$_AppOrder value, $Res Function(_$_AppOrder) then) =
-      __$$_AppOrderCopyWithImpl<$Res>;
+abstract class _$$AppOrderImplCopyWith<$Res>
+    implements $AppOrderCopyWith<$Res> {
+  factory _$$AppOrderImplCopyWith(
+          _$AppOrderImpl value, $Res Function(_$AppOrderImpl) then) =
+      __$$AppOrderImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -189,11 +190,11 @@ abstract class _$$_AppOrderCopyWith<$Res> implements $AppOrderCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_AppOrderCopyWithImpl<$Res>
-    extends _$AppOrderCopyWithImpl<$Res, _$_AppOrder>
-    implements _$$_AppOrderCopyWith<$Res> {
-  __$$_AppOrderCopyWithImpl(
-      _$_AppOrder _value, $Res Function(_$_AppOrder) _then)
+class __$$AppOrderImplCopyWithImpl<$Res>
+    extends _$AppOrderCopyWithImpl<$Res, _$AppOrderImpl>
+    implements _$$AppOrderImplCopyWith<$Res> {
+  __$$AppOrderImplCopyWithImpl(
+      _$AppOrderImpl _value, $Res Function(_$AppOrderImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -214,7 +215,7 @@ class __$$_AppOrderCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
   }) {
-    return _then(_$_AppOrder(
+    return _then(_$AppOrderImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -277,8 +278,8 @@ class __$$_AppOrderCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AppOrder extends _AppOrder {
-  const _$_AppOrder(
+class _$AppOrderImpl extends _AppOrder {
+  const _$AppOrderImpl(
       {required this.id,
       required this.date,
       required this.pickupOption,
@@ -332,8 +333,8 @@ class _$_AppOrder extends _AppOrder {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AppOrderCopyWith<_$_AppOrder> get copyWith =>
-      __$$_AppOrderCopyWithImpl<_$_AppOrder>(this, _$identity);
+  _$$AppOrderImplCopyWith<_$AppOrderImpl> get copyWith =>
+      __$$AppOrderImplCopyWithImpl<_$AppOrderImpl>(this, _$identity);
 }
 
 abstract class _AppOrder extends AppOrder {
@@ -351,7 +352,7 @@ abstract class _AppOrder extends AppOrder {
       required final String? employeeCancelNote,
       required final DeliveryStatus deliveryStatus,
       required final String? deliveryId,
-      required final GeoPoint? deliveryGeoPoint}) = _$_AppOrder;
+      required final GeoPoint? deliveryGeoPoint}) = _$AppOrderImpl;
   const _AppOrder._() : super._();
 
   @override
@@ -384,6 +385,6 @@ abstract class _AppOrder extends AppOrder {
   GeoPoint? get deliveryGeoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_AppOrderCopyWith<_$_AppOrder> get copyWith =>
+  _$$AppOrderImplCopyWith<_$AppOrderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

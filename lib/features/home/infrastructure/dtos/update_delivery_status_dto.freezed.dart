@@ -12,7 +12,7 @@ part of 'update_delivery_status_dto.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UpdateDeliveryStatusDto {
@@ -84,11 +84,12 @@ class _$UpdateDeliveryStatusDtoCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpdateDeliveryStatusDtoCopyWith<$Res>
+abstract class _$$UpdateDeliveryStatusDtoImplCopyWith<$Res>
     implements $UpdateDeliveryStatusDtoCopyWith<$Res> {
-  factory _$$_UpdateDeliveryStatusDtoCopyWith(_$_UpdateDeliveryStatusDto value,
-          $Res Function(_$_UpdateDeliveryStatusDto) then) =
-      __$$_UpdateDeliveryStatusDtoCopyWithImpl<$Res>;
+  factory _$$UpdateDeliveryStatusDtoImplCopyWith(
+          _$UpdateDeliveryStatusDtoImpl value,
+          $Res Function(_$UpdateDeliveryStatusDtoImpl) then) =
+      __$$UpdateDeliveryStatusDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -99,12 +100,13 @@ abstract class _$$_UpdateDeliveryStatusDtoCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_UpdateDeliveryStatusDtoCopyWithImpl<$Res>
+class __$$UpdateDeliveryStatusDtoImplCopyWithImpl<$Res>
     extends _$UpdateDeliveryStatusDtoCopyWithImpl<$Res,
-        _$_UpdateDeliveryStatusDto>
-    implements _$$_UpdateDeliveryStatusDtoCopyWith<$Res> {
-  __$$_UpdateDeliveryStatusDtoCopyWithImpl(_$_UpdateDeliveryStatusDto _value,
-      $Res Function(_$_UpdateDeliveryStatusDto) _then)
+        _$UpdateDeliveryStatusDtoImpl>
+    implements _$$UpdateDeliveryStatusDtoImplCopyWith<$Res> {
+  __$$UpdateDeliveryStatusDtoImplCopyWithImpl(
+      _$UpdateDeliveryStatusDtoImpl _value,
+      $Res Function(_$UpdateDeliveryStatusDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -115,7 +117,7 @@ class __$$_UpdateDeliveryStatusDtoCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? employeeCancelNote = freezed,
   }) {
-    return _then(_$_UpdateDeliveryStatusDto(
+    return _then(_$UpdateDeliveryStatusDtoImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
@@ -138,8 +140,8 @@ class __$$_UpdateDeliveryStatusDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createFactory: false)
-class _$_UpdateDeliveryStatusDto implements _UpdateDeliveryStatusDto {
-  const _$_UpdateDeliveryStatusDto(
+class _$UpdateDeliveryStatusDtoImpl implements _UpdateDeliveryStatusDto {
+  const _$UpdateDeliveryStatusDtoImpl(
       {@JsonKey(includeToJson: false) required this.orderId,
       required this.deliveryStatus,
       @JsonKey(disallowNullValue: true) this.deliveryId,
@@ -163,10 +165,10 @@ class _$_UpdateDeliveryStatusDto implements _UpdateDeliveryStatusDto {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateDeliveryStatusDto &&
+            other is _$UpdateDeliveryStatusDtoImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.deliveryStatus, deliveryStatus) ||
                 other.deliveryStatus == deliveryStatus) &&
@@ -184,14 +186,13 @@ class _$_UpdateDeliveryStatusDto implements _UpdateDeliveryStatusDto {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateDeliveryStatusDtoCopyWith<_$_UpdateDeliveryStatusDto>
-      get copyWith =>
-          __$$_UpdateDeliveryStatusDtoCopyWithImpl<_$_UpdateDeliveryStatusDto>(
-              this, _$identity);
+  _$$UpdateDeliveryStatusDtoImplCopyWith<_$UpdateDeliveryStatusDtoImpl>
+      get copyWith => __$$UpdateDeliveryStatusDtoImplCopyWithImpl<
+          _$UpdateDeliveryStatusDtoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UpdateDeliveryStatusDtoToJson(
+    return _$$UpdateDeliveryStatusDtoImplToJson(
       this,
     );
   }
@@ -203,7 +204,7 @@ abstract class _UpdateDeliveryStatusDto implements UpdateDeliveryStatusDto {
           required final DeliveryStatus deliveryStatus,
           @JsonKey(disallowNullValue: true) final String? deliveryId,
           @JsonKey(disallowNullValue: true) final String? employeeCancelNote}) =
-      _$_UpdateDeliveryStatusDto;
+      _$UpdateDeliveryStatusDtoImpl;
 
   @override
   @JsonKey(includeToJson: false)
@@ -218,6 +219,6 @@ abstract class _UpdateDeliveryStatusDto implements UpdateDeliveryStatusDto {
   String? get employeeCancelNote;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateDeliveryStatusDtoCopyWith<_$_UpdateDeliveryStatusDto>
+  _$$UpdateDeliveryStatusDtoImplCopyWith<_$UpdateDeliveryStatusDtoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

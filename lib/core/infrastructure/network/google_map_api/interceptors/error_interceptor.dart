@@ -11,14 +11,14 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onResponse(
       Response<dynamic> response, ResponseInterceptorHandler handler) {
-    print('📥 ErrorInterceptor.onResponse: ${response.statusCode}');
-    print('📥 Response data: ${response.data}');
+    debugPrint('📥 ErrorInterceptor.onResponse: ${response.statusCode}');
+    debugPrint('📥 Response data: ${response.data}');
     final data = response.data as Map<dynamic, dynamic>;
 
     if (data['status'] != 'OK') {
-      print('📥 ❌ API status not OK: ${data['status']}');
-      print('📥 Error message: ${data['error_message']}');
-      final error = DioError(
+      debugPrint('📥 ❌ API status not OK: ${data['status']}');
+      debugPrint('📥 Error message: ${data['error_message']}');
+      final error = DioException(
         response: response,
         requestOptions: response.requestOptions,
         error: RejectError(),
@@ -26,15 +26,16 @@ class ErrorInterceptor extends Interceptor {
       return handler.reject(error, true);
     }
 
-    print('📥 ✅ API status OK');
+    debugPrint('📥 ✅ API status OK');
     return handler.next(response);
   }
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
-    print('📥 ❌ ErrorInterceptor.onError: ${err.message}');
-    print('📥 ❌ Error type: ${err.type}');
-    print('📥 ❌ Response: ${err.response?.data}');
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
+    debugPrint('📥 ❌ ErrorInterceptor.onError: ${err.message}');
+    debugPrint('📥 ❌ Error type: ${err.type}');
+    debugPrint('📥 ❌ Response: ${err.response?.data}');
     if (err.response?.statusCode == 400 || err.error is RejectError) {
       final response = err.response!;
       final data = response.data as Map<dynamic, dynamic>;
@@ -51,7 +52,7 @@ class ErrorInterceptor extends Interceptor {
           headers: response.headers,
         ),
         error: error,
-        type: DioErrorType.badResponse,
+        type: DioExceptionType.badResponse,
       );
       return handler.reject(newErr);
     }

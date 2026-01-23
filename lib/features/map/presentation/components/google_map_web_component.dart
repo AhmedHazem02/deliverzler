@@ -1,6 +1,11 @@
+// ignore: deprecated_member_use
 import 'dart:html' as html;
+// ignore: deprecated_member_use
 import 'dart:js' as js;
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:ui_web' as ui_web;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'
     show Circle, Marker, Polyline;
@@ -85,7 +90,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
               _updateOverlays();
             }
           } catch (e) {
-            print('Error initializing map: $e');
+            debugPrint('Error initializing map: $e');
           }
         });
 
@@ -144,7 +149,8 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
     // Add new markers
     for (final marker in markers) {
       try {
-        final markerConstructor = js.context['google']['maps']['Marker'];
+        final markerConstructor =
+            js.context['google']['maps']['Marker'] as js.JsFunction;
         final jsMarker = js.JsObject(markerConstructor, [
           js.JsObject.jsify({
             'position': {
@@ -157,7 +163,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
         ]);
         _markers[marker.markerId.value] = jsMarker;
       } catch (e) {
-        print('Error creating marker: $e');
+        debugPrint('Error creating marker: $e');
       }
     }
   }
@@ -174,7 +180,8 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
     // Add new circles
     for (final circle in circles) {
       try {
-        final circleConstructor = js.context['google']['maps']['Circle'];
+        final circleConstructor =
+            js.context['google']['maps']['Circle'] as js.JsFunction;
         final jsCircle = js.JsObject(circleConstructor, [
           js.JsObject.jsify({
             'center': {
@@ -194,7 +201,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
         ]);
         _circles[circle.circleId.value] = jsCircle;
       } catch (e) {
-        print('Error creating circle: $e');
+        debugPrint('Error creating circle: $e');
       }
     }
   }
@@ -215,7 +222,8 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
           return {'lat': point.latitude, 'lng': point.longitude};
         }).toList();
 
-        final polylineConstructor = js.context['google']['maps']['Polyline'];
+        final polylineConstructor =
+            js.context['google']['maps']['Polyline'] as js.JsFunction;
         final jsPolyline = js.JsObject(polylineConstructor, [
           js.JsObject.jsify({
             'path': path,
@@ -228,7 +236,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
         ]);
         _polylines[polyline.polylineId.value] = jsPolyline;
       } catch (e) {
-        print('Error creating polyline: $e');
+        debugPrint('Error creating polyline: $e');
       }
     }
   }
@@ -240,7 +248,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
         js.JsObject.jsify({'lat': lat, 'lng': lng}),
       ]);
     } catch (e) {
-      print('Error panning map: $e');
+      debugPrint('Error panning map: $e');
     }
   }
 
@@ -254,7 +262,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
         js.JsObject.jsify({'styles': styles}),
       ]);
     } catch (e) {
-      print('Error updating map style: $e');
+      debugPrint('Error updating map style: $e');
     }
   }
 

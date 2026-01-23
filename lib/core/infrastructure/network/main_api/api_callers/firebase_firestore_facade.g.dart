@@ -7,7 +7,7 @@ part of 'firebase_firestore_facade.dart';
 // **************************************************************************
 
 String _$firebaseFirestoreFacadeHash() =>
-    r'273393dedeb1ef1b465b6edc5d3d63064d3e340e';
+    r'c09ebe18e4ca513ab2eea022ce6b79ecb0b83bfe';
 
 /// See also [firebaseFirestoreFacade].
 @ProviderFor(firebaseFirestoreFacade)
@@ -23,4 +23,5 @@ final firebaseFirestoreFacadeProvider =
 );
 
 typedef FirebaseFirestoreFacadeRef = ProviderRef<FirebaseFirestoreFacade>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

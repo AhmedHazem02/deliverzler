@@ -63,3 +63,5 @@ class MapSearchMenuComponent extends ConsumerWidget {
         : const SizedBox();
   }
 }
+
+

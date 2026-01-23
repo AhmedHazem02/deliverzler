@@ -30,10 +30,10 @@ void main() {
     statusCode: 200,
   );
 
-  final tError = DioError(
+  final tError = DioException(
     error: 'error',
     requestOptions: RequestOptions(),
-    type: DioErrorType.badResponse,
+    type: DioExceptionType.badResponse,
   );
 
   group('getData', () {

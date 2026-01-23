@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,7 +14,7 @@ typedef QueryBuilder = Query<Map<String, dynamic>> Function(
 //Our main API is Firebase
 @Riverpod(keepAlive: true)
 FirebaseFirestoreFacade firebaseFirestoreFacade(
-  FirebaseFirestoreFacadeRef ref,
+  Ref ref,
 ) {
   return FirebaseFirestoreFacade(
     firebaseFirestore: FirebaseFirestore.instance,
@@ -170,3 +170,4 @@ class FirebaseFirestoreFacade {
     });
   }
 }
+

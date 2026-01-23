@@ -9,7 +9,7 @@ import 'session_token_provider.dart';
 part 'place_details_provider.g.dart';
 
 @riverpod
-Option<PlaceDetails> currentPlaceDetails(CurrentPlaceDetailsRef ref) {
+Option<PlaceDetails> currentPlaceDetails(Ref ref) {
   final selectedPlaceId = ref.watch(
     selectedPlaceAutocompleteProvider.select(
       (value) => value.match<Option<String>>(
@@ -20,28 +20,37 @@ Option<PlaceDetails> currentPlaceDetails(CurrentPlaceDetailsRef ref) {
   );
 
   return selectedPlaceId.flatMap(
-    (placeId) => ref.watch(getPlaceDetailsProvider(placeId).select(valueToOption)),
+    (placeId) =>
+        ref.watch(getPlaceDetailsProvider(placeId).select(valueToOption)),
   );
 }
 
 @riverpod
-class SelectedPlaceAutocomplete extends _$SelectedPlaceAutocomplete with NotifierUpdate {
+class SelectedPlaceAutocomplete extends _$SelectedPlaceAutocomplete {
   @override
   Option<PlaceAutocomplete> build() => const None();
+
+  void update(
+      Option<PlaceAutocomplete> Function(Option<PlaceAutocomplete> state) fn) {
+    state = fn(state);
+  }
 }
 
 @riverpod
 Future<PlaceDetails> getPlaceDetails(
-  GetPlaceDetailsRef ref,
+  Ref ref,
   String placeId,
 ) async {
   ref.listenSelf((previous, next) {
-    next.whenData((_) => ref.invalidate(sessionTokenProvider));
+    if (next is AsyncData) {
+      ref.invalidate(sessionTokenProvider);
+    }
   });
 
   final cancelToken = ref.cancelToken();
 
-  final placeDetails =
-      await ref.watch(mapRepoProvider).getPlaceDetails(placeId, cancelToken: cancelToken);
+  final placeDetails = await ref
+      .watch(mapRepoProvider)
+      .getPlaceDetails(placeId, cancelToken: cancelToken);
   return placeDetails;
 }

@@ -8,7 +8,7 @@ class MockResponseInterceptorHandler extends Mock implements ResponseInterceptor
 
 class MockErrorInterceptorHandler extends Mock implements ErrorInterceptorHandler {}
 
-class MockDioError extends Mock implements DioError {}
+class MockDioException extends Mock implements DioException {}
 
 void main() {
   late MockResponseInterceptorHandler mockResponseInterceptorHandler;
@@ -16,7 +16,7 @@ void main() {
   late ErrorInterceptor errorInterceptor;
 
   setUpAll(() {
-    registerFallbackValue(MockDioError());
+    registerFallbackValue(MockDioException());
   });
 
   setUp(() {
@@ -29,7 +29,7 @@ void main() {
     test(
       "should call handler.reject if response.data['status'] != 'OK' "
       // `RejectError` will be handled at the onError callBack.
-      'with DioError: [same response, same response.requestOptions, RejectError]',
+      'with DioException: [same response, same response.requestOptions, RejectError]',
       () async {
         // GIVEN
         final tResponse = Response(
@@ -43,7 +43,7 @@ void main() {
         verify(
           () => mockResponseInterceptorHandler.reject(
             any(
-              that: isA<DioError>()
+              that: isA<DioException>()
                   .having((e) => e.response, 'response', equals(tResponse))
                   .having(
                     (e) => e.response?.requestOptions,
@@ -80,13 +80,13 @@ void main() {
   group('onError', () {
     const tErrorMessage = 'error_message_test';
     const resultStatusCode = 400;
-    const resultErrorType = DioErrorType.badResponse;
+    const resultErrorType = DioExceptionType.badResponse;
 
     test(
       'should call handler.next if error is not RejectError',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(),
             data: {'status': tErrorMessage},
@@ -104,10 +104,10 @@ void main() {
 
     test(
       'should call handler.reject if the error is RejectError '
-      'with proper DioError: [error message from backend / statusCode 400 / DioErrorType.badResponse]',
+      'with proper DioException: [error message from backend / statusCode 400 / DioExceptionType.badResponse]',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(),
             data: {'status': tErrorMessage},
@@ -122,7 +122,7 @@ void main() {
         verify(
           () => mockErrorInterceptorHandler.reject(
             any(
-              that: isA<DioError>()
+              that: isA<DioException>()
                   .having((e) => e.response?.statusCode, 'statusCode', equals(resultStatusCode))
                   .having((e) => e.error, 'error', equals(tErrorMessage))
                   .having((e) => e.type, 'type', equals(resultErrorType)),
@@ -135,19 +135,19 @@ void main() {
 
     /*
     test(
-      'should override DioError message with error message from backend '
-      'and override DioError type with DioErrorType.response '
+      'should override DioException message with error message from backend '
+      'and override DioException type with DioExceptionType.response '
       'if response.statusCode is 400',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(path: ''),
             data: {'error_description': tErrorMessage},
             statusCode: 400,
           ),
           requestOptions: RequestOptions(path: ''),
-          type: DioErrorType.other,
+          type: DioExceptionType.other,
         );
         // WHEN
         errorInterceptor.onError(tError, mockErrorInterceptorHandler);
@@ -162,14 +162,14 @@ void main() {
       'should call handler.reject if response.statusCode is 400',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(path: ''),
             data: {'error_description': tErrorMessage},
             statusCode: 400,
           ),
           requestOptions: RequestOptions(path: ''),
-          type: DioErrorType.other,
+          type: DioExceptionType.other,
         );
         // WHEN
         errorInterceptor.onError(tError, mockErrorInterceptorHandler);
@@ -180,19 +180,19 @@ void main() {
     );
 
     test(
-      'should override DioError message with error message from backend '
-      'and override DioError type with DioErrorType.response '
+      'should override DioException message with error message from backend '
+      'and override DioException type with DioExceptionType.response '
       'if response.statusCode is 424',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(path: ''),
             data: {'error_description': tErrorMessage},
             statusCode: 424,
           ),
           requestOptions: RequestOptions(path: ''),
-          type: DioErrorType.other,
+          type: DioExceptionType.other,
         );
         // WHEN
         errorInterceptor.onError(tError, mockErrorInterceptorHandler);
@@ -207,14 +207,14 @@ void main() {
       'should call handler.reject if response.statusCode is 424',
       () async {
         // GIVEN
-        final tError = DioError(
+        final tError = DioException(
           response: Response(
             requestOptions: RequestOptions(path: ''),
             data: {'error_description': tErrorMessage},
             statusCode: 424,
           ),
           requestOptions: RequestOptions(path: ''),
-          type: DioErrorType.other,
+          type: DioExceptionType.other,
         );
         // WHEN
         errorInterceptor.onError(tError, mockErrorInterceptorHandler);

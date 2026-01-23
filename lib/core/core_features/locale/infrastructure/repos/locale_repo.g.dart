@@ -6,7 +6,7 @@ part of 'locale_repo.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$localeRepoHash() => r'3f6413ec283394b7f058444fe25c87a554118a99';
+String _$localeRepoHash() => r'ea303973959160e1965a744c96b02567f140f564';
 
 /// See also [localeRepo].
 @ProviderFor(localeRepo)
@@ -20,4 +20,5 @@ final localeRepoProvider = Provider<LocaleRepo>.internal(
 );
 
 typedef LocaleRepoRef = ProviderRef<LocaleRepo>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

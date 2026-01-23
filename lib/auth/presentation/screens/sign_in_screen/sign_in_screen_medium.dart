@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/presentation/screens/full_screen_scaffold.dart';
 import '../../../../core/presentation/styles/styles.dart';
 import '../../../../gen/my_assets.dart';
+import '../../components/auth_settings_bar.dart';
 import '../../components/login_content_component.dart';
 import '../../components/login_logo_component.dart';
 
@@ -25,24 +26,32 @@ class SignInScreenMedium extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
                   vertical: Sizes.screenPaddingV16,
                   horizontal: Sizes.screenPaddingH28,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: LoginLogoComponent(),
-                    ),
-                    SizedBox(
-                      width: Sizes.marginH16,
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: LoginContentComponent(),
+                    // Settings bar (Theme & Language)
+                    const AuthSettingsBar(),
+                    const Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: LoginLogoComponent(),
+                          ),
+                          SizedBox(
+                            width: Sizes.marginH16,
+                          ),
+                          Flexible(
+                            flex: 3,
+                            child: LoginContentComponent(),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

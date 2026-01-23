@@ -6,7 +6,7 @@ part of 'location_stream_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$locationStreamHash() => r'8a8c4a86c760e3a13cc16e9bf033392687e14028';
+String _$locationStreamHash() => r'2ec3f990a91c3c1a7ca3a9128ed5cce6b7d78e7d';
 
 /// See also [locationStream].
 @ProviderFor(locationStream)
@@ -21,7 +21,7 @@ final locationStreamProvider = AutoDisposeStreamProvider<Position>.internal(
 );
 
 typedef LocationStreamRef = AutoDisposeStreamProviderRef<Position>;
-String _$enableLocationHash() => r'3bc9a81dfda77cf6b6febc52669453183eb7f28a';
+String _$enableLocationHash() => r'8d07036a35d4814014e2d3e2f33b7b248a286b96';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -43,8 +43,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-typedef EnableLocationRef = AutoDisposeFutureProviderRef<void>;
 
 /// See also [enableLocation].
 @ProviderFor(enableLocation)
@@ -92,10 +90,10 @@ class EnableLocationFamily extends Family<AsyncValue<void>> {
 class EnableLocationProvider extends AutoDisposeFutureProvider<void> {
   /// See also [enableLocation].
   EnableLocationProvider(
-    this.locationService,
-  ) : super.internal(
+    LocationService locationService,
+  ) : this._internal(
           (ref) => enableLocation(
-            ref,
+            ref as EnableLocationRef,
             locationService,
           ),
           from: enableLocationProvider,
@@ -107,9 +105,43 @@ class EnableLocationProvider extends AutoDisposeFutureProvider<void> {
           dependencies: EnableLocationFamily._dependencies,
           allTransitiveDependencies:
               EnableLocationFamily._allTransitiveDependencies,
+          locationService: locationService,
         );
 
+  EnableLocationProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.locationService,
+  }) : super.internal();
+
   final LocationService locationService;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(EnableLocationRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: EnableLocationProvider._internal(
+        (ref) => create(ref as EnableLocationRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        locationService: locationService,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _EnableLocationProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -126,9 +158,22 @@ class EnableLocationProvider extends AutoDisposeFutureProvider<void> {
   }
 }
 
+mixin EnableLocationRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `locationService` of this provider.
+  LocationService get locationService;
+}
+
+class _EnableLocationProviderElement
+    extends AutoDisposeFutureProviderElement<void> with EnableLocationRef {
+  _EnableLocationProviderElement(super.provider);
+
+  @override
+  LocationService get locationService =>
+      (origin as EnableLocationProvider).locationService;
+}
+
 String _$requestLocationPermissionHash() =>
-    r'3b5dd8d64080eacb6bde6acf8c7c03010ec632ab';
-typedef RequestLocationPermissionRef = AutoDisposeFutureProviderRef<void>;
+    r'd5baf015a7490423b408dee3c603dc429bc3b98c';
 
 /// See also [requestLocationPermission].
 @ProviderFor(requestLocationPermission)
@@ -177,10 +222,10 @@ class RequestLocationPermissionProvider
     extends AutoDisposeFutureProvider<void> {
   /// See also [requestLocationPermission].
   RequestLocationPermissionProvider(
-    this.locationService,
-  ) : super.internal(
+    LocationService locationService,
+  ) : this._internal(
           (ref) => requestLocationPermission(
-            ref,
+            ref as RequestLocationPermissionRef,
             locationService,
           ),
           from: requestLocationPermissionProvider,
@@ -192,9 +237,43 @@ class RequestLocationPermissionProvider
           dependencies: RequestLocationPermissionFamily._dependencies,
           allTransitiveDependencies:
               RequestLocationPermissionFamily._allTransitiveDependencies,
+          locationService: locationService,
         );
 
+  RequestLocationPermissionProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.locationService,
+  }) : super.internal();
+
   final LocationService locationService;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(RequestLocationPermissionRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RequestLocationPermissionProvider._internal(
+        (ref) => create(ref as RequestLocationPermissionRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        locationService: locationService,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _RequestLocationPermissionProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -210,4 +289,20 @@ class RequestLocationPermissionProvider
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+mixin RequestLocationPermissionRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `locationService` of this provider.
+  LocationService get locationService;
+}
+
+class _RequestLocationPermissionProviderElement
+    extends AutoDisposeFutureProviderElement<void>
+    with RequestLocationPermissionRef {
+  _RequestLocationPermissionProviderElement(super.provider);
+
+  @override
+  LocationService get locationService =>
+      (origin as RequestLocationPermissionProvider).locationService;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

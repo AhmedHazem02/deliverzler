@@ -7,7 +7,7 @@ part of 'orders_remote_data_source.dart';
 // **************************************************************************
 
 String _$ordersRemoteDataSourceHash() =>
-    r'd25abd19d06c417548391095b9347f797d9bbea2';
+    r'7689fca8e1af412739926dbec1fbcb4455fb785c';
 
 /// See also [ordersRemoteDataSource].
 @ProviderFor(ordersRemoteDataSource)
@@ -23,4 +23,5 @@ final ordersRemoteDataSourceProvider =
 );
 
 typedef OrdersRemoteDataSourceRef = ProviderRef<OrdersRemoteDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

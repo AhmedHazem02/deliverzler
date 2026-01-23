@@ -14,7 +14,7 @@ enum PickSource {
 }
 
 @Riverpod(keepAlive: true)
-ImagePickerFacade imagePickerFacade(ImagePickerFacadeRef ref) {
+ImagePickerFacade imagePickerFacade(Ref ref) {
   return ImagePickerFacade(
     imagePicker: ImagePicker(),
   );
@@ -58,3 +58,4 @@ class ImagePickerFacade {
     }
   }
 }
+

@@ -20,6 +20,13 @@ extension GoRouterStateX on GoRouterState {
       return const [RouteAuthority.unauthenticated];
     }
 
+    // Application status routes - accessible by authenticated users
+    if (routeLocation.startsWith('/status-gate') ||
+        routeLocation.startsWith('/driver-application') ||
+        routeLocation.startsWith('/pending-approval')) {
+      return defaultAuthority;
+    }
+
     final homeRoutes = [
       const HomeRoute().location,
       const MyOrdersRoute().location,

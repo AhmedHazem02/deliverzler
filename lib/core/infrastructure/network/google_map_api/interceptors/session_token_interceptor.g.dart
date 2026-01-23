@@ -7,7 +7,7 @@ part of 'session_token_interceptor.dart';
 // **************************************************************************
 
 String _$sessionTokenInterceptorHash() =>
-    r'03441f20b0eab46cc22b55bf50c54771455b2148';
+    r'ca4e205fc301475b23c65e976eb5b71446542ccc';
 
 /// See also [sessionTokenInterceptor].
 @ProviderFor(sessionTokenInterceptor)
@@ -23,4 +23,5 @@ final sessionTokenInterceptorProvider =
 );
 
 typedef SessionTokenInterceptorRef = ProviderRef<SessionTokenInterceptor>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

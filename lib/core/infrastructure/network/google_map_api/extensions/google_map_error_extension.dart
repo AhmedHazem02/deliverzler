@@ -6,7 +6,7 @@ extension GoogleMapErrorExtension on Object {
   ServerException googleMapErrorToServerException() {
     final error = this;
 
-    if (error is DioError) {
+    if (error is DioException) {
       return error.dioToServerException();
     }
 
@@ -17,13 +17,13 @@ extension GoogleMapErrorExtension on Object {
   }
 }
 
-extension _DioErrorExtension on DioError {
+extension _DioExceptionExtension on DioException {
   ServerException dioToServerException() {
     final statusCode = response?.statusCode;
     final message = error?.toString() ?? '';
 
     return switch (type) {
-      DioErrorType.badResponse => switch (statusCode) {
+      DioExceptionType.badResponse => switch (statusCode) {
           //400 is our business logic errors code.
           //It's handled by error interceptors of each API.
           400 => ServerException(
@@ -67,25 +67,25 @@ extension _DioErrorExtension on DioError {
               code: statusCode,
             ),
         },
-      DioErrorType.connectionTimeout ||
-      DioErrorType.sendTimeout ||
-      DioErrorType.receiveTimeout =>
+      DioExceptionType.connectionTimeout ||
+      DioExceptionType.sendTimeout ||
+      DioExceptionType.receiveTimeout =>
         ServerException(
           type: ServerExceptionType.timeOut,
           message: message,
           code: 408,
         ),
-      DioErrorType.connectionError => ServerException(
+      DioExceptionType.connectionError => ServerException(
           type: ServerExceptionType.noInternet,
           message: message,
           code: 101,
         ),
-      DioErrorType.badCertificate => ServerException(
+      DioExceptionType.badCertificate => ServerException(
           type: ServerExceptionType.unknown,
           message: message,
           code: statusCode,
         ),
-      DioErrorType.cancel || DioErrorType.unknown => ServerException(
+      DioExceptionType.cancel || DioExceptionType.unknown => ServerException(
           type: ServerExceptionType.unknown,
           message: message,
           code: statusCode,

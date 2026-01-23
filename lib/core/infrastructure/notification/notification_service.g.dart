@@ -7,7 +7,7 @@ part of 'notification_service.dart';
 // **************************************************************************
 
 String _$setupFlutterNotificationsHash() =>
-    r'24e21dd91048accf792425680cee4c4fb1560328';
+    r'960e1b2ce8edce2b1764d8e12ab66f5b1f67b1e9';
 
 /// See also [setupFlutterNotifications].
 @ProviderFor(setupFlutterNotifications)
@@ -24,7 +24,7 @@ final setupFlutterNotificationsProvider =
 
 typedef SetupFlutterNotificationsRef = AutoDisposeFutureProviderRef<void>;
 String _$requestNotificationPermissionsHash() =>
-    r'048b7e7439534a493ba60e54c9e8433f455e26cb';
+    r'c10db31a1a28201b52076b34fe6c925b4be643ad';
 
 /// See also [requestNotificationPermissions].
 @ProviderFor(requestNotificationPermissions)
@@ -42,7 +42,7 @@ final requestNotificationPermissionsProvider =
 typedef RequestNotificationPermissionsRef
     = AutoDisposeFutureProviderRef<AuthorizationStatus>;
 String _$notificationServiceHash() =>
-    r'f2936d3291320e39fb9cd3836efd25930d5aac71';
+    r'd2e964b663aa126eb7e1cf6a9879402488955bd5';
 
 /// See also [notificationService].
 @ProviderFor(notificationService)
@@ -58,7 +58,7 @@ final notificationServiceProvider = Provider<NotificationService>.internal(
 
 typedef NotificationServiceRef = ProviderRef<NotificationService>;
 String _$notificationResponseEventHash() =>
-    r'2a042768d47ca4db0cc1593b7fa2947b1a2fee10';
+    r'066b43ade586232ab7836146ce39847407fd3116';
 
 /// See also [NotificationResponseEvent].
 @ProviderFor(NotificationResponseEvent)
@@ -74,4 +74,5 @@ final notificationResponseEventProvider = NotifierProvider<
 );
 
 typedef _$NotificationResponseEvent = Notifier<Option<NotificationResponse>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

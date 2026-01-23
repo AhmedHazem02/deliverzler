@@ -7,7 +7,7 @@ part of 'current_app_theme_provider.dart';
 // **************************************************************************
 
 String _$currentAppThemeModeHash() =>
-    r'33a471e3b3ba92d877a97cb840e99be8e3d6a6cd';
+    r'140ae92f33155dfa81a7f139a4b907ccc42d8f84';
 
 /// See also [currentAppThemeMode].
 @ProviderFor(currentAppThemeMode)
@@ -23,7 +23,7 @@ final currentAppThemeModeProvider = Provider<AppThemeMode>.internal(
 
 typedef CurrentAppThemeModeRef = ProviderRef<AppThemeMode>;
 String _$platformBrightnessHash() =>
-    r'45d60c888829ec39a19ad4496abb7407e1e9ec96';
+    r'c1af85794b29b75313e3d5f82852fbf22566dada';
 
 /// See also [PlatformBrightness].
 @ProviderFor(PlatformBrightness)
@@ -39,4 +39,5 @@ final platformBrightnessProvider =
 );
 
 typedef _$PlatformBrightness = Notifier<Brightness>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

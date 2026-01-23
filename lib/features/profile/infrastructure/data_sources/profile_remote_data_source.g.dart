@@ -7,7 +7,7 @@ part of 'profile_remote_data_source.dart';
 // **************************************************************************
 
 String _$profileRemoteDataSourceHash() =>
-    r'be24aee6b7e545f989f0f3cd0f9ac175f86e8e07';
+    r'744e81beb636f0effdf875708bebf17f84f614eb';
 
 /// See also [profileRemoteDataSource].
 @ProviderFor(profileRemoteDataSource)
@@ -23,4 +23,5 @@ final profileRemoteDataSourceProvider =
 );
 
 typedef ProfileRemoteDataSourceRef = ProviderRef<ProfileRemoteDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

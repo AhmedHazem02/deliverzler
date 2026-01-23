@@ -14,26 +14,23 @@ const firebaseOutputPath = path.join(__dirname, '..', 'web', 'firebase-config.js
 const indexTemplatePath = path.join(__dirname, '..', 'web', 'index.template.html');
 const indexOutputPath = path.join(__dirname, '..', 'web', 'index.html');
 
-if (!fs.existsSync(envPath)) {
-  console.error('❌ Error: .env.local file not found!');
-  console.error('Please create .env.local file with your Firebase credentials.');
-  process.exit(1);
+// Parse .env.local if it exists
+const envVars = { ...process.env };
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf8');
+  envContent.split('\n').forEach(line => {
+    line = line.trim();
+    // Skip comments and empty lines
+    if (line.startsWith('#') || !line) return;
+
+    const [key, ...valueParts] = line.split('=');
+    if (key && valueParts.length > 0) {
+      envVars[key.trim()] = valueParts.join('=').trim();
+    }
+  });
+} else {
+  console.log('ℹ️  .env.local not found, using process environment variables.');
 }
-
-// Parse .env.local
-const envContent = fs.readFileSync(envPath, 'utf8');
-const envVars = {};
-
-envContent.split('\n').forEach(line => {
-  line = line.trim();
-  // Skip comments and empty lines
-  if (line.startsWith('#') || !line) return;
-  
-  const [key, ...valueParts] = line.split('=');
-  if (key && valueParts.length > 0) {
-    envVars[key.trim()] = valueParts.join('=').trim();
-  }
-});
 
 console.log('🔧 Generating web configuration files from .env.local...\n');
 

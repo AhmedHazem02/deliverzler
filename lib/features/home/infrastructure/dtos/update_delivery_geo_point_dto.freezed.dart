@@ -12,7 +12,7 @@ part of 'update_delivery_geo_point_dto.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UpdateDeliveryGeoPointDto {
@@ -66,25 +66,25 @@ class _$UpdateDeliveryGeoPointDtoCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpdateDeliveryGeoPointDtoCopyWith<$Res>
+abstract class _$$UpdateDeliveryGeoPointDtoImplCopyWith<$Res>
     implements $UpdateDeliveryGeoPointDtoCopyWith<$Res> {
-  factory _$$_UpdateDeliveryGeoPointDtoCopyWith(
-          _$_UpdateDeliveryGeoPointDto value,
-          $Res Function(_$_UpdateDeliveryGeoPointDto) then) =
-      __$$_UpdateDeliveryGeoPointDtoCopyWithImpl<$Res>;
+  factory _$$UpdateDeliveryGeoPointDtoImplCopyWith(
+          _$UpdateDeliveryGeoPointDtoImpl value,
+          $Res Function(_$UpdateDeliveryGeoPointDtoImpl) then) =
+      __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String orderId, @GeoPointConverter() GeoPoint geoPoint});
 }
 
 /// @nodoc
-class __$$_UpdateDeliveryGeoPointDtoCopyWithImpl<$Res>
+class __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>
     extends _$UpdateDeliveryGeoPointDtoCopyWithImpl<$Res,
-        _$_UpdateDeliveryGeoPointDto>
-    implements _$$_UpdateDeliveryGeoPointDtoCopyWith<$Res> {
-  __$$_UpdateDeliveryGeoPointDtoCopyWithImpl(
-      _$_UpdateDeliveryGeoPointDto _value,
-      $Res Function(_$_UpdateDeliveryGeoPointDto) _then)
+        _$UpdateDeliveryGeoPointDtoImpl>
+    implements _$$UpdateDeliveryGeoPointDtoImplCopyWith<$Res> {
+  __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl(
+      _$UpdateDeliveryGeoPointDtoImpl _value,
+      $Res Function(_$UpdateDeliveryGeoPointDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -93,7 +93,7 @@ class __$$_UpdateDeliveryGeoPointDtoCopyWithImpl<$Res>
     Object? orderId = null,
     Object? geoPoint = null,
   }) {
-    return _then(_$_UpdateDeliveryGeoPointDto(
+    return _then(_$UpdateDeliveryGeoPointDtoImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
@@ -108,8 +108,8 @@ class __$$_UpdateDeliveryGeoPointDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createFactory: false)
-class _$_UpdateDeliveryGeoPointDto implements _UpdateDeliveryGeoPointDto {
-  const _$_UpdateDeliveryGeoPointDto(
+class _$UpdateDeliveryGeoPointDtoImpl implements _UpdateDeliveryGeoPointDto {
+  const _$UpdateDeliveryGeoPointDtoImpl(
       {required this.orderId, @GeoPointConverter() required this.geoPoint});
 
   @override
@@ -124,10 +124,10 @@ class _$_UpdateDeliveryGeoPointDto implements _UpdateDeliveryGeoPointDto {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateDeliveryGeoPointDto &&
+            other is _$UpdateDeliveryGeoPointDtoImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.geoPoint, geoPoint) ||
                 other.geoPoint == geoPoint));
@@ -140,13 +140,13 @@ class _$_UpdateDeliveryGeoPointDto implements _UpdateDeliveryGeoPointDto {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateDeliveryGeoPointDtoCopyWith<_$_UpdateDeliveryGeoPointDto>
-      get copyWith => __$$_UpdateDeliveryGeoPointDtoCopyWithImpl<
-          _$_UpdateDeliveryGeoPointDto>(this, _$identity);
+  _$$UpdateDeliveryGeoPointDtoImplCopyWith<_$UpdateDeliveryGeoPointDtoImpl>
+      get copyWith => __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<
+          _$UpdateDeliveryGeoPointDtoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UpdateDeliveryGeoPointDtoToJson(
+    return _$$UpdateDeliveryGeoPointDtoImplToJson(
       this,
     );
   }
@@ -156,7 +156,7 @@ abstract class _UpdateDeliveryGeoPointDto implements UpdateDeliveryGeoPointDto {
   const factory _UpdateDeliveryGeoPointDto(
           {required final String orderId,
           @GeoPointConverter() required final GeoPoint geoPoint}) =
-      _$_UpdateDeliveryGeoPointDto;
+      _$UpdateDeliveryGeoPointDtoImpl;
 
   @override
   String get orderId;
@@ -165,6 +165,6 @@ abstract class _UpdateDeliveryGeoPointDto implements UpdateDeliveryGeoPointDto {
   GeoPoint get geoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateDeliveryGeoPointDtoCopyWith<_$_UpdateDeliveryGeoPointDto>
+  _$$UpdateDeliveryGeoPointDtoImplCopyWith<_$UpdateDeliveryGeoPointDtoImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

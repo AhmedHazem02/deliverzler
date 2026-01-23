@@ -10,7 +10,8 @@ typedef IndexedAppBarBuilder = dynamic Function(
   int index,
 );
 
-class PlatformTabScaffold extends PlatformBaseConsumerWidget<Scaffold, CupertinoTabScaffold> {
+class PlatformTabScaffold
+    extends PlatformBaseConsumerWidget<Scaffold, CupertinoTabScaffold> {
   const PlatformTabScaffold({
     required this.bottomNavigationBar,
     required this.materialData,
@@ -37,19 +38,22 @@ class PlatformTabScaffold extends PlatformBaseConsumerWidget<Scaffold, Cupertino
       bottomNavigationBar: bottomNavigationBar,
       floatingActionButton: materialData.floatingActionButton,
       drawer: materialData.drawer,
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       extendBodyBehindAppBar: materialData.extendBodyBehindAppBar ?? false,
     );
   }
 
   @override
-  CupertinoTabScaffold createCupertinoWidget(BuildContext context, WidgetRef ref) {
+  CupertinoTabScaffold createCupertinoWidget(
+      BuildContext context, WidgetRef ref) {
     return CupertinoTabScaffold(
       key: widgetKey,
       tabBuilder: cupertinoData.cupertinoTabBuilder,
       tabBar: bottomNavigationBar.createCupertinoWidget(context),
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
     );
   }

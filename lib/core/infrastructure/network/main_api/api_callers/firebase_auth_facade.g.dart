@@ -7,7 +7,7 @@ part of 'firebase_auth_facade.dart';
 // **************************************************************************
 
 String _$firebaseAuthFacadeHash() =>
-    r'b400f07751734faa3751de118b9cb730256eb8cc';
+    r'3649d3ecfe7683e7f9836d2d65ab6acfc4fbc560';
 
 /// See also [firebaseAuthFacade].
 @ProviderFor(firebaseAuthFacade)
@@ -22,4 +22,5 @@ final firebaseAuthFacadeProvider = Provider<FirebaseAuthFacade>.internal(
 );
 
 typedef FirebaseAuthFacadeRef = ProviderRef<FirebaseAuthFacade>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

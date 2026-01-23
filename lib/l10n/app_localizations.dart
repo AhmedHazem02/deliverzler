@@ -793,6 +793,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No orders found.'**
   String get noOrdersFound;
+
+  /// No description provided for @driverApplicationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver Application'**
+  String get driverApplicationTitle;
+
+  /// No description provided for @driverApplicationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the form below to apply as a delivery driver'**
+  String get driverApplicationSubtitle;
+
+  /// No description provided for @personalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInfo;
+
+  /// No description provided for @licenseInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'License Information'**
+  String get licenseInfo;
+
+  /// No description provided for @vehicleInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Information'**
+  String get vehicleInfo;
+
+  /// No description provided for @documents.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documents;
+
+  /// No description provided for @additionalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes'**
+  String get additionalNotes;
+
+  /// No description provided for @idNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Number'**
+  String get idNumber;
+
+  /// No description provided for @licenseNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'License Number'**
+  String get licenseNumber;
+
+  /// No description provided for @licenseExpiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'License Expiry Date'**
+  String get licenseExpiryDate;
+
+  /// No description provided for @vehicleType.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Type'**
+  String get vehicleType;
+
+  /// No description provided for @vehiclePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Plate'**
+  String get vehiclePlate;
+
+  /// No description provided for @personalPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Photo'**
+  String get personalPhoto;
+
+  /// No description provided for @idDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Document'**
+  String get idDocument;
+
+  /// No description provided for @licenseDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'License Document'**
+  String get licenseDocument;
+
+  /// No description provided for @vehicleRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Registration'**
+  String get vehicleRegistration;
+
+  /// No description provided for @vehicleInsurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Insurance'**
+  String get vehicleInsurance;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDate;
+
+  /// No description provided for @requiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get requiredField;
+
+  /// No description provided for @submitApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Application'**
+  String get submitApplication;
+
+  /// No description provided for @car.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get car;
+
+  /// No description provided for @motorcycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Motorcycle'**
+  String get motorcycle;
+
+  /// No description provided for @bicycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bicycle'**
+  String get bicycle;
+
+  /// No description provided for @noApplicationFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No Application Found'**
+  String get noApplicationFound;
+
+  /// No description provided for @submitApplicationToJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit an application to join as a delivery driver'**
+  String get submitApplicationToJoin;
+
+  /// No description provided for @applicationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Pending'**
+  String get applicationPending;
+
+  /// No description provided for @applicationUnderReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Under Review'**
+  String get applicationUnderReview;
+
+  /// No description provided for @applicationApproved.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Approved'**
+  String get applicationApproved;
+
+  /// No description provided for @applicationRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Rejected'**
+  String get applicationRejected;
+
+  /// No description provided for @applicationPendingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your application has been submitted and is pending review'**
+  String get applicationPendingMessage;
+
+  /// No description provided for @applicationUnderReviewMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your application is being reviewed by our team'**
+  String get applicationUnderReviewMessage;
+
+  /// No description provided for @applicationApprovedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations! Your application has been approved. You can now start working'**
+  String get applicationApprovedMessage;
+
+  /// No description provided for @applicationRejectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfortunately, your application has been rejected. You can apply again'**
+  String get applicationRejectedMessage;
+
+  /// No description provided for @rejectionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejection Reason'**
+  String get rejectionReason;
+
+  /// No description provided for @resubmitApplication.
+  ///
+  /// In en, this message translates to:
+  /// **'Resubmit Application'**
+  String get resubmitApplication;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// No description provided for @applicationDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Details'**
+  String get applicationDetails;
+
+  /// No description provided for @submittedAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted At'**
+  String get submittedAt;
+
+  /// No description provided for @accountInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Information'**
+  String get accountInfo;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @fillAllFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill all required fields'**
+  String get fillAllFields;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @previous.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get previous;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign In'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @documentsUploadLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Document upload will be available after approval. You can continue without uploading documents now.'**
+  String get documentsUploadLater;
+
+  /// No description provided for @applicationSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Submitted Successfully!'**
+  String get applicationSubmitted;
+
+  /// No description provided for @applicationSubmittedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your application will be reviewed by our team. You will receive an email notification once your application is approved. Please sign in after receiving the approval email.'**
+  String get applicationSubmittedDesc;
+
+  /// No description provided for @dataUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Data updated successfully'**
+  String get dataUpdatedSuccessfully;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
 }
 
 class _AppLocalizationsDelegate

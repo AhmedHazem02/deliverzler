@@ -10,7 +10,7 @@ part 'firebase_auth_facade.g.dart';
 
 //Our main API is Firebase
 @Riverpod(keepAlive: true)
-FirebaseAuthFacade firebaseAuthFacade(FirebaseAuthFacadeRef ref) {
+FirebaseAuthFacade firebaseAuthFacade(Ref ref) {
   return FirebaseAuthFacade(
     firebaseAuth: FirebaseAuth.instance,
   );
@@ -85,3 +85,4 @@ class FirebaseAuthFacade {
     }
   }
 }
+

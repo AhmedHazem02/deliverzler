@@ -1,6 +1,6 @@
-part of '../providers/provider_utils.dart';
+part of '../utils/riverpod_framework.dart';
 
-extension AutoDisposeRefExtension<T> on AutoDisposeRef<T> {
+extension AutoDisposeRefExtension<T> on Ref<T> {
   /// When invoked keeps your provider alive for [duration]
   void cacheFor(Duration duration) {
     final link = keepAlive();

@@ -62,13 +62,15 @@ LatLngBounds _fromJsonBounds(Map<String, dynamic> json) {
   final southwestBounds = json['southwest'] as Map<String, dynamic>;
   final northeastBounds = json['northeast'] as Map<String, dynamic>;
   return LatLngBounds(
-    southwest: LatLng(southwestBounds['lat'] as double, southwestBounds['lng'] as double),
-    northeast: LatLng(northeastBounds['lat'] as double, northeastBounds['lng'] as double),
+    southwest: LatLng(
+        southwestBounds['lat'] as double, southwestBounds['lng'] as double),
+    northeast: LatLng(
+        northeastBounds['lat'] as double, northeastBounds['lng'] as double),
   );
 }
 
 List<PointLatLng> _fromJsonPolylinePoints(Map<String, dynamic> json) {
-  return PolylinePoints().decodePolyline(json['points'] as String);
+  return PolylinePoints.decodePolyline(json['points'] as String);
 }
 
 int _readDistance(Map<dynamic, dynamic> json, String key) =>

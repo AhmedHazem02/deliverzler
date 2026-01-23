@@ -6,7 +6,7 @@ part of 'image_picker_facade.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$imagePickerFacadeHash() => r'ef8b5673bd79be4a502498eee65ad137757a8a65';
+String _$imagePickerFacadeHash() => r'5ad7f597d888eb35691f672e3492f2c8ab48698f';
 
 /// See also [imagePickerFacade].
 @ProviderFor(imagePickerFacade)
@@ -21,4 +21,5 @@ final imagePickerFacadeProvider = Provider<ImagePickerFacade>.internal(
 );
 
 typedef ImagePickerFacadeRef = ProviderRef<ImagePickerFacade>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

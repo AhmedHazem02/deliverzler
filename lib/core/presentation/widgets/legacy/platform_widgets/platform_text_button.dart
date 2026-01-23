@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../platform_widgets/platform_base_widget.dart';
 
-class PlatformTextButton extends PlatformBaseWidget<TextButton, CupertinoButton> {
+class PlatformTextButton
+    extends PlatformBaseWidget<TextButton, CupertinoButton> {
   const PlatformTextButton({
     required this.child,
     required this.onPressed,
@@ -37,7 +38,11 @@ class PlatformTextButton extends PlatformBaseWidget<TextButton, CupertinoButton>
       onPressed: onPressed,
       color: cupertinoData?.color,
       padding: cupertinoData?.padding,
-      borderRadius: cupertinoData?.borderRadius, minimumSize: Size(cupertinoData?.minSize, cupertinoData?.minSize),
+      borderRadius: cupertinoData?.borderRadius,
+      minimumSize: Size(
+        cupertinoData?.minSize ?? 44.0,
+        cupertinoData?.minSize ?? 44.0,
+      ),
       child: child,
     );
   }

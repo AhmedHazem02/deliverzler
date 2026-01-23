@@ -12,7 +12,7 @@ part of 'sign_in_with_email.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$SignInWithEmail {
@@ -65,22 +65,22 @@ class _$SignInWithEmailCopyWithImpl<$Res, $Val extends SignInWithEmail>
 }
 
 /// @nodoc
-abstract class _$$_SignInWithEmailCopyWith<$Res>
+abstract class _$$SignInWithEmailImplCopyWith<$Res>
     implements $SignInWithEmailCopyWith<$Res> {
-  factory _$$_SignInWithEmailCopyWith(
-          _$_SignInWithEmail value, $Res Function(_$_SignInWithEmail) then) =
-      __$$_SignInWithEmailCopyWithImpl<$Res>;
+  factory _$$SignInWithEmailImplCopyWith(_$SignInWithEmailImpl value,
+          $Res Function(_$SignInWithEmailImpl) then) =
+      __$$SignInWithEmailImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String email, String password});
 }
 
 /// @nodoc
-class __$$_SignInWithEmailCopyWithImpl<$Res>
-    extends _$SignInWithEmailCopyWithImpl<$Res, _$_SignInWithEmail>
-    implements _$$_SignInWithEmailCopyWith<$Res> {
-  __$$_SignInWithEmailCopyWithImpl(
-      _$_SignInWithEmail _value, $Res Function(_$_SignInWithEmail) _then)
+class __$$SignInWithEmailImplCopyWithImpl<$Res>
+    extends _$SignInWithEmailCopyWithImpl<$Res, _$SignInWithEmailImpl>
+    implements _$$SignInWithEmailImplCopyWith<$Res> {
+  __$$SignInWithEmailImplCopyWithImpl(
+      _$SignInWithEmailImpl _value, $Res Function(_$SignInWithEmailImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -89,7 +89,7 @@ class __$$_SignInWithEmailCopyWithImpl<$Res>
     Object? email = null,
     Object? password = null,
   }) {
-    return _then(_$_SignInWithEmail(
+    return _then(_$SignInWithEmailImpl(
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -104,8 +104,8 @@ class __$$_SignInWithEmailCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SignInWithEmail implements _SignInWithEmail {
-  const _$_SignInWithEmail({required this.email, required this.password});
+class _$SignInWithEmailImpl implements _SignInWithEmail {
+  const _$SignInWithEmailImpl({required this.email, required this.password});
 
 // Note: You should consider using separate value object (with its validator method)
 // for these values if they're used in other entities.
@@ -120,10 +120,10 @@ class _$_SignInWithEmail implements _SignInWithEmail {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SignInWithEmail &&
+            other is _$SignInWithEmailImpl &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password));
@@ -135,14 +135,15 @@ class _$_SignInWithEmail implements _SignInWithEmail {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SignInWithEmailCopyWith<_$_SignInWithEmail> get copyWith =>
-      __$$_SignInWithEmailCopyWithImpl<_$_SignInWithEmail>(this, _$identity);
+  _$$SignInWithEmailImplCopyWith<_$SignInWithEmailImpl> get copyWith =>
+      __$$SignInWithEmailImplCopyWithImpl<_$SignInWithEmailImpl>(
+          this, _$identity);
 }
 
 abstract class _SignInWithEmail implements SignInWithEmail {
   const factory _SignInWithEmail(
       {required final String email,
-      required final String password}) = _$_SignInWithEmail;
+      required final String password}) = _$SignInWithEmailImpl;
 
   @override // Note: You should consider using separate value object (with its validator method)
 // for these values if they're used in other entities.
@@ -151,6 +152,6 @@ abstract class _SignInWithEmail implements SignInWithEmail {
   String get password;
   @override
   @JsonKey(ignore: true)
-  _$$_SignInWithEmailCopyWith<_$_SignInWithEmail> get copyWith =>
+  _$$SignInWithEmailImplCopyWith<_$SignInWithEmailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

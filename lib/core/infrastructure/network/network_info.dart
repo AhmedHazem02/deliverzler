@@ -7,7 +7,7 @@ import 'data_connection_checker.dart';
 part 'network_info.g.dart';
 
 @Riverpod(keepAlive: true)
-NetworkInfo networkInfo(NetworkInfoRef ref) {
+NetworkInfo networkInfo(Ref ref) {
   // DataConnectionChecker uses dart:io (InternetAddress, Socket) which is not supported on web
   final dataConnectionChecker = kIsWeb ? null : DataConnectionChecker();
   return NetworkInfo(
@@ -26,10 +26,11 @@ class NetworkInfo {
     // On web, dart:io is not available, so we check connectivity instead
     if (dataConnectionChecker == null) {
       final result = await connectivity.checkConnectivity();
-      return result != ConnectivityResult.none;
+      return !result.contains(ConnectivityResult.none);
     }
     return dataConnectionChecker!.hasConnection;
   }
 
-  Future<ConnectivityResult> get hasNetworkConnectivity => connectivity.checkConnectivity();
+  Future<List<ConnectivityResult>> get hasNetworkConnectivity =>
+      connectivity.checkConnectivity();
 }

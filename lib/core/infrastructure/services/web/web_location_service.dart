@@ -22,7 +22,7 @@ class WebLocationService {
   /// Request location permission
   Future<bool> requestPermission() async {
     if (!isSupported) {
-      if (kDebugMode) print('Geolocation not supported on this browser');
+      if (kDebugMode) debugPrint('Geolocation not supported on this browser');
       return false;
     }
 
@@ -31,7 +31,7 @@ class WebLocationService {
       final position = await _getCurrentPosition();
       return position != null;
     } catch (e) {
-      if (kDebugMode) print('Location permission denied: $e');
+      if (kDebugMode) debugPrint('Location permission denied: $e');
       return false;
     }
   }
@@ -66,14 +66,15 @@ class WebLocationService {
       }).catchError((Object error) {
         if (!completed) {
           completed = true;
-          if (kDebugMode) print('Error getting position: $error');
+          if (kDebugMode) debugPrint('Error getting position: $error');
           completer.complete(null);
         }
+        return null; // Return value for catchError
       });
 
       return await completer.future;
     } catch (e) {
-      if (kDebugMode) print('Error in getCurrentPosition: $e');
+      if (kDebugMode) debugPrint('Error in getCurrentPosition: $e');
       return null;
     }
   }
@@ -111,13 +112,13 @@ class WebLocationService {
           }
         },
         onError: (Object error) {
-          if (kDebugMode) print('Watch position error: $error');
+          if (kDebugMode) debugPrint('Watch position error: $error');
         },
       );
 
-      if (kDebugMode) print('Started watching position');
+      if (kDebugMode) debugPrint('Started watching position');
     } catch (e) {
-      if (kDebugMode) print('Error starting position watch: $e');
+      if (kDebugMode) debugPrint('Error starting position watch: $e');
     }
   }
 
@@ -125,7 +126,7 @@ class WebLocationService {
   void _stopWatchingPosition() {
     _positionSubscription?.cancel();
     _positionSubscription = null;
-    if (kDebugMode) print('Stopped watching position');
+    if (kDebugMode) debugPrint('Stopped watching position');
   }
 
   /// Enable background location tracking using periodic updates
@@ -147,7 +148,7 @@ class WebLocationService {
     );
 
     if (kDebugMode) {
-      print(
+      debugPrint(
         'Background location tracking enabled (interval: ${intervalSeconds}s)',
       );
     }
@@ -157,7 +158,7 @@ class WebLocationService {
   void disableBackgroundTracking() {
     _backgroundLocationTimer?.cancel();
     _backgroundLocationTimer = null;
-    if (kDebugMode) print('Background location tracking disabled');
+    if (kDebugMode) debugPrint('Background location tracking disabled');
   }
 
   /// Convert HTML Geoposition to Flutter Position
@@ -174,9 +175,12 @@ class WebLocationService {
         heading: (coords.heading ?? 0.0).toDouble(),
         speed: (coords.speed ?? 0.0).toDouble(),
         speedAccuracy: 0,
+        // 🔥 ضف هذين السطرين لإسكات الخطأ
+        altitudeAccuracy: 0.0, 
+        headingAccuracy: 0.0,
       );
     } catch (e) {
-      if (kDebugMode) print('Error converting position: $e');
+      if (kDebugMode) debugPrint('Error converting position: $e');
       return null;
     }
   }

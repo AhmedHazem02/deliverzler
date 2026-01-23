@@ -1,4 +1,5 @@
 import 'dart:async';
+// ignore: deprecated_member_use
 import 'dart:js' as js;
 
 import 'package:flutter/foundation.dart';
@@ -21,7 +22,9 @@ class MapDirectionsWebService {
   void _ensureInitialized() {
     if (_directionsService == null && js.context.hasProperty('google')) {
       final googleMaps = js.context['google']['maps'];
-      _directionsService = js.JsObject(googleMaps['DirectionsService'], []);
+      final directionsServiceConstructor =
+          googleMaps['DirectionsService'] as js.JsFunction;
+      _directionsService = js.JsObject(directionsServiceConstructor, []);
       debugPrint('🌐 Web DirectionsService initialized');
     }
   }
@@ -58,26 +61,28 @@ class MapDirectionsWebService {
         'unitSystem': googleMaps['UnitSystem']['METRIC'],
       });
 
-      _directionsService!.callMethod('route', [
-        request,
-        js.allowInterop((js.JsObject response, String status) {
-          debugPrint('🌐 DirectionsService response status: $status');
+      // Create callback - use Function type that JS interop accepts
+      void handleResponse(dynamic response, dynamic status) {
+        final statusStr = status.toString();
+        debugPrint('🌐 DirectionsService response status: $statusStr');
 
-          if (status == 'OK') {
-            try {
-              final directions = _parseDirectionsResponse(response);
-              completer.complete(directions);
-            } catch (e) {
-              debugPrint('🌐 Error parsing directions: $e');
-              completer.completeError(e);
-            }
-          } else {
-            debugPrint('🌐 DirectionsService failed: $status');
-            completer
-                .completeError(Exception('Directions request failed: $status'));
+        if (statusStr == 'OK') {
+          try {
+            final jsResponse = response as js.JsObject;
+            final directions = _parseDirectionsResponse(jsResponse);
+            completer.complete(directions);
+          } catch (e) {
+            debugPrint('🌐 Error parsing directions: $e');
+            completer.completeError(e);
           }
-        }),
-      ]);
+        } else {
+          debugPrint('🌐 DirectionsService failed: $statusStr');
+          completer.completeError(
+              Exception('Directions request failed: $statusStr'));
+        }
+      }
+
+      _directionsService!.callMethod('route', [request, handleResponse]);
     } catch (e) {
       debugPrint('🌐 Error calling DirectionsService: $e');
       completer.completeError(e);
@@ -137,7 +142,7 @@ class MapDirectionsWebService {
       debugPrint('🌐 Polyline points length: ${points.length}');
 
       // Decode polyline
-      final polylinePoints = PolylinePoints().decodePolyline(points);
+      final polylinePoints = PolylinePoints.decodePolyline(points);
       debugPrint('🌐 Decoded ${polylinePoints.length} points');
 
       // Get bounds

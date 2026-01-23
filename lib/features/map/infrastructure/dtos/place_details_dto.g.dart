@@ -6,7 +6,8 @@ part of 'place_details_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_PlaceDetailsDto _$$_PlaceDetailsDtoFromJson(Map<String, dynamic> json) =>
-    _$_PlaceDetailsDto(
+_$PlaceDetailsDtoImpl _$$PlaceDetailsDtoImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PlaceDetailsDtoImpl(
       geoPoint: _fromJsonGeoPoint(json['geometry'] as Map<String, dynamic>),
     );

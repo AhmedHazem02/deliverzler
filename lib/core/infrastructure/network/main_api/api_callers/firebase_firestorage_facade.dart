@@ -10,7 +10,7 @@ part 'firebase_firestorage_facade.g.dart';
 
 //Our main API is Firebase
 @Riverpod(keepAlive: true)
-FirebaseStorageFacade firebaseStorageFacade(FirebaseStorageFacadeRef ref) {
+FirebaseStorageFacade firebaseStorageFacade(Ref ref) {
   return FirebaseStorageFacade(
     firebaseStorage: FirebaseStorage.instance,
   );
@@ -67,3 +67,4 @@ class FirebaseStorageFacade {
     }
   }
 }
+

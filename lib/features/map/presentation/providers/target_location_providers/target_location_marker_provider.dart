@@ -11,7 +11,7 @@ import 'target_location_geo_point_provider.dart';
 part 'target_location_marker_provider.g.dart';
 
 @riverpod
-Marker targetLocationMarker(TargetLocationMarkerRef ref) {
+Marker targetLocationMarker(Ref ref) {
   final cameraTarget = ref.watch(
     targetLocationCameraPositionProvider.select((camera) => camera.target),
   );
@@ -31,3 +31,4 @@ Marker targetLocationMarker(TargetLocationMarkerRef ref) {
   );
   return targetMarker;
 }
+

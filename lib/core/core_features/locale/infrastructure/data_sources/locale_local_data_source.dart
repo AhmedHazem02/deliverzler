@@ -5,7 +5,7 @@ import '../../../../presentation/utils/riverpod_framework.dart';
 part 'locale_local_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
-LocaleLocalDataSource localeLocalDataSource(LocaleLocalDataSourceRef ref) {
+LocaleLocalDataSource localeLocalDataSource(Ref ref) {
   return LocaleLocalDataSource(
     sharedPreferences: ref.watch(sharedPreferencesFacadeProvider),
   );
@@ -37,3 +37,4 @@ class LocaleLocalDataSource {
     );
   }
 }
+

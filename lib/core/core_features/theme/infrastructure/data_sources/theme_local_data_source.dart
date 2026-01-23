@@ -5,7 +5,7 @@ import '../../../../presentation/utils/riverpod_framework.dart';
 part 'theme_local_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
-ThemeLocalDataSource themeLocalDataSource(ThemeLocalDataSourceRef ref) {
+ThemeLocalDataSource themeLocalDataSource(Ref ref) {
   return ThemeLocalDataSource(
     sharedPreferences: ref.watch(sharedPreferencesFacadeProvider),
   );
@@ -37,3 +37,4 @@ class ThemeLocalDataSource {
     );
   }
 }
+

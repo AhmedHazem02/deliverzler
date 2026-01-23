@@ -12,7 +12,7 @@ part of 'notification.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 NotificationPayload _$NotificationPayloadFromJson(Map<String, dynamic> json) {
   return _NotificationPayload.fromJson(json);
@@ -68,22 +68,22 @@ class _$NotificationPayloadCopyWithImpl<$Res, $Val extends NotificationPayload>
 }
 
 /// @nodoc
-abstract class _$$_NotificationPayloadCopyWith<$Res>
+abstract class _$$NotificationPayloadImplCopyWith<$Res>
     implements $NotificationPayloadCopyWith<$Res> {
-  factory _$$_NotificationPayloadCopyWith(_$_NotificationPayload value,
-          $Res Function(_$_NotificationPayload) then) =
-      __$$_NotificationPayloadCopyWithImpl<$Res>;
+  factory _$$NotificationPayloadImplCopyWith(_$NotificationPayloadImpl value,
+          $Res Function(_$NotificationPayloadImpl) then) =
+      __$$NotificationPayloadImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? routeLocation, Map<String, dynamic>? data});
 }
 
 /// @nodoc
-class __$$_NotificationPayloadCopyWithImpl<$Res>
-    extends _$NotificationPayloadCopyWithImpl<$Res, _$_NotificationPayload>
-    implements _$$_NotificationPayloadCopyWith<$Res> {
-  __$$_NotificationPayloadCopyWithImpl(_$_NotificationPayload _value,
-      $Res Function(_$_NotificationPayload) _then)
+class __$$NotificationPayloadImplCopyWithImpl<$Res>
+    extends _$NotificationPayloadCopyWithImpl<$Res, _$NotificationPayloadImpl>
+    implements _$$NotificationPayloadImplCopyWith<$Res> {
+  __$$NotificationPayloadImplCopyWithImpl(_$NotificationPayloadImpl _value,
+      $Res Function(_$NotificationPayloadImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_NotificationPayloadCopyWithImpl<$Res>
     Object? routeLocation = freezed,
     Object? data = freezed,
   }) {
-    return _then(_$_NotificationPayload(
+    return _then(_$NotificationPayloadImpl(
       routeLocation: freezed == routeLocation
           ? _value.routeLocation
           : routeLocation // ignore: cast_nullable_to_non_nullable
@@ -107,13 +107,13 @@ class __$$_NotificationPayloadCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_NotificationPayload implements _NotificationPayload {
-  const _$_NotificationPayload(
+class _$NotificationPayloadImpl implements _NotificationPayload {
+  const _$NotificationPayloadImpl(
       {required this.routeLocation, required final Map<String, dynamic>? data})
       : _data = data;
 
-  factory _$_NotificationPayload.fromJson(Map<String, dynamic> json) =>
-      _$$_NotificationPayloadFromJson(json);
+  factory _$NotificationPayloadImpl.fromJson(Map<String, dynamic> json) =>
+      _$$NotificationPayloadImplFromJson(json);
 
   @override
   final String? routeLocation;
@@ -133,10 +133,10 @@ class _$_NotificationPayload implements _NotificationPayload {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_NotificationPayload &&
+            other is _$NotificationPayloadImpl &&
             (identical(other.routeLocation, routeLocation) ||
                 other.routeLocation == routeLocation) &&
             const DeepCollectionEquality().equals(other._data, _data));
@@ -150,13 +150,13 @@ class _$_NotificationPayload implements _NotificationPayload {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_NotificationPayloadCopyWith<_$_NotificationPayload> get copyWith =>
-      __$$_NotificationPayloadCopyWithImpl<_$_NotificationPayload>(
+  _$$NotificationPayloadImplCopyWith<_$NotificationPayloadImpl> get copyWith =>
+      __$$NotificationPayloadImplCopyWithImpl<_$NotificationPayloadImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_NotificationPayloadToJson(
+    return _$$NotificationPayloadImplToJson(
       this,
     );
   }
@@ -165,10 +165,10 @@ class _$_NotificationPayload implements _NotificationPayload {
 abstract class _NotificationPayload implements NotificationPayload {
   const factory _NotificationPayload(
       {required final String? routeLocation,
-      required final Map<String, dynamic>? data}) = _$_NotificationPayload;
+      required final Map<String, dynamic>? data}) = _$NotificationPayloadImpl;
 
   factory _NotificationPayload.fromJson(Map<String, dynamic> json) =
-      _$_NotificationPayload.fromJson;
+      _$NotificationPayloadImpl.fromJson;
 
   @override
   String? get routeLocation;
@@ -176,6 +176,6 @@ abstract class _NotificationPayload implements NotificationPayload {
   Map<String, dynamic>? get data;
   @override
   @JsonKey(ignore: true)
-  _$$_NotificationPayloadCopyWith<_$_NotificationPayload> get copyWith =>
+  _$$NotificationPayloadImplCopyWith<_$NotificationPayloadImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

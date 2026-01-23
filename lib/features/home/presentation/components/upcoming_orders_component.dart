@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/presentation/extensions/future_extensions.dart';
@@ -36,8 +37,8 @@ class UpcomingOrdersComponent extends ConsumerWidget {
     );
 
     final upcomingOrdersAsync = ref.watch(upcomingOrdersProvider);
-    print(
-        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}',); // DEBUG
+    debugPrint(
+        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}');
 
     Future<void> refresh() async {
       return ref.refresh(upcomingOrdersProvider.future).suppressError();
@@ -47,7 +48,7 @@ class UpcomingOrdersComponent extends ConsumerWidget {
       skipLoadingOnReload: true,
       skipLoadingOnRefresh: !upcomingOrdersAsync.hasError,
       data: (upcomingOrders) {
-        print('✨ UI received orders: ${upcomingOrders.length}'); // DEBUG
+        debugPrint('✨ UI received orders: ${upcomingOrders.length}');
         return PlatformRefreshIndicator(
           onRefresh: refresh,
           slivers: [
@@ -105,3 +106,5 @@ class UpcomingOrdersComponent extends ConsumerWidget {
     );
   }
 }
+
+

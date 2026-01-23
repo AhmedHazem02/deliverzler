@@ -7,7 +7,7 @@ import 'google_map_dio_providers.dart';
 part 'google_map_api_facade.g.dart';
 
 @Riverpod(keepAlive: true)
-GoogleMapApiFacade googleMapApiFacade(GoogleMapApiFacadeRef ref) {
+GoogleMapApiFacade googleMapApiFacade(Ref ref) {
   return GoogleMapApiFacade(
     dio: ref.watch(googleMapDioProvider),
   );
@@ -120,3 +120,4 @@ class GoogleMapApiFacade {
     }
   }
 }
+

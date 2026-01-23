@@ -12,7 +12,7 @@ part of 'place_details_dto.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 PlaceDetailsDto _$PlaceDetailsDtoFromJson(Map<String, dynamic> json) {
   return _PlaceDetailsDto.fromJson(json);
@@ -36,7 +36,7 @@ abstract class $PlaceDetailsDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
-          GeoPoint geoPoint});
+      GeoPoint geoPoint});
 }
 
 /// @nodoc
@@ -64,24 +64,24 @@ class _$PlaceDetailsDtoCopyWithImpl<$Res, $Val extends PlaceDetailsDto>
 }
 
 /// @nodoc
-abstract class _$$_PlaceDetailsDtoCopyWith<$Res>
+abstract class _$$PlaceDetailsDtoImplCopyWith<$Res>
     implements $PlaceDetailsDtoCopyWith<$Res> {
-  factory _$$_PlaceDetailsDtoCopyWith(
-          _$_PlaceDetailsDto value, $Res Function(_$_PlaceDetailsDto) then) =
-      __$$_PlaceDetailsDtoCopyWithImpl<$Res>;
+  factory _$$PlaceDetailsDtoImplCopyWith(_$PlaceDetailsDtoImpl value,
+          $Res Function(_$PlaceDetailsDtoImpl) then) =
+      __$$PlaceDetailsDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {@JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
-          GeoPoint geoPoint});
+      GeoPoint geoPoint});
 }
 
 /// @nodoc
-class __$$_PlaceDetailsDtoCopyWithImpl<$Res>
-    extends _$PlaceDetailsDtoCopyWithImpl<$Res, _$_PlaceDetailsDto>
-    implements _$$_PlaceDetailsDtoCopyWith<$Res> {
-  __$$_PlaceDetailsDtoCopyWithImpl(
-      _$_PlaceDetailsDto _value, $Res Function(_$_PlaceDetailsDto) _then)
+class __$$PlaceDetailsDtoImplCopyWithImpl<$Res>
+    extends _$PlaceDetailsDtoCopyWithImpl<$Res, _$PlaceDetailsDtoImpl>
+    implements _$$PlaceDetailsDtoImplCopyWith<$Res> {
+  __$$PlaceDetailsDtoImplCopyWithImpl(
+      _$PlaceDetailsDtoImpl _value, $Res Function(_$PlaceDetailsDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -89,7 +89,7 @@ class __$$_PlaceDetailsDtoCopyWithImpl<$Res>
   $Res call({
     Object? geoPoint = null,
   }) {
-    return _then(_$_PlaceDetailsDto(
+    return _then(_$PlaceDetailsDtoImpl(
       geoPoint: null == geoPoint
           ? _value.geoPoint
           : geoPoint // ignore: cast_nullable_to_non_nullable
@@ -100,14 +100,14 @@ class __$$_PlaceDetailsDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createToJson: false)
-class _$_PlaceDetailsDto extends _PlaceDetailsDto {
-  const _$_PlaceDetailsDto(
+class _$PlaceDetailsDtoImpl extends _PlaceDetailsDto {
+  const _$PlaceDetailsDtoImpl(
       {@JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
-          required this.geoPoint})
+      required this.geoPoint})
       : super._();
 
-  factory _$_PlaceDetailsDto.fromJson(Map<String, dynamic> json) =>
-      _$$_PlaceDetailsDtoFromJson(json);
+  factory _$PlaceDetailsDtoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PlaceDetailsDtoImplFromJson(json);
 
   @override
   @JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
@@ -119,10 +119,10 @@ class _$_PlaceDetailsDto extends _PlaceDetailsDto {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PlaceDetailsDto &&
+            other is _$PlaceDetailsDtoImpl &&
             (identical(other.geoPoint, geoPoint) ||
                 other.geoPoint == geoPoint));
   }
@@ -134,24 +134,25 @@ class _$_PlaceDetailsDto extends _PlaceDetailsDto {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PlaceDetailsDtoCopyWith<_$_PlaceDetailsDto> get copyWith =>
-      __$$_PlaceDetailsDtoCopyWithImpl<_$_PlaceDetailsDto>(this, _$identity);
+  _$$PlaceDetailsDtoImplCopyWith<_$PlaceDetailsDtoImpl> get copyWith =>
+      __$$PlaceDetailsDtoImplCopyWithImpl<_$PlaceDetailsDtoImpl>(
+          this, _$identity);
 }
 
 abstract class _PlaceDetailsDto extends PlaceDetailsDto {
   const factory _PlaceDetailsDto(
       {@JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
-          required final GeoPoint geoPoint}) = _$_PlaceDetailsDto;
+      required final GeoPoint geoPoint}) = _$PlaceDetailsDtoImpl;
   const _PlaceDetailsDto._() : super._();
 
   factory _PlaceDetailsDto.fromJson(Map<String, dynamic> json) =
-      _$_PlaceDetailsDto.fromJson;
+      _$PlaceDetailsDtoImpl.fromJson;
 
   @override
   @JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
   GeoPoint get geoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_PlaceDetailsDtoCopyWith<_$_PlaceDetailsDto> get copyWith =>
+  _$$PlaceDetailsDtoImplCopyWith<_$PlaceDetailsDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

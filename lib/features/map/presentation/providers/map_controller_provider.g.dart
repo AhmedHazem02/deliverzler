@@ -7,7 +7,7 @@ part of 'map_controller_provider.dart';
 // **************************************************************************
 
 String _$currentMapControllerHash() =>
-    r'6fe8d265e49b7b34075643822528405db96a7459';
+    r'472214da48eacf7ea5ae7495762f2dee57a79ca5';
 
 /// See also [CurrentMapController].
 @ProviderFor(CurrentMapController)
@@ -39,4 +39,5 @@ final mapControllerProvider =
 );
 
 typedef _$MapController = AutoDisposeNotifier<GoogleMapController?>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

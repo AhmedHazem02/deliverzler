@@ -21,16 +21,20 @@ extension WidgetRefExtension on WidgetRef {
       (prevState, newState) {
         prevState?.whenOrNull(
           skipLoadingOnRefresh: false,
-          loading: handleLoading ? () => NavigationService.popDialog(context) : null,
+          loading: handleLoading
+              ? () => NavigationService.popDialog(context)
+              : null,
         );
         newState.whenOrNull(
           skipLoadingOnRefresh: false,
-          loading: handleLoading ? () => Dialogs.showLoadingDialog(context) : null,
+          loading: handleLoading
+              ? () => Dialogs.showLoadingDialog(context)
+              : null,
           error: handleError
               ? (err, st) => Dialogs.showErrorDialog(
-                    context,
-                    message: err.errorMessage(context),
-                  )
+                  context,
+                  message: err.errorMessage(context),
+                )
               : null,
           data: whenData,
         );

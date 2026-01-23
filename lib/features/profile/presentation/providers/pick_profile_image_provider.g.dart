@@ -6,7 +6,7 @@ part of 'pick_profile_image_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pickProfileImageHash() => r'd37506ef9ad3537be4016f02b4c5973f7f984545';
+String _$pickProfileImageHash() => r'e1f9774c7a850a9e7322a811cd3d9a209cd82983';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -28,8 +28,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-typedef PickProfileImageRef = AutoDisposeFutureProviderRef<File>;
 
 /// See also [pickProfileImage].
 @ProviderFor(pickProfileImage)
@@ -77,10 +75,10 @@ class PickProfileImageFamily extends Family<AsyncValue<File>> {
 class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
   /// See also [pickProfileImage].
   PickProfileImageProvider(
-    this.pickSource,
-  ) : super.internal(
+    PickSource pickSource,
+  ) : this._internal(
           (ref) => pickProfileImage(
-            ref,
+            ref as PickProfileImageRef,
             pickSource,
           ),
           from: pickProfileImageProvider,
@@ -92,9 +90,43 @@ class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
           dependencies: PickProfileImageFamily._dependencies,
           allTransitiveDependencies:
               PickProfileImageFamily._allTransitiveDependencies,
+          pickSource: pickSource,
         );
 
+  PickProfileImageProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.pickSource,
+  }) : super.internal();
+
   final PickSource pickSource;
+
+  @override
+  Override overrideWith(
+    FutureOr<File> Function(PickProfileImageRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: PickProfileImageProvider._internal(
+        (ref) => create(ref as PickProfileImageRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        pickSource: pickSource,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<File> createElement() {
+    return _PickProfileImageProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -109,4 +141,18 @@ class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+mixin PickProfileImageRef on AutoDisposeFutureProviderRef<File> {
+  /// The parameter `pickSource` of this provider.
+  PickSource get pickSource;
+}
+
+class _PickProfileImageProviderElement
+    extends AutoDisposeFutureProviderElement<File> with PickProfileImageRef {
+  _PickProfileImageProviderElement(super.provider);
+
+  @override
+  PickSource get pickSource => (origin as PickProfileImageProvider).pickSource;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -8,7 +8,7 @@ import '../dtos/user_dto.dart';
 part 'auth_remote_data_source.g.dart';
 
 @Riverpod(keepAlive: true)
-AuthRemoteDataSource authRemoteDataSource(AuthRemoteDataSourceRef ref) {
+AuthRemoteDataSource authRemoteDataSource(Ref ref) {
   return AuthRemoteDataSource(
     ref,
     firebaseAuth: ref.watch(firebaseAuthFacadeProvider),
@@ -23,7 +23,7 @@ class AuthRemoteDataSource {
     required this.firebaseFirestore,
   });
 
-  final AuthRemoteDataSourceRef ref;
+  final Ref ref;
   final FirebaseAuthFacade firebaseAuth;
   final FirebaseFirestoreFacade firebaseFirestore;
 
@@ -85,3 +85,5 @@ class AuthRemoteDataSource {
     return firebaseAuth.signOut();
   }
 }
+
+

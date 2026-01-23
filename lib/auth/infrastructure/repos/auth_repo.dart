@@ -9,7 +9,7 @@ import '../dtos/user_dto.dart';
 part 'auth_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-AuthRepo authRepo(AuthRepoRef ref) {
+AuthRepo authRepo(Ref ref) {
   return AuthRepo(
     networkInfo: ref.watch(networkInfoProvider),
     remoteDataSource: ref.watch(authRemoteDataSourceProvider),
@@ -81,3 +81,5 @@ class AuthRepo {
     } catch (_) {}
   }
 }
+
+

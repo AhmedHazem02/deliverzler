@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:html' as html;
-import 'dart:js_util' as js_util';
 
 import '../../config/firebase_web_config.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,7 +42,9 @@ class WebNotificationService {
           return NotificationPermission.default_;
       }
     } catch (e) {
-      if (kDebugMode) print('Error requesting notification permission: $e');
+      if (kDebugMode) {
+        debugPrint('Error requesting notification permission: $e');
+      }
       return NotificationPermission.denied;
     }
   }
@@ -55,7 +56,7 @@ class WebNotificationService {
     try {
       // Check if service worker is supported
       if (!_isServiceWorkerSupported()) {
-        if (kDebugMode) print('Service Worker not supported');
+        if (kDebugMode) debugPrint('Service Worker not supported');
         return;
       }
 
@@ -66,15 +67,15 @@ class WebNotificationService {
       _setupNotificationClickListener();
 
       _isInitialized = true;
-      if (kDebugMode) print('Web notifications initialized successfully');
+      if (kDebugMode) debugPrint('Web notifications initialized successfully');
     } catch (e) {
-      if (kDebugMode) print('Error initializing web notifications: $e');
+      if (kDebugMode) debugPrint('Error initializing web notifications: $e');
     }
   }
 
   /// Check if service workers are supported
   bool _isServiceWorkerSupported() {
-    return js_util.hasProperty(html.window.navigator, 'serviceWorker');
+    return html.window.navigator.serviceWorker != null;
   }
 
   /// Register service worker for push notifications
@@ -87,11 +88,12 @@ class WebNotificationService {
 
       if (registration != null) {
         if (kDebugMode) {
-          print('Service Worker registered with scope: ${registration.scope}');
+          debugPrint(
+              'Service Worker registered with scope: ${registration.scope}');
         }
       }
     } catch (e) {
-      if (kDebugMode) print('Service Worker registration failed: $e');
+      if (kDebugMode) debugPrint('Service Worker registration failed: $e');
     }
   }
 
@@ -100,7 +102,7 @@ class WebNotificationService {
     _notificationClickSubscription?.cancel();
     _notificationClickSubscription =
         html.window.navigator.serviceWorker?.onMessage.listen((event) {
-      if (kDebugMode) print('Message from service worker: ${event.data}');
+      if (kDebugMode) debugPrint('Message from service worker: ${event.data}');
     });
   }
 
@@ -115,7 +117,7 @@ class WebNotificationService {
       final permission = await requestPermission();
 
       if (permission != NotificationPermission.granted) {
-        if (kDebugMode) print('Notification permission not granted');
+        if (kDebugMode) debugPrint('Notification permission not granted');
         return;
       }
 
@@ -128,12 +130,14 @@ class WebNotificationService {
         'data': data,
       };
 
-      // Create notification
-      html.Notification(title, body: options['body'] ?? '', icon: options['icon']);
+      // Create notification with proper type casting
+      final bodyText = (options['body'] as String?) ?? '';
+      final iconPath = options['icon'] as String?;
+      html.Notification(title, body: bodyText, icon: iconPath);
 
-      if (kDebugMode) print('Notification shown: $title');
+      if (kDebugMode) debugPrint('Notification shown: $title');
     } catch (e) {
-      if (kDebugMode) print('Error showing notification: $e');
+      if (kDebugMode) debugPrint('Error showing notification: $e');
     }
   }
 
@@ -142,8 +146,9 @@ class WebNotificationService {
     // Web FCM topic subscription requires backend implementation
     // This is a placeholder for the client-side logic
     if (kDebugMode) {
-      print('Web FCM topic subscription requires server-side implementation');
-      print('Topic: $topic');
+      debugPrint(
+          'Web FCM topic subscription requires server-side implementation');
+      debugPrint('Topic: $topic');
     }
   }
 
@@ -151,8 +156,9 @@ class WebNotificationService {
   Future<void> unsubscribeFromTopic(String topic) async {
     // Web FCM topic unsubscription requires backend implementation
     if (kDebugMode) {
-      print('Web FCM topic unsubscription requires server-side implementation');
-      print('Topic: $topic');
+      debugPrint(
+          'Web FCM topic unsubscription requires server-side implementation');
+      debugPrint('Topic: $topic');
     }
   }
 
@@ -166,20 +172,21 @@ class WebNotificationService {
 
       if (!FirebaseWebConfig.hasVapidKey) {
         if (kDebugMode) {
-          print('⚠️ WARNING: VAPID key not configured!');
-          print('Please set FIREBASE_WEB_VAPID_KEY in .env.local');
-          print(
-              'Get it from: Firebase Console > Project Settings > Cloud Messaging > Web Push certificates',);
+          debugPrint('⚠️ WARNING: VAPID key not configured!');
+          debugPrint('Please set FIREBASE_WEB_VAPID_KEY in .env.local');
+          debugPrint(
+            'Get it from: Firebase Console > Project Settings > Cloud Messaging > Web Push certificates',
+          );
         }
         return null;
       }
 
       final token = await messaging.getToken(vapidKey: vapidKey);
 
-      if (kDebugMode) print('FCM Token: $token');
+      if (kDebugMode) debugPrint('FCM Token: $token');
       return token;
     } catch (e) {
-      if (kDebugMode) print('Error getting FCM token: $e');
+      if (kDebugMode) debugPrint('Error getting FCM token: $e');
       return null;
     }
   }

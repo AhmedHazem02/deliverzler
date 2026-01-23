@@ -15,7 +15,7 @@ import '../dtos/place_directions_dto.dart';
 part 'map_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-MapRepo mapRepo(MapRepoRef ref) {
+MapRepo mapRepo(Ref ref) {
   return MapRepo(
     remoteDataSource: ref.watch(mapRemoteDataSourceProvider),
   );
@@ -52,42 +52,44 @@ class MapRepo {
     PlaceDirectionsQuery query, {
     CancelToken? cancelToken,
   }) async {
-    print('📍 MapRepo.getPlaceDirections called');
-    print('📍 Origin: ${query.origin.latitude}, ${query.origin.longitude}');
-    print(
+    debugPrint('📍 MapRepo.getPlaceDirections called');
+    debugPrint(
+        '📍 Origin: ${query.origin.latitude}, ${query.origin.longitude}');
+    debugPrint(
         '📍 Destination: ${query.destination.latitude}, ${query.destination.longitude}');
 
     // Use JavaScript DirectionsService on web (REST API doesn't support CORS)
     if (kIsWeb) {
-      print('📍 Using Web DirectionsService (JavaScript API)');
+      debugPrint('📍 Using Web DirectionsService (JavaScript API)');
       try {
         final directions = await _webDirectionsService.getDirections(
           origin: LatLng(query.origin.latitude, query.origin.longitude),
           destination:
               LatLng(query.destination.latitude, query.destination.longitude),
         );
-        print('📍 ✅ Directions received from Web DirectionsService');
+        debugPrint('📍 ✅ Directions received from Web DirectionsService');
         return directions;
       } catch (e, stack) {
-        print('📍 ❌ Web DirectionsService error: $e');
-        print('📍 Stack: $stack');
+        debugPrint('📍 ❌ Web DirectionsService error: $e');
+        debugPrint('📍 Stack: $stack');
         rethrow;
       }
     }
 
     // Use REST API for mobile platforms
-    print('📍 Using REST API for mobile');
+    debugPrint('📍 Using REST API for mobile');
     try {
       final dto = PlaceDirectionsQueryDto.fromDomain(query);
-      print('📍 Calling remote data source...');
+      debugPrint('📍 Calling remote data source...');
       final directions = await remoteDataSource.getPlaceDirections(dto,
           cancelToken: cancelToken);
-      print('📍 ✅ Directions received from API');
+      debugPrint('📍 ✅ Directions received from API');
       return directions.toDomain();
     } catch (e, stack) {
-      print('📍 ❌ Error getting directions: $e');
-      print('📍 Stack: $stack');
+      debugPrint('📍 ❌ Error getting directions: $e');
+      debugPrint('📍 Stack: $stack');
       rethrow;
     }
   }
 }
+

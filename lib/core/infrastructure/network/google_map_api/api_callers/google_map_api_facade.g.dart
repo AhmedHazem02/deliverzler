@@ -7,7 +7,7 @@ part of 'google_map_api_facade.dart';
 // **************************************************************************
 
 String _$googleMapApiFacadeHash() =>
-    r'5a6177a2b9fac9269749bdeff56b4c117394e64c';
+    r'91fba0447e3cfc5c8b255bff2ab497053f25e633';
 
 /// See also [googleMapApiFacade].
 @ProviderFor(googleMapApiFacade)
@@ -22,4 +22,5 @@ final googleMapApiFacadeProvider = Provider<GoogleMapApiFacade>.internal(
 );
 
 typedef GoogleMapApiFacadeRef = ProviderRef<GoogleMapApiFacade>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

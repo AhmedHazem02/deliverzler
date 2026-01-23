@@ -6,7 +6,7 @@ part of 'my_location_circle_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myLocationCircleHash() => r'85b741861ef23a18cbf15e191e7e74f658a6681f';
+String _$myLocationCircleHash() => r'05480d613c96097eb6a020a6c6e0e4669e0626e3';
 
 /// See also [myLocationCircle].
 @ProviderFor(myLocationCircle)
@@ -21,4 +21,5 @@ final myLocationCircleProvider = AutoDisposeProvider<Circle>.internal(
 );
 
 typedef MyLocationCircleRef = AutoDisposeProviderRef<Circle>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

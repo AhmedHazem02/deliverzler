@@ -1,5 +1,4 @@
 import 'dart:html' as html;
-import 'dart:js_util' as js_util;
 
 import 'package:flutter/foundation.dart';
 
@@ -74,7 +73,7 @@ class WebDeviceInfoService {
         return match?.group(1) ?? '';
       }
     } catch (e) {
-      if (kDebugMode) print('Error parsing browser version: $e');
+      if (kDebugMode) debugPrint('Error parsing browser version: $e');
     }
 
     return '';
@@ -119,7 +118,8 @@ class WebDeviceInfoService {
   /// Get vendor sub information
   String _getVendorSub() {
     try {
-      return js_util.getProperty(html.window.navigator, 'vendorSub') ?? '';
+      final vendorSub = (html.window.navigator as dynamic).vendorSub;
+      return (vendorSub ?? '') as String;
     } catch (e) {
       return '';
     }
@@ -128,7 +128,8 @@ class WebDeviceInfoService {
   /// Get max touch points
   int _getMaxTouchPoints() {
     try {
-      return js_util.getProperty(html.window.navigator, 'maxTouchPoints') ?? 0;
+      final maxTouchPoints = (html.window.navigator as dynamic).maxTouchPoints;
+      return (maxTouchPoints ?? 0) as int;
     } catch (e) {
       return 0;
     }
@@ -147,9 +148,8 @@ class WebDeviceInfoService {
   /// Get available memory (if supported)
   double? getAvailableMemory() {
     try {
-      final memory =
-          js_util.getProperty<num?>(html.window.navigator, 'deviceMemory');
-      return memory?.toDouble();
+      final memory = (html.window.navigator as dynamic).deviceMemory;
+      return (memory as num?)?.toDouble();
     } catch (e) {
       return null;
     }
@@ -159,15 +159,15 @@ class WebDeviceInfoService {
   bool isFeatureSupported(String feature) {
     switch (feature.toLowerCase()) {
       case 'serviceworker':
-        return js_util.hasProperty(html.window.navigator, 'serviceWorker');
+        return (html.window.navigator as dynamic).serviceWorker != null;
       case 'geolocation':
         return true; // Geolocation is always available in modern browsers
       case 'notification':
-        return js_util.hasProperty(html.window, 'Notification');
+        return (html.window as dynamic).Notification != null;
       case 'indexeddb':
-        return js_util.hasProperty(html.window, 'indexedDB');
+        return (html.window as dynamic).indexedDB != null;
       case 'webstorage':
-        return js_util.hasProperty(html.window, 'localStorage');
+        return (html.window as dynamic).localStorage != null;
       case 'webgl':
         return _isWebGLSupported();
       default:

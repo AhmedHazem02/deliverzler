@@ -12,7 +12,7 @@ part of 'update_delivery_geopoint.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$UpdateDeliveryGeoPoint {
@@ -64,23 +64,25 @@ class _$UpdateDeliveryGeoPointCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_UpdateDeliveryGeoPointCopyWith<$Res>
+abstract class _$$UpdateDeliveryGeoPointImplCopyWith<$Res>
     implements $UpdateDeliveryGeoPointCopyWith<$Res> {
-  factory _$$_UpdateDeliveryGeoPointCopyWith(_$_UpdateDeliveryGeoPoint value,
-          $Res Function(_$_UpdateDeliveryGeoPoint) then) =
-      __$$_UpdateDeliveryGeoPointCopyWithImpl<$Res>;
+  factory _$$UpdateDeliveryGeoPointImplCopyWith(
+          _$UpdateDeliveryGeoPointImpl value,
+          $Res Function(_$UpdateDeliveryGeoPointImpl) then) =
+      __$$UpdateDeliveryGeoPointImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String orderId, GeoPoint geoPoint});
 }
 
 /// @nodoc
-class __$$_UpdateDeliveryGeoPointCopyWithImpl<$Res>
+class __$$UpdateDeliveryGeoPointImplCopyWithImpl<$Res>
     extends _$UpdateDeliveryGeoPointCopyWithImpl<$Res,
-        _$_UpdateDeliveryGeoPoint>
-    implements _$$_UpdateDeliveryGeoPointCopyWith<$Res> {
-  __$$_UpdateDeliveryGeoPointCopyWithImpl(_$_UpdateDeliveryGeoPoint _value,
-      $Res Function(_$_UpdateDeliveryGeoPoint) _then)
+        _$UpdateDeliveryGeoPointImpl>
+    implements _$$UpdateDeliveryGeoPointImplCopyWith<$Res> {
+  __$$UpdateDeliveryGeoPointImplCopyWithImpl(
+      _$UpdateDeliveryGeoPointImpl _value,
+      $Res Function(_$UpdateDeliveryGeoPointImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -89,7 +91,7 @@ class __$$_UpdateDeliveryGeoPointCopyWithImpl<$Res>
     Object? orderId = null,
     Object? geoPoint = null,
   }) {
-    return _then(_$_UpdateDeliveryGeoPoint(
+    return _then(_$UpdateDeliveryGeoPointImpl(
       orderId: null == orderId
           ? _value.orderId
           : orderId // ignore: cast_nullable_to_non_nullable
@@ -104,8 +106,8 @@ class __$$_UpdateDeliveryGeoPointCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_UpdateDeliveryGeoPoint implements _UpdateDeliveryGeoPoint {
-  const _$_UpdateDeliveryGeoPoint(
+class _$UpdateDeliveryGeoPointImpl implements _UpdateDeliveryGeoPoint {
+  const _$UpdateDeliveryGeoPointImpl(
       {required this.orderId, required this.geoPoint});
 
   @override
@@ -119,10 +121,10 @@ class _$_UpdateDeliveryGeoPoint implements _UpdateDeliveryGeoPoint {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UpdateDeliveryGeoPoint &&
+            other is _$UpdateDeliveryGeoPointImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.geoPoint, geoPoint) ||
                 other.geoPoint == geoPoint));
@@ -134,15 +136,15 @@ class _$_UpdateDeliveryGeoPoint implements _UpdateDeliveryGeoPoint {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UpdateDeliveryGeoPointCopyWith<_$_UpdateDeliveryGeoPoint> get copyWith =>
-      __$$_UpdateDeliveryGeoPointCopyWithImpl<_$_UpdateDeliveryGeoPoint>(
-          this, _$identity);
+  _$$UpdateDeliveryGeoPointImplCopyWith<_$UpdateDeliveryGeoPointImpl>
+      get copyWith => __$$UpdateDeliveryGeoPointImplCopyWithImpl<
+          _$UpdateDeliveryGeoPointImpl>(this, _$identity);
 }
 
 abstract class _UpdateDeliveryGeoPoint implements UpdateDeliveryGeoPoint {
   const factory _UpdateDeliveryGeoPoint(
       {required final String orderId,
-      required final GeoPoint geoPoint}) = _$_UpdateDeliveryGeoPoint;
+      required final GeoPoint geoPoint}) = _$UpdateDeliveryGeoPointImpl;
 
   @override
   String get orderId;
@@ -150,6 +152,6 @@ abstract class _UpdateDeliveryGeoPoint implements UpdateDeliveryGeoPoint {
   GeoPoint get geoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_UpdateDeliveryGeoPointCopyWith<_$_UpdateDeliveryGeoPoint> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$UpdateDeliveryGeoPointImplCopyWith<_$UpdateDeliveryGeoPointImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

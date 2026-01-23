@@ -6,7 +6,7 @@ part of 'orders_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ordersServiceHash() => r'cf8541ec75001ccd2ffe74eb4c27cab186880038';
+String _$ordersServiceHash() => r'ba07224d261cb3c0a57e7a8b98fbda2df10555dd';
 
 /// See also [ordersService].
 @ProviderFor(ordersService)
@@ -21,4 +21,5 @@ final ordersServiceProvider = Provider<OrdersService>.internal(
 );
 
 typedef OrdersServiceRef = ProviderRef<OrdersService>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

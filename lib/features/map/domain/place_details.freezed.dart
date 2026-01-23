@@ -12,7 +12,7 @@ part of 'place_details.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$PlaceDetails {
@@ -57,22 +57,22 @@ class _$PlaceDetailsCopyWithImpl<$Res, $Val extends PlaceDetails>
 }
 
 /// @nodoc
-abstract class _$$_PlaceDetailsCopyWith<$Res>
+abstract class _$$PlaceDetailsImplCopyWith<$Res>
     implements $PlaceDetailsCopyWith<$Res> {
-  factory _$$_PlaceDetailsCopyWith(
-          _$_PlaceDetails value, $Res Function(_$_PlaceDetails) then) =
-      __$$_PlaceDetailsCopyWithImpl<$Res>;
+  factory _$$PlaceDetailsImplCopyWith(
+          _$PlaceDetailsImpl value, $Res Function(_$PlaceDetailsImpl) then) =
+      __$$PlaceDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({GeoPoint geoPoint});
 }
 
 /// @nodoc
-class __$$_PlaceDetailsCopyWithImpl<$Res>
-    extends _$PlaceDetailsCopyWithImpl<$Res, _$_PlaceDetails>
-    implements _$$_PlaceDetailsCopyWith<$Res> {
-  __$$_PlaceDetailsCopyWithImpl(
-      _$_PlaceDetails _value, $Res Function(_$_PlaceDetails) _then)
+class __$$PlaceDetailsImplCopyWithImpl<$Res>
+    extends _$PlaceDetailsCopyWithImpl<$Res, _$PlaceDetailsImpl>
+    implements _$$PlaceDetailsImplCopyWith<$Res> {
+  __$$PlaceDetailsImplCopyWithImpl(
+      _$PlaceDetailsImpl _value, $Res Function(_$PlaceDetailsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_PlaceDetailsCopyWithImpl<$Res>
   $Res call({
     Object? geoPoint = null,
   }) {
-    return _then(_$_PlaceDetails(
+    return _then(_$PlaceDetailsImpl(
       geoPoint: null == geoPoint
           ? _value.geoPoint
           : geoPoint // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_PlaceDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PlaceDetails implements _PlaceDetails {
-  const _$_PlaceDetails({required this.geoPoint});
+class _$PlaceDetailsImpl implements _PlaceDetails {
+  const _$PlaceDetailsImpl({required this.geoPoint});
 
   @override
   final GeoPoint geoPoint;
@@ -103,10 +103,10 @@ class _$_PlaceDetails implements _PlaceDetails {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PlaceDetails &&
+            other is _$PlaceDetailsImpl &&
             (identical(other.geoPoint, geoPoint) ||
                 other.geoPoint == geoPoint));
   }
@@ -117,18 +117,18 @@ class _$_PlaceDetails implements _PlaceDetails {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PlaceDetailsCopyWith<_$_PlaceDetails> get copyWith =>
-      __$$_PlaceDetailsCopyWithImpl<_$_PlaceDetails>(this, _$identity);
+  _$$PlaceDetailsImplCopyWith<_$PlaceDetailsImpl> get copyWith =>
+      __$$PlaceDetailsImplCopyWithImpl<_$PlaceDetailsImpl>(this, _$identity);
 }
 
 abstract class _PlaceDetails implements PlaceDetails {
   const factory _PlaceDetails({required final GeoPoint geoPoint}) =
-      _$_PlaceDetails;
+      _$PlaceDetailsImpl;
 
   @override
   GeoPoint get geoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_PlaceDetailsCopyWith<_$_PlaceDetails> get copyWith =>
+  _$$PlaceDetailsImplCopyWith<_$PlaceDetailsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

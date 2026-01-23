@@ -12,7 +12,7 @@ part 'location_stream_provider.g.dart';
 
 @riverpod
 Stream<Position> locationStream(
-  LocationStreamRef ref,
+  Ref ref,
 ) async* {
   final locationService = ref.watch(locationServiceProvider);
 
@@ -31,7 +31,7 @@ Stream<Position> locationStream(
 
 @riverpod
 Future<void> enableLocation(
-  EnableLocationRef ref,
+  Ref ref,
   LocationService locationService,
 ) async {
   final enabled = await locationService.enableLocationService();
@@ -45,7 +45,7 @@ Future<void> enableLocation(
 
 @riverpod
 Future<void> requestLocationPermission(
-  RequestLocationPermissionRef ref,
+  Ref ref,
   LocationService locationService,
 ) async {
   final whileInUseGranted = await locationService.requestWhileInUsePermission();
@@ -66,3 +66,4 @@ Future<void> requestLocationPermission(
     }
   }
 }
+

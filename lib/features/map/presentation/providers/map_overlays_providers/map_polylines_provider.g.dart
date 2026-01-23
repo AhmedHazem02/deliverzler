@@ -6,7 +6,7 @@ part of 'map_polylines_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapPolylinesHash() => r'58e63a64c0b4abdd1a0fc63d5e38d7d93558d677';
+String _$mapPolylinesHash() => r'abcb33bf6eb53636f9cab744dfcebcbe3133b796';
 
 /// See also [MapPolylines].
 @ProviderFor(MapPolylines)
@@ -21,4 +21,5 @@ final mapPolylinesProvider =
 );
 
 typedef _$MapPolylines = AutoDisposeNotifier<Set<Polyline>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

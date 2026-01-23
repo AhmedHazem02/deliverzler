@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/order.dart';
 import '../../domain/update_delivery_geopoint.dart';
@@ -12,7 +14,7 @@ import '../dtos/update_delivery_status_dto.dart';
 part 'orders_repo.g.dart';
 
 @Riverpod(keepAlive: true)
-OrdersRepo ordersRepo(OrdersRepoRef ref) {
+OrdersRepo ordersRepo(Ref ref) {
   return OrdersRepo(ref);
 }
 
@@ -24,11 +26,10 @@ class OrdersRepo {
       ref.read(ordersRemoteDataSourceProvider);
 
   Stream<List<AppOrder>> getUpcomingOrders(String userId) {
-    print(
-        '🏪 OrdersRepo.getUpcomingOrders called for userId: $userId',); // DEBUG
+    debugPrint('🏪 OrdersRepo.getUpcomingOrders called for userId: $userId');
     return remoteDataSource.getUpcomingOrders().map(
       (orders) {
-        print('📦 Raw orders from remote: ${orders.length}'); // DEBUG
+        debugPrint('📦 Raw orders from remote: ${orders.length}');
         final filtered = orders
             .where(
               (order) {
@@ -38,14 +39,14 @@ class OrdersRepo {
                 final shouldInclude = status == DeliveryStatus.upcoming ||
                     (status == DeliveryStatus.onTheWay &&
                         order.deliveryId == userId);
-                print(
-                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude',); // DEBUG
+                debugPrint(
+                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude');
                 return shouldInclude;
               },
             )
             .map((o) => o.toDomain())
             .toList();
-        print('✅ Filtered orders: ${filtered.length}'); // DEBUG
+        debugPrint('✅ Filtered orders: ${filtered.length}');
         return filtered;
       },
     );
@@ -73,3 +74,4 @@ class OrdersRepo {
         );
   }
 }
+

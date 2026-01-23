@@ -6,9 +6,10 @@ import '../utils/riverpod_framework.dart';
 
 const _riverpodEmoji = '🏞️ ';
 
-class ProviderLogger extends ProviderObserver {
+final class ProviderLogger extends ProviderObserver {
   ProviderLogger() : _logger = Logger('Riverpod') {
-    _logger.level = Level.FINER; //Turn off logging for messages whose level is under this level.
+    _logger.level = Level
+        .FINER; //Turn off logging for messages whose level is under this level.
     _logger.onRecord.listen(loggerOnDataCallback(prefix: _riverpodEmoji));
   }
 
@@ -47,15 +48,20 @@ class ProviderLogger extends ProviderObserver {
   }
 
   @override
-  void didDisposeProvider(ProviderBase<dynamic> provider, ProviderContainer container) {
+  void didDisposeProvider(
+    ProviderBase<dynamic> provider,
+    ProviderContainer container,
+  ) {
     _logger.fine('🗑️ DidDisposeProvider: ${provider.providerName}');
   }
 }
 
-class ProviderCrashlytics extends ProviderObserver {
+final class ProviderCrashlytics extends ProviderObserver {
   ProviderCrashlytics() : _logger = Logger('Riverpod-Crashlytics') {
     _logger.level = Level.SEVERE;
-    _logger.onRecord.listen(loggerOnDataCallback(prefix: _riverpodEmoji, logColor: LogColor.red));
+    _logger.onRecord.listen(
+      loggerOnDataCallback(prefix: _riverpodEmoji, logColor: LogColor.red),
+    );
   }
 
   final Logger _logger;
@@ -124,8 +130,11 @@ extension _SkipProviderLogX on Object? {
 
     final error = value.error;
     return switch (error) {
-      final CacheException err when err.type == CacheExceptionType.notFound => true,
-      final ServerException err when err.type == ServerExceptionType.unauthorized => true,
+      final CacheException err when err.type == CacheExceptionType.notFound =>
+        true,
+      final ServerException err
+          when err.type == ServerExceptionType.unauthorized =>
+        true,
       _ => false,
     };
   }

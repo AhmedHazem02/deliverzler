@@ -6,7 +6,7 @@ part of 'my_location_marker_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myLocationMarkerHash() => r'8fdfae268d6b10f6b5d793eb20da5bbbc68958f9';
+String _$myLocationMarkerHash() => r'2c92316b48a68b01e1833dbb6be0443740f842f8';
 
 /// See also [myLocationMarker].
 @ProviderFor(myLocationMarker)
@@ -22,7 +22,7 @@ final myLocationMarkerProvider = AutoDisposeProvider<Option<Marker>>.internal(
 
 typedef MyLocationMarkerRef = AutoDisposeProviderRef<Option<Marker>>;
 String _$myLocationMarkerIconHash() =>
-    r'2ba8d3e107de7aafbd3379de2da1ff2cc7efeb57';
+    r'a8790b714c57d5bcf200bc79f79bc201dfed5701';
 
 /// See also [myLocationMarkerIcon].
 @ProviderFor(myLocationMarkerIcon)
@@ -39,4 +39,5 @@ final myLocationMarkerIconProvider =
 
 typedef MyLocationMarkerIconRef
     = AutoDisposeFutureProviderRef<BitmapDescriptor>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

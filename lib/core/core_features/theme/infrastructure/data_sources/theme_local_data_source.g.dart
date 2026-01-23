@@ -7,7 +7,7 @@ part of 'theme_local_data_source.dart';
 // **************************************************************************
 
 String _$themeLocalDataSourceHash() =>
-    r'012b1adde3f006dd383b28df2a5da4054455e984';
+    r'37ce2a19b6ffa48df1bb4b5c74ab23c5f9f2a817';
 
 /// See also [themeLocalDataSource].
 @ProviderFor(themeLocalDataSource)
@@ -22,4 +22,5 @@ final themeLocalDataSourceProvider = Provider<ThemeLocalDataSource>.internal(
 );
 
 typedef ThemeLocalDataSourceRef = ProviderRef<ThemeLocalDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,7 +7,7 @@ part of 'auth_remote_data_source.dart';
 // **************************************************************************
 
 String _$authRemoteDataSourceHash() =>
-    r'2b1dbd1ec184d93b68d1d41ce6220258dfb62201';
+    r'd71484aa5c1bbafd460c10ac4ef28aa5bd8e4eef';
 
 /// See also [authRemoteDataSource].
 @ProviderFor(authRemoteDataSource)
@@ -22,4 +22,5 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>.internal(
 );
 
 typedef AuthRemoteDataSourceRef = ProviderRef<AuthRemoteDataSource>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -34,12 +34,15 @@ class AuthState extends _$AuthState {
 }
 
 @riverpod
-FutureOr<User> currentUserState(CurrentUserStateRef ref) {
+FutureOr<User> currentUserState(Ref ref) {
   final user = ref.watch(authStateProvider);
-  return user.match(() => ref.future, (user) => user);
+  return user.match(
+    () => Future.error(Exception('No user found')),
+    (user) => user,
+  );
 }
 
 @riverpod
-User currentUser(CurrentUserRef ref) {
+User currentUser(Ref ref) {
   return ref.watch(currentUserStateProvider).requireValue;
 }

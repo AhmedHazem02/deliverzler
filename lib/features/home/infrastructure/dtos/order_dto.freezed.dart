@@ -12,7 +12,7 @@ part of 'order_dto.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 OrderDto _$OrderDtoFromJson(Map<String, dynamic> json) {
   return _OrderDto.fromJson(json);
@@ -169,10 +169,11 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
 }
 
 /// @nodoc
-abstract class _$$_OrderDtoCopyWith<$Res> implements $OrderDtoCopyWith<$Res> {
-  factory _$$_OrderDtoCopyWith(
-          _$_OrderDto value, $Res Function(_$_OrderDto) then) =
-      __$$_OrderDtoCopyWithImpl<$Res>;
+abstract class _$$OrderDtoImplCopyWith<$Res>
+    implements $OrderDtoCopyWith<$Res> {
+  factory _$$OrderDtoImplCopyWith(
+          _$OrderDtoImpl value, $Res Function(_$OrderDtoImpl) then) =
+      __$$OrderDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -196,11 +197,11 @@ abstract class _$$_OrderDtoCopyWith<$Res> implements $OrderDtoCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_OrderDtoCopyWithImpl<$Res>
-    extends _$OrderDtoCopyWithImpl<$Res, _$_OrderDto>
-    implements _$$_OrderDtoCopyWith<$Res> {
-  __$$_OrderDtoCopyWithImpl(
-      _$_OrderDto _value, $Res Function(_$_OrderDto) _then)
+class __$$OrderDtoImplCopyWithImpl<$Res>
+    extends _$OrderDtoCopyWithImpl<$Res, _$OrderDtoImpl>
+    implements _$$OrderDtoImplCopyWith<$Res> {
+  __$$OrderDtoImplCopyWithImpl(
+      _$OrderDtoImpl _value, $Res Function(_$OrderDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -221,7 +222,7 @@ class __$$_OrderDtoCopyWithImpl<$Res>
     Object? deliveryGeoPoint = freezed,
     Object? id = freezed,
   }) {
-    return _then(_$_OrderDto(
+    return _then(_$OrderDtoImpl(
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -284,8 +285,8 @@ class __$$_OrderDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createToJson: false)
-class _$_OrderDto extends _OrderDto {
-  const _$_OrderDto(
+class _$OrderDtoImpl extends _OrderDto {
+  const _$OrderDtoImpl(
       {required this.date,
       required this.pickupOption,
       required this.paymentMethod,
@@ -302,8 +303,8 @@ class _$_OrderDto extends _OrderDto {
       @JsonKey(includeToJson: false) this.id})
       : super._();
 
-  factory _$_OrderDto.fromJson(Map<String, dynamic> json) =>
-      _$$_OrderDtoFromJson(json);
+  factory _$OrderDtoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$OrderDtoImplFromJson(json);
 
   @override
   final int date;
@@ -343,10 +344,10 @@ class _$_OrderDto extends _OrderDto {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_OrderDto &&
+            other is _$OrderDtoImpl &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.pickupOption, pickupOption) ||
                 other.pickupOption == pickupOption) &&
@@ -395,8 +396,8 @@ class _$_OrderDto extends _OrderDto {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_OrderDtoCopyWith<_$_OrderDto> get copyWith =>
-      __$$_OrderDtoCopyWithImpl<_$_OrderDto>(this, _$identity);
+  _$$OrderDtoImplCopyWith<_$OrderDtoImpl> get copyWith =>
+      __$$OrderDtoImplCopyWithImpl<_$OrderDtoImpl>(this, _$identity);
 }
 
 abstract class _OrderDto extends OrderDto {
@@ -414,10 +415,11 @@ abstract class _OrderDto extends OrderDto {
       required final DeliveryStatus deliveryStatus,
       required final String? deliveryId,
       @GeoPointConverter() required final GeoPoint? deliveryGeoPoint,
-      @JsonKey(includeToJson: false) final String? id}) = _$_OrderDto;
+      @JsonKey(includeToJson: false) final String? id}) = _$OrderDtoImpl;
   const _OrderDto._() : super._();
 
-  factory _OrderDto.fromJson(Map<String, dynamic> json) = _$_OrderDto.fromJson;
+  factory _OrderDto.fromJson(Map<String, dynamic> json) =
+      _$OrderDtoImpl.fromJson;
 
   @override
   int get date;
@@ -452,7 +454,7 @@ abstract class _OrderDto extends OrderDto {
   String? get id;
   @override
   @JsonKey(ignore: true)
-  _$$_OrderDtoCopyWith<_$_OrderDto> get copyWith =>
+  _$$OrderDtoImplCopyWith<_$OrderDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -533,11 +535,11 @@ class _$AddressDtoCopyWithImpl<$Res, $Val extends AddressDto>
 }
 
 /// @nodoc
-abstract class _$$_AddressDtoCopyWith<$Res>
+abstract class _$$AddressDtoImplCopyWith<$Res>
     implements $AddressDtoCopyWith<$Res> {
-  factory _$$_AddressDtoCopyWith(
-          _$_AddressDto value, $Res Function(_$_AddressDto) then) =
-      __$$_AddressDtoCopyWithImpl<$Res>;
+  factory _$$AddressDtoImplCopyWith(
+          _$AddressDtoImpl value, $Res Function(_$AddressDtoImpl) then) =
+      __$$AddressDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -549,11 +551,11 @@ abstract class _$$_AddressDtoCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AddressDtoCopyWithImpl<$Res>
-    extends _$AddressDtoCopyWithImpl<$Res, _$_AddressDto>
-    implements _$$_AddressDtoCopyWith<$Res> {
-  __$$_AddressDtoCopyWithImpl(
-      _$_AddressDto _value, $Res Function(_$_AddressDto) _then)
+class __$$AddressDtoImplCopyWithImpl<$Res>
+    extends _$AddressDtoCopyWithImpl<$Res, _$AddressDtoImpl>
+    implements _$$AddressDtoImplCopyWith<$Res> {
+  __$$AddressDtoImplCopyWithImpl(
+      _$AddressDtoImpl _value, $Res Function(_$AddressDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -565,7 +567,7 @@ class __$$_AddressDtoCopyWithImpl<$Res>
     Object? mobile = null,
     Object? geoPoint = freezed,
   }) {
-    return _then(_$_AddressDto(
+    return _then(_$AddressDtoImpl(
       state: null == state
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -592,8 +594,8 @@ class __$$_AddressDtoCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createToJson: false)
-class _$_AddressDto extends _AddressDto {
-  const _$_AddressDto(
+class _$AddressDtoImpl extends _AddressDto {
+  const _$AddressDtoImpl(
       {required this.state,
       required this.city,
       required this.street,
@@ -601,8 +603,8 @@ class _$_AddressDto extends _AddressDto {
       @GeoPointConverter() required this.geoPoint})
       : super._();
 
-  factory _$_AddressDto.fromJson(Map<String, dynamic> json) =>
-      _$$_AddressDtoFromJson(json);
+  factory _$AddressDtoImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AddressDtoImplFromJson(json);
 
   @override
   final String state;
@@ -622,10 +624,10 @@ class _$_AddressDto extends _AddressDto {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AddressDto &&
+            other is _$AddressDtoImpl &&
             (identical(other.state, state) || other.state == state) &&
             (identical(other.city, city) || other.city == city) &&
             (identical(other.street, street) || other.street == street) &&
@@ -642,21 +644,22 @@ class _$_AddressDto extends _AddressDto {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AddressDtoCopyWith<_$_AddressDto> get copyWith =>
-      __$$_AddressDtoCopyWithImpl<_$_AddressDto>(this, _$identity);
+  _$$AddressDtoImplCopyWith<_$AddressDtoImpl> get copyWith =>
+      __$$AddressDtoImplCopyWithImpl<_$AddressDtoImpl>(this, _$identity);
 }
 
 abstract class _AddressDto extends AddressDto {
   const factory _AddressDto(
-      {required final String state,
-      required final String city,
-      required final String street,
-      required final String mobile,
-      @GeoPointConverter() required final GeoPoint? geoPoint}) = _$_AddressDto;
+          {required final String state,
+          required final String city,
+          required final String street,
+          required final String mobile,
+          @GeoPointConverter() required final GeoPoint? geoPoint}) =
+      _$AddressDtoImpl;
   const _AddressDto._() : super._();
 
   factory _AddressDto.fromJson(Map<String, dynamic> json) =
-      _$_AddressDto.fromJson;
+      _$AddressDtoImpl.fromJson;
 
   @override
   String get state;
@@ -671,6 +674,6 @@ abstract class _AddressDto extends AddressDto {
   GeoPoint? get geoPoint;
   @override
   @JsonKey(ignore: true)
-  _$$_AddressDtoCopyWith<_$_AddressDto> get copyWith =>
+  _$$AddressDtoImplCopyWith<_$AddressDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

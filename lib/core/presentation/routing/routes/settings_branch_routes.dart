@@ -13,12 +13,14 @@ class SettingsRoute extends GoRouteData {
   ];
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const SettingsScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SettingsScreen();
 }
 
 class LanguageRoute extends GoRouteData {
   const LanguageRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => const LanguageScreen();
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LanguageScreen();
 }

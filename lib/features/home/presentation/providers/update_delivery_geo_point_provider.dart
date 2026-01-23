@@ -11,7 +11,7 @@ part 'update_delivery_geo_point_provider.g.dart';
 
 @riverpod
 Future<void> updateDeliveryGeoPointState(
-  UpdateDeliveryGeoPointStateRef ref,
+  Ref ref,
 ) async {
   final myDeliveryOrders = ref.watch(myDeliveringOrdersProvider);
   final position = ref.watch(locationStreamProvider).valueOrNull;
@@ -34,8 +34,9 @@ Future<void> updateDeliveryGeoPointState(
 
 @riverpod
 Future<void> updateDeliveryGeoPoint(
-  UpdateDeliveryGeoPointRef ref,
+  Ref ref,
   UpdateDeliveryGeoPoint deliveryGeoPoint,
 ) async {
   await ref.watch(ordersRepoProvider).updateDeliveryGeoPoint(deliveryGeoPoint);
 }
+

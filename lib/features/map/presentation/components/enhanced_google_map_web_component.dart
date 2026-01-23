@@ -1,6 +1,9 @@
 import 'dart:async';
+// ignore: deprecated_member_use
 import 'dart:html' as html;
+// ignore: deprecated_member_use
 import 'dart:js' as js;
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
@@ -112,7 +115,8 @@ class _EnhancedGoogleMapWebComponentState
       final mapDiv = html.document.getElementById(_mapDivId);
       if (mapDiv != null && js.context.hasProperty('google')) {
         final googleMaps = js.context['google']['maps'];
-        _map = js.JsObject(googleMaps['Map'], [mapDiv, mapOptions]);
+        final mapConstructor = googleMaps['Map'] as js.JsFunction;
+        _map = js.JsObject(mapConstructor, [mapDiv, mapOptions]);
 
         // Setup event listeners
         _setupMapEventListeners();
@@ -139,40 +143,49 @@ class _EnhancedGoogleMapWebComponentState
       final googleMaps = js.context['google']['maps'];
       final event = googleMaps['event'];
 
+      // Define callback functions
+      void onZoomChanged() {
+        if (mounted && _map != null) {
+          final zoom = _map!.callMethod('getZoom');
+          debugPrint('Zoom changed to: $zoom');
+        }
+      }
+
+      void onCenterChanged() {
+        if (mounted && _map != null) {
+          // ignore: unused_local_variable
+          final center = _map!.callMethod('getCenter');
+          // Handle center change if needed
+        }
+      }
+
+      void onMapClick(dynamic clickEvent) {
+        final jsEvent = clickEvent as js.JsObject;
+        final latLng = jsEvent['latLng'];
+        final lat = latLng.callMethod('lat');
+        final lng = latLng.callMethod('lng');
+        debugPrint('Map clicked at: $lat, $lng');
+      }
+
       // Listen to zoom changes
       event.callMethod('addListener', [
         _map,
         'zoom_changed',
-        js.allowInterop(() {
-          if (mounted && _map != null) {
-            final zoom = _map!.callMethod('getZoom');
-            debugPrint('Zoom changed to: $zoom');
-          }
-        }),
+        onZoomChanged,
       ]);
 
       // Listen to center changes
       event.callMethod('addListener', [
         _map,
         'center_changed',
-        js.allowInterop(() {
-          if (mounted && _map != null) {
-            final center = _map!.callMethod('getCenter');
-            // Handle center change if needed
-          }
-        }),
+        onCenterChanged,
       ]);
 
       // Listen to map clicks
       event.callMethod('addListener', [
         _map,
         'click',
-        js.allowInterop((js.JsObject event) {
-          final latLng = event['latLng'];
-          final lat = latLng.callMethod('lat');
-          final lng = latLng.callMethod('lng');
-          debugPrint('Map clicked at: $lat, $lng');
-        }),
+        onMapClick,
       ]);
     } catch (e) {
       debugPrint('Error setting up map event listeners: $e');
@@ -250,17 +263,20 @@ class _EnhancedGoogleMapWebComponentState
         'optimized': true, // Enable marker optimization
       });
 
-      final jsMarker = js.JsObject(googleMaps['Marker'], [markerOptions]);
+      final markerConstructor = googleMaps['Marker'] as js.JsFunction;
+      final jsMarker = js.JsObject(markerConstructor, [markerOptions]);
 
       // Add click listener if needed
       if (marker.onTap != null || marker.infoWindow.title != null) {
+        void onMarkerClick() {
+          debugPrint('Marker clicked: ${marker.markerId.value}');
+          marker.onTap?.call();
+        }
+
         googleMaps['event'].callMethod('addListener', [
           jsMarker,
           'click',
-          js.allowInterop(() {
-            debugPrint('Marker clicked: ${marker.markerId.value}');
-            marker.onTap?.call();
-          }),
+          onMarkerClick,
         ]);
       }
 
@@ -320,7 +336,8 @@ class _EnhancedGoogleMapWebComponentState
         'zIndex': circle.zIndex,
       });
 
-      final jsCircle = js.JsObject(googleMaps['Circle'], [circleOptions]);
+      final circleConstructor = googleMaps['Circle'] as js.JsFunction;
+      final jsCircle = js.JsObject(circleConstructor, [circleOptions]);
       _circles[circle.circleId.value] = jsCircle;
     } catch (e) {
       debugPrint('Error creating circle: $e');
@@ -373,7 +390,8 @@ class _EnhancedGoogleMapWebComponentState
         'zIndex': polyline.zIndex > 0 ? polyline.zIndex : 1,
       });
 
-      final jsPolyline = js.JsObject(googleMaps['Polyline'], [polylineOptions]);
+      final polylineConstructor = googleMaps['Polyline'] as js.JsFunction;
+      final jsPolyline = js.JsObject(polylineConstructor, [polylineOptions]);
       _polylines[polyline.polylineId.value] = jsPolyline;
 
       debugPrint('Polyline created successfully: ${polyline.polylineId.value}');

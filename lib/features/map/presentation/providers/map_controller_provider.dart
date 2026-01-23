@@ -15,9 +15,12 @@ import 'target_location_providers/target_location_directions_provider.dart';
 part 'map_controller_provider.g.dart';
 
 @riverpod
-class CurrentMapController extends _$CurrentMapController with NotifierUpdate {
+class CurrentMapController extends _$CurrentMapController {
   @override
   GoogleMapController? build() => null;
+
+  void update(GoogleMapController? Function(GoogleMapController? state) fn) =>
+      state = fn(state);
 }
 
 @riverpod
@@ -29,11 +32,13 @@ class MapController extends _$MapController {
       currentAppThemeModeProvider,
       (previous, next) async {
         final isDark = next == AppThemeMode.dark;
-        await state?.setMapStyle(await MapStyleHelper.getMapStyle(isDarkMode: isDark));
+        await state
+            ?.setMapStyle(await MapStyleHelper.getMapStyle(isDarkMode: isDark));
       },
     );
 
-    final hasTargetPlace = ref.watch(currentPlaceDetailsProvider.select((value) => value.isSome()));
+    final hasTargetPlace = ref
+        .watch(currentPlaceDetailsProvider.select((value) => value.isSome()));
     if (hasTargetPlace) {
       ref.listen<Option<PlaceDirections>>(
         targetLocationDirectionsProvider,

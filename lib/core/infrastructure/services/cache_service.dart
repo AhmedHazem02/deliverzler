@@ -7,7 +7,7 @@ import '../../presentation/utils/riverpod_framework.dart';
 part 'cache_service.g.dart';
 
 @Riverpod(keepAlive: true)
-CacheService cacheService(CacheServiceRef ref) {
+CacheService cacheService(Ref ref) {
   return CacheService(
     customCacheManager: CacheManager(
       Config(
@@ -41,3 +41,4 @@ class CacheService {
     await customCacheManager.removeFile(cacheKey);
   }
 }
+

@@ -7,8 +7,9 @@ import '../../utils/constants.dart';
 part 'my_location_camera_position_provider.g.dart';
 
 @riverpod
-CameraPosition myLocationCameraPosition(MyLocationCameraPositionRef ref) {
-  final myLocation = ref.watch(locationStreamProvider.select((value) => value.valueOrNull));
+CameraPosition myLocationCameraPosition(Ref ref) {
+  final myLocation = ref.watch(
+      locationStreamProvider.select((value) => value.whenData((v) => v).value));
 
   return CameraPosition(
     target: LatLng(
