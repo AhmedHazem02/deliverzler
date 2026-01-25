@@ -33,5 +33,15 @@ class ProfileRepo {
     final profileDto = ProfileDetailsDto.fromDomain(params);
     await remoteDataSource.updateProfileData(profileDto);
   }
+
+  Future<void> updateUserLocation({
+    required double latitude,
+    required double longitude,
+  }) async {
+    await remoteDataSource.updateUserLocation(
+      latitude: latitude,
+      longitude: longitude,
+    );
+  }
 }
 

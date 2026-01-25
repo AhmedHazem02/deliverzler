@@ -33,6 +33,7 @@ extension GoRouterStateX on GoRouterState {
       const ProfileRoute().location,
       const SettingsRoute().location,
     ];
+    
     if (homeRoutes.any(routeLocation.startsWith)) {
       return defaultAuthority;
     }

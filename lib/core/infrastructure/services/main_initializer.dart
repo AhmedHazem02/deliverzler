@@ -52,15 +52,21 @@ void _setupLogger() {
 
 Future<void> _initFirebase() async {
   try {
+    log('Firebase: Initializing...');
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
+    log('Firebase: Initialized successfully');
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // Seed sample data for development (only adds data if orders collection is empty)
     await FirestoreSeeder.seedIfEmpty();
   } catch (e) {
-    log('Firebase initialization failed: $e');
-    // Continue without Firebase - app can still work with limited functionality
+    log('Firebase: initialization FAILED');
+    log('Error details: $e');
+    // On web, this is usually due to missing environment variables
+    if (kIsWeb) {
+      log('Check if you provided FIREBASE_WEB_* dart defines');
+    }
   }
 }
 

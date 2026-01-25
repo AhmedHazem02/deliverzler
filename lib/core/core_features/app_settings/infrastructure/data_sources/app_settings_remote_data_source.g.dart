@@ -7,11 +7,9 @@ part of 'app_settings_remote_data_source.dart';
 // **************************************************************************
 
 String _$appSettingsRemoteDataSourceHash() =>
-    r'app_settings_remote_data_source';
+    r'fda1d9cfa5e3cb9b212abc642a45da1ab597ab32';
 
-/// Remote data source for fetching app settings from Firebase.
-///
-/// Copied from [appSettingsRemoteDataSource].
+/// See also [appSettingsRemoteDataSource].
 @ProviderFor(appSettingsRemoteDataSource)
 final appSettingsRemoteDataSourceProvider =
     Provider<AppSettingsRemoteDataSource>.internal(
@@ -24,9 +22,7 @@ final appSettingsRemoteDataSourceProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef AppSettingsRemoteDataSourceRef
     = ProviderRef<AppSettingsRemoteDataSource>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

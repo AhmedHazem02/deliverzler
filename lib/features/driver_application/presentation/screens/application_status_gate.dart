@@ -75,8 +75,18 @@ class ApplicationStatusGate extends ConsumerWidget {
 
     switch (application.status) {
       case ApplicationStatus.approved:
-        // Approved - go to home
-        context.go(const HomeRoute().location);
+        // Approved - only go to home if we are currently at the status gate or login related routes
+        final location = GoRouterState.of(context).matchedLocation;
+        final isStatusRoute = location == const SplashRoute().location ||
+            location == const SignInRoute().location ||
+            location == const SignUpRoute().location ||
+            location == '/status-gate' ||
+            location == '/pending-approval' ||
+            location == '/driver-application';
+
+        if (isStatusRoute) {
+          context.go(const HomeRoute().location);
+        }
       case ApplicationStatus.pending:
       case ApplicationStatus.underReview:
         // Waiting for approval - show pending screen

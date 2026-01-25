@@ -6,7 +6,7 @@ part of 'app_settings_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appSettingsHash() => r'app_settings_hash';
+String _$appSettingsHash() => r'9744826e1917cb92da516f4e69700d8d6affd1f3';
 
 /// Provides the current app settings.
 ///
@@ -24,11 +24,8 @@ final appSettingsProvider = FutureProvider<AppSettings>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef AppSettingsRef = FutureProviderRef<AppSettings>;
-
-String _$appSettingsStreamHash() => r'app_settings_stream_hash';
+String _$appSettingsStreamHash() => r'cf7967e84134e8b38d6bbbc60062a42405a5dd7f';
 
 /// Streams app settings changes in real-time.
 ///
@@ -47,11 +44,8 @@ final appSettingsStreamProvider = StreamProvider<AppSettings>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef AppSettingsStreamRef = StreamProviderRef<AppSettings>;
-
-String _$deliverySettingsHash() => r'delivery_settings_hash';
+String _$deliverySettingsHash() => r'7853fe370ad8b17eda92f6757355ee45ba9fe4b4';
 
 /// Provides delivery settings directly for convenience.
 ///
@@ -68,11 +62,8 @@ final deliverySettingsProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef DeliverySettingsRef = AutoDisposeFutureProviderRef<DeliverySettings>;
-
-String _$generalSettingsHash() => r'general_settings_hash';
+String _$generalSettingsHash() => r'd322a1388c52adf11111171d93bc83734411890e';
 
 /// Provides general settings directly for convenience.
 ///
@@ -89,11 +80,8 @@ final generalSettingsProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef GeneralSettingsRef = AutoDisposeFutureProviderRef<GeneralSettings>;
-
-String _$currencySymbolHash() => r'currency_symbol_hash';
+String _$currencySymbolHash() => r'0b19f3804417c0d91ceb84428b0b4a12a8b43408';
 
 /// Provides the currency symbol for formatting.
 ///
@@ -109,11 +97,8 @@ final currencySymbolProvider = AutoDisposeFutureProvider<String>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef CurrencySymbolRef = AutoDisposeFutureProviderRef<String>;
-
-String _$baseDeliveryFeeHash() => r'base_delivery_fee_hash';
+String _$baseDeliveryFeeHash() => r'c180312ae5a70fdc0f33e734fd051ea986fa8c3a';
 
 /// Provides the base delivery fee.
 ///
@@ -129,11 +114,8 @@ final baseDeliveryFeeProvider = AutoDisposeFutureProvider<double>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef BaseDeliveryFeeRef = AutoDisposeFutureProviderRef<double>;
-
-String _$feePerKilometerHash() => r'fee_per_kilometer_hash';
+String _$feePerKilometerHash() => r'61823638bfd94fb4fb78cffdb48fc8d36be3fb80';
 
 /// Provides the fee per kilometer.
 ///
@@ -149,11 +131,9 @@ final feePerKilometerProvider = AutoDisposeFutureProvider<double>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef FeePerKilometerRef = AutoDisposeFutureProviderRef<double>;
-
-String _$estimatedDeliveryTimeHash() => r'estimated_delivery_time_hash';
+String _$estimatedDeliveryTimeHash() =>
+    r'97be54388e26959c02bf2db94f6af131aad5b1e9';
 
 /// Provides the estimated delivery time.
 ///
@@ -169,11 +149,8 @@ final estimatedDeliveryTimeProvider = AutoDisposeFutureProvider<int>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef EstimatedDeliveryTimeRef = AutoDisposeFutureProviderRef<int>;
-
-String _$isMaintenanceModeHash() => r'is_maintenance_mode_hash';
+String _$isMaintenanceModeHash() => r'21b0a473947dcd4c38bee2cb4e82ac96bd51314a';
 
 /// Checks if app is in maintenance mode.
 ///
@@ -189,11 +166,30 @@ final isMaintenanceModeProvider = AutoDisposeFutureProvider<bool>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef IsMaintenanceModeRef = AutoDisposeFutureProviderRef<bool>;
+String _$calculateDeliveryFeeHash() =>
+    r'727c2273a0d422414de06fff03d9851e8f3ecb10';
 
-String _$calculateDeliveryFeeHash() => r'calculate_delivery_fee_hash';
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
 
 /// Calculates delivery fee for a given distance.
 ///
@@ -316,12 +312,11 @@ class CalculateDeliveryFeeProvider extends AutoDisposeFutureProvider<double> {
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, distanceKm.hashCode);
+
     return _SystemHash.finish(hash);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin CalculateDeliveryFeeRef on AutoDisposeFutureProviderRef<double> {
   /// The parameter `distanceKm` of this provider.
   double get distanceKm;
@@ -336,7 +331,8 @@ class _CalculateDeliveryFeeProviderElement
   double get distanceKm => (origin as CalculateDeliveryFeeProvider).distanceKm;
 }
 
-String _$isWithinDeliveryRadiusHash() => r'is_within_delivery_radius_hash';
+String _$isWithinDeliveryRadiusHash() =>
+    r'6c8fab5e6dd89479277eafef68491b6c6c64a22a';
 
 /// Checks if distance is within delivery radius.
 ///
@@ -459,12 +455,11 @@ class IsWithinDeliveryRadiusProvider extends AutoDisposeFutureProvider<bool> {
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, distanceKm.hashCode);
+
     return _SystemHash.finish(hash);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin IsWithinDeliveryRadiusRef on AutoDisposeFutureProviderRef<bool> {
   /// The parameter `distanceKm` of this provider.
   double get distanceKm;
@@ -480,7 +475,8 @@ class _IsWithinDeliveryRadiusProviderElement
       (origin as IsWithinDeliveryRadiusProvider).distanceKm;
 }
 
-String _$refreshAppSettingsHash() => r'refresh_app_settings_hash';
+String _$refreshAppSettingsHash() =>
+    r'779050255d77df187454eed029613b50dbb046d5';
 
 /// Provider for refreshing settings manually.
 ///
@@ -497,27 +493,6 @@ final refreshAppSettingsProvider =
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef RefreshAppSettingsRef = AutoDisposeFutureProviderRef<AppSettings>;
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
-
-abstract class _SystemHash {
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

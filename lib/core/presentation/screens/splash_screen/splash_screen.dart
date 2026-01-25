@@ -30,22 +30,6 @@ class SplashScreen extends HookConsumerWidget {
 
     dev.log('SplashScreen: warmupState=$warmupState, isWarmedUp=$isWarmedUp');
 
-    if (isWarmedUp) {
-      ref.listen<AsyncValue<String>>(
-        splashTargetProvider,
-        (prevState, newState) {
-          dev.log('SplashScreen: splashTarget newState=$newState');
-          late String nextRoute;
-          newState.whenOrNull(
-            data: (next) => nextRoute = next,
-            error: (e, st) => nextRoute = const NoInternetRoute().location,
-          );
-          dev.log('SplashScreen: Navigating to $nextRoute');
-          context.go(nextRoute);
-        },
-      );
-    }
-
     final fadeController = useFadeInController();
 
     return WindowClassLayout(

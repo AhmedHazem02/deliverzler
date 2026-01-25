@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../auth/presentation/providers/check_auth_provider.dart';
 import '../../core_features/locale/presentation/providers/app_locale_provider.dart';
 import '../../core_features/theme/presentation/providers/app_theme_provider.dart';
@@ -15,7 +16,7 @@ import '../utils/riverpod_framework.dart';
 
 part 'splash_providers.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<void> splashServicesWarmup(Ref ref) async {
   dev.log('splashServicesWarmup: Starting...');
   final min =
@@ -25,8 +26,8 @@ Future<void> splashServicesWarmup(Ref ref) async {
   final s3 = Future<void>(() async {
     try {
       dev.log('splashServicesWarmup: Setting up notifications...');
-      await ref.watch(setupFlutterNotificationsProvider.future);
-      await ref.watch(requestNotificationPermissionsProvider.future);
+      await ref.read(setupFlutterNotificationsProvider.future);
+      await ref.read(requestNotificationPermissionsProvider.future);
       dev.log('splashServicesWarmup: Notifications setup complete');
     } catch (e) {
       dev.log('splashServicesWarmup: Notifications failed: $e');
@@ -41,7 +42,7 @@ Future<void> splashServicesWarmup(Ref ref) async {
       dev.log('splashServicesWarmup: Checking auth...');
       final timeout =
           kIsWeb ? const Duration(seconds: 5) : const Duration(seconds: 15);
-      await ref.watch(checkAuthProvider.future).timeout(timeout);
+      await ref.read(checkAuthProvider.future).timeout(timeout);
       dev.log('splashServicesWarmup: Auth check complete');
     } catch (e) {
       dev.log('splashServicesWarmup: Auth check failed/timed out: $e');

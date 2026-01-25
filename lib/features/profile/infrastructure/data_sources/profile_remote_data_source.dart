@@ -65,6 +65,21 @@ class ProfileRemoteDataSource {
       merge: true,
     );
   }
+
+  Future<void> updateUserLocation({
+    required double latitude,
+    required double longitude,
+  }) async {
+    final uid = ref.read(currentUserProvider).id;
+    return firebaseFirestore.setData(
+      path: userDocPath(uid),
+      data: {
+        'latitude': latitude,
+        'longitude': longitude,
+      },
+      merge: true,
+    );
+  }
 }
 
 

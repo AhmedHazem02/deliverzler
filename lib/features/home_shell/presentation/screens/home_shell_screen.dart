@@ -14,6 +14,7 @@ import '../../../../core/presentation/widgets/platform_widgets/platform_appbar.d
 import '../components/home_shell_bottom_nav_bar.dart';
 import '../components/home_shell_appbar.dart';
 import '../utils/tab_item.dart';
+import 'package:deliverzler/features/profile/presentation/providers/update_user_location_provider.dart';
 
 /// Builds the "shell" for the home by building a Scaffold with a persistent
 /// BottomNavigationBar or similar, where [navigationShell] is placed in the body of the Scaffold.
@@ -26,6 +27,8 @@ class HomeShellScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(updateUserLocationStateProvider, (previous, next) {});
+
     ref.listen(connectionStreamProvider, (prevState, newState) {
       newState.whenOrNull(
         data: (status) {
@@ -69,12 +72,11 @@ class HomeShellScreen extends HookConsumerWidget {
     }
 
     return PopScope(
-      canPop: TabItem.values[navigationShell.currentIndex] == TabItem.home,
-      onPopInvokedWithResult: (canPop, __) {
-        //This prevent popping when tab isn't (Home) & instead will back to home.
-        if (canPop) {
-          navigationShell.goBranch(TabItem.home.index);
-        }
+      canPop: navigationShell.currentIndex == TabItem.home.index,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        // If not on home tab, go back to home tab instead of exiting
+        navigationShell.goBranch(TabItem.home.index);
       },
       child: Scaffold(
         // Using single persistent AppBar for all tabs and update it according to current location.

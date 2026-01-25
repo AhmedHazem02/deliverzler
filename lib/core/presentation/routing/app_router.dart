@@ -16,6 +16,7 @@ import '../../../features/settings/presentation/screens/settings_screen/settings
 import '../../../features/driver_application/presentation/screens/application_status_gate.dart';
 import '../../../features/driver_application/presentation/screens/driver_application_screen.dart';
 import '../../../features/driver_application/presentation/screens/pending_approval_screen.dart';
+import '../providers/splash_providers.dart';
 import '../screens/no_internet_screen/no_internet_screen.dart';
 import '../screens/route_error_screen/route_error_screen.dart';
 import '../screens/splash_screen/splash_screen.dart';
@@ -57,15 +58,27 @@ GoRouter goRouter(Ref ref) {
     initialLocation: const SplashRoute().location,
     routes: $appRoutes,
     redirect: (BuildContext context, GoRouterState state) {
+      final warmupState = ref.read(splashServicesWarmupProvider);
+      if (warmupState.isLoading ||
+          (!warmupState.hasValue && !warmupState.hasError)) {
+        return null;
+      }
+
       final authState = ref.read(authStateProvider);
       final routeAuthority = state.routeAuthority;
       final isLegitRoute =
           routeAuthority.contains(RouteAuthority.fromAuthState(authState));
 
+      // If warmed up and at splash, redirect to home/login
+      if (state.matchedLocation == const SplashRoute().location) {
+        return authState.match(
+          () => const SignInRoute().location,
+          (user) => const ApplicationStatusGateRoute().location,
+        );
+      }
+
       if (!isLegitRoute) {
         return switch (authState) {
-          // If the user is authenticated but still on the login page or similar,
-          // send to status gate to check application status.
           Some() => const ApplicationStatusGateRoute().location,
           None() => const SignInRoute().location,
         };
