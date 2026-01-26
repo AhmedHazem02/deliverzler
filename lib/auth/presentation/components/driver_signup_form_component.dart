@@ -1,4 +1,4 @@
-import 'dart:io';
+import '../../../core/presentation/utils/file_utils.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -54,11 +54,11 @@ class DriverSignupFormComponent extends HookConsumerWidget {
     final vehiclePlateController = useTextEditingController();
 
     // Documents - support both File (mobile) and XFile (web)
-    final photoFile = useState<File?>(null);
-    final idDocumentFile = useState<File?>(null);
-    final licenseDocumentFile = useState<File?>(null);
-    final vehicleRegistrationFile = useState<File?>(null);
-    final vehicleInsuranceFile = useState<File?>(null);
+    final photoFile = useState<dynamic>(null);
+    final idDocumentFile = useState<dynamic>(null);
+    final licenseDocumentFile = useState<dynamic>(null);
+    final vehicleRegistrationFile = useState<dynamic>(null);
+    final vehicleInsuranceFile = useState<dynamic>(null);
 
     // Web files
     final photoXFile = useState<XFile?>(null);
@@ -335,11 +335,11 @@ class DriverSignupFormComponent extends HookConsumerWidget {
     required ValueNotifier<VehicleType> vehicleType,
     required TextEditingController vehiclePlateController,
     // Mobile files
-    required ValueNotifier<File?> photoFile,
-    required ValueNotifier<File?> idDocumentFile,
-    required ValueNotifier<File?> licenseDocumentFile,
-    required ValueNotifier<File?> vehicleRegistrationFile,
-    required ValueNotifier<File?> vehicleInsuranceFile,
+    required ValueNotifier<dynamic> photoFile,
+    required ValueNotifier<dynamic> idDocumentFile,
+    required ValueNotifier<dynamic> licenseDocumentFile,
+    required ValueNotifier<dynamic> vehicleRegistrationFile,
+    required ValueNotifier<dynamic> vehicleInsuranceFile,
     // Web files
     required ValueNotifier<XFile?> photoXFile,
     required ValueNotifier<XFile?> idDocumentXFile,
@@ -707,11 +707,11 @@ class _DocumentsStep extends StatelessWidget {
     required this.isSubmitting,
   });
 
-  final ValueNotifier<File?> photoFile;
-  final ValueNotifier<File?> idDocumentFile;
-  final ValueNotifier<File?> licenseDocumentFile;
-  final ValueNotifier<File?> vehicleRegistrationFile;
-  final ValueNotifier<File?> vehicleInsuranceFile;
+  final ValueNotifier<dynamic> photoFile;
+  final ValueNotifier<dynamic> idDocumentFile;
+  final ValueNotifier<dynamic> licenseDocumentFile;
+  final ValueNotifier<dynamic> vehicleRegistrationFile;
+  final ValueNotifier<dynamic> vehicleInsuranceFile;
   final ValueNotifier<XFile?> photoXFile;
   final ValueNotifier<XFile?> idDocumentXFile;
   final ValueNotifier<XFile?> licenseDocumentXFile;
@@ -799,9 +799,9 @@ class _DocumentUploadField extends StatelessWidget {
   });
 
   final String label;
-  final File? file;
+  final dynamic file;
   final XFile? xFile;
-  final void Function(File?, XFile?) onPick;
+  final void Function(dynamic, XFile?) onPick;
   final bool enabled;
 
   bool get hasFile => file != null || xFile != null;
@@ -861,7 +861,7 @@ class _DocumentUploadField extends StatelessWidget {
                         onPick(null, image);
                       } else {
                         // On mobile, convert to File
-                        onPick(File(image.path), null);
+                        onPick(getFile(image.path), null);
                       }
                     }
                   }

@@ -1,6 +1,4 @@
-﻿import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+﻿import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/infrastructure/network/main_api/api_callers/firebase_firestore_facade.dart';
@@ -121,7 +119,7 @@ class DriverApplicationRemoteDataSource {
   Future<String> uploadDocument({
     required String userId,
     required String documentType,
-    File? file,
+    dynamic file,
     XFile? webFile,
   }) async {
     return supabaseStorage.uploadDocument(

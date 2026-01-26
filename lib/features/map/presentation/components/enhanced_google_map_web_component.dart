@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:async';
 // ignore: deprecated_member_use
 import 'dart:html' as html;
@@ -8,7 +9,7 @@ import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'
-    show CameraPosition, Circle, LatLng, Marker, Polyline;
+    show BitmapDescriptor, CameraPosition, Circle, LatLng, Marker, Polyline;
 
 import '../../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../../core/core_features/theme/presentation/utils/app_theme.dart';
@@ -217,6 +218,9 @@ class _EnhancedGoogleMapWebComponentState
     }
   }
 
+  final Map<String, String> _dataUriCache = {};
+  final Map<String, int> _dataUriByteLengthCache = {};
+
   void _updateMarkers(Set<Marker> markers) {
     if (_map == null) return;
 
@@ -226,6 +230,9 @@ class _EnhancedGoogleMapWebComponentState
       if (!markerIds.contains(id)) {
         _markers[id]?.callMethod('setMap', [null]);
         _markers.remove(id);
+        // Clean up cache
+        _dataUriCache.remove(id);
+        _dataUriByteLengthCache.remove(id);
       }
     });
 
@@ -234,12 +241,8 @@ class _EnhancedGoogleMapWebComponentState
       final markerId = marker.markerId.value;
 
       if (_markers.containsKey(markerId)) {
-        // Update existing marker position
-        final position = js.JsObject.jsify({
-          'lat': marker.position.latitude,
-          'lng': marker.position.longitude,
-        });
-        _markers[markerId]?.callMethod('setPosition', [position]);
+        // Update existing marker
+        _updateMarkerData(marker, _markers[markerId]!);
       } else {
         // Create new marker
         _createMarker(marker);
@@ -247,9 +250,89 @@ class _EnhancedGoogleMapWebComponentState
     }
   }
 
+  final Map<String, String> _lastMarkerIconUrl = {};
+
+  void _updateMarkerData(Marker marker, js.JsObject jsMarker) {
+    // Consolidated update (Atomic operation to prevent flickering)
+    final Map<String, dynamic> optionsToUpdate = {
+      'position': {
+        'lat': marker.position.latitude,
+        'lng': marker.position.longitude,
+      },
+      'title': marker.infoWindow.title ?? marker.markerId.value,
+      'draggable': marker.draggable,
+      'visible': marker.visible,
+      'zIndex': 999, // Force highest z-index for my location
+      'rotation': marker.rotation,
+      'flat': marker.flat,
+    };
+
+    // Icon Diffing
+    final newIconUrl = _parseIcon(marker.icon, marker.markerId.value);
+    final lastUrl = _lastMarkerIconUrl[marker.markerId.value];
+
+    if (newIconUrl != null && newIconUrl != lastUrl) {
+      optionsToUpdate['icon'] = newIconUrl;
+      _lastMarkerIconUrl[marker.markerId.value] = newIconUrl;
+    }
+
+    // Apply ALL options in one go
+    final jsOptions = js.JsObject.jsify(optionsToUpdate);
+    jsMarker.callMethod('setOptions', [jsOptions]);
+  }
+
+  dynamic _parseIcon(BitmapDescriptor icon, String markerId) {
+    try {
+      final json = icon.toJson() as List<dynamic>;
+      final type = json[0] as String;
+
+      switch (type) {
+        case 'defaultMarker':
+          if (json.length > 1) {
+             return null; 
+          }
+          return null;
+        case 'fromAssetImage':
+          final path = json[1] as String;
+          if (path.startsWith('assets/')) {
+             return 'assets/$path';
+          }
+          return 'assets/$path';
+        case 'fromBytes':
+          final rawBytes = json[1];
+          if (rawBytes is List) {
+             final bytes = rawBytes.cast<int>();
+             
+             // Check cache: Avoid heavy base64 encoding if bytes haven't changed
+             if (_dataUriCache.containsKey(markerId) && 
+                 _dataUriByteLengthCache[markerId] == bytes.length) {
+                // Ideally we check content hash, but length is a fast proxy for this frame-rate
+                return _dataUriCache[markerId];
+             }
+
+             // Convert to Base64 Data URI
+             final base64String = base64Encode(bytes);
+             final dataUri = 'data:image/png;base64,$base64String';
+             
+             _dataUriCache[markerId] = dataUri;
+             _dataUriByteLengthCache[markerId] = bytes.length;
+             return dataUri;
+          }
+          return null;
+        default:
+          return null;
+      }
+    } catch (e) {
+      debugPrint('Error parsing icon: $e');
+      return null;
+    }
+  }
+
   void _createMarker(Marker marker) {
     try {
       final googleMaps = js.context['google']['maps'];
+      final icon = _parseIcon(marker.icon, marker.markerId.value);
+
       final markerOptions = js.JsObject.jsify({
         'position': {
           'lat': marker.position.latitude,
@@ -260,13 +343,15 @@ class _EnhancedGoogleMapWebComponentState
         'draggable': marker.draggable,
         'visible': marker.visible,
         'zIndex': marker.zIndex.toInt(),
-        'optimized': true, // Enable marker optimization
+        'optimized': true,
+        'rotation': marker.rotation,
+        'flat': marker.flat,
+        if (icon != null) 'icon': icon,
       });
 
       final markerConstructor = googleMaps['Marker'] as js.JsFunction;
       final jsMarker = js.JsObject(markerConstructor, [markerOptions]);
 
-      // Add click listener if needed
       if (marker.onTap != null || marker.infoWindow.title != null) {
         void onMarkerClick() {
           debugPrint('Marker clicked: ${marker.markerId.value}');

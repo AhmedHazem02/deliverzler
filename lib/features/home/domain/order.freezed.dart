@@ -30,6 +30,7 @@ mixin _$AppOrder {
   DeliveryStatus get deliveryStatus => throw _privateConstructorUsedError;
   String? get deliveryId => throw _privateConstructorUsedError;
   GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
+  double? get deliveryHeading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppOrderCopyWith<AppOrder> get copyWith =>
@@ -55,7 +56,8 @@ abstract class $AppOrderCopyWith<$Res> {
       String? employeeCancelNote,
       DeliveryStatus deliveryStatus,
       String? deliveryId,
-      GeoPoint? deliveryGeoPoint});
+      GeoPoint? deliveryGeoPoint,
+      double? deliveryHeading});
 
   $AddressCopyWith<$Res>? get address;
 }
@@ -87,6 +89,7 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
+    Object? deliveryHeading = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -145,6 +148,10 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
           ? _value.deliveryGeoPoint
           : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint?,
+      deliveryHeading: freezed == deliveryHeading
+          ? _value.deliveryHeading
+          : deliveryHeading // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 
@@ -183,7 +190,8 @@ abstract class _$$AppOrderImplCopyWith<$Res>
       String? employeeCancelNote,
       DeliveryStatus deliveryStatus,
       String? deliveryId,
-      GeoPoint? deliveryGeoPoint});
+      GeoPoint? deliveryGeoPoint,
+      double? deliveryHeading});
 
   @override
   $AddressCopyWith<$Res>? get address;
@@ -214,6 +222,7 @@ class __$$AppOrderImplCopyWithImpl<$Res>
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
+    Object? deliveryHeading = freezed,
   }) {
     return _then(_$AppOrderImpl(
       id: null == id
@@ -272,6 +281,10 @@ class __$$AppOrderImplCopyWithImpl<$Res>
           ? _value.deliveryGeoPoint
           : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint?,
+      deliveryHeading: freezed == deliveryHeading
+          ? _value.deliveryHeading
+          : deliveryHeading // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -293,7 +306,8 @@ class _$AppOrderImpl extends _AppOrder {
       required this.employeeCancelNote,
       required this.deliveryStatus,
       required this.deliveryId,
-      required this.deliveryGeoPoint})
+      required this.deliveryGeoPoint,
+      required this.deliveryHeading})
       : super._();
 
   @override
@@ -324,10 +338,12 @@ class _$AppOrderImpl extends _AppOrder {
   final String? deliveryId;
   @override
   final GeoPoint? deliveryGeoPoint;
+  @override
+  final double? deliveryHeading;
 
   @override
   String toString() {
-    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint)';
+    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading)';
   }
 
   @JsonKey(ignore: true)
@@ -352,7 +368,8 @@ abstract class _AppOrder extends AppOrder {
       required final String? employeeCancelNote,
       required final DeliveryStatus deliveryStatus,
       required final String? deliveryId,
-      required final GeoPoint? deliveryGeoPoint}) = _$AppOrderImpl;
+      required final GeoPoint? deliveryGeoPoint,
+      required final double? deliveryHeading}) = _$AppOrderImpl;
   const _AppOrder._() : super._();
 
   @override
@@ -383,6 +400,8 @@ abstract class _AppOrder extends AppOrder {
   String? get deliveryId;
   @override
   GeoPoint? get deliveryGeoPoint;
+  @override
+  double? get deliveryHeading;
   @override
   @JsonKey(ignore: true)
   _$$AppOrderImplCopyWith<_$AppOrderImpl> get copyWith =>

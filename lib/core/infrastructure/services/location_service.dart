@@ -1,8 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
 
-import 'dart:io';
-
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_android/src/types/foreground_settings.dart';
 import 'package:location/location.dart' as loc;
@@ -84,7 +82,7 @@ class LocationService {
     int? interval,
     int? distanceFilter,
   }) {
-    // Web and other platforms use default LocationSettings
+    // Web uses default LocationSettings
     if (kIsWeb) {
       return LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -92,40 +90,49 @@ class LocationService {
             distanceFilter ?? AppLocationSettings.locationChangeDistance,
       );
     }
-    if (Platform.isAndroid) {
-      return AndroidSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter:
-            distanceFilter ?? AppLocationSettings.locationChangeDistance,
-        intervalDuration: Duration(
-          seconds: interval ?? AppLocationSettings.locationChangeInterval,
-        ),
-        //Set foreground notification config to keep app alive in background
-        foregroundNotificationConfig: const ForegroundNotificationConfig(
-          notificationTitle: 'Deliverzler Delivery Service',
-          notificationText:
-              'Deliverzler will receive your location in background.',
-          notificationIcon: AndroidResource(name: 'notification_icon'),
-          enableWakeLock: true,
-        ),
-      );
-    } else if (Platform.isIOS || Platform.isMacOS) {
-      return AppleSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter:
-            distanceFilter ?? AppLocationSettings.locationChangeDistance,
-        activityType: ActivityType.automotiveNavigation,
-        pauseLocationUpdatesAutomatically: true,
-        //Set to true to keep app alive in background
-        showBackgroundLocationIndicator: true,
-      );
-    } else {
-      return LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter:
-            distanceFilter ?? AppLocationSettings.locationChangeDistance,
-      );
+    
+    // Try to detect platform for native apps
+    try {
+      final platform = defaultTargetPlatform;
+      
+      if (platform == TargetPlatform.android) {
+        return AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter:
+              distanceFilter ?? AppLocationSettings.locationChangeDistance,
+          intervalDuration: Duration(
+            seconds: interval ?? AppLocationSettings.locationChangeInterval,
+          ),
+          //Set foreground notification config to keep app alive in background
+          foregroundNotificationConfig: const ForegroundNotificationConfig(
+            notificationTitle: 'Deliverzler Delivery Service',
+            notificationText:
+                'Deliverzler will receive your location in background.',
+            notificationIcon: AndroidResource(name: 'notification_icon'),
+            enableWakeLock: true,
+          ),
+        );
+      } else if (platform == TargetPlatform.iOS || platform == TargetPlatform.macOS) {
+        return AppleSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter:
+              distanceFilter ?? AppLocationSettings.locationChangeDistance,
+          activityType: ActivityType.automotiveNavigation,
+          pauseLocationUpdatesAutomatically: true,
+          //Set to true to keep app alive in background
+          showBackgroundLocationIndicator: true,
+        );
+      }
+    } catch (e) {
+      // Platform detection failed, use generic settings
     }
+    
+    // Fallback for unsupported platforms
+    return LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter:
+          distanceFilter ?? AppLocationSettings.locationChangeDistance,
+    );
   }
 
   Future<Position?> getLocation() async {

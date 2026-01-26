@@ -9,6 +9,6 @@ part of 'update_delivery_geo_point_dto.dart';
 Map<String, dynamic> _$$UpdateDeliveryGeoPointDtoImplToJson(
         _$UpdateDeliveryGeoPointDtoImpl instance) =>
     <String, dynamic>{
-      'orderId': instance.orderId,
-      'geoPoint': const GeoPointConverter().toJson(instance.geoPoint),
+      'deliveryGeoPoint': const GeoPointConverter().toJson(instance.geoPoint),
+      'deliveryHeading': instance.heading,
     };

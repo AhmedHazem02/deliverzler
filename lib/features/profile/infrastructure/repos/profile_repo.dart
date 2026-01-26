@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/profile_details.dart';
@@ -19,8 +19,8 @@ class ProfileRepo {
 
   final ProfileRemoteDataSource remoteDataSource;
 
-  Future<String> uploadProfileImage(File imageFile) async {
-    final imageUrl = await remoteDataSource.uploadProfileImage(imageFile);
+  Future<String> uploadProfileImage(Uint8List imageBytes, String filename) async {
+    final imageUrl = await remoteDataSource.uploadProfileImage(imageBytes, filename);
     return imageUrl;
   }
 

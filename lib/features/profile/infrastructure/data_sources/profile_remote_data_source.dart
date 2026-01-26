@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../../core/infrastructure/network/main_api/api_callers/firebase_firestorage_facade.dart';
@@ -38,12 +38,14 @@ class ProfileRemoteDataSource {
 
   static String userStorageFolderPath(String uid) => '$usersStorageFolderPath/$uid';
 
-  Future<String> uploadProfileImage(File imageFile) async {
+  /// Upload profile image from bytes (cross-platform)
+  Future<String> uploadProfileImage(Uint8List imageBytes, String filename) async {
     final uid = ref.read(currentUserProvider).id;
     final imageUrl = await firebaseStorage.uploadImage(
       //File name is always user's uid, to replace the file when updating it.
       path: '${userStorageFolderPath(uid)}/$uid',
-      file: imageFile,
+      bytes: imageBytes,
+      filename: filename,
     );
     return imageUrl;
   }

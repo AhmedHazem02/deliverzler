@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
@@ -83,11 +81,11 @@ class EditDriverProfile extends _$EditDriverProfile {
     required String vehiclePlate,
     String? notes,
     // Mobile files
-    File? photo,
-    File? idDocument,
-    File? license,
-    File? vehicleRegistration,
-    File? vehicleInsurance,
+    dynamic photo,
+    dynamic idDocument,
+    dynamic license,
+    dynamic vehicleRegistration,
+    dynamic vehicleInsurance,
     // Web files
     XFile? photoWeb,
     XFile? idDocumentWeb,

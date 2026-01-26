@@ -1,6 +1,4 @@
-﻿import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
+﻿import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../infrastructure/services/web/web_device_info_service.dart';
@@ -15,7 +13,8 @@ FutureOr<Option<AndroidDeviceInfo>> androidDeviceInfo(
   Ref ref,
 ) async {
   if (kIsWeb) return const None();
-  if (Platform.isAndroid) {
+  // Use defaultTargetPlatform for web-safe platform detection
+  if (defaultTargetPlatform == TargetPlatform.android) {
     return await DeviceInfoPlugin().androidInfo.then(Some.new);
   }
   return const None();

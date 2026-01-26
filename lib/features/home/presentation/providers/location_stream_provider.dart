@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,11 +17,16 @@ Stream<Position> locationStream(
   await ref.watch(enableLocationProvider(locationService).future);
   await ref.watch(requestLocationPermissionProvider(locationService).future);
 
-  yield* Geolocator.getPositionStream(
-    locationSettings: locationService.getLocationSettings(),
-    //Throttling location's stream as intervalDuration is not supported on iOS
-  ).throttleTime(const Duration(seconds: AppLocationSettings.locationChangeInterval)).handleError(
+  yield* locationService
+      .getLocationStream(
+    intervalSeconds: AppLocationSettings.locationChangeInterval,
+  )
+      .throttleTime(const Duration(seconds: 3))
+      .handleError(
     (Object err, StackTrace st) {
+      if (kIsWeb) {
+        print('Web location error: $err');
+      }
       Error.throwWithStackTrace(LocationError.getLocationTimeout, st);
     },
   );
@@ -56,7 +59,8 @@ Future<void> requestLocationPermission(
     );
   }
 
-  if (!kIsWeb && Platform.isAndroid) {
+  // Request always permission on mobile (not Web)
+  if (!kIsWeb) {
     final alwaysGranted = await locationService.requestAlwaysPermission();
     if (!alwaysGranted) {
       Error.throwWithStackTrace(

@@ -7,11 +7,11 @@ part of 'splash_providers.dart';
 // **************************************************************************
 
 String _$splashServicesWarmupHash() =>
-    r'36ba01e8e429d56670b74d99f482bb8e9e146673';
+    r'c774bd2baa9943dece2a1acec03608dd8dbde7bf';
 
 /// See also [splashServicesWarmup].
 @ProviderFor(splashServicesWarmup)
-final splashServicesWarmupProvider = AutoDisposeFutureProvider<void>.internal(
+final splashServicesWarmupProvider = FutureProvider<void>.internal(
   splashServicesWarmup,
   name: r'splashServicesWarmupProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,7 +21,7 @@ final splashServicesWarmupProvider = AutoDisposeFutureProvider<void>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SplashServicesWarmupRef = AutoDisposeFutureProviderRef<void>;
+typedef SplashServicesWarmupRef = FutureProviderRef<void>;
 String _$splashTargetHash() => r'c572fcbb2e7583c69c1b567797f1c6258fa5cffe';
 
 /// See also [splashTarget].

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../../core/presentation/utils/fp_framework.dart';
@@ -11,25 +12,26 @@ part 'map_markers_providers.g.dart';
 class MapMarkers extends _$MapMarkers {
   @override
   Set<Marker> build() {
-    state = {};
-    ref.listen<Option<Marker>>(
-      myLocationMarkerProvider,
-      (previous, next) {
-        next.fold(
-          () {},
-          _addMarker,
-        );
+    print('🗺️ MapMarkers building...');
+    final Set<Marker> markers = {};
+
+    // Watch My Location Marker
+    final myMarkerOption = ref.watch(myLocationMarkerProvider);
+    myMarkerOption.fold(
+      () => print('🗺️ MapMarkers: My location marker is NONE'),
+      (marker) {
+        print('🗺️ MapMarkers: Adding my location marker');
+        markers.add(marker);
       },
-      fireImmediately: true,
     );
-    ref.listen<Marker>(
-      targetLocationMarkerProvider,
-      (previous, next) {
-        _addMarker(next);
-      },
-      fireImmediately: true,
-    );
-    return state;
+
+    // Watch Target Location Marker
+    final targetMarker = ref.watch(targetLocationMarkerProvider);
+    print('🗺️ MapMarkers: Adding target marker');
+    markers.add(targetMarker);
+
+    print('🗺️ MapMarkers: Total markers = ${markers.length}');
+    return markers;
   }
 
   void _addMarker(Marker marker) {

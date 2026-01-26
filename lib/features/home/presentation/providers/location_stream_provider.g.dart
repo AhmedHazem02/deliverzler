@@ -6,7 +6,7 @@ part of 'location_stream_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$locationStreamHash() => r'2ec3f990a91c3c1a7ca3a9128ed5cce6b7d78e7d';
+String _$locationStreamHash() => r'08a457a21c9443fad28ba956951d3975c5a432e4';
 
 /// See also [locationStream].
 @ProviderFor(locationStream)
@@ -173,7 +173,7 @@ class _EnableLocationProviderElement
 }
 
 String _$requestLocationPermissionHash() =>
-    r'd5baf015a7490423b408dee3c603dc429bc3b98c';
+    r'890cb6046e8414c7fad299b2268b1c327ee852d3';
 
 /// See also [requestLocationPermission].
 @ProviderFor(requestLocationPermission)

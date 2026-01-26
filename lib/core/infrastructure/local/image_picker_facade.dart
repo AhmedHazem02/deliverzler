@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -13,6 +13,17 @@ enum PickSource {
   gallery,
 }
 
+/// Cross-platform image data
+class PickedImageData {
+  const PickedImageData({
+    required this.bytes,
+    required this.filename,
+  });
+
+  final Uint8List bytes;
+  final String filename;
+}
+
 @Riverpod(keepAlive: true)
 ImagePickerFacade imagePickerFacade(Ref ref) {
   return ImagePickerFacade(
@@ -25,7 +36,7 @@ class ImagePickerFacade {
 
   final ImagePicker imagePicker;
 
-  Future<File> pickImage({
+  Future<PickedImageData> pickImage({
     required PickSource pickSource,
     double? maxHeight,
     double? maxWidth,
@@ -38,7 +49,12 @@ class ImagePickerFacade {
           maxWidth: maxWidth,
         );
         if (pickedFile != null) {
-          return File(pickedFile.path);
+          // Read as bytes - works on all platforms including web
+          final bytes = await pickedFile.readAsBytes();
+          return PickedImageData(
+            bytes: bytes,
+            filename: pickedFile.name,
+          );
         } else {
           throw const CacheException(
             type: CacheExceptionType.general,

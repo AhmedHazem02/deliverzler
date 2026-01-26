@@ -6,7 +6,7 @@ part of 'my_location_marker_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myLocationMarkerHash() => r'2c92316b48a68b01e1833dbb6be0443740f842f8';
+String _$myLocationMarkerHash() => r'f7f5ce0d5cd541ecf8ddeba1cd06d17f39e242dd';
 
 /// See also [myLocationMarker].
 @ProviderFor(myLocationMarker)
@@ -22,7 +22,7 @@ final myLocationMarkerProvider = AutoDisposeProvider<Option<Marker>>.internal(
 
 typedef MyLocationMarkerRef = AutoDisposeProviderRef<Option<Marker>>;
 String _$myLocationMarkerIconHash() =>
-    r'a8790b714c57d5bcf200bc79f79bc201dfed5701';
+    r'eaa9dfec2bad05ca8cac0a57d9890e458d6f7292';
 
 /// See also [myLocationMarkerIcon].
 @ProviderFor(myLocationMarkerIcon)

@@ -6,7 +6,7 @@ part of 'pick_profile_image_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pickProfileImageHash() => r'e1f9774c7a850a9e7322a811cd3d9a209cd82983';
+String _$pickProfileImageHash() => r'7a7b1aaecf7f7be801495dfe7c125752fcd958a5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -34,7 +34,7 @@ class _SystemHash {
 const pickProfileImageProvider = PickProfileImageFamily();
 
 /// See also [pickProfileImage].
-class PickProfileImageFamily extends Family<AsyncValue<File>> {
+class PickProfileImageFamily extends Family<AsyncValue<PickedImageData>> {
   /// See also [pickProfileImage].
   const PickProfileImageFamily();
 
@@ -72,7 +72,8 @@ class PickProfileImageFamily extends Family<AsyncValue<File>> {
 }
 
 /// See also [pickProfileImage].
-class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
+class PickProfileImageProvider
+    extends AutoDisposeFutureProvider<PickedImageData> {
   /// See also [pickProfileImage].
   PickProfileImageProvider(
     PickSource pickSource,
@@ -107,7 +108,7 @@ class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
 
   @override
   Override overrideWith(
-    FutureOr<File> Function(PickProfileImageRef provider) create,
+    FutureOr<PickedImageData> Function(PickProfileImageRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -124,7 +125,7 @@ class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<File> createElement() {
+  AutoDisposeFutureProviderElement<PickedImageData> createElement() {
     return _PickProfileImageProviderElement(this);
   }
 
@@ -142,13 +143,14 @@ class PickProfileImageProvider extends AutoDisposeFutureProvider<File> {
   }
 }
 
-mixin PickProfileImageRef on AutoDisposeFutureProviderRef<File> {
+mixin PickProfileImageRef on AutoDisposeFutureProviderRef<PickedImageData> {
   /// The parameter `pickSource` of this provider.
   PickSource get pickSource;
 }
 
 class _PickProfileImageProviderElement
-    extends AutoDisposeFutureProviderElement<File> with PickProfileImageRef {
+    extends AutoDisposeFutureProviderElement<PickedImageData>
+    with PickProfileImageRef {
   _PickProfileImageProviderElement(super.provider);
 
   @override

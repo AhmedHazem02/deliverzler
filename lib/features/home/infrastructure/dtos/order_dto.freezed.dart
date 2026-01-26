@@ -35,6 +35,7 @@ mixin _$OrderDto {
   String? get deliveryId => throw _privateConstructorUsedError;
   @GeoPointConverter()
   GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
+  double? get deliveryHeading => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
 
@@ -62,6 +63,7 @@ abstract class $OrderDtoCopyWith<$Res> {
       DeliveryStatus deliveryStatus,
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
+      double? deliveryHeading,
       @JsonKey(includeToJson: false) String? id});
 
   $AddressDtoCopyWith<$Res>? get address;
@@ -93,6 +95,7 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
+    Object? deliveryHeading = freezed,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
@@ -148,6 +151,10 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryGeoPoint
           : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint?,
+      deliveryHeading: freezed == deliveryHeading
+          ? _value.deliveryHeading
+          : deliveryHeading // ignore: cast_nullable_to_non_nullable
+              as double?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -190,6 +197,7 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
       DeliveryStatus deliveryStatus,
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
+      double? deliveryHeading,
       @JsonKey(includeToJson: false) String? id});
 
   @override
@@ -220,6 +228,7 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
+    Object? deliveryHeading = freezed,
     Object? id = freezed,
   }) {
     return _then(_$OrderDtoImpl(
@@ -275,6 +284,10 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryGeoPoint
           : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint?,
+      deliveryHeading: freezed == deliveryHeading
+          ? _value.deliveryHeading
+          : deliveryHeading // ignore: cast_nullable_to_non_nullable
+              as double?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -300,6 +313,7 @@ class _$OrderDtoImpl extends _OrderDto {
       required this.deliveryStatus,
       required this.deliveryId,
       @GeoPointConverter() required this.deliveryGeoPoint,
+      required this.deliveryHeading,
       @JsonKey(includeToJson: false) this.id})
       : super._();
 
@@ -335,12 +349,14 @@ class _$OrderDtoImpl extends _OrderDto {
   @GeoPointConverter()
   final GeoPoint? deliveryGeoPoint;
   @override
+  final double? deliveryHeading;
+  @override
   @JsonKey(includeToJson: false)
   final String? id;
 
   @override
   String toString() {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, id: $id)';
+    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, id: $id)';
   }
 
   @override
@@ -371,6 +387,8 @@ class _$OrderDtoImpl extends _OrderDto {
                 other.deliveryId == deliveryId) &&
             (identical(other.deliveryGeoPoint, deliveryGeoPoint) ||
                 other.deliveryGeoPoint == deliveryGeoPoint) &&
+            (identical(other.deliveryHeading, deliveryHeading) ||
+                other.deliveryHeading == deliveryHeading) &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -391,6 +409,7 @@ class _$OrderDtoImpl extends _OrderDto {
       deliveryStatus,
       deliveryId,
       deliveryGeoPoint,
+      deliveryHeading,
       id);
 
   @JsonKey(ignore: true)
@@ -415,6 +434,7 @@ abstract class _OrderDto extends OrderDto {
       required final DeliveryStatus deliveryStatus,
       required final String? deliveryId,
       @GeoPointConverter() required final GeoPoint? deliveryGeoPoint,
+      required final double? deliveryHeading,
       @JsonKey(includeToJson: false) final String? id}) = _$OrderDtoImpl;
   const _OrderDto._() : super._();
 
@@ -449,6 +469,8 @@ abstract class _OrderDto extends OrderDto {
   @override
   @GeoPointConverter()
   GeoPoint? get deliveryGeoPoint;
+  @override
+  double? get deliveryHeading;
   @override
   @JsonKey(includeToJson: false)
   String? get id;

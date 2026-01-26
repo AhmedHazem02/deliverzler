@@ -16,9 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$UpdateDeliveryGeoPointDto {
+  @JsonKey(includeToJson: false)
   String get orderId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deliveryGeoPoint')
   @GeoPointConverter()
   GeoPoint get geoPoint => throw _privateConstructorUsedError;
+  @JsonKey(name: 'deliveryHeading')
+  double get heading => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -32,7 +36,10 @@ abstract class $UpdateDeliveryGeoPointDtoCopyWith<$Res> {
           $Res Function(UpdateDeliveryGeoPointDto) then) =
       _$UpdateDeliveryGeoPointDtoCopyWithImpl<$Res, UpdateDeliveryGeoPointDto>;
   @useResult
-  $Res call({String orderId, @GeoPointConverter() GeoPoint geoPoint});
+  $Res call(
+      {@JsonKey(includeToJson: false) String orderId,
+      @JsonKey(name: 'deliveryGeoPoint') @GeoPointConverter() GeoPoint geoPoint,
+      @JsonKey(name: 'deliveryHeading') double heading});
 }
 
 /// @nodoc
@@ -51,6 +58,7 @@ class _$UpdateDeliveryGeoPointDtoCopyWithImpl<$Res,
   $Res call({
     Object? orderId = null,
     Object? geoPoint = null,
+    Object? heading = null,
   }) {
     return _then(_value.copyWith(
       orderId: null == orderId
@@ -61,6 +69,10 @@ class _$UpdateDeliveryGeoPointDtoCopyWithImpl<$Res,
           ? _value.geoPoint
           : geoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint,
+      heading: null == heading
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -74,7 +86,10 @@ abstract class _$$UpdateDeliveryGeoPointDtoImplCopyWith<$Res>
       __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String orderId, @GeoPointConverter() GeoPoint geoPoint});
+  $Res call(
+      {@JsonKey(includeToJson: false) String orderId,
+      @JsonKey(name: 'deliveryGeoPoint') @GeoPointConverter() GeoPoint geoPoint,
+      @JsonKey(name: 'deliveryHeading') double heading});
 }
 
 /// @nodoc
@@ -92,6 +107,7 @@ class __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>
   $Res call({
     Object? orderId = null,
     Object? geoPoint = null,
+    Object? heading = null,
   }) {
     return _then(_$UpdateDeliveryGeoPointDtoImpl(
       orderId: null == orderId
@@ -102,6 +118,10 @@ class __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>
           ? _value.geoPoint
           : geoPoint // ignore: cast_nullable_to_non_nullable
               as GeoPoint,
+      heading: null == heading
+          ? _value.heading
+          : heading // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -110,17 +130,26 @@ class __$$UpdateDeliveryGeoPointDtoImplCopyWithImpl<$Res>
 @JsonSerializable(createFactory: false)
 class _$UpdateDeliveryGeoPointDtoImpl implements _UpdateDeliveryGeoPointDto {
   const _$UpdateDeliveryGeoPointDtoImpl(
-      {required this.orderId, @GeoPointConverter() required this.geoPoint});
+      {@JsonKey(includeToJson: false) required this.orderId,
+      @JsonKey(name: 'deliveryGeoPoint')
+      @GeoPointConverter()
+      required this.geoPoint,
+      @JsonKey(name: 'deliveryHeading') required this.heading});
 
   @override
+  @JsonKey(includeToJson: false)
   final String orderId;
   @override
+  @JsonKey(name: 'deliveryGeoPoint')
   @GeoPointConverter()
   final GeoPoint geoPoint;
+  @override
+  @JsonKey(name: 'deliveryHeading')
+  final double heading;
 
   @override
   String toString() {
-    return 'UpdateDeliveryGeoPointDto(orderId: $orderId, geoPoint: $geoPoint)';
+    return 'UpdateDeliveryGeoPointDto(orderId: $orderId, geoPoint: $geoPoint, heading: $heading)';
   }
 
   @override
@@ -130,12 +159,13 @@ class _$UpdateDeliveryGeoPointDtoImpl implements _UpdateDeliveryGeoPointDto {
             other is _$UpdateDeliveryGeoPointDtoImpl &&
             (identical(other.orderId, orderId) || other.orderId == orderId) &&
             (identical(other.geoPoint, geoPoint) ||
-                other.geoPoint == geoPoint));
+                other.geoPoint == geoPoint) &&
+            (identical(other.heading, heading) || other.heading == heading));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, orderId, geoPoint);
+  int get hashCode => Object.hash(runtimeType, orderId, geoPoint, heading);
 
   @JsonKey(ignore: true)
   @override
@@ -154,15 +184,23 @@ class _$UpdateDeliveryGeoPointDtoImpl implements _UpdateDeliveryGeoPointDto {
 
 abstract class _UpdateDeliveryGeoPointDto implements UpdateDeliveryGeoPointDto {
   const factory _UpdateDeliveryGeoPointDto(
-          {required final String orderId,
-          @GeoPointConverter() required final GeoPoint geoPoint}) =
+          {@JsonKey(includeToJson: false) required final String orderId,
+          @JsonKey(name: 'deliveryGeoPoint')
+          @GeoPointConverter()
+          required final GeoPoint geoPoint,
+          @JsonKey(name: 'deliveryHeading') required final double heading}) =
       _$UpdateDeliveryGeoPointDtoImpl;
 
   @override
+  @JsonKey(includeToJson: false)
   String get orderId;
   @override
+  @JsonKey(name: 'deliveryGeoPoint')
   @GeoPointConverter()
   GeoPoint get geoPoint;
+  @override
+  @JsonKey(name: 'deliveryHeading')
+  double get heading;
   @override
   @JsonKey(ignore: true)
   _$$UpdateDeliveryGeoPointDtoImplCopyWith<_$UpdateDeliveryGeoPointDtoImpl>

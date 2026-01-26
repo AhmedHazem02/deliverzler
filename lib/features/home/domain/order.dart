@@ -26,6 +26,7 @@ class AppOrder with _$AppOrder {
     required DeliveryStatus deliveryStatus,
     required String? deliveryId,
     required GeoPoint? deliveryGeoPoint,
+    required double? deliveryHeading,
   }) = _AppOrder;
   const AppOrder._();
 

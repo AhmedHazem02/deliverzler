@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -23,13 +23,20 @@ class FirebaseStorageFacade {
 
   final FirebaseStorage firebaseStorage;
 
+  /// Upload image from bytes (works on all platforms including web)
   Future<String> uploadImage({
     required String path,
-    required File file,
+    required Uint8List bytes,
+    String? filename,
   }) async {
     return await _errorHandler(
       () async {
-        final uploadTask = firebaseStorage.ref().child(path).putFile(file);
+        final uploadTask = firebaseStorage.ref().child(path).putData(
+          bytes,
+          SettableMetadata(
+            contentType: 'image/${filename?.split('.').last ?? 'png'}',
+          ),
+        );
         final downloadURL = await (await uploadTask).ref.getDownloadURL();
         return downloadURL;
       },

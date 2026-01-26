@@ -23,6 +23,7 @@ Future<void> updateDeliveryGeoPointState(
     final deliveryGeoPoint = UpdateDeliveryGeoPoint(
       orderId: order.id,
       geoPoint: GeoPoint(position.latitude, position.longitude),
+      heading: position.heading,
     );
     futures.add(
       ref.watch(updateDeliveryGeoPointProvider(deliveryGeoPoint).future),

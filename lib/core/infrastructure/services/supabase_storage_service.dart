@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -38,7 +37,7 @@ class SupabaseStorageService {
   Future<String> uploadDocument({
     required String userId,
     required String documentType,
-    File? file,
+    dynamic file, // dart:io File on mobile, null on web
     XFile? webFile,
   }) async {
     if (file == null && webFile == null) {
@@ -98,7 +97,7 @@ class SupabaseStorageService {
       final url = await uploadDocument(
         userId: userId,
         documentType: entry.key,
-        file: entry.value is File ? entry.value as File : null,
+        file: entry.value is XFile ? null : entry.value, // Assume File if not XFile
         webFile: entry.value is XFile ? entry.value as XFile : null,
       );
       urls[entry.key] = url;

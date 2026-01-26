@@ -8,5 +8,6 @@ class UpdateDeliveryGeoPoint with _$UpdateDeliveryGeoPoint {
   const factory UpdateDeliveryGeoPoint({
     required String orderId,
     required GeoPoint geoPoint,
+    required double heading,
   }) = _UpdateDeliveryGeoPoint;
 }

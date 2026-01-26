@@ -1,6 +1,4 @@
-﻿import 'dart:io';
-
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/driver_application.dart';
 import '../../infrastructure/driver_application_repo.dart';
@@ -76,11 +74,11 @@ class DriverApplicationFormState {
   final DateTime? licenseExpiryDate;
   final VehicleType vehicleType;
   final String vehiclePlate;
-  final File? photo;
-  final File? idDocument;
-  final File? license;
-  final File? vehicleRegistration;
-  final File? vehicleInsurance;
+  final dynamic photo;  // Can be File or XFile
+  final dynamic idDocument;
+  final dynamic license;
+  final dynamic vehicleRegistration;
+  final dynamic vehicleInsurance;
   final String notes;
   final bool isSubmitting;
   final String? error;
@@ -103,11 +101,11 @@ class DriverApplicationFormState {
     DateTime? licenseExpiryDate,
     VehicleType? vehicleType,
     String? vehiclePlate,
-    File? photo,
-    File? idDocument,
-    File? license,
-    File? vehicleRegistration,
-    File? vehicleInsurance,
+    dynamic photo,
+    dynamic idDocument,
+    dynamic license,
+    dynamic vehicleRegistration,
+    dynamic vehicleInsurance,
     String? notes,
     bool? isSubmitting,
     String? error,
@@ -171,23 +169,23 @@ class DriverApplicationForm extends _$DriverApplicationForm {
     state = state.copyWith(vehiclePlate: value);
   }
 
-  void updatePhoto(File? value) {
+  void updatePhoto(dynamic value) {
     state = state.copyWith(photo: value);
   }
 
-  void updateIdDocument(File? value) {
+  void updateIdDocument(dynamic value) {
     state = state.copyWith(idDocument: value);
   }
 
-  void updateLicense(File? value) {
+  void updateLicense(dynamic value) {
     state = state.copyWith(license: value);
   }
 
-  void updateVehicleRegistration(File? value) {
+  void updateVehicleRegistration(dynamic value) {
     state = state.copyWith(vehicleRegistration: value);
   }
 
-  void updateVehicleInsurance(File? value) {
+  void updateVehicleInsurance(dynamic value) {
     state = state.copyWith(vehicleInsurance: value);
   }
 

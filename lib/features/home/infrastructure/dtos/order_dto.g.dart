@@ -25,6 +25,7 @@ _$OrderDtoImpl _$$OrderDtoImplFromJson(Map<String, dynamic> json) =>
       deliveryId: json['deliveryId'] as String?,
       deliveryGeoPoint: _$JsonConverterFromJson<GeoPoint, GeoPoint>(
           json['deliveryGeoPoint'], const GeoPointConverter().fromJson),
+      deliveryHeading: (json['deliveryHeading'] as num?)?.toDouble(),
       id: json['id'] as String?,
     );
 

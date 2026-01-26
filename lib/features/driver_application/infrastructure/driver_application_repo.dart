@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/infrastructure/network/network_info.dart';
@@ -41,11 +39,11 @@ class DriverApplicationRepo {
     required VehicleType vehicleType,
     required String vehiclePlate,
     // Mobile files
-    File? photo,
-    File? idDocument,
-    File? license,
-    File? vehicleRegistration,
-    File? vehicleInsurance,
+    dynamic photo,
+    dynamic idDocument,
+    dynamic license,
+    dynamic vehicleRegistration,
+    dynamic vehicleInsurance,
     // Web files
     XFile? photoWeb,
     XFile? idDocumentWeb,
@@ -170,11 +168,11 @@ class DriverApplicationRepo {
     String? vehiclePlate,
     String? notes,
     // Mobile files
-    File? photo,
-    File? idDocument,
-    File? license,
-    File? vehicleRegistration,
-    File? vehicleInsurance,
+    dynamic photo,
+    dynamic idDocument,
+    dynamic license,
+    dynamic vehicleRegistration,
+    dynamic vehicleInsurance,
     // Web files
     XFile? photoWeb,
     XFile? idDocumentWeb,

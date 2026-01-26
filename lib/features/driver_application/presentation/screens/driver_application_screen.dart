@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -384,8 +382,8 @@ class _DocumentUploadField extends StatelessWidget {
   });
 
   final String label;
-  final File? file;
-  final void Function(File?) onPick;
+  final file; // Can be File or XFile
+  final void Function(dynamic) onPick;
   final bool enabled;
 
   @override
@@ -413,7 +411,7 @@ class _DocumentUploadField extends StatelessWidget {
                   const SizedBox(width: Sizes.marginH8),
                   Expanded(
                     child: Text(
-                      file != null ? file!.path.split('/').last : label,
+                      file != null ? (file.name ?? file.path.split('/').last) : label,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: file != null ? null : Colors.grey,
@@ -433,7 +431,7 @@ class _DocumentUploadField extends StatelessWidget {
                       source: ImageSource.gallery,
                     );
                     if (image != null) {
-                      onPick(File(image.path));
+                      onPick(image); // Pass XFile directly
                     }
                   }
                 : null,

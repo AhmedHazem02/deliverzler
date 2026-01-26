@@ -345,7 +345,7 @@ extension $PendingApprovalRouteExtension on PendingApprovalRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'3ea4818bef43c20a43d01b7aff6d1570482b415c';
+String _$goRouterHash() => r'90c2599de5144e5235acb87267d35566ea3110c2';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)
