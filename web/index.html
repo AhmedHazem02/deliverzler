@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -27,7 +28,7 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>Deliverzler</title>
   <link rel="manifest" href="manifest.json">
@@ -35,18 +36,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Google Maps JavaScript API - API key injected from environment -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEfbHqt7hB4ohznOo1hO_s_5N-LLFhsBc&libraries=places&loading=async"></script>
-  
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEfbHqt7hB4ohznOo1hO_s_5N-LLFhsBc&libraries=places&loading=async"></script>
+
   <!-- Firebase SDK for Web Push Notifications -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
 </head>
+
 <body>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '{{flutter_service_worker_version}}';
+
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -62,9 +65,8 @@
     if ('serviceWorker' in navigator) {
       // Service workers are supported. Use them.
       window.addEventListener('load', function () {
-        // Wait for registration to finish before dropping the <script> tag.
         // Otherwise, the ServiceWorker will load the page and all resources fresh (for the first time).
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        var serviceWorkerUrl = 'flutter_service_worker.js?v={{flutter_service_worker_version}}';
         navigator.serviceWorker.register(serviceWorkerUrl)
           .then((reg) => {
             function waitForActivation(serviceWorker) {
@@ -79,7 +81,7 @@
               // No active web worker and we have installed or are installing
               // one for the first time. Simply wait for it to activate.
               waitForActivation(reg.installing || reg.waiting);
-            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+            } else if (!reg.active.scriptURL.endsWith('{{flutter_service_worker_version}}')) {
               // When the app updates the serviceWorkerVersion changes, so we
               // need to ask the service worker to update.
               console.log('New service worker available.');
@@ -108,7 +110,8 @@
       loadMainDartJs();
     }
   </script>
-  
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
+
 </html>
