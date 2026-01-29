@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:geolocator/geolocator.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,18 +14,32 @@ Stream<Position> locationStream(
 ) async* {
   final locationService = ref.watch(locationServiceProvider);
 
-  await ref.watch(enableLocationProvider(locationService).future);
-  await ref.watch(requestLocationPermissionProvider(locationService).future);
+  // تحميل الصلاحيات بالتوازي (بدون انتظار متسلسل)
+  try {
+    // طلب الصلاحيات مع timeout قصير
+    await Future.wait([
+      ref
+          .watch(enableLocationProvider(locationService).future)
+          .timeout(const Duration(seconds: 5), onTimeout: () async => null),
+      ref
+          .watch(requestLocationPermissionProvider(locationService).future)
+          .timeout(const Duration(seconds: 5), onTimeout: () async => null),
+    ], eagerError: false);
+  } catch (e) {
+    debugPrint('⚠️ warning في طلب الصلاحيات: $e');
+    // متابعة حتى لو فشلت الصلاحيات
+  }
 
+  // الحصول على الـ location stream بدون تأخير
   yield* locationService
       .getLocationStream(
-    intervalSeconds: AppLocationSettings.locationChangeInterval,
-  )
+        intervalSeconds: AppLocationSettings.locationChangeInterval,
+      )
       .throttleTime(const Duration(seconds: 3))
       .handleError(
     (Object err, StackTrace st) {
       if (kIsWeb) {
-        print('Web location error: $err');
+        print('⚠️ Web location error: $err');
       }
       Error.throwWithStackTrace(LocationError.getLocationTimeout, st);
     },
@@ -70,4 +84,3 @@ Future<void> requestLocationPermission(
     }
   }
 }
-

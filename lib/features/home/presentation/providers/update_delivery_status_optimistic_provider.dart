@@ -25,7 +25,8 @@ final updateDeliveryStatusOptimisticProvider = StateNotifierProvider.autoDispose
 );
 
 /// معالج التحديث المتفائل
-class UpdateDeliveryStatusNotifier extends StateNotifier<UpdateDeliveryStatusState> {
+class UpdateDeliveryStatusNotifier
+    extends StateNotifier<UpdateDeliveryStatusState> {
   final String orderId;
   final Ref ref;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -61,10 +62,8 @@ class UpdateDeliveryStatusNotifier extends StateNotifier<UpdateDeliveryStatusSta
 
       // 3️⃣ محاولة التحديث مع إعادة محاولة ذكية
       await RetryUtility.retry(
-        operation: () => _firestore
-            .collection('orders')
-            .doc(orderId)
-            .update(updateData),
+        operation: () =>
+            _firestore.collection('orders').doc(orderId).update(updateData),
         maxRetries: 3,
         retryIf: (e) {
           // إعادة محاولة فقط للأخطاء المتعلقة بالشبكة

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -106,7 +107,8 @@ class OrdersRemoteDataSource {
 
   Future<OrderDto> getOrder(String orderId) async {
     if (orderId.isEmpty) {
-      throw const ClientException(
+      throw ServerException(
+        type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
     }
@@ -114,7 +116,7 @@ class OrdersRemoteDataSource {
     try {
       final response =
           await firebaseFirestore.getData(path: orderDocPath(orderId));
-      
+
       if (response.data() != null) {
         final order = OrderDto.fromFirestore(response);
         debugPrint('✅ تم تحميل الطلب: $orderId');
@@ -133,7 +135,8 @@ class OrdersRemoteDataSource {
 
   Future<void> updateDeliveryStatus(UpdateDeliveryStatusDto params) async {
     if (params.orderId.isEmpty) {
-      throw const ClientException(
+      throw ServerException(
+        type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
     }
@@ -161,7 +164,8 @@ class OrdersRemoteDataSource {
 
   Future<void> updateDeliveryGeoPoint(UpdateDeliveryGeoPointDto params) async {
     if (params.orderId.isEmpty) {
-      throw const ClientException(
+      throw ServerException(
+        type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
     }
@@ -169,7 +173,10 @@ class OrdersRemoteDataSource {
     // التحقق من صحة الموقع
     if (!GeoPointValidator.isValidGeoPoint(params.geoPoint)) {
       final error = GeoPointValidator.getValidationError(params.geoPoint);
-      throw ClientException(message: error ?? 'Coordinates are invalid');
+      throw ServerException(
+        type: ServerExceptionType.conflict,
+        message: error ?? 'Coordinates are invalid',
+      );
     }
 
     try {
@@ -193,4 +200,3 @@ class OrdersRemoteDataSource {
     }
   }
 }
-

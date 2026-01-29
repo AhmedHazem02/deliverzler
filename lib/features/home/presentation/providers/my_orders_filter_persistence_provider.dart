@@ -1,18 +1,30 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-part 'my_orders_filter_persistence_provider.freezed.dart';
+import 'package:flutter/foundation.dart';
 
 /// حالة الفلتر
-@freezed
-class MyOrdersFilterState with _$MyOrdersFilterState {
-  const factory MyOrdersFilterState({
-    required String selectedFilter, // 'all', 'pending', 'in_progress', 'delivered'
-    @Default(false) bool isLoading,
-    @Default(null) String? error,
-  }) = _MyOrdersFilterState;
+class MyOrdersFilterState {
+  final String selectedFilter; // 'all', 'onTheWay', 'delivered'
+  final bool isLoading;
+  final String? error;
+
+  const MyOrdersFilterState({
+    required this.selectedFilter,
+    this.isLoading = false,
+    this.error,
+  });
+
+  MyOrdersFilterState copyWith({
+    String? selectedFilter,
+    bool? isLoading,
+    String? error,
+  }) {
+    return MyOrdersFilterState(
+      selectedFilter: selectedFilter ?? this.selectedFilter,
+      isLoading: isLoading ?? this.isLoading,
+      error: error ?? this.error,
+    );
+  }
 }
 
 /// مفتاح التخزين
@@ -20,8 +32,8 @@ const String _filterStorageKey = 'my_orders_filter';
 const String _defaultFilter = 'all';
 
 /// موفر حالة الفلتر مع المثابرة
-final myOrdersFilterProvider =
-    StateNotifierProvider.autoDispose<MyOrdersFilterNotifier, MyOrdersFilterState>(
+final myOrdersFilterPersistenceProvider = StateNotifierProvider.autoDispose<
+    MyOrdersFilterNotifier, MyOrdersFilterState>(
   (ref) => MyOrdersFilterNotifier(),
 );
 
@@ -39,7 +51,9 @@ class MyOrdersFilterNotifier extends StateNotifier<MyOrdersFilterState> {
       final savedFilter = prefs.getString(_filterStorageKey) ?? _defaultFilter;
 
       state = state.copyWith(selectedFilter: savedFilter);
+      debugPrint('✅ تم تحميل الفلتر المحفوظ: $savedFilter');
     } catch (e) {
+      debugPrint('❌ خطأ في تحميل الفلتر المحفوظ: $e');
       state = state.copyWith(error: 'فشل تحميل الفلتر المحفوظ');
     }
   }
@@ -53,7 +67,9 @@ class MyOrdersFilterNotifier extends StateNotifier<MyOrdersFilterState> {
       await prefs.setString(_filterStorageKey, filter);
 
       state = state.copyWith(selectedFilter: filter, isLoading: false);
+      debugPrint('✅ تم حفظ الفلتر: $filter');
     } catch (e) {
+      debugPrint('❌ خطأ في حفظ الفلتر: $e');
       state = state.copyWith(
         error: 'فشل حفظ الفلتر',
         isLoading: false,

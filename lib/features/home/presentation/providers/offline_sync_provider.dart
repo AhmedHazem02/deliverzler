@@ -4,13 +4,15 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/infrastructure/utils/offline_sync_manager.dart';
 
 /// موفر مدير المزامنة غير المتصلة
-final offlineSyncManagerProvider = FutureProvider<OfflineSyncManager>((ref) async {
+final offlineSyncManagerProvider =
+    FutureProvider<OfflineSyncManager>((ref) async {
   final prefs = await SharedPreferences.getInstance();
   return OfflineSyncManager(prefs);
 });
 
 /// موفر قائمة العمليات المعلقة
-final pendingOperationsProvider = FutureProvider<List<PendingOperation>>((ref) async {
+final pendingOperationsProvider =
+    FutureProvider<List<PendingOperation>>((ref) async {
   final syncManager = await ref.watch(offlineSyncManagerProvider.future);
   return syncManager.getPendingOperations();
 });
@@ -34,7 +36,8 @@ final processPendingOperationsProvider = FutureProvider<void>((ref) async {
 
     for (final operation in operations) {
       if (operation.retryCount > 3) {
-        debugPrint('⏹️ إيقاف العملية ${operation.id} - تم تجاوز الحد الأقصى للمحاولات');
+        debugPrint(
+            '⏹️ إيقاف العملية ${operation.id} - تم تجاوز الحد الأقصى للمحاولات');
         await syncManager.removePendingOperation(operation.id);
       }
     }

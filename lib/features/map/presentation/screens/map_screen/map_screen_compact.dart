@@ -20,6 +20,7 @@ import '../../components/map_phone_call_component.dart';
 import '../../providers/is_arrived_target_location_provider.dart';
 import '../../providers/map_confirm_order_provider.dart';
 import '../../providers/target_location_providers/target_location_geo_point_provider.dart';
+import '../../providers/optimized_map_loading_provider.dart';
 
 class MapScreenCompact extends HookConsumerWidget {
   const MapScreenCompact({super.key});
@@ -27,6 +28,7 @@ class MapScreenCompact extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationAsync = ref.watch(locationStreamProvider);
+    final mapLoadingNotifier = ref.watch(optimizedMapLoadingProvider.notifier);
 
     useEffect(
       () {
@@ -62,6 +64,14 @@ class MapScreenCompact extends HookConsumerWidget {
       },
     );
 
+    // تحميل Overlays بشكل كسول بعد ظهور الـ Map
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.invalidate(lazyLoadMapOverlaysProvider);
+      });
+      return null;
+    }, const []);
+
     return NestedScreenScaffold(
       body: locationAsync.when(
         skipLoadingOnReload: true,
@@ -71,6 +81,7 @@ class MapScreenCompact extends HookConsumerWidget {
         error: (error, st) => RetryAgainComponent(
           description: (error as LocationError).getErrorText(context),
           onPressed: () {
+            mapLoadingNotifier.reset();
             ref.invalidate(locationStreamProvider);
           },
         ),
@@ -90,5 +101,3 @@ class MapScreenCompact extends HookConsumerWidget {
     );
   }
 }
-
-

@@ -50,7 +50,8 @@ class OfflineSyncManager {
 
       final List<dynamic> decoded = jsonDecode(json);
       return decoded
-          .map((item) => PendingOperation.fromJson(item as Map<String, dynamic>))
+          .map(
+              (item) => PendingOperation.fromJson(item as Map<String, dynamic>))
           .toList();
     } catch (e) {
       debugPrint('❌ خطأ في قراءة العمليات المعلقة: $e');
@@ -75,8 +76,7 @@ class OfflineSyncManager {
   Future<void> incrementRetryCount(String operationId) async {
     try {
       final operations = await getPendingOperations();
-      final index =
-          operations.indexWhere((op) => op.id == operationId);
+      final index = operations.indexWhere((op) => op.id == operationId);
 
       if (index >= 0) {
         final operation = operations[index];

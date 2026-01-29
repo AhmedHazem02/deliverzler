@@ -11,6 +11,7 @@ import '../providers/map_overlays_providers/map_circles_providers.dart';
 import '../providers/map_overlays_providers/map_markers_providers.dart';
 import '../providers/map_overlays_providers/map_polylines_provider.dart';
 import '../providers/my_location_providers/my_location_camera_position_provider.dart';
+import '../providers/optimized_map_loading_provider.dart';
 
 class GoogleMapComponent extends StatefulHookConsumerWidget {
   const GoogleMapComponent({super.key});
@@ -20,10 +21,14 @@ class GoogleMapComponent extends StatefulHookConsumerWidget {
 }
 
 class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent> {
-  late final sub = ref.listenManual(myLocationCameraPositionProvider, (prev, next) {});
+  late final sub =
+      ref.listenManual(myLocationCameraPositionProvider, (prev, next) {});
 
   @override
   Widget build(BuildContext context) {
+    final mapLoading = ref.watch(optimizedMapLoadingProvider);
+    final mapLoadingNotifier = ref.watch(optimizedMapLoadingProvider.notifier);
+
     ref.listen<GoogleMapController?>(
       mapControllerProvider,
       (previous, next) {},
@@ -31,16 +36,28 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent> {
 
     return GoogleMap(
       initialCameraPosition: sub.read(),
-      markers: ref.watch(mapMarkersProvider),
-      circles: ref.watch(mapCirclesProvider),
-      polylines: ref.watch(mapPolylinesProvider),
+      // تحميل الـ Overlays فقط عند الحاجة (lazy loading)
+      markers: mapLoading.isOverlaysLoaded ? ref.watch(mapMarkersProvider) : {},
+      circles: mapLoading.isOverlaysLoaded ? ref.watch(mapCirclesProvider) : {},
+      polylines:
+          mapLoading.isOverlaysLoaded ? ref.watch(mapPolylinesProvider) : {},
       zoomControlsEnabled: false,
       myLocationButtonEnabled: false,
       onMapCreated: (controller) async {
-        ref.read(currentMapControllerProvider.notifier).update((_) => controller);
-        final isDark = ref.read(currentAppThemeModeProvider) == AppThemeMode.dark;
-        final mapStyle = await MapStyleHelper.getMapStyle(isDarkMode: isDark);
-        await controller.setMapStyle(mapStyle);
+        // إشارة بأن الـ Map جاهزة
+        mapLoadingNotifier.setMapReady(true);
+
+        ref
+            .read(currentMapControllerProvider.notifier)
+            .update((_) => controller);
+
+        // تطبيق نمط الـ Map بشكل غير متزامن
+        Future.microtask(() async {
+          final isDark =
+              ref.read(currentAppThemeModeProvider) == AppThemeMode.dark;
+          final mapStyle = await MapStyleHelper.getMapStyle(isDarkMode: isDark);
+          await controller.setMapStyle(mapStyle);
+        });
       },
     );
   }

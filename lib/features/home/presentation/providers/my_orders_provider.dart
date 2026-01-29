@@ -42,7 +42,7 @@ List<AppOrder> filteredMyOrders(Ref ref) {
     data: (orders) {
       // استخدام الفلتر المحفوظ من SharedPreferences
       final selectedFilter = filterState.selectedFilter;
-      
+
       switch (selectedFilter) {
         case 'onTheWay':
           return orders
@@ -62,4 +62,3 @@ List<AppOrder> filteredMyOrders(Ref ref) {
     },
   );
 }
-
