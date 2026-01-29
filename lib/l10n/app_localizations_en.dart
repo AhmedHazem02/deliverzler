@@ -504,6 +504,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submittedAt => 'Submitted At';
 
   @override
+  String get attention => 'Attention';
+
+  @override
+  String get enterValidEgyptianPhone => 'Enter a valid Egyptian phone number';
+
+  @override
+  String get idNumberLengthError => 'ID Number must be 14 digits';
+
+  @override
+  String get licenseNumberLengthError => 'License Number must be 14 digits';
+
+  @override
+  String get uploadAllRequiredImages =>
+      'Please upload all required images (Personal Photo, ID, License, Registration, Insurance).';
+
+  @override
   String get accountInfo => 'Account Information';
 
   @override

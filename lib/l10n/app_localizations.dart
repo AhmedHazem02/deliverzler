@@ -1028,6 +1028,36 @@ abstract class AppLocalizations {
   /// **'Submitted At'**
   String get submittedAt;
 
+  /// No description provided for @attention.
+  ///
+  /// In en, this message translates to:
+  /// **'Attention'**
+  String get attention;
+
+  /// No description provided for @enterValidEgyptianPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Egyptian phone number'**
+  String get enterValidEgyptianPhone;
+
+  /// No description provided for @idNumberLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Number must be 14 digits'**
+  String get idNumberLengthError;
+
+  /// No description provided for @licenseNumberLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'License Number must be 14 digits'**
+  String get licenseNumberLengthError;
+
+  /// No description provided for @uploadAllRequiredImages.
+  ///
+  /// In en, this message translates to:
+  /// **'Please upload all required images (Personal Photo, ID, License, Registration, Insurance).'**
+  String get uploadAllRequiredImages;
+
   /// No description provided for @accountInfo.
   ///
   /// In en, this message translates to:

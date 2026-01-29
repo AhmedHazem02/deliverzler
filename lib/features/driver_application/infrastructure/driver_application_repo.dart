@@ -52,6 +52,43 @@ class DriverApplicationRepo {
     XFile? vehicleInsuranceWeb,
     String? notes,
   }) async {
+    // Check for existing application to update instead of creating new one
+    final existingApp = await getApplicationByUserId(userId);
+
+    if (existingApp != null) {
+      await updateApplication(
+        applicationId: existingApp.id,
+        userId: userId,
+        name: name,
+        email: email,
+        phone: phone,
+        idNumber: idNumber,
+        licenseNumber: licenseNumber,
+        licenseExpiryDate: licenseExpiryDate,
+        vehicleType: vehicleType,
+        vehiclePlate: vehiclePlate,
+        photo: photo,
+        idDocument: idDocument,
+        license: license,
+        vehicleRegistration: vehicleRegistration,
+        vehicleInsurance: vehicleInsurance,
+        photoWeb: photoWeb,
+        idDocumentWeb: idDocumentWeb,
+        licenseWeb: licenseWeb,
+        vehicleRegistrationWeb: vehicleRegistrationWeb,
+        vehicleInsuranceWeb: vehicleInsuranceWeb,
+        notes: notes,
+      );
+      
+      // Explicitly set status to pending for resubmission
+      await remoteDataSource.updateApplication(
+        applicationId: existingApp.id,
+        data: {'status': ApplicationStatus.pending.name},
+      );
+      
+      return existingApp.id;
+    }
+
     // Upload all documents to Supabase Storage
     final documentUrls = <String, String>{};
 
@@ -160,6 +197,7 @@ class DriverApplicationRepo {
     required String applicationId,
     required String userId,
     String? name,
+    String? email,
     String? phone,
     String? idNumber,
     String? licenseNumber,
@@ -184,6 +222,7 @@ class DriverApplicationRepo {
 
     // Basic fields
     if (name != null) data['name'] = name;
+    if (email != null) data['email'] = email;
     if (phone != null) data['phone'] = phone;
     if (idNumber != null) data['idNumber'] = idNumber;
     if (licenseNumber != null) data['licenseNumber'] = licenseNumber;

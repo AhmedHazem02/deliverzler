@@ -147,30 +147,85 @@ class DriverSignupFormComponent extends HookConsumerWidget {
       );
     });
 
-    bool validateCurrentStep() {
-      switch (currentStep.value) {
-        case 0: // Account info
-          return emailController.text.isNotEmpty &&
-              passwordController.text.isNotEmpty &&
-              passwordController.text == confirmPasswordController.text;
-        case 1: // Personal info
-          return nameController.text.isNotEmpty &&
-              phoneController.text.isNotEmpty &&
-              idNumberController.text.isNotEmpty;
-        case 2: // License info
-          return licenseNumberController.text.isNotEmpty &&
-              licenseExpiryDate.value != null;
-        case 3: // Vehicle info
-          return vehiclePlateController.text.isNotEmpty;
-        case 4: // Documents - optional
-          return true;
-        default:
-          return true;
+    bool validateDocuments() {
+      if (kIsWeb) {
+        return photoXFile.value != null &&
+            idDocumentXFile.value != null &&
+            licenseDocumentXFile.value != null &&
+            vehicleRegistrationXFile.value != null &&
+            vehicleInsuranceXFile.value != null;
+      } else {
+        return photoFile.value != null &&
+            idDocumentFile.value != null &&
+            licenseDocumentFile.value != null &&
+            vehicleRegistrationFile.value != null &&
+            vehicleInsuranceFile.value != null;
       }
     }
 
+    bool validateCurrentStep() {
+      // Validate all fields in the current step (trigger validators)
+      final isFormValid = formKey.currentState!.validate();
+      
+      // Additional checks for non-form-field inputs
+      bool isAdditionalValid = true;
+      if (currentStep.value == 3) { // License step (now index 3)
+        if (licenseExpiryDate.value == null) {
+          isAdditionalValid = false;
+        } else if (licenseExpiryDate.value!.isBefore(DateTime.now().add(const Duration(days: 30)))) {
+           // Show toast/snackbar since we can't easily set form field error here for the date picker
+           // Or we rely on the submit check. 
+           // But let's add a check here to prevent proceeding.
+           Toasts.showTitledToast(context, title: tr(context).attention, description: 'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
+           isAdditionalValid = false;
+        }
+      }
+
+      return isFormValid && isAdditionalValid;
+    }
+
     void submitForm() {
-      if (!formKey.currentState!.validate()) return;
+       if (!formKey.currentState!.validate()) return;
+       
+       if (!validateDocuments()) {
+        showDialog(
+            context: context,
+            builder: (context) => Dialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                   Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          tr(context).attention,
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    const Icon(Icons.warning_amber_rounded, size: 50, color: Colors.orange),
+                    const SizedBox(height: 16),
+                    Text(
+                      tr(context).uploadAllRequiredImages,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          );
+         return; 
+       }
 
       errorMessage.value = null;
       isSubmitting.value = true;
@@ -210,8 +265,8 @@ class DriverSignupFormComponent extends HookConsumerWidget {
             labels: [
               tr(context).accountInfo,
               tr(context).personalInfo,
-              tr(context).licenseInfo,
               tr(context).vehicleInfo,
+              tr(context).licenseInfo,
               tr(context).documents,
             ],
           ),
@@ -272,6 +327,10 @@ class DriverSignupFormComponent extends HookConsumerWidget {
               if (currentStep.value > 0) const SizedBox(width: Sizes.marginH12),
               Expanded(
                 child: CustomElevatedButton(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.buttonPaddingV14,
+                    horizontal: Sizes.buttonPaddingH24,
+                  ),
                   onPressed: isSubmitting.value
                       ? null
                       : () {
@@ -366,17 +425,17 @@ class DriverSignupFormComponent extends HookConsumerWidget {
           isSubmitting: isSubmitting,
         );
       case 2:
-        return _LicenseStep(
-          key: const ValueKey('license'),
-          licenseNumberController: licenseNumberController,
-          licenseExpiryDate: licenseExpiryDate,
-          isSubmitting: isSubmitting,
-        );
-      case 3:
         return _VehicleStep(
           key: const ValueKey('vehicle'),
           vehicleType: vehicleType,
           vehiclePlateController: vehiclePlateController,
+          isSubmitting: isSubmitting,
+        );
+      case 3:
+        return _LicenseStep(
+          key: const ValueKey('license'),
+          licenseNumberController: licenseNumberController,
+          licenseExpiryDate: licenseExpiryDate,
           isSubmitting: isSubmitting,
         );
       case 4:
@@ -542,8 +601,13 @@ class _PersonalInfoStep extends StatelessWidget {
             prefixIcon: const Icon(Icons.phone),
           ),
           keyboardType: TextInputType.phone,
-          validator: (v) =>
-              v == null || v.isEmpty ? tr(context).requiredField : null,
+          validator: (v) {
+            if (v == null || v.isEmpty) return tr(context).requiredField;
+            if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(v)) {
+              return tr(context).enterValidEgyptianPhone;
+            }
+            return null;
+          },
           enabled: !isSubmitting,
         ),
         const SizedBox(height: Sizes.marginV16),
@@ -553,8 +617,12 @@ class _PersonalInfoStep extends StatelessWidget {
             labelText: tr(context).idNumber,
             prefixIcon: const Icon(Icons.badge),
           ),
-          validator: (v) =>
-              v == null || v.isEmpty ? tr(context).requiredField : null,
+          validator: (v) {
+             if (v == null || v.isEmpty) return tr(context).requiredField;
+             if (v.length != 14) return tr(context).idNumberLengthError;
+             return null;
+          },
+          keyboardType: TextInputType.number,
           enabled: !isSubmitting,
         ),
       ],
@@ -584,8 +652,12 @@ class _LicenseStep extends StatelessWidget {
             labelText: tr(context).licenseNumber,
             prefixIcon: const Icon(Icons.card_membership),
           ),
-          validator: (v) =>
-              v == null || v.isEmpty ? tr(context).requiredField : null,
+          validator: (v) {
+             if (v == null || v.isEmpty) return tr(context).requiredField;
+             if (v.length != 14) return tr(context).licenseNumberLengthError;
+             return null;
+          },
+          keyboardType: TextInputType.number,
           enabled: !isSubmitting,
         ),
         const SizedBox(height: Sizes.marginV16),
@@ -596,8 +668,8 @@ class _LicenseStep extends StatelessWidget {
                   final date = await showDatePicker(
                     context: context,
                     initialDate: licenseExpiryDate.value ??
-                        DateTime.now().add(const Duration(days: 30)),
-                    firstDate: DateTime.now(),
+                        DateTime.now().add(const Duration(days: 31)),
+                    firstDate: DateTime.now().add(const Duration(days: 30)),
                     lastDate:
                         DateTime.now().add(const Duration(days: 365 * 10)),
                   );

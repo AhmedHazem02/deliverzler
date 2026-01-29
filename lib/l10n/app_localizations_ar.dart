@@ -82,7 +82,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'البريد غير صالح. يرجى إدخال بريد الكتروني صحيح.';
 
   @override
-  String get authWrongPasswordError => 'الرقم السري غير صحيح. حاول مرة أخرى!';
+  String get authWrongPasswordError => 'كلمة المرور غير صحيح. حاول مرة أخرى!';
 
   @override
   String get authUserNotFoundError =>
@@ -198,14 +198,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get email => 'البريد الإلكتروني';
 
   @override
-  String get password => 'الرقم السري';
+  String get password => 'كلمة المرور';
 
   @override
   String get phone => 'رقم الهاتف';
 
   @override
   String get emailOrPasswordIsInCorrect =>
-      'البريد أو الرقم السري غير صحيح، حاول مرة أخرى!';
+      'البريد أو كلمة المرور غير صحيح، حاول مرة أخرى!';
 
   @override
   String get english => 'الإنجليزية';
@@ -496,6 +496,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get submittedAt => 'تاريخ التقديم';
+
+  @override
+  String get attention => 'تنبيه';
+
+  @override
+  String get enterValidEgyptianPhone => 'أدخل رقم هاتف مصري صحيح';
+
+  @override
+  String get idNumberLengthError => 'رقم الهوية يجب أن يتكون من 14 رقم';
+
+  @override
+  String get licenseNumberLengthError => 'رقم الرخصة يجب أن يتكون من 14 رقم';
+
+  @override
+  String get uploadAllRequiredImages =>
+      'الرجاء رفع جميع الصور المطلوبة (الصورة الشخصية، الهوية، الرخصة، الاستمارة، التأمين).';
 
   @override
   String get accountInfo => 'معلومات الحساب';

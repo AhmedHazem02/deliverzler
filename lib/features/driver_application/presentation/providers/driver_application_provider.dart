@@ -195,7 +195,12 @@ class DriverApplicationForm extends _$DriverApplicationForm {
 
   Future<String?> submitApplication(String userId) async {
     if (!state.isValid) {
-      state = state.copyWith(error: 'ÙŠØ±Ø¬Ù‰ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©');
+      state = state.copyWith(error: 'يرجى ملء جميع الحقول المطلوبة');
+      return null;
+    }
+
+    if (state.licenseExpiryDate!.isBefore(DateTime.now().add(const Duration(days: 30)))) {
+      state = state.copyWith(error: 'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
       return null;
     }
 
@@ -234,6 +239,10 @@ class DriverApplicationForm extends _$DriverApplicationForm {
 
   void reset() {
     state = DriverApplicationFormState();
+  }
+
+  void clearError() {
+    state = state.copyWith(error: null);
   }
 }
 

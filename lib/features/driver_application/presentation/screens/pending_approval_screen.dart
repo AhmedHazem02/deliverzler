@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../auth/presentation/providers/sign_in_provider.dart';
 import '../../../../core/presentation/helpers/localization_helper.dart';
+import '../../../../core/presentation/routing/app_router.dart';
 import '../../../../core/presentation/screens/full_screen_scaffold.dart';
 import '../../../../core/presentation/styles/styles.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
@@ -16,6 +18,13 @@ class PendingApprovalScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Listen for status changes to redirect approved users to Home
+    ref.listen(driverApplicationStreamProvider(userId), (previous, next) {
+      if (next.hasValue && next.value?.status == ApplicationStatus.approved) {
+        context.go(const HomeRoute().location);
+      }
+    });
+
     final applicationAsync = ref.watch(driverApplicationStreamProvider(userId));
 
     return FullScreenScaffold(
@@ -26,6 +35,10 @@ class PendingApprovalScreen extends ConsumerWidget {
             data: (DriverApplication? application) {
               if (application == null) {
                 return _buildNoApplicationView(context, ref);
+              }
+              // If approved, show a success message and button to go home (in case auto-redirect didn't happen yet)
+              if (application.status == ApplicationStatus.approved) {
+                 return _buildApprovedView(context, ref);
               }
               return _buildStatusView(context, ref, application);
             },
@@ -38,6 +51,36 @@ class PendingApprovalScreen extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildApprovedView(BuildContext context, WidgetRef ref) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.check_circle, size: 80, color: Colors.green),
+          const SizedBox(height: Sizes.marginV24),
+          Text(
+             tr(context).applicationApproved,
+             style: Theme.of(context).textTheme.headlineSmall,
+             textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: Sizes.marginV16),
+          Text(
+             tr(context).applicationApprovedMessage,
+             textAlign: TextAlign.center,
+             style: const TextStyle(color: Colors.grey),
+          ),
+           const SizedBox(height: Sizes.marginV32),
+           CustomElevatedButton(
+            onPressed: () {
+              context.go(const HomeRoute().location);
+            },
+            child: Text(tr(context).continue2),
+           ),
+        ],
       ),
     );
   }
@@ -66,6 +109,13 @@ class PendingApprovalScreen extends ConsumerWidget {
                 ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: Sizes.marginV32),
+          CustomElevatedButton(
+            onPressed: () {
+               context.go(DriverApplicationRoute(userId: userId).location);
+            },
+            child: Text(tr(context).submitApplication),
+          ),
         ],
       ),
     );
@@ -77,75 +127,77 @@ class PendingApprovalScreen extends ConsumerWidget {
     DriverApplication application,
   ) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildStatusIcon(application.status),
-          const SizedBox(height: Sizes.marginV24),
-          Text(
-            _getStatusTitle(context, application.status),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: Sizes.marginV16),
-          Text(
-            _getStatusMessage(context, application.status),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
-            textAlign: TextAlign.center,
-          ),
-          if (application.status == ApplicationStatus.rejected &&
-              application.rejectionReason != null) ...[
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildStatusIcon(application.status),
+            const SizedBox(height: Sizes.marginV24),
+            Text(
+              _getStatusTitle(context, application.status),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: Sizes.marginV16),
-            Container(
-              padding: const EdgeInsets.all(Sizes.marginV16),
-              decoration: BoxDecoration(
-                color: Colors.red.shade50,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.red.shade200),
-              ),
-              child: Column(
-                children: [
-                  Text(
-                    tr(context).rejectionReason,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red.shade700,
+            Text(
+              _getStatusMessage(context, application.status),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            if (application.status == ApplicationStatus.rejected &&
+                application.rejectionReason != null) ...[
+              const SizedBox(height: Sizes.marginV16),
+              Container(
+                padding: const EdgeInsets.all(Sizes.marginV16),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.red.shade200),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      tr(context).rejectionReason,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red.shade700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: Sizes.marginV8),
-                  Text(
-                    application.rejectionReason!,
-                    style: TextStyle(color: Colors.red.shade700),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+                    const SizedBox(height: Sizes.marginV8),
+                    Text(
+                      application.rejectionReason!,
+                      style: TextStyle(color: Colors.red.shade700),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-          const SizedBox(height: Sizes.marginV32),
-          if (application.status == ApplicationStatus.rejected)
-            CustomElevatedButton(
+            ],
+            const SizedBox(height: Sizes.marginV32),
+            if (application.status == ApplicationStatus.rejected)
+              CustomElevatedButton(
+                onPressed: () {
+                   context.go(DriverApplicationRoute(userId: userId).location);
+                },
+                child: Text(tr(context).resubmitApplication),
+              ),
+            const SizedBox(height: Sizes.marginV16),
+            TextButton.icon(
               onPressed: () {
-                // Navigate to application screen to resubmit
+                ref.read(signInStateProvider.notifier).logOut();
               },
-              child: Text(tr(context).resubmitApplication),
+              icon: const Icon(Icons.logout),
+              label: Text(tr(context).signOut),
             ),
-          const SizedBox(height: Sizes.marginV16),
-          TextButton.icon(
-            onPressed: () {
-              ref.read(signInStateProvider.notifier).logOut();
-            },
-            icon: const Icon(Icons.logout),
-            label: Text(tr(context).signOut),
-          ),
-          const SizedBox(height: Sizes.marginV24),
-          // Application details card
-          _buildApplicationDetailsCard(context, application),
-        ],
+            const SizedBox(height: Sizes.marginV24),
+            // Application details card
+            _buildApplicationDetailsCard(context, application),
+          ],
+        ),
       ),
     );
   }

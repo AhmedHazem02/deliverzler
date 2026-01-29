@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/order.dart';
 import '../../domain/value_objects.dart';
 import '../../infrastructure/repos/orders_repo.dart';
+import 'my_orders_filter_persistence_provider.dart';
 
 part 'my_orders_provider.g.dart';
 
@@ -29,28 +32,34 @@ class MyOrdersFilterState extends _$MyOrdersFilterState {
   }
 }
 
-/// Filtered my orders based on the selected filter
+/// Filtered my orders based on the selected filter with persistence
 @riverpod
 List<AppOrder> filteredMyOrders(Ref ref) {
   final ordersAsync = ref.watch(myOrdersProvider);
-  final filter = ref.watch(myOrdersFilterStateProvider);
+  final filterState = ref.watch(myOrdersFilterPersistenceProvider);
 
   return ordersAsync.maybeWhen(
     data: (orders) {
-      switch (filter) {
-        case MyOrdersFilter.all:
-          return orders;
-        case MyOrdersFilter.onTheWay:
+      // استخدام الفلتر المحفوظ من SharedPreferences
+      final selectedFilter = filterState.selectedFilter;
+      
+      switch (selectedFilter) {
+        case 'onTheWay':
           return orders
               .where((o) => o.deliveryStatus == DeliveryStatus.onTheWay)
               .toList();
-        case MyOrdersFilter.delivered:
+        case 'delivered':
           return orders
               .where((o) => o.deliveryStatus == DeliveryStatus.delivered)
               .toList();
+        default: // 'all'
+          return orders;
       }
     },
-    orElse: () => [],
+    orElse: () {
+      debugPrint('⚠️ لا يوجد بيانات أوامر');
+      return [];
+    },
   );
 }
 
