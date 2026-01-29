@@ -49,7 +49,7 @@ google-services.json
 GoogleService-Info.plist
 *firebase-adminsdk*.json
 studio-2837415731-5df0e-firebase-adminsdk-fbsvc-1b54822015.json
-lib/firebase_options.dart
+
 
 # APIs configs
 configs/
