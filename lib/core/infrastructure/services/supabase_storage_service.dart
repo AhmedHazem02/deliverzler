@@ -62,7 +62,9 @@ class SupabaseStorageService {
             );
       } else if (file != null) {
         // Mobile upload
-        await _storage.from(_driverDocumentsBucket).upload(
+        // Cast to dynamic to avoid 'dart:io' linking on web
+        final dynamic storageBuilder = _storage.from(_driverDocumentsBucket);
+        await storageBuilder.upload(
               fileName,
               file,
               fileOptions: FileOptions(

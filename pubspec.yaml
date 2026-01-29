@@ -51,7 +51,7 @@ dependencies:
 
   # LocalStorage
   shared_preferences: ^2.2.2
-  sqflite: ^2.3.0
+
   flutter_cache_manager: ^3.3.1
   image_picker: ^1.0.7
   image_picker_platform_interface: ^2.9.2
