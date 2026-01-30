@@ -208,6 +208,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'البريد أو كلمة المرور غير صحيح، حاول مرة أخرى!';
 
   @override
+  String get dontHaveAnAccount => 'ليس لديك حساب؟ سجل حساب جديد';
+
+  @override
+  String get passwordMustBeAtLeast6Characters =>
+      'كلمة المرور يجب أن تكون ٦ أحرف على الأقل';
+
+  @override
   String get english => 'الإنجليزية';
 
   @override
@@ -224,6 +231,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get theme => 'المظهر';
+
+  @override
+  String get lightTheme => 'فاتح';
+
+  @override
+  String get darkTheme => 'داكن';
 
   @override
   String get language => 'اللغة';

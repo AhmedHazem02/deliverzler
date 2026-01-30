@@ -72,8 +72,15 @@ class AuthRemoteDataSource {
   }
 
   Future<String> getUserAuthUid() async {
-    final currentUser = await firebaseAuth.getCurrentUser();
-    return currentUser.uid;
+    final currentUser = await firebaseAuth.authStateChanges.first;
+    if (currentUser != null) {
+      return currentUser.uid;
+    } else {
+      throw const ServerException(
+        type: ServerExceptionType.unauthorized,
+        message: 'User is not signed-in',
+      );
+    }
   }
 
   Future<UserDto> getUserData(String uid) async {

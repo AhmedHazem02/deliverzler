@@ -23,6 +23,8 @@ class FirebaseAuthFacade {
 
   final FirebaseAuth firebaseAuth;
 
+  Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
+
   Future<UserCredential> signInWithEmailAndPassword({
     required String email,
     required String password,

@@ -210,6 +210,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Email or password is incorrect. Please try again.';
 
   @override
+  String get dontHaveAnAccount => 'Don\'t have an account? Sign up';
+
+  @override
+  String get passwordMustBeAtLeast6Characters =>
+      'Password must be at least 6 characters';
+
+  @override
   String get english => 'English';
 
   @override
@@ -226,6 +233,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get theme => 'Theme';
+
+  @override
+  String get lightTheme => 'Light';
+
+  @override
+  String get darkTheme => 'Dark';
 
   @override
   String get language => 'Language';
