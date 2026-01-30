@@ -1,5 +1,8 @@
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
+import 'dart:async';
+import 'dart:math' as math;
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../core/infrastructure/services/location_service.dart';
@@ -9,40 +12,198 @@ import '../utils/location_error.dart';
 part 'location_stream_provider.g.dart';
 
 @riverpod
-Stream<Position> locationStream(
-  Ref ref,
-) async* {
+Stream<Position> locationStream(Ref ref) async* {
   final locationService = ref.watch(locationServiceProvider);
 
-  // تحميل الصلاحيات بالتوازي (بدون انتظار متسلسل)
+  // 1. Setup Permissions (Fail-fast strategy)
   try {
-    // طلب الصلاحيات مع timeout قصير
     await Future.wait([
-      ref
-          .watch(enableLocationProvider(locationService).future)
-          .timeout(const Duration(seconds: 5), onTimeout: () async => null),
-      ref
-          .watch(requestLocationPermissionProvider(locationService).future)
-          .timeout(const Duration(seconds: 5), onTimeout: () async => null),
-    ], eagerError: false);
+      ref.watch(enableLocationProvider(locationService).future)
+         .timeout(const Duration(seconds: 5)),
+      ref.watch(requestLocationPermissionProvider(locationService).future)
+         .timeout(const Duration(seconds: 5)),
+    ]);
   } catch (e) {
-    debugPrint('⚠️ warning في طلب الصلاحيات: $e');
-    // متابعة حتى لو فشلت الصلاحيات
+    debugPrint('⚠️ Location permission/service warning: $e');
+    // CRITICAL FIX: Stop execution if permissions fail
+    yield* Stream.error(e);
+    return;
   }
 
-  // الحصول على الـ location stream بدون تأخير
-  yield* locationService
-      .getLocationStream(
-        intervalSeconds: AppLocationSettings.locationChangeInterval,
-      )
-      .throttleTime(const Duration(seconds: 3))
-      .handleError(
-    (Object err, StackTrace st) {
-      if (kIsWeb) {
-        print('⚠️ Web location error: $err');
+  // 2. Define the source stream with Outlier Filter
+  Stream<Position> validatedSource() async* {
+    final rawStream = locationService
+        .getLocationStream(
+          intervalSeconds: 1, // Keep it snappy (1s)
+          distanceFilter: 5,  // Catch small movements (5m)
+        )
+        // Throttle slightly less than interval to ensure we don't drop valid packets
+        // or keep 800ms if you want to enforce UI update cap.
+        .throttleTime(const Duration(milliseconds: 800)); 
+
+    Position? lastValidPosition;
+
+    await for (final currentPosition in rawStream) {
+      if (lastValidPosition != null) {
+        final distance = Geolocator.distanceBetween(
+          lastValidPosition.latitude,
+          lastValidPosition.longitude,
+          currentPosition.latitude,
+          currentPosition.longitude,
+        );
+
+        // Outlier Check: > 100m jump in < 1 second is impossible for a car
+        if (distance > 100) {
+          debugPrint('⚠️ Ignored Outlier Jump: ${distance.toStringAsFixed(1)}m');
+          continue;
+        }
       }
-      Error.throwWithStackTrace(LocationError.getLocationTimeout, st);
-    },
+      lastValidPosition = currentPosition;
+      yield currentPosition;
+    }
+  }
+
+  // 3. Apply Dead Reckoning & Smoothing using switchMap
+  // switchMap is perfect here: when a new real point comes, it CANCELS the ghost loop.
+  Position? currentUiPosition;
+
+  yield* validatedSource().switchMap((realPos) async* {
+    
+    // A. Smooth Reconnection (The "Slide" Effect)
+    // If we have a previous position, and the new one is a bit far, slide to it.
+    if (currentUiPosition != null) {
+      final dist = Geolocator.distanceBetween(
+        currentUiPosition!.latitude,
+        currentUiPosition!.longitude,
+        realPos.latitude,
+        realPos.longitude,
+      );
+
+      // Slide if distance is noticeable (> 5m) but valid (< 100m)
+      if (dist > 5) {
+        // OPTIMIZATION: Reduce duration to 300ms to minimize "Real-Time Lag"
+        const int steps = 3; 
+        for (int i = 1; i <= steps; i++) {
+          final t = i / steps;
+          
+          if (t >= 1.0) break; 
+
+          final lerpPos = _lerpPosition(currentUiPosition!, realPos, t);
+          yield lerpPos;
+          
+          // Wait for the animation frame (3 * 100 = 300ms delay)
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
+      }
+    }
+
+    // B. Emit the Real Position (The Truth)
+    yield realPos;
+    currentUiPosition = realPos;
+
+    // C. Dead Reckoning Trigger (Tunnel Mode)
+    // Only project if moving significantly (> 1.5 m/s to avoid drift when stopped)
+    if (realPos.speed < 1.5) return;
+
+    // Wait 2 seconds before assuming signal loss
+    await Future.delayed(const Duration(seconds: 2));
+
+    var executedPos = realPos;
+    var currentSpeed = realPos.speed;
+
+    // Start generating Ghost Points
+    while (true) {
+      // CRITICAL FIX: Apply Friction (Deceleration)
+      // Reduce speed by 5% every second to prevent infinite drifting
+      currentSpeed *= 0.95; 
+
+      // If speed drops below ~1.8 km/h, stop projecting (assume stopped)
+      if (currentSpeed < 0.5) break;
+
+      // Update the speed in the executed position object for accurate calculation
+      executedPos = Position(
+        latitude: executedPos.latitude,
+        longitude: executedPos.longitude,
+        timestamp: DateTime.now(),
+        accuracy: executedPos.accuracy,
+        altitude: executedPos.altitude,
+        altitudeAccuracy: executedPos.altitudeAccuracy,
+        heading: executedPos.heading,
+        headingAccuracy: executedPos.headingAccuracy,
+        speed: currentSpeed, // USE DECAYED SPEED
+        speedAccuracy: executedPos.speedAccuracy,
+        floor: executedPos.floor,
+        isMocked: true,
+      );
+
+      // Calculate next point assuming constant heading but DECAYING speed
+      executedPos = _calculateProjectedPosition(executedPos, 1.0); // 1 second projection
+      
+      debugPrint('👻 Ghost Point: ${executedPos.latitude}, ${executedPos.longitude} (Speed: $currentSpeed)');
+      yield executedPos;
+      currentUiPosition = executedPos; // Update UI pos so we can slide FROM this ghost later
+      
+      await Future.delayed(const Duration(seconds: 1));
+    }
+  });
+}
+
+/// Helper: Linear Interpolation with Spherical Heading
+Position _lerpPosition(Position start, Position end, double t) {
+  final lat = start.latitude + (end.latitude - start.latitude) * t;
+  final lng = start.longitude + (end.longitude - start.longitude) * t;
+  
+  // Smart Rotation: Shortest Path
+  final delta = (end.heading - start.heading + 540) % 360 - 180;
+  // Normalize result to 0-360 range
+  final heading = (start.heading + delta * t) % 360; 
+
+  return Position(
+    latitude: lat,
+    longitude: lng,
+    timestamp: DateTime.now(),
+    accuracy: end.accuracy,
+    altitude: end.altitude,
+    altitudeAccuracy: end.altitudeAccuracy,
+    heading: heading < 0 ? heading + 360 : heading, // Handle negative wrap
+    headingAccuracy: end.headingAccuracy,
+    speed: end.speed,
+    speedAccuracy: end.speedAccuracy,
+    floor: end.floor,
+    isMocked: true, // Mark as interpolated
+  );
+}
+
+/// Helper: Dead Reckoning Math
+Position _calculateProjectedPosition(Position start, double timeSeconds) {
+  final distMeters = start.speed * timeSeconds;
+  const R = 6371000.0; 
+
+  final lat1 = start.latitude * math.pi / 180;
+  final lon1 = start.longitude * math.pi / 180;
+  final brng = start.heading * math.pi / 180;
+
+  final lat2 = math.asin(
+      math.sin(lat1) * math.cos(distMeters / R) +
+      math.cos(lat1) * math.sin(distMeters / R) * math.cos(brng));
+
+  final lon2 = lon1 +
+      math.atan2(math.sin(brng) * math.sin(distMeters / R) * math.cos(lat1),
+          math.cos(distMeters / R) - math.sin(lat1) * math.sin(lat2));
+
+  return Position(
+    latitude: lat2 * 180 / math.pi,
+    longitude: lon2 * 180 / math.pi,
+    timestamp: DateTime.now(),
+    accuracy: start.accuracy,
+    altitude: start.altitude,
+    altitudeAccuracy: start.altitudeAccuracy,
+    heading: start.heading,
+    headingAccuracy: start.headingAccuracy,
+    speed: start.speed,
+    speedAccuracy: start.speedAccuracy,
+    floor: start.floor,
+    isMocked: true, // Mark as ghost
   );
 }
 

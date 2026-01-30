@@ -93,7 +93,7 @@ class LoginFormComponent extends HookConsumerWidget {
           const SizedBox(height: Sizes.marginV12),
           TextButton(
             onPressed: () => const SignUpRoute().go(context),
-            child: const Text("Don't have an account? Sign up"),
+            child: Text(tr(context).dontHaveAnAccount),
           ),
         ],
       ),

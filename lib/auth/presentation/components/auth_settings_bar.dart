@@ -6,6 +6,7 @@ import '../../../core/core_features/locale/presentation/utils/app_locale.dart';
 import '../../../core/core_features/theme/presentation/providers/app_theme_provider.dart';
 import '../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../core/core_features/theme/presentation/utils/app_theme.dart';
+import '../../../core/presentation/helpers/localization_helper.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 
 /// A row of quick settings toggles for theme and language.
@@ -65,7 +66,7 @@ class AuthSettingsBar extends ConsumerWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          isDark ? 'Dark' : 'Light',
+                          isDark ? tr(context).darkTheme : tr(context).lightTheme,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],

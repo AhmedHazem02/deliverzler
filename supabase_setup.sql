@@ -17,6 +17,7 @@ ON CONFLICT (id) DO UPDATE SET public = true;
 -- =====================================================
 
 -- Policy: Allow authenticated users to upload their own documents
+/*
 CREATE POLICY "Users can upload their own documents"
 ON storage.objects FOR INSERT
 TO authenticated
@@ -46,6 +47,7 @@ USING (
   bucket_id = 'driver-documents' 
   AND (storage.foldername(name))[1] = auth.uid()::text
 );
+*/
 
 -- Policy: Allow public read access to all documents
 CREATE POLICY "Public read access for driver documents"

@@ -49,12 +49,15 @@ class MapController extends _$MapController {
         },
       );
     } else {
+      /* 
+      // Auto-Focus removed to allow Smooth Camera Damping in UI
       ref.listen<CameraPosition>(
         myLocationCameraPositionProvider,
         (previous, next) {
           centerFocus();
         },
       );
+      */
     }
     return state;
   }

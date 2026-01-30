@@ -16,28 +16,39 @@ part 'my_location_marker_provider.g.dart';
 Uint8List? _cachedIconBytes;
 
 @riverpod
-Option<Marker> myLocationMarker(Ref ref) {
-  final markerIconAsync = ref.watch(myLocationMarkerIconProvider);
-  final markerIcon = markerIconAsync.valueOrNull;
+class MyLocationMarker extends _$MyLocationMarker {
+  double _lastRotation = 0;
 
-  final cameraTarget = ref.watch(
-    myLocationCameraPositionProvider.select((camera) => camera.target),
-  );
-  
-  final myLocationHeading = ref.watch(
-    locationStreamProvider.select((position) => position.valueOrNull?.heading),
-  );
+  @override
+  Option<Marker> build() {
+    final markerIconAsync = ref.watch(myLocationMarkerIconProvider);
+    final markerIcon = markerIconAsync.valueOrNull;
 
-  // Use default marker while custom icon is loading
-  final effectiveIcon = markerIcon ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+    final locationState = ref.watch(locationStreamProvider);
+    final currentLocation = locationState.valueOrNull;
 
-  final myMarker = MapStyleHelper.getMyLocationMarker(
-    position: cameraTarget,
-    rotation: myLocationHeading ?? 0,
-    markerIcon: effectiveIcon,
-  );
-  
-  return Some<Marker>(myMarker);
+    if (currentLocation == null) return const None();
+
+    // Rotation Noise Filter: 
+    // Only update rotation if speed > 1 m/s (~3.6 km/h) to prevent spinning when idle.
+    final double currentSpeed = currentLocation.speed; // speed is non-nullable in Position (defaults to 0)
+    
+    // Update stored rotation only if moving fast enough
+    if (currentSpeed > 1.0) {
+      _lastRotation = currentLocation.heading;
+    }
+
+    // Use default marker while custom icon is loading
+    final effectiveIcon = markerIcon ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+
+    final myMarker = MapStyleHelper.getMyLocationMarker(
+      position: LatLng(currentLocation.latitude, currentLocation.longitude),
+      rotation: _lastRotation, 
+      markerIcon: effectiveIcon,
+    );
+    
+    return Some<Marker>(myMarker);
+  }
 }
 
 @riverpod

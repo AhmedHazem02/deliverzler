@@ -22,7 +22,7 @@ class ValueValidators {
       if (value!.isEmpty) {
         return tr(context).thisFieldIsEmpty;
       } else if (value.length < 6) {
-        return 'Password must be at least 6 characters';
+        return tr(context).passwordMustBeAtLeast6Characters;
       } else {
         return null;
       }

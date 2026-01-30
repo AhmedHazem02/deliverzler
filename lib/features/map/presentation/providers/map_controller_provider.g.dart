@@ -23,7 +23,7 @@ final currentMapControllerProvider = AutoDisposeNotifierProvider<
 );
 
 typedef _$CurrentMapController = AutoDisposeNotifier<GoogleMapController?>;
-String _$mapControllerHash() => r'0172c537173e0e6f3f00f68c7981c99a984cec27';
+String _$mapControllerHash() => r'df065d36593a2b4dc87d5aa6883a24e3ff41b668';
 
 /// See also [MapController].
 @ProviderFor(MapController)

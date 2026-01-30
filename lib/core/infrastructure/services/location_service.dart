@@ -13,8 +13,8 @@ part 'location_service.g.dart';
 
 abstract class AppLocationSettings {
   static const int getLocationTimeLimit = 20; //in seconds
-  static const int locationChangeInterval = 5; //in seconds
-  static const int locationChangeDistance = 50; //in meters
+  static const int locationChangeInterval = 1; //in seconds
+  static const int locationChangeDistance = 5; //in meters
 }
 
 @Riverpod(keepAlive: true)
