@@ -587,10 +587,12 @@ class _EnhancedGoogleMapWebComponentState
       }
     });
 
-    // Listen to camera position changes
+    // Listen to camera position changes with bounds check
     ref.listen(myLocationCameraPositionProvider, (previous, next) {
-      if (_isMapReady && _map != null && previous != next) {
-        animateCamera(next);
+      if (mounted && _isMapReady && _map != null && previous != next) {
+        if (_shouldAnimateCamera(next)) {
+           animateCamera(next);
+        }
       }
     });
 
@@ -626,5 +628,25 @@ class _EnhancedGoogleMapWebComponentState
     } catch (e) {
       debugPrint('Error animating camera: $e');
     }
+  }
+
+  bool _shouldAnimateCamera(CameraPosition next) {
+    if (_map == null) return true;
+    try {
+      final bounds = _map!.callMethod('getBounds');
+      if (bounds != null) {
+        final latLng = js.JsObject.jsify({
+          'lat': next.target.latitude,
+          'lng': next.target.longitude,
+        });
+        final contains = bounds.callMethod('contains', [latLng]);
+        // If the location is visible (contains == true), do NOT animate (return false).
+        // If not visible, animate (return true).
+        return contains != true;
+      }
+    } catch (e) {
+      debugPrint('Error checking bounds: $e');
+    }
+    return true; // Default to animate
   }
 }

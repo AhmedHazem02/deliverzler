@@ -30,7 +30,7 @@ abstract class MapStyleHelper {
       markerId: const MarkerId('currentLocation'),
       position: position,
       rotation: rotation,
-      zIndex: 2,
+      zIndex: 100, // Ensure it is above other markers
       flat: true,
       infoWindow: const InfoWindow(title: 'My current location'),
       anchor: const Offset(0.5, 0.5),

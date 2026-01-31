@@ -29,13 +29,12 @@ class MyLocationMarker extends _$MyLocationMarker {
 
     if (currentLocation == null) return const None();
 
-    // Rotation Noise Filter: 
-    // Only update rotation if speed > 1 m/s (~3.6 km/h) to prevent spinning when idle.
-    final double currentSpeed = currentLocation.speed; // speed is non-nullable in Position (defaults to 0)
-    
-    // Update stored rotation only if moving fast enough
-    if (currentSpeed > 1.0) {
+    // Fix Rotation: Allow updates at lower speeds (0.5 m/s)
+    // The LocationStreamProvider now calculates heading for us if missing.
+    final double currentSpeed = currentLocation.speed;
+    if (currentSpeed > 0.5) {
       _lastRotation = currentLocation.heading;
+      debugPrint('📍 UI MARKER: Rotation Updated To -> $_lastRotation');
     }
 
     // Use default marker while custom icon is loading

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../core/presentation/extensions/future_extensions.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
@@ -9,12 +11,17 @@ import 'my_delivering_orders_provider.dart';
 
 part 'update_delivery_geo_point_provider.g.dart';
 
+/// Provider for debouncing location updates for API calls (2 seconds)
+final debouncedLocationStreamProvider = StreamProvider<Position>((ref) {
+  return ref.watch(locationStreamProvider.stream).debounceTime(const Duration(seconds: 2));
+});
+
 @riverpod
 Future<void> updateDeliveryGeoPointState(
   Ref ref,
 ) async {
   final myDeliveryOrders = ref.watch(myDeliveringOrdersProvider);
-  final position = ref.watch(locationStreamProvider).valueOrNull;
+  final position = ref.watch(debouncedLocationStreamProvider).valueOrNull;
 
   if (myDeliveryOrders.isEmpty || position == null) return;
 

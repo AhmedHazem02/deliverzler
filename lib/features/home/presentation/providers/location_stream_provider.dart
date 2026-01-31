@@ -43,7 +43,7 @@ Stream<Position> locationStream(Ref ref) async* {
 
     Position? lastValidPosition;
 
-    await for (final currentPosition in rawStream) {
+    await for (var currentPosition in rawStream) {
       if (lastValidPosition != null) {
         final distance = Geolocator.distanceBetween(
           lastValidPosition.latitude,
@@ -57,8 +57,35 @@ Stream<Position> locationStream(Ref ref) async* {
           debugPrint('⚠️ Ignored Outlier Jump: ${distance.toStringAsFixed(1)}m');
           continue;
         }
+
+        // Fix Rotation: Calculate heading if missing (0.0) and moved significantly
+        if (currentPosition.heading == 0.0 && distance > 1.0) {
+          final bearing = Geolocator.bearingBetween(
+            lastValidPosition.latitude,
+            lastValidPosition.longitude,
+            currentPosition.latitude,
+            currentPosition.longitude,
+          );
+          
+          // Create new Position with calculated heading
+          currentPosition = Position(
+            latitude: currentPosition.latitude,
+            longitude: currentPosition.longitude,
+            timestamp: currentPosition.timestamp,
+            accuracy: currentPosition.accuracy,
+            altitude: currentPosition.altitude,
+            altitudeAccuracy: currentPosition.altitudeAccuracy,
+            heading: (bearing + 360) % 360, // Normalize to 0-360
+            headingAccuracy: currentPosition.headingAccuracy,
+            speed: currentPosition.speed,
+            speedAccuracy: currentPosition.speedAccuracy,
+            floor: currentPosition.floor,
+            isMocked: currentPosition.isMocked,
+          );
+        }
       }
       lastValidPosition = currentPosition;
+      debugPrint('🛰️ GPS: Speed=${currentPosition.speed.toStringAsFixed(1)} | Heading=${currentPosition.heading.toStringAsFixed(1)}');
       yield currentPosition;
     }
   }
@@ -81,8 +108,10 @@ Stream<Position> locationStream(Ref ref) async* {
 
       // Slide if distance is noticeable (> 5m) but valid (< 100m)
       if (dist > 5) {
-        // OPTIMIZATION: Reduce duration to 300ms to minimize "Real-Time Lag"
-        const int steps = 3; 
+        // OPTIMIZATION: Dynamic steps based on distance
+        // 5m -> 1 step, 20m -> 3 steps. max 5 steps.
+        final int steps = (dist / 5).ceil().clamp(1, 5);
+        
         for (int i = 1; i <= steps; i++) {
           final t = i / steps;
           
@@ -91,8 +120,8 @@ Stream<Position> locationStream(Ref ref) async* {
           final lerpPos = _lerpPosition(currentUiPosition!, realPos, t);
           yield lerpPos;
           
-          // Wait for the animation frame (3 * 100 = 300ms delay)
-          await Future.delayed(const Duration(milliseconds: 100));
+          // Wait for the animation frame (300ms / steps)
+          await Future.delayed(Duration(milliseconds: (300 / steps).round()));
         }
       }
     }
@@ -110,9 +139,11 @@ Stream<Position> locationStream(Ref ref) async* {
 
     var executedPos = realPos;
     var currentSpeed = realPos.speed;
+    int ghostCount = 0;
 
-    // Start generating Ghost Points
-    while (true) {
+    // Start generating Ghost Points (Max 30 seconds)
+    while (ghostCount < 30) {
+      ghostCount++;
       // CRITICAL FIX: Apply Friction (Deceleration)
       // Reduce speed by 5% every second to prevent infinite drifting
       currentSpeed *= 0.95; 
@@ -125,7 +156,8 @@ Stream<Position> locationStream(Ref ref) async* {
         latitude: executedPos.latitude,
         longitude: executedPos.longitude,
         timestamp: DateTime.now(),
-        accuracy: executedPos.accuracy,
+        // Decay accuracy to indicate uncertainty (increase by 10m each step)
+        accuracy: executedPos.accuracy + (ghostCount * 10),
         altitude: executedPos.altitude,
         altitudeAccuracy: executedPos.altitudeAccuracy,
         heading: executedPos.heading,
@@ -147,6 +179,9 @@ Stream<Position> locationStream(Ref ref) async* {
     }
   });
 }
+
+
+
 
 /// Helper: Linear Interpolation with Spherical Heading
 Position _lerpPosition(Position start, Position end, double t) {
