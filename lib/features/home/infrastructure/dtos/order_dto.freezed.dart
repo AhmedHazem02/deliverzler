@@ -36,6 +36,10 @@ mixin _$OrderDto {
   @GeoPointConverter()
   GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
   double? get deliveryHeading => throw _privateConstructorUsedError;
+  List<OrderItemDto> get items => throw _privateConstructorUsedError;
+  double get subTotal => throw _privateConstructorUsedError;
+  double get total => throw _privateConstructorUsedError;
+  double? get deliveryFee => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
 
@@ -64,6 +68,10 @@ abstract class $OrderDtoCopyWith<$Res> {
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      List<OrderItemDto> items,
+      double subTotal,
+      double total,
+      double? deliveryFee,
       @JsonKey(includeToJson: false) String? id});
 
   $AddressDtoCopyWith<$Res>? get address;
@@ -96,6 +104,10 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? items = null,
+    Object? subTotal = null,
+    Object? total = null,
+    Object? deliveryFee = freezed,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
@@ -155,6 +167,22 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      items: null == items
+          ? _value.items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<OrderItemDto>,
+      subTotal: null == subTotal
+          ? _value.subTotal
+          : subTotal // ignore: cast_nullable_to_non_nullable
+              as double,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as double,
+      deliveryFee: freezed == deliveryFee
+          ? _value.deliveryFee
+          : deliveryFee // ignore: cast_nullable_to_non_nullable
+              as double?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -198,6 +226,10 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      List<OrderItemDto> items,
+      double subTotal,
+      double total,
+      double? deliveryFee,
       @JsonKey(includeToJson: false) String? id});
 
   @override
@@ -229,6 +261,10 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? items = null,
+    Object? subTotal = null,
+    Object? total = null,
+    Object? deliveryFee = freezed,
     Object? id = freezed,
   }) {
     return _then(_$OrderDtoImpl(
@@ -288,6 +324,22 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<OrderItemDto>,
+      subTotal: null == subTotal
+          ? _value.subTotal
+          : subTotal // ignore: cast_nullable_to_non_nullable
+              as double,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as double,
+      deliveryFee: freezed == deliveryFee
+          ? _value.deliveryFee
+          : deliveryFee // ignore: cast_nullable_to_non_nullable
+              as double?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -314,8 +366,13 @@ class _$OrderDtoImpl extends _OrderDto {
       required this.deliveryId,
       @GeoPointConverter() required this.deliveryGeoPoint,
       required this.deliveryHeading,
+      final List<OrderItemDto> items = const [],
+      this.subTotal = 0.0,
+      this.total = 0.0,
+      this.deliveryFee,
       @JsonKey(includeToJson: false) this.id})
-      : super._();
+      : _items = items,
+        super._();
 
   factory _$OrderDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderDtoImplFromJson(json);
@@ -350,13 +407,30 @@ class _$OrderDtoImpl extends _OrderDto {
   final GeoPoint? deliveryGeoPoint;
   @override
   final double? deliveryHeading;
+  final List<OrderItemDto> _items;
+  @override
+  @JsonKey()
+  List<OrderItemDto> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  @JsonKey()
+  final double subTotal;
+  @override
+  @JsonKey()
+  final double total;
+  @override
+  final double? deliveryFee;
   @override
   @JsonKey(includeToJson: false)
   final String? id;
 
   @override
   String toString() {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, id: $id)';
+    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, id: $id)';
   }
 
   @override
@@ -389,28 +463,39 @@ class _$OrderDtoImpl extends _OrderDto {
                 other.deliveryGeoPoint == deliveryGeoPoint) &&
             (identical(other.deliveryHeading, deliveryHeading) ||
                 other.deliveryHeading == deliveryHeading) &&
+            const DeepCollectionEquality().equals(other._items, _items) &&
+            (identical(other.subTotal, subTotal) ||
+                other.subTotal == subTotal) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.deliveryFee, deliveryFee) ||
+                other.deliveryFee == deliveryFee) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      date,
-      pickupOption,
-      paymentMethod,
-      address,
-      userId,
-      userName,
-      userImage,
-      userPhone,
-      userNote,
-      employeeCancelNote,
-      deliveryStatus,
-      deliveryId,
-      deliveryGeoPoint,
-      deliveryHeading,
-      id);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        date,
+        pickupOption,
+        paymentMethod,
+        address,
+        userId,
+        userName,
+        userImage,
+        userPhone,
+        userNote,
+        employeeCancelNote,
+        deliveryStatus,
+        deliveryId,
+        deliveryGeoPoint,
+        deliveryHeading,
+        const DeepCollectionEquality().hash(_items),
+        subTotal,
+        total,
+        deliveryFee,
+        id
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -435,6 +520,10 @@ abstract class _OrderDto extends OrderDto {
       required final String? deliveryId,
       @GeoPointConverter() required final GeoPoint? deliveryGeoPoint,
       required final double? deliveryHeading,
+      final List<OrderItemDto> items,
+      final double subTotal,
+      final double total,
+      final double? deliveryFee,
       @JsonKey(includeToJson: false) final String? id}) = _$OrderDtoImpl;
   const _OrderDto._() : super._();
 
@@ -471,6 +560,14 @@ abstract class _OrderDto extends OrderDto {
   GeoPoint? get deliveryGeoPoint;
   @override
   double? get deliveryHeading;
+  @override
+  List<OrderItemDto> get items;
+  @override
+  double get subTotal;
+  @override
+  double get total;
+  @override
+  double? get deliveryFee;
   @override
   @JsonKey(includeToJson: false)
   String? get id;

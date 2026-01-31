@@ -130,6 +130,13 @@ class FirestoreSeeder {
   static Future<void> _seedOrdersIfEmpty(List<Map<String, dynamic>> vendors) async {
     final ordersCollection = _firestore.collection('orders');
 
+    // Check if orders already exist
+    final snapshot = await ordersCollection.limit(1).get();
+    if (snapshot.docs.isNotEmpty) {
+      debugPrint('ℹ️ FirestoreSeeder: Orders already exist. Skipping seeding to preserve data...');
+      return;
+    }
+
     // Basic Vendor Helper
     Map<String, dynamic> getVendor(int index) {
       if (vendors.isNotEmpty && index < vendors.length) {

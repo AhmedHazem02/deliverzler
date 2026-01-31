@@ -26,6 +26,13 @@ _$OrderDtoImpl _$$OrderDtoImplFromJson(Map<String, dynamic> json) =>
       deliveryGeoPoint: _$JsonConverterFromJson<GeoPoint, GeoPoint>(
           json['deliveryGeoPoint'], const GeoPointConverter().fromJson),
       deliveryHeading: (json['deliveryHeading'] as num?)?.toDouble(),
+      items: (json['items'] as List<dynamic>?)
+              ?.map((e) => OrderItemDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      subTotal: (json['subTotal'] as num?)?.toDouble() ?? 0.0,
+      total: (json['total'] as num?)?.toDouble() ?? 0.0,
+      deliveryFee: (json['deliveryFee'] as num?)?.toDouble(),
       id: json['id'] as String?,
     );
 

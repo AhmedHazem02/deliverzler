@@ -50,23 +50,55 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
                   constraints.maxWidth - hInsetPadding,
                   materialDialogData.maxWidth + hInsetPadding,
                 );
-                return UnconstrainedBox(
-                  constrainedAxis: Axis.vertical,
+                return Center(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: maxWidth),
-                    child: AlertDialog(
-                      scrollable: true,
-                      title: title,
-                      titlePadding: titlePadding,
-                      content: content != null ? content(context) : null,
-                      contentPadding: reformedContentPadding,
-                      actions: materialDialogData.actions?.call(context),
-                      actionsPadding: reformedActionsPadding,
-                      buttonPadding: EdgeInsets.symmetric(horizontal: horizontalActionPadding / 2),
-                      actionsAlignment: MainAxisAlignment.center,
-                      insetPadding: materialDialogData.insetPadding,
-                      shape: materialDialogData.shape,
-                      backgroundColor: materialDialogData.backgroundColor,
+                    child: Material(
+                      color: materialDialogData.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+                      shape: materialDialogData.shape ??
+                          const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          ),
+                      elevation: 24.0,
+                      type: MaterialType.card,
+                      clipBehavior: Clip.antiAlias,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (title != null)
+                              Padding(
+                                padding: titlePadding,
+                                child: DefaultTextStyle(
+                                  style: Theme.of(context).dialogTheme.titleTextStyle ??
+                                      Theme.of(context).textTheme.titleLarge!,
+                                  textAlign: TextAlign.center,
+                                  child: title,
+                                ),
+                              ),
+                            if (content != null)
+                              Padding(
+                                padding: reformedContentPadding,
+                                child: DefaultTextStyle(
+                                  style: Theme.of(context).dialogTheme.contentTextStyle ??
+                                      Theme.of(context).textTheme.bodyMedium!,
+                                  child: content(context),
+                                ),
+                              ),
+                            if (materialDialogData.actions != null)
+                              Padding(
+                                padding: reformedActionsPadding,
+                                child: Wrap(
+                                  alignment: WrapAlignment.center,
+                                  spacing: 8.0,
+                                  runSpacing: 8.0,
+                                  children: materialDialogData.actions!.call(context) ?? [],
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );

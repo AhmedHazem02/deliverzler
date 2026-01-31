@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../core/domain/json_converters/geo_point_converter.dart';
 import '../../domain/order.dart';
 import '../../domain/value_objects.dart';
+import 'order_item_dto.dart';
 
 part 'order_dto.freezed.dart';
 
@@ -26,6 +27,10 @@ class OrderDto with _$OrderDto {
     required String? deliveryId,
     @GeoPointConverter() required GeoPoint? deliveryGeoPoint,
     required double? deliveryHeading,
+    @Default([]) List<OrderItemDto> items,
+    @Default(0.0) double subTotal,
+    @Default(0.0) double total,
+    double? deliveryFee,
     @JsonKey(includeToJson: false) String? id,
   }) = _OrderDto;
 
@@ -35,7 +40,8 @@ class OrderDto with _$OrderDto {
       date: order.date,
       pickupOption: order.pickupOption,
       paymentMethod: order.paymentMethod,
-      address: order.address != null ? AddressDto.fromDomain(order.address!) : null,
+      address:
+          order.address != null ? AddressDto.fromDomain(order.address!) : null,
       userId: order.userId,
       userName: order.userName,
       userImage: order.userImage,
@@ -46,14 +52,31 @@ class OrderDto with _$OrderDto {
       deliveryId: order.deliveryId,
       deliveryGeoPoint: order.deliveryGeoPoint,
       deliveryHeading: order.deliveryHeading,
+      items: order.items
+          .map((item) => OrderItemDto(
+                id: item.id,
+                name: item.name,
+                imageUrl: item.imageUrl,
+                quantity: item.quantity,
+                price: item.price,
+                total: item.total,
+                category: item.category,
+                description: item.description,
+              ))
+          .toList(),
+      subTotal: order.subTotal,
+      total: order.total,
+      deliveryFee: order.deliveryFee,
     );
   }
   const OrderDto._();
 
-  factory OrderDto.fromJson(Map<String, dynamic> json) => _$OrderDtoFromJson(json);
+  factory OrderDto.fromJson(Map<String, dynamic> json) =>
+      _$OrderDtoFromJson(json);
 
   factory OrderDto.fromFirestore(DocumentSnapshot document) {
-    return OrderDto.fromJson(document.data()! as Map<String, dynamic>).copyWith(id: document.id);
+    return OrderDto.fromJson(document.data()! as Map<String, dynamic>)
+        .copyWith(id: document.id);
   }
 
   static List<OrderDto> parseListOfDocument(
@@ -79,6 +102,12 @@ class OrderDto with _$OrderDto {
       deliveryId: deliveryId,
       deliveryGeoPoint: deliveryGeoPoint,
       deliveryHeading: deliveryHeading,
+      items: items.map((item) => item.toDomain()).toList(),
+      subTotal: subTotal == 0
+          ? items.fold(0.0, (sum, item) => sum + item.total)
+          : subTotal,
+      total: total,
+      deliveryFee: deliveryFee,
     );
   }
 }
@@ -94,7 +123,8 @@ class AddressDto with _$AddressDto {
   }) = _AddressDto;
   const AddressDto._();
 
-  factory AddressDto.fromJson(Map<String, dynamic> json) => _$AddressDtoFromJson(json);
+  factory AddressDto.fromJson(Map<String, dynamic> json) =>
+      _$AddressDtoFromJson(json);
 
   factory AddressDto.fromDomain(Address address) {
     return AddressDto(

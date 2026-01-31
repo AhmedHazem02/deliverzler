@@ -37,7 +37,7 @@ class DeliveryFeeDisplay extends ConsumerWidget {
 
     return feeAsync.when(
       data: (double fee) {
-        final currency = currencyAsync.valueOrNull ?? 'ر.س';
+        final currency = currencyAsync.valueOrNull ?? 'ج.م';
         return Text(
           '$currency ${fee.toStringAsFixed(2)}',
           style: style ?? Theme.of(context).textTheme.titleMedium,
@@ -160,7 +160,7 @@ class DeliveryFeeCard extends ConsumerWidget {
     return settingsAsync.when(
       data: (AppSettings settings) {
         final delivery = settings.delivery;
-        final currency = currencyAsync.valueOrNull ?? 'ر.س';
+        final currency = currencyAsync.valueOrNull ?? 'ج.م';
         final totalFee = delivery.calculateDeliveryFee(distanceKm);
         final distanceFee = distanceKm * delivery.feePerKilometer;
 

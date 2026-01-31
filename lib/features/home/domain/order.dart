@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../core/domain/value_validators.dart';
 import '../../../core/presentation/utils/fp_framework.dart';
+import 'order_item.dart';
 import 'value_objects.dart';
 
 part 'order.freezed.dart';
@@ -27,6 +28,10 @@ class AppOrder with _$AppOrder {
     required String? deliveryId,
     required GeoPoint? deliveryGeoPoint,
     required double? deliveryHeading,
+    @Default([]) List<OrderItem> items,
+    @Default(0.0) double subTotal,
+    @Default(0.0) double total,
+    double? deliveryFee,
   }) = _AppOrder;
   const AppOrder._();
 
@@ -42,20 +47,26 @@ class AppOrder with _$AppOrder {
             other is _$AppOrder &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.date, date) || other.date == date) &&
-            (identical(other.pickupOption, pickupOption) || other.pickupOption == pickupOption) &&
+            (identical(other.pickupOption, pickupOption) ||
+                other.pickupOption == pickupOption) &&
             (identical(other.paymentMethod, paymentMethod) ||
                 other.paymentMethod == paymentMethod) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.userName, userName) || other.userName == userName) &&
-            (identical(other.userImage, userImage) || other.userImage == userImage) &&
-            (identical(other.userPhone, userPhone) || other.userPhone == userPhone) &&
-            (identical(other.userNote, userNote) || other.userNote == userNote) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage) &&
+            (identical(other.userPhone, userPhone) ||
+                other.userPhone == userPhone) &&
+            (identical(other.userNote, userNote) ||
+                other.userNote == userNote) &&
             (identical(other.employeeCancelNote, employeeCancelNote) ||
                 other.employeeCancelNote == employeeCancelNote) &&
             (identical(other.deliveryStatus, deliveryStatus) ||
                 other.deliveryStatus == deliveryStatus) &&
-            (identical(other.deliveryId, deliveryId) || other.deliveryId == deliveryId));
+            (identical(other.deliveryId, deliveryId) ||
+                other.deliveryId == deliveryId));
   }
 
   @override

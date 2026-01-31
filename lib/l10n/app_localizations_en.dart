@@ -309,6 +309,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetails => 'Order Details';
 
   @override
+  String get orderItems => 'Order Items';
+
+  @override
+  String get quantity => 'Quantity';
+
+  @override
+  String get subtotal => 'Subtotal';
+
+  @override
+  String get deliveryFee => 'Delivery Fee';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get currency => 'EGP';
+
+  @override
+  String get noItemsInOrder => 'No items in this order';
+
+  @override
   String get id => 'Id';
 
   @override

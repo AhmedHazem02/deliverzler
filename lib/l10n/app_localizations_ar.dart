@@ -306,6 +306,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get orderDetails => 'تفاصيل الطلب';
 
   @override
+  String get orderItems => 'عناصر الطلب';
+
+  @override
+  String get quantity => 'الكمية';
+
+  @override
+  String get subtotal => 'المجموع الفرعي';
+
+  @override
+  String get deliveryFee => 'رسوم التوصيل';
+
+  @override
+  String get total => 'الإجمالي';
+
+  @override
+  String get currency => 'ج.م';
+
+  @override
+  String get noItemsInOrder => 'لا توجد عناصر في هذا الطلب';
+
+  @override
   String get id => 'الرمز';
 
   @override

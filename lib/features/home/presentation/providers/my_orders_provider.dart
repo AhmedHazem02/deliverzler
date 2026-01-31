@@ -7,7 +7,7 @@ import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/order.dart';
 import '../../domain/value_objects.dart';
 import '../../infrastructure/repos/orders_repo.dart';
-import 'my_orders_filter_persistence_provider.dart';
+
 
 part 'my_orders_provider.g.dart';
 
@@ -36,23 +36,21 @@ class MyOrdersFilterState extends _$MyOrdersFilterState {
 @riverpod
 List<AppOrder> filteredMyOrders(Ref ref) {
   final ordersAsync = ref.watch(myOrdersProvider);
-  final filterState = ref.watch(myOrdersFilterPersistenceProvider);
+  final filter = ref.watch(myOrdersFilterStateProvider);
 
   return ordersAsync.maybeWhen(
     data: (orders) {
-      // استخدام الفلتر المحفوظ من SharedPreferences
-      final selectedFilter = filterState.selectedFilter;
-
-      switch (selectedFilter) {
-        case 'onTheWay':
+      switch (filter) {
+        case MyOrdersFilter.onTheWay:
           return orders
               .where((o) => o.deliveryStatus == DeliveryStatus.onTheWay)
               .toList();
-        case 'delivered':
+        case MyOrdersFilter.delivered:
           return orders
               .where((o) => o.deliveryStatus == DeliveryStatus.delivered)
               .toList();
-        default: // 'all'
+        case MyOrdersFilter.all:
+        default:
           return orders;
       }
     },

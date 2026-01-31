@@ -78,14 +78,17 @@ class OrdersRemoteDataSource {
     return firebaseFirestore
         .collectionStream(
       path: ordersCollectionPath,
-      queryBuilder: (query) =>
-          query.where('deliveryId', isEqualTo: deliveryId).where(
-        'deliveryStatus',
-        whereIn: [
-          DeliveryStatus.onTheWay.name,
-          DeliveryStatus.delivered.name,
-        ],
-      ),
+      queryBuilder: (query) => query
+          .where('deliveryId', isEqualTo: deliveryId)
+          .where(
+            'deliveryStatus',
+            whereIn: [
+              DeliveryStatus.onTheWay.name,
+              DeliveryStatus.delivered.name,
+            ],
+          )
+          .orderBy('date', descending: true)
+          .limit(50),
     )
         .map((snapshot) {
       final orders = OrderDto.parseListOfDocument(snapshot.docs)
