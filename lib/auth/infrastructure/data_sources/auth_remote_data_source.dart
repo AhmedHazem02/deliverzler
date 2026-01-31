@@ -34,23 +34,12 @@ class AuthRemoteDataSource {
   static String userDocPath(String uid) => '$usersCollectionPath/$uid';
 
   Future<UserDto> signInWithEmail(SignInWithEmail params) async {
-    try {
-      debugPrint('🔑 [AuthRemote] Calling firebaseAuth.signInWithEmailAndPassword...');
-      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
-        email: params.email,
-        password: params.password,
-      );
-      debugPrint('🔑 [AuthRemote] Got userCredential, user: ${userCredential.user}');
-      debugPrint('🔑 [AuthRemote] User UID: ${userCredential.user?.uid}');
-      final userDto = UserDto.fromUserCredential(userCredential.user!);
-      debugPrint('🔑 [AuthRemote] Created UserDto: ${userDto.id}');
-      return userDto;
-    } catch (e, st) {
-      debugPrint('🔑 [AuthRemote] ERROR in signInWithEmail: $e');
-      debugPrint('🔑 [AuthRemote] Error type: ${e.runtimeType}');
-      debugPrint('🔑 [AuthRemote] Stack: $st');
-      rethrow;
-    }
+    final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+      email: params.email,
+      password: params.password,
+    );
+    final userDto = UserDto.fromUserCredential(userCredential.user!);
+    return userDto;
   }
 
   Future<UserDto> registerWithEmail({
@@ -72,15 +61,51 @@ class AuthRemoteDataSource {
   }
 
   Future<String> getUserAuthUid() async {
-    final currentUser = await firebaseAuth.authStateChanges.first;
-    if (currentUser != null) {
-      return currentUser.uid;
-    } else {
-      throw const ServerException(
-        type: ServerExceptionType.unauthorized,
-        message: 'User is not signed-in',
-      );
+   // debugPrint('🔐 [AuthRemote] getUserAuthUid started');
+    // 1. Check if user is already loaded synchronously
+    if (firebaseAuth.firebaseAuth.currentUser != null) {
+  //    debugPrint(
+   //       '🔐 [AuthRemote] User found synchronously: ${firebaseAuth.firebaseAuth.currentUser!.uid}');
+      return firebaseAuth.firebaseAuth.currentUser!.uid;
     }
+
+    //debugPrint(
+      //  '🔐 [AuthRemote] User not found synchronously, waiting for stream...');
+
+    // 2. If not, wait for the stream to emit a user with retry mechanism
+    // This helps on web refreshes where persistence takes a moment to load
+    const maxRetries = 3;
+    const timeoutPerAttempt = Duration(seconds: 6);
+
+    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+       // debugPrint('🔐 [AuthRemote] Attempt $attempt/$maxRetries');
+        final user = await firebaseAuth.authStateChanges.firstWhere((user) {
+          //debugPrint('🔐 [AuthRemote] Stream emitted: ${user?.uid}');
+          return user != null;
+        }).timeout(timeoutPerAttempt);
+        debugPrint('🔐 [AuthRemote] User found in stream: ${user!.uid}');
+        return user.uid;
+      } catch (e) {
+        //debugPrint('🔐 [AuthRemote] Attempt $attempt failed: $e');
+        if (attempt == maxRetries) {
+       //   debugPrint( '🔐 [AuthRemote] All attempts exhausted, user is truly not signed in');
+          // All attempts failed => User is truly null
+          throw const ServerException(
+            type: ServerExceptionType.unauthorized,
+            message: 'User is not signed-in',
+          );
+        }
+        // Wait a bit before retrying
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+    }
+
+    // Should never reach here, but just in case
+    throw const ServerException(
+      type: ServerExceptionType.unauthorized,
+      message: 'User is not signed-in',
+    );
   }
 
   Future<UserDto> getUserData(String uid) async {
@@ -105,6 +130,16 @@ class AuthRemoteDataSource {
   Future<void> signOut() async {
     return firebaseAuth.signOut();
   }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    return firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> sendEmailVerification() async {
+    return firebaseAuth.sendEmailVerification();
+  }
+
+  Future<bool> checkEmailVerified() async {
+    return firebaseAuth.isEmailVerified();
+  }
 }
-
-

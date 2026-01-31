@@ -482,6 +482,174 @@ abstract class AppLocalizations {
   /// **'Password must be at least 6 characters'**
   String get passwordMustBeAtLeast6Characters;
 
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Reset Link'**
+  String get sendResetLink;
+
+  /// No description provided for @enterEmailToReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address to receive a password reset link'**
+  String get enterEmailToReset;
+
+  /// No description provided for @passwordResetEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Reset Email Sent!'**
+  String get passwordResetEmailSent;
+
+  /// No description provided for @checkEmailForResetLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email inbox for a password reset link. If you don\'t see it, check your spam folder.'**
+  String get checkEmailForResetLink;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Sign In'**
+  String get backToSignIn;
+
+  /// No description provided for @emailSentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sent successfully'**
+  String get emailSentSuccessfully;
+
+  /// No description provided for @verifyYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Email'**
+  String get verifyYourEmail;
+
+  /// No description provided for @verificationEmailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Email Sent!'**
+  String get verificationEmailSent;
+
+  /// No description provided for @checkYourInbox.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a verification email to'**
+  String get checkYourInbox;
+
+  /// No description provided for @clickLinkInEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please click the link in the email to verify your account.'**
+  String get clickLinkInEmail;
+
+  /// No description provided for @emailVerificationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verification Required'**
+  String get emailVerificationRequired;
+
+  /// No description provided for @pleaseVerifyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address to continue'**
+  String get pleaseVerifyEmail;
+
+  /// No description provided for @resendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Verification Email'**
+  String get resendVerificationEmail;
+
+  /// No description provided for @resendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in'**
+  String get resendIn;
+
+  /// No description provided for @seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get seconds;
+
+  /// No description provided for @wrongEmailQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong email?'**
+  String get wrongEmailQuestion;
+
+  /// No description provided for @changeEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Email'**
+  String get changeEmail;
+
+  /// No description provided for @verificationCheckInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking verification status...'**
+  String get verificationCheckInProgress;
+
+  /// No description provided for @emailVerifiedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully!'**
+  String get emailVerifiedSuccessfully;
+
+  /// No description provided for @redirectingToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to home...'**
+  String get redirectingToHome;
+
+  /// No description provided for @didNotReceiveEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the email?'**
+  String get didNotReceiveEmail;
+
+  /// No description provided for @checkSpamFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your spam folder'**
+  String get checkSpamFolder;
+
+  /// No description provided for @openEmailApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Email App'**
+  String get openEmailApp;
+
+  /// No description provided for @verifyAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve Verified, Continue'**
+  String get verifyAndContinue;
+
+  /// No description provided for @tooManyRequestsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests. Please wait a moment and try again.'**
+  String get tooManyRequestsError;
+
+  /// No description provided for @authEmailAlreadyInUseError.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Please sign in.'**
+  String get authEmailAlreadyInUseError;
+
   /// No description provided for @english.
   ///
   /// In en, this message translates to:
@@ -1123,6 +1291,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please upload all required images (Personal Photo, ID, License, Registration, Insurance).'**
   String get uploadAllRequiredImages;
+
+  /// No description provided for @pleaseEnterValidVehiclePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid vehicle plate (Numbers followed by Arabic letters).'**
+  String get pleaseEnterValidVehiclePlate;
 
   /// No description provided for @accountInfo.
   ///

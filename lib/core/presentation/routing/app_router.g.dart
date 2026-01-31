@@ -11,6 +11,8 @@ List<RouteBase> get $appRoutes => [
       $noInternetRoute,
       $signInRoute,
       $signUpRoute,
+      $forgotPasswordRoute,
+      $emailVerificationRoute,
       $homeShellRouteData,
       $applicationStatusGateRoute,
       $driverApplicationRoute,
@@ -94,6 +96,54 @@ extension $SignUpRouteExtension on SignUpRoute {
 
   String get location => GoRouteData.$location(
         '/signup',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgotPasswordRoute => GoRouteData.$route(
+      path: '/forgot-password',
+      factory: $ForgotPasswordRouteExtension._fromState,
+    );
+
+extension $ForgotPasswordRouteExtension on ForgotPasswordRoute {
+  static ForgotPasswordRoute _fromState(GoRouterState state) =>
+      const ForgotPasswordRoute();
+
+  String get location => GoRouteData.$location(
+        '/forgot-password',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $emailVerificationRoute => GoRouteData.$route(
+      path: '/verify-email/:email',
+      factory: $EmailVerificationRouteExtension._fromState,
+    );
+
+extension $EmailVerificationRouteExtension on EmailVerificationRoute {
+  static EmailVerificationRoute _fromState(GoRouterState state) =>
+      EmailVerificationRoute(
+        email: state.pathParameters['email']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/verify-email/${Uri.encodeComponent(email)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -345,7 +395,7 @@ extension $PendingApprovalRouteExtension on PendingApprovalRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'90c2599de5144e5235acb87267d35566ea3110c2';
+String _$goRouterHash() => r'8c9b3236eb2fa30a1055c1d00790492e9516333b';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)

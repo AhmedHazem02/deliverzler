@@ -215,6 +215,96 @@ class AppLocalizationsAr extends AppLocalizations {
       'كلمة المرور يجب أن تكون ٦ أحرف على الأقل';
 
   @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get sendResetLink => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get enterEmailToReset =>
+      'أدخل عنوان بريدك الإلكتروني لتلقي رابط إعادة تعيين كلمة المرور';
+
+  @override
+  String get passwordResetEmailSent => 'تم إرسال بريد إعادة التعيين!';
+
+  @override
+  String get checkEmailForResetLink =>
+      'تفقد صندوق بريدك الإلكتروني للحصول على رابط إعادة تعيين كلمة المرور. إذا لم تجده، تحقق من مجلد الرسائل غير المرغوب فيها.';
+
+  @override
+  String get backToSignIn => 'العودة لتسجيل الدخول';
+
+  @override
+  String get emailSentSuccessfully => 'تم إرسال البريد بنجاح';
+
+  @override
+  String get verifyYourEmail => 'تحقق من بريدك الإلكتروني';
+
+  @override
+  String get verificationEmailSent => 'تم إرسال بريد التحقق!';
+
+  @override
+  String get checkYourInbox => 'لقد أرسلنا بريد التحقق إلى';
+
+  @override
+  String get clickLinkInEmail =>
+      'يرجى الضغط على الرابط في البريد للتحقق من حسابك.';
+
+  @override
+  String get emailVerificationRequired => 'التحقق من البريد مطلوب';
+
+  @override
+  String get pleaseVerifyEmail =>
+      'يرجى التحقق من عنوان بريدك الإلكتروني للمتابعة';
+
+  @override
+  String get resendVerificationEmail => 'إعادة إرسال بريد التحقق';
+
+  @override
+  String get resendIn => 'إعادة الإرسال خلال';
+
+  @override
+  String get seconds => 'ثانية';
+
+  @override
+  String get wrongEmailQuestion => 'البريد خاطئ؟';
+
+  @override
+  String get changeEmail => 'تغيير البريد';
+
+  @override
+  String get verificationCheckInProgress => 'جارٍ التحقق من الحالة...';
+
+  @override
+  String get emailVerifiedSuccessfully => 'تم التحقق من البريد بنجاح!';
+
+  @override
+  String get redirectingToHome => 'جارٍ التوجيه للصفحة الرئيسية...';
+
+  @override
+  String get didNotReceiveEmail => 'لم تتلقَ البريد؟';
+
+  @override
+  String get checkSpamFolder => 'تحقق من مجلد الرسائل غير المرغوب فيها';
+
+  @override
+  String get openEmailApp => 'فتح تطبيق البريد';
+
+  @override
+  String get verifyAndContinue => 'تم التحقق، المتابعة';
+
+  @override
+  String get tooManyRequestsError =>
+      'طلبات كثيرة جداً. يرجى الانتظار قليلاً والمحاولة مرة أخرى.';
+
+  @override
+  String get authEmailAlreadyInUseError =>
+      'هذا البريد مسجل بالفعل. يرجى تسجيل الدخول.';
+
+  @override
   String get english => 'الإنجليزية';
 
   @override
@@ -546,6 +636,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get uploadAllRequiredImages =>
       'الرجاء رفع جميع الصور المطلوبة (الصورة الشخصية، الهوية، الرخصة، الاستمارة، التأمين).';
+
+  @override
+  String get pleaseEnterValidVehiclePlate =>
+      'الرجاء إدخال رقم لوحة صحيح (أرقام متبوعة بحروف عربية).';
 
   @override
   String get accountInfo => 'معلومات الحساب';

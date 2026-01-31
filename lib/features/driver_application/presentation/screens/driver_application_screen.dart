@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/domain/value_validators.dart';
 import '../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../core/presentation/screens/full_screen_scaffold.dart';
 import '../../../../core/presentation/styles/styles.dart';
@@ -241,8 +242,10 @@ class DriverApplicationScreen extends HookConsumerWidget {
                     labelText: tr(context).vehiclePlate,
                     prefixIcon: const Icon(Icons.confirmation_number),
                   ),
-                  validator: (v) =>
-                      v == null || v.isEmpty ? tr(context).requiredField : null,
+                  validator: ValueValidators.validateVehiclePlate(
+                    context,
+                    isMotorcycle: formState.vehicleType == VehicleType.motorcycle,
+                  ),
                   onChanged: ref
                       .read(driverApplicationFormProvider.notifier)
                       .updateVehiclePlate,
@@ -446,8 +449,6 @@ class DriverApplicationScreen extends HookConsumerWidget {
         return tr(context).car;
       case VehicleType.motorcycle:
         return tr(context).motorcycle;
-      case VehicleType.bicycle:
-        return tr(context).bicycle;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/domain/value_validators.dart';
 import '../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../core/presentation/styles/styles.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
@@ -285,12 +286,10 @@ class _EditForm extends HookConsumerWidget {
                 controller: vehiclePlateController,
                 title: tr(context).vehiclePlate,
                 hintText: tr(context).vehiclePlate,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return tr(context).requiredField;
-                  }
-                  return null;
-                },
+                validator: ValueValidators.validateVehiclePlate(
+                  context,
+                  isMotorcycle: vehicleType.value == VehicleType.motorcycle,
+                ),
               ),
               const SizedBox(height: Sizes.marginV28),
 
@@ -339,7 +338,6 @@ class _EditForm extends HookConsumerWidget {
     return switch (type) {
       VehicleType.car => tr(context).car,
       VehicleType.motorcycle => tr(context).motorcycle,
-      VehicleType.bicycle => tr(context).bicycle,
     };
   }
 }

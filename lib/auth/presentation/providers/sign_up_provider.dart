@@ -18,16 +18,23 @@ class SignUpState extends _$SignUpState {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final authRepo = ref.read(authRepoProvider);
+
+      // Create user account
       final user = await authRepo.registerWithEmail(
         email: email,
         password: password,
         name: name,
       );
+
+      // Send email verification immediately
+      await authRepo.sendEmailVerification();
+
       final fullUser = await authRepo.getUserData(user.id);
 
-      // Note: We don't authenticate the user here because the account
-      // needs admin approval first. The user will be redirected to login
-      // after completing the driver application form.
+      // Note: We don't authenticate the user here because:
+      // 1. Email needs to be verified first
+      // 2. Account needs admin approval
+      // User will be redirected to email verification screen
 
       return Some(fullUser);
     });

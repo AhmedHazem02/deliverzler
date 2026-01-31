@@ -1,39 +1,44 @@
 import 'dart:async';
-import 'dart:developer' as dev;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
-
+import '../../../auth/domain/email_not_verified_exception.dart';
 import '../../../auth/domain/user.dart';
 import '../../../auth/infrastructure/repos/auth_repo.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
-import '../../../auth/presentation/providers/sign_out_provider.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 
 part 'check_auth_provider.g.dart';
 
 @riverpod
 Future<User> checkAuth(Ref ref) async {
-  dev.log('checkAuth: Starting...');
-
   try {
     final sub = ref.listen(authStateProvider.notifier, (prev, next) {});
 
     final uid = await ref.watch(authRepoProvider).getUserAuthUid();
-    dev.log('checkAuth: Got uid: $uid');
+
+    // CRITICAL: Check email verification status from server
+    final verificationResult =
+        await ref.watch(authRepoProvider).checkEmailVerified();
+
+    final isVerified = verificationResult.fold(
+      (failure) => false,
+      (verified) => verified,
+    );
+
+    if (!isVerified) {
+      // Get user data to retrieve email
+      final user = await ref.watch(authRepoProvider).getUserData(uid);
+      // Don't authenticate, throw exception to redirect to verification
+      throw EmailNotVerifiedException(email: user.email);
+    }
 
     final user = await ref.watch(authRepoProvider).getUserData(uid);
-    dev.log('checkAuth: Got user: ${user.name}');
 
-    // Authenticate user after getting data
+    // Authenticate user after email verification confirmed
     sub.read().authenticateUser(user);
 
     return user;
-  } catch (e, st) {
-    dev.log('checkAuth: Error: $e');
+  } catch (e) {
     // On web, Firebase auth might fail due to tracking prevention
-    if (kIsWeb) {
-      dev.log('checkAuth: Web platform - throwing auth error');
-    }
     rethrow;
   }
 }

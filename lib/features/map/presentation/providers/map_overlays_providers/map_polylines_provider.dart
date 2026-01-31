@@ -5,6 +5,7 @@ import '../../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../domain/place_directions.dart';
 import '../../helpers/map_coordinates_helper.dart';
+import '../is_arrived_target_location_provider.dart';
 import '../target_location_providers/target_location_directions_provider.dart';
 
 part 'map_polylines_provider.g.dart';
@@ -15,6 +16,15 @@ class MapPolylines extends _$MapPolylines {
   Set<Polyline> build() {
     debugPrint('🛤️ MapPolylines build() called');
     state = {};
+
+    // FIX: Hide polyline when arrived (< 200m) to show map details clearly
+    final isArrived = ref.watch(isArrivedTargetLocationProvider);
+    if (isArrived) {
+      debugPrint(
+          '🛤️ ✅ Arrived at destination - Hiding polyline for better visibility');
+      return {};
+    }
+
     ref.listen<Option<PlaceDirections>>(
       targetLocationDirectionsProvider,
       (previous, next) {

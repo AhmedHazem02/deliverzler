@@ -1,9 +1,14 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
 
+import '../../../auth/domain/email_not_verified_exception.dart';
 import '../../../auth/domain/user.dart';
 import '../../../auth/presentation/providers/auth_state_provider.dart';
+import '../../../auth/presentation/providers/check_auth_provider.dart';
+import '../../../auth/presentation/screens/email_verification_screen/email_verification_screen.dart';
+import '../../../auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import '../../../auth/presentation/screens/sign_in_screen/sign_in_screen.dart';
 import '../../../auth/presentation/screens/sign_up_screen/sign_up_screen.dart';
 import '../../../features/home/presentation/screens/home_screen/home_screen.dart';
@@ -44,11 +49,22 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @riverpod
 GoRouter goRouter(Ref ref) {
-  final listenable = ValueNotifier<bool?>(null);
+  final listenable = ValueNotifier<int>(0);
 
+  // Listen to auth state, warmup state, AND checkAuth state
   ref.listen(
     authStateProvider.select((user) => user.isSome()),
-    (_, isAuthenticated) => listenable.value = isAuthenticated,
+    (_, __) => listenable.value++,
+  );
+
+  ref.listen(
+    splashServicesWarmupProvider,
+    (_, __) => listenable.value++,
+  );
+
+  ref.listen(
+    checkAuthProvider,
+    (_, __) => listenable.value++,
   );
 
   final router = GoRouter(
@@ -59,12 +75,52 @@ GoRouter goRouter(Ref ref) {
     routes: $appRoutes,
     redirect: (BuildContext context, GoRouterState state) {
       final warmupState = ref.read(splashServicesWarmupProvider);
-      if (warmupState.isLoading ||
-          (!warmupState.hasValue && !warmupState.hasError)) {
+      final authState = ref.read(authStateProvider);
+
+      // Check for EmailNotVerifiedException
+      final checkAuthState = ref.read(checkAuthProvider);
+      if (checkAuthState.hasError &&
+          checkAuthState.error is EmailNotVerifiedException) {
+        final exception = checkAuthState.error as EmailNotVerifiedException;
+        final email = exception.email ?? '';
+        // Redirect to verification screen if we have an email
+        if (email.isNotEmpty &&
+            state.matchedLocation !=
+                EmailVerificationRoute(email: email).location) {
+          return EmailVerificationRoute(email: email).location;
+        }
+      }
+
+      // CRITICAL: Stay at current location until warmup is FULLY complete
+      // This includes waiting for checkAuth to finish updating authState
+      if (warmupState.isLoading) {
         return null;
       }
 
-      final authState = ref.read(authStateProvider);
+      // If warmup hasn't started yet (no value and no error), stay put
+      if (!warmupState.hasValue && !warmupState.hasError) {
+        return null;
+      }
+
+      // If warmup completed successfully but we're still at splash, wait a bit more
+      // This gives checkAuth time to update authState
+      if (warmupState.hasValue &&
+          state.matchedLocation == const SplashRoute().location &&
+          authState.isNone()) {
+        // Check if checkAuth is still running
+        final checkAuthState = ref.read(checkAuthProvider);
+        if (checkAuthState.isLoading) {
+          return null;
+        }
+      }
+
+      // If warmup failed, check if we're already at splash
+      if (warmupState.hasError &&
+          state.matchedLocation != const SplashRoute().location) {
+        // Let error handling happen naturally - don't redirect yet
+        // The error might be temporary (network issue, etc)
+      }
+
       final routeAuthority = state.routeAuthority;
       final isLegitRoute =
           routeAuthority.contains(RouteAuthority.fromAuthState(authState));

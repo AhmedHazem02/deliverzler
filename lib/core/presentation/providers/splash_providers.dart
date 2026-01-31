@@ -40,12 +40,14 @@ Future<void> splashServicesWarmup(Ref ref) async {
   final s4 = Future<void>(() async {
     try {
       dev.log('splashServicesWarmup: Checking auth...');
+      // Increased timeout for web to handle Firebase persistence loading
       final timeout =
-          kIsWeb ? const Duration(seconds: 5) : const Duration(seconds: 15);
+          kIsWeb ? const Duration(seconds: 20) : const Duration(seconds: 15);
       await ref.read(checkAuthProvider.future).timeout(timeout);
       dev.log('splashServicesWarmup: Auth check complete');
-    } catch (e) {
+    } catch (e, st) {
       dev.log('splashServicesWarmup: Auth check failed/timed out: $e');
+      dev.log('splashServicesWarmup: Stacktrace: $st');
       // Auth may fail on web due to tracking prevention or timeout
       // User will be redirected to sign in
     }

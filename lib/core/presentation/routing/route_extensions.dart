@@ -16,7 +16,9 @@ extension GoRouterStateX on GoRouterState {
     }
 
     if (routeLocation.startsWith('/login') ||
-        routeLocation.startsWith('/signup')) {
+        routeLocation.startsWith('/signup') ||
+        routeLocation.startsWith('/forgot-password') ||
+        routeLocation.startsWith('/verify-email')) {
       return const [RouteAuthority.unauthenticated];
     }
 
@@ -33,7 +35,7 @@ extension GoRouterStateX on GoRouterState {
       const ProfileRoute().location,
       const SettingsRoute().location,
     ];
-    
+
     if (homeRoutes.any(routeLocation.startsWith)) {
       return defaultAuthority;
     }

@@ -7,6 +7,7 @@ import '../../../../../core/presentation/widgets/loading_widgets.dart';
 import '../../components/retry_again_component.dart';
 import '../../components/upcoming_orders_component.dart';
 import '../../providers/location_stream_provider.dart';
+import '../../providers/save_route_history_provider.dart';
 import '../../providers/update_delivery_geo_point_provider.dart';
 import '../../utils/location_error.dart';
 
@@ -22,11 +23,15 @@ class HomeScreenCompact extends HookConsumerWidget {
 
     ref.listen(updateDeliveryGeoPointStateProvider, (previous, next) {});
 
+    // FIX: Save route history every 15s or 100m for dispute resolution
+    ref.listen(saveRouteHistoryProvider, (previous, next) {});
+
     return NestedScreenScaffold(
       body: locationAsync.when(
         skipLoadingOnReload: true,
         skipLoadingOnRefresh: !locationAsync.hasError,
-        loading: () => TitledLoadingIndicator(message: tr(context).determine_location),
+        loading: () =>
+            TitledLoadingIndicator(message: tr(context).determine_location),
         error: (error, st) => RetryAgainComponent(
           description: (error as LocationError).getErrorText(context),
           onPressed: () {
@@ -38,5 +43,3 @@ class HomeScreenCompact extends HookConsumerWidget {
     );
   }
 }
-
-

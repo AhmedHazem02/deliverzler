@@ -57,7 +57,7 @@ class ValueValidators {
     //english name: r'^[a-zA-Z,.\-]+$'
     //arabic name: r'^[\u0621-\u064A\040]+$'
     //english and arabic names
-    const patternName = r'^[\u0621-\u064A\040\a-zA-Z,.\-]+$';
+    const patternName = r'^[\u0621-\u064A\040a-zA-Z]+$';
     return (value) {
       if (value!.isEmpty) {
         return tr(context).thisFieldIsEmpty;
@@ -229,6 +229,28 @@ class ValueValidators {
       }
     };
   }*/
+
+  static FormFieldValidator<String?> validateVehiclePlate(
+      BuildContext context, {
+    required bool isMotorcycle,
+  }) {
+    return (value) {
+      if (value!.isEmpty) {
+        return tr(context).thisFieldIsEmpty;
+      }
+
+      // Motorcycle: 1-5 digits + 3 Arabic letters
+      // Car: 3-4 digits + 2-3 Arabic letters
+      final pattern = isMotorcycle
+          ? r'^\d{1,5}\s*[\u0621-\u064A]{3}$'
+          : r'^\d{3,4}\s*[\u0621-\u064A]{2,3}$';
+
+      if (!checkPattern(pattern: pattern, value: value)) {
+        return tr(context).pleaseEnterValidVehiclePlate;
+      }
+      return null;
+    };
+  }
 
   static bool isNumeric(String str) {
     const patternInteger = r'^-?[0-9]+$';

@@ -51,19 +51,16 @@ enum ApplicationStatus {
 /// Vehicle type enum.
 enum VehicleType {
   car,
-  motorcycle,
-  bicycle;
+  motorcycle;
 
   String get arabicName => switch (this) {
         VehicleType.car => 'سيارة',
         VehicleType.motorcycle => 'دراجة نارية',
-        VehicleType.bicycle => 'دراجة هوائية',
       };
 
   String get englishName => switch (this) {
         VehicleType.car => 'Car',
         VehicleType.motorcycle => 'Motorcycle',
-        VehicleType.bicycle => 'Bicycle',
       };
 
   static VehicleType fromString(String? value) {

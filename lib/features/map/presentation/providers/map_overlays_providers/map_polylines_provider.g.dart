@@ -6,7 +6,7 @@ part of 'map_polylines_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapPolylinesHash() => r'abcb33bf6eb53636f9cab744dfcebcbe3133b796';
+String _$mapPolylinesHash() => r'a450aa113a276bfcd7ce57f36a69645a97200629';
 
 /// See also [MapPolylines].
 @ProviderFor(MapPolylines)

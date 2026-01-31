@@ -80,7 +80,29 @@ class LoginFormComponent extends HookConsumerWidget {
                 ref.isLoading(signInStateProvider) ? null : (_) => signIn(),
           ),
           const SizedBox(
-            height: Sizes.marginV40,
+            height: Sizes.marginV12,
+          ),
+
+          // Forgot Password Button
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              onPressed: () => const ForgotPasswordRoute().go(context),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(0, 0),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(
+                tr(context).forgotPassword,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: Sizes.marginV24,
           ),
           CustomElevatedButton(
             enableGradient: true,
@@ -100,5 +122,3 @@ class LoginFormComponent extends HookConsumerWidget {
     );
   }
 }
-
-

@@ -7,7 +7,7 @@ part of 'update_delivery_geo_point_provider.dart';
 // **************************************************************************
 
 String _$updateDeliveryGeoPointStateHash() =>
-    r'23eb3f3f793f9c2a398938e06dbcdcad43bb7d5c';
+    r'56a6d91b94c4af001065e3870d39d67ae47bcecf';
 
 /// See also [updateDeliveryGeoPointState].
 @ProviderFor(updateDeliveryGeoPointState)

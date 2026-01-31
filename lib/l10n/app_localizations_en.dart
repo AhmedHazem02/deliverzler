@@ -217,6 +217,96 @@ class AppLocalizationsEn extends AppLocalizations {
       'Password must be at least 6 characters';
 
   @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get resetPassword => 'Reset Password';
+
+  @override
+  String get sendResetLink => 'Send Reset Link';
+
+  @override
+  String get enterEmailToReset =>
+      'Enter your email address to receive a password reset link';
+
+  @override
+  String get passwordResetEmailSent => 'Password Reset Email Sent!';
+
+  @override
+  String get checkEmailForResetLink =>
+      'Check your email inbox for a password reset link. If you don\'t see it, check your spam folder.';
+
+  @override
+  String get backToSignIn => 'Back to Sign In';
+
+  @override
+  String get emailSentSuccessfully => 'Email sent successfully';
+
+  @override
+  String get verifyYourEmail => 'Verify Your Email';
+
+  @override
+  String get verificationEmailSent => 'Verification Email Sent!';
+
+  @override
+  String get checkYourInbox => 'We\'ve sent a verification email to';
+
+  @override
+  String get clickLinkInEmail =>
+      'Please click the link in the email to verify your account.';
+
+  @override
+  String get emailVerificationRequired => 'Email Verification Required';
+
+  @override
+  String get pleaseVerifyEmail =>
+      'Please verify your email address to continue';
+
+  @override
+  String get resendVerificationEmail => 'Resend Verification Email';
+
+  @override
+  String get resendIn => 'Resend in';
+
+  @override
+  String get seconds => 'seconds';
+
+  @override
+  String get wrongEmailQuestion => 'Wrong email?';
+
+  @override
+  String get changeEmail => 'Change Email';
+
+  @override
+  String get verificationCheckInProgress => 'Checking verification status...';
+
+  @override
+  String get emailVerifiedSuccessfully => 'Email verified successfully!';
+
+  @override
+  String get redirectingToHome => 'Redirecting to home...';
+
+  @override
+  String get didNotReceiveEmail => 'Didn\'t receive the email?';
+
+  @override
+  String get checkSpamFolder => 'Check your spam folder';
+
+  @override
+  String get openEmailApp => 'Open Email App';
+
+  @override
+  String get verifyAndContinue => 'I\'ve Verified, Continue';
+
+  @override
+  String get tooManyRequestsError =>
+      'Too many requests. Please wait a moment and try again.';
+
+  @override
+  String get authEmailAlreadyInUseError =>
+      'This email is already registered. Please sign in.';
+
+  @override
   String get english => 'English';
 
   @override
@@ -552,6 +642,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get uploadAllRequiredImages =>
       'Please upload all required images (Personal Photo, ID, License, Registration, Insurance).';
+
+  @override
+  String get pleaseEnterValidVehiclePlate =>
+      'Please enter a valid vehicle plate (Numbers followed by Arabic letters).';
 
   @override
   String get accountInfo => 'Account Information';

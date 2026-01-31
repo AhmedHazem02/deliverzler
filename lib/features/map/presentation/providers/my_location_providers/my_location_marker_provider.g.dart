@@ -24,7 +24,7 @@ final myLocationMarkerIconProvider =
 
 typedef MyLocationMarkerIconRef
     = AutoDisposeFutureProviderRef<BitmapDescriptor>;
-String _$myLocationMarkerHash() => r'95bee86d9665753fe42df0321eb736c4295481ef';
+String _$myLocationMarkerHash() => r'68ab115b4bde453d9161654f9d2e7c54f04307e8';
 
 /// See also [MyLocationMarker].
 @ProviderFor(MyLocationMarker)

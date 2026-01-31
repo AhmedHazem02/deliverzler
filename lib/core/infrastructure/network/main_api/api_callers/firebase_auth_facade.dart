@@ -77,6 +77,67 @@ class FirebaseAuthFacade {
     );
   }
 
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    return _errorHandler(
+      () async {
+        return firebaseAuth.sendPasswordResetEmail(email: email);
+      },
+    );
+  }
+
+  Future<void> sendEmailVerification() async {
+    return _errorHandler(
+      () async {
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null && !currentUser.emailVerified) {
+          return currentUser.sendEmailVerification();
+        } else if (currentUser == null) {
+          throw const ServerException(
+            type: ServerExceptionType.unauthorized,
+            message: 'No user signed in',
+          );
+        }
+        // If already verified, do nothing
+      },
+    );
+  }
+
+  Future<void> reloadUser() async {
+    return _errorHandler(
+      () async {
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null) {
+          return currentUser.reload();
+        } else {
+          throw const ServerException(
+            type: ServerExceptionType.unauthorized,
+            message: 'No user signed in',
+          );
+        }
+      },
+    );
+  }
+
+  Future<bool> isEmailVerified() async {
+    return _errorHandler(
+      () async {
+        final currentUser = firebaseAuth.currentUser;
+        if (currentUser != null) {
+          // Reload to get fresh data from server
+          await currentUser.reload();
+          // Get the updated user
+          final refreshedUser = firebaseAuth.currentUser;
+          return refreshedUser?.emailVerified ?? false;
+        } else {
+          throw const ServerException(
+            type: ServerExceptionType.unauthorized,
+            message: 'No user signed in',
+          );
+        }
+      },
+    );
+  }
+
   Future<T> _errorHandler<T>(Future<T> Function() body) async {
     try {
       return await body();
@@ -104,4 +165,3 @@ class FirebaseAuthFacade {
     }
   }
 }
-

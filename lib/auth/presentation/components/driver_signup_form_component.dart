@@ -1,4 +1,5 @@
 import '../../../core/presentation/utils/file_utils.dart';
+import '../../../core/domain/value_validators.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -116,11 +117,11 @@ class DriverSignupFormComponent extends HookConsumerWidget {
                 Toasts.showTitledToast(
                   context,
                   title: tr(context).applicationSubmitted,
-                  description: tr(context).applicationSubmittedDesc,
+                  description: tr(context).verificationEmailSent,
                 );
 
-                // Navigate to login screen
-                context.go(const SignInRoute().location);
+                // Navigate to email verification screen
+                EmailVerificationRoute(email: emailController.text).go(context);
               } catch (e) {
                 // Check if widget is still mounted before updating state
                 if (!context.mounted) return;
@@ -166,18 +167,23 @@ class DriverSignupFormComponent extends HookConsumerWidget {
     bool validateCurrentStep() {
       // Validate all fields in the current step (trigger validators)
       final isFormValid = formKey.currentState!.validate();
-      
+
       // Additional checks for non-form-field inputs
       bool isAdditionalValid = true;
-      if (currentStep.value == 3) { // License step (now index 3)
+      if (currentStep.value == 3) {
+        // License step (now index 3)
         if (licenseExpiryDate.value == null) {
           isAdditionalValid = false;
-        } else if (licenseExpiryDate.value!.isBefore(DateTime.now().add(const Duration(days: 30)))) {
-           // Show toast/snackbar since we can't easily set form field error here for the date picker
-           // Or we rely on the submit check. 
-           // But let's add a check here to prevent proceeding.
-           Toasts.showTitledToast(context, title: tr(context).attention, description: 'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
-           isAdditionalValid = false;
+        } else if (licenseExpiryDate.value!
+            .isBefore(DateTime.now().add(const Duration(days: 30)))) {
+          // Show toast/snackbar since we can't easily set form field error here for the date picker
+          // Or we rely on the submit check.
+          // But let's add a check here to prevent proceeding.
+          Toasts.showTitledToast(context,
+              title: tr(context).attention,
+              description:
+                  'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
+          isAdditionalValid = false;
         }
       }
 
@@ -185,47 +191,50 @@ class DriverSignupFormComponent extends HookConsumerWidget {
     }
 
     void submitForm() {
-       if (!formKey.currentState!.validate()) return;
-       
-       if (!validateDocuments()) {
+      if (!formKey.currentState!.validate()) return;
+
+      if (!validateDocuments()) {
         showDialog(
-            context: context,
-            builder: (context) => Dialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                   Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          tr(context).attention,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const Icon(Icons.warning_amber_rounded, size: 50, color: Colors.orange),
-                    const SizedBox(height: 16),
-                    Text(
-                      tr(context).uploadAllRequiredImages,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+          context: context,
+          builder: (context) => Dialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        tr(context).attention,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Icon(Icons.warning_amber_rounded,
+                      size: 50, color: Colors.orange),
+                  const SizedBox(height: 16),
+                  Text(
+                    tr(context).uploadAllRequiredImages,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-          );
-         return; 
-       }
+          ),
+        );
+        return;
+      }
 
       errorMessage.value = null;
       isSubmitting.value = true;
@@ -618,9 +627,9 @@ class _PersonalInfoStep extends StatelessWidget {
             prefixIcon: const Icon(Icons.badge),
           ),
           validator: (v) {
-             if (v == null || v.isEmpty) return tr(context).requiredField;
-             if (v.length != 14) return tr(context).idNumberLengthError;
-             return null;
+            if (v == null || v.isEmpty) return tr(context).requiredField;
+            if (v.length != 14) return tr(context).idNumberLengthError;
+            return null;
           },
           keyboardType: TextInputType.number,
           enabled: !isSubmitting,
@@ -653,9 +662,9 @@ class _LicenseStep extends StatelessWidget {
             prefixIcon: const Icon(Icons.card_membership),
           ),
           validator: (v) {
-             if (v == null || v.isEmpty) return tr(context).requiredField;
-             if (v.length != 14) return tr(context).licenseNumberLengthError;
-             return null;
+            if (v == null || v.isEmpty) return tr(context).requiredField;
+            if (v.length != 14) return tr(context).licenseNumberLengthError;
+            return null;
           },
           keyboardType: TextInputType.number,
           enabled: !isSubmitting,
@@ -742,8 +751,10 @@ class _VehicleStep extends StatelessWidget {
             labelText: tr(context).vehiclePlate,
             prefixIcon: const Icon(Icons.confirmation_number),
           ),
-          validator: (v) =>
-              v == null || v.isEmpty ? tr(context).requiredField : null,
+          validator: ValueValidators.validateVehiclePlate(
+            context,
+            isMotorcycle: vehicleType.value == VehicleType.motorcycle,
+          ),
           enabled: !isSubmitting,
         ),
       ],
@@ -756,8 +767,6 @@ class _VehicleStep extends StatelessWidget {
         return tr(context).car;
       case VehicleType.motorcycle:
         return tr(context).motorcycle;
-      case VehicleType.bicycle:
-        return tr(context).bicycle;
     }
   }
 }
