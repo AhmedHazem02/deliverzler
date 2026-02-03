@@ -26,6 +26,9 @@ _$OrderDtoImpl _$$OrderDtoImplFromJson(Map<String, dynamic> json) =>
       deliveryGeoPoint: _$JsonConverterFromJson<GeoPoint, GeoPoint>(
           json['deliveryGeoPoint'], const GeoPointConverter().fromJson),
       deliveryHeading: (json['deliveryHeading'] as num?)?.toDouble(),
+      rejectionStatus: $enumDecodeNullable(
+              _$RejectionStatusEnumMap, json['rejectionStatus']) ??
+          RejectionStatus.none,
       items: (json['items'] as List<dynamic>?)
               ?.map((e) => OrderItemDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -55,6 +58,13 @@ Value? _$JsonConverterFromJson<Json, Value>(
   Value? Function(Json json) fromJson,
 ) =>
     json == null ? null : fromJson(json as Json);
+
+const _$RejectionStatusEnumMap = {
+  RejectionStatus.none: 'none',
+  RejectionStatus.requested: 'requested',
+  RejectionStatus.adminApproved: 'adminApproved',
+  RejectionStatus.adminRefused: 'adminRefused',
+};
 
 _$AddressDtoImpl _$$AddressDtoImplFromJson(Map<String, dynamic> json) =>
     _$AddressDtoImpl(

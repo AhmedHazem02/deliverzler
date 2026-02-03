@@ -58,8 +58,7 @@ Future<void> _initFirebase() async {
     log('Firebase: Initialized successfully');
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    // Seed sample data for development (only adds data if orders collection is empty)
-    await FirestoreSeeder.seedIfEmpty();
+    
   } catch (e) {
     log('Firebase: initialization FAILED');
     log('Error details: $e');

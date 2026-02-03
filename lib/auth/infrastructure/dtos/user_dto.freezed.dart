@@ -25,6 +25,11 @@ mixin _$UserDto {
   String? get name => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
+  bool get isOnline => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+  DateTime? get lastActiveAt => throw _privateConstructorUsedError;
+  int get rejectionsCounter => throw _privateConstructorUsedError;
+  int get currentOrdersCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +42,16 @@ abstract class $UserDtoCopyWith<$Res> {
       _$UserDtoCopyWithImpl<$Res, UserDto>;
   @useResult
   $Res call(
-      {String id, String email, String? name, String? phone, String? image});
+      {String id,
+      String email,
+      String? name,
+      String? phone,
+      String? image,
+      bool isOnline,
+      @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+      DateTime? lastActiveAt,
+      int rejectionsCounter,
+      int currentOrdersCount});
 }
 
 /// @nodoc
@@ -58,6 +72,10 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
     Object? name = freezed,
     Object? phone = freezed,
     Object? image = freezed,
+    Object? isOnline = null,
+    Object? lastActiveAt = freezed,
+    Object? rejectionsCounter = null,
+    Object? currentOrdersCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -80,6 +98,22 @@ class _$UserDtoCopyWithImpl<$Res, $Val extends UserDto>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: freezed == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      rejectionsCounter: null == rejectionsCounter
+          ? _value.rejectionsCounter
+          : rejectionsCounter // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentOrdersCount: null == currentOrdersCount
+          ? _value.currentOrdersCount
+          : currentOrdersCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -92,7 +126,16 @@ abstract class _$$UserDtoImplCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, String email, String? name, String? phone, String? image});
+      {String id,
+      String email,
+      String? name,
+      String? phone,
+      String? image,
+      bool isOnline,
+      @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+      DateTime? lastActiveAt,
+      int rejectionsCounter,
+      int currentOrdersCount});
 }
 
 /// @nodoc
@@ -111,6 +154,10 @@ class __$$UserDtoImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? phone = freezed,
     Object? image = freezed,
+    Object? isOnline = null,
+    Object? lastActiveAt = freezed,
+    Object? rejectionsCounter = null,
+    Object? currentOrdersCount = null,
   }) {
     return _then(_$UserDtoImpl(
       id: null == id
@@ -133,6 +180,22 @@ class __$$UserDtoImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: freezed == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      rejectionsCounter: null == rejectionsCounter
+          ? _value.rejectionsCounter
+          : rejectionsCounter // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentOrdersCount: null == currentOrdersCount
+          ? _value.currentOrdersCount
+          : currentOrdersCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -145,7 +208,12 @@ class _$UserDtoImpl extends _UserDto {
       required this.email,
       required this.name,
       required this.phone,
-      required this.image})
+      required this.image,
+      this.isOnline = false,
+      @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+      this.lastActiveAt,
+      this.rejectionsCounter = 0,
+      this.currentOrdersCount = 0})
       : super._();
 
   factory _$UserDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -161,10 +229,22 @@ class _$UserDtoImpl extends _UserDto {
   final String? phone;
   @override
   final String? image;
+  @override
+  @JsonKey()
+  final bool isOnline;
+  @override
+  @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+  final DateTime? lastActiveAt;
+  @override
+  @JsonKey()
+  final int rejectionsCounter;
+  @override
+  @JsonKey()
+  final int currentOrdersCount;
 
   @override
   String toString() {
-    return 'UserDto(id: $id, email: $email, name: $name, phone: $phone, image: $image)';
+    return 'UserDto(id: $id, email: $email, name: $name, phone: $phone, image: $image, isOnline: $isOnline, lastActiveAt: $lastActiveAt, rejectionsCounter: $rejectionsCounter, currentOrdersCount: $currentOrdersCount)';
   }
 
   @override
@@ -176,12 +256,21 @@ class _$UserDtoImpl extends _UserDto {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.isOnline, isOnline) ||
+                other.isOnline == isOnline) &&
+            (identical(other.lastActiveAt, lastActiveAt) ||
+                other.lastActiveAt == lastActiveAt) &&
+            (identical(other.rejectionsCounter, rejectionsCounter) ||
+                other.rejectionsCounter == rejectionsCounter) &&
+            (identical(other.currentOrdersCount, currentOrdersCount) ||
+                other.currentOrdersCount == currentOrdersCount));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, name, phone, image);
+  int get hashCode => Object.hash(runtimeType, id, email, name, phone, image,
+      isOnline, lastActiveAt, rejectionsCounter, currentOrdersCount);
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +292,12 @@ abstract class _UserDto extends UserDto {
       required final String email,
       required final String? name,
       required final String? phone,
-      required final String? image}) = _$UserDtoImpl;
+      required final String? image,
+      final bool isOnline,
+      @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+      final DateTime? lastActiveAt,
+      final int rejectionsCounter,
+      final int currentOrdersCount}) = _$UserDtoImpl;
   const _UserDto._() : super._();
 
   factory _UserDto.fromJson(Map<String, dynamic> json) = _$UserDtoImpl.fromJson;
@@ -218,6 +312,15 @@ abstract class _UserDto extends UserDto {
   String? get phone;
   @override
   String? get image;
+  @override
+  bool get isOnline;
+  @override
+  @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
+  DateTime? get lastActiveAt;
+  @override
+  int get rejectionsCounter;
+  @override
+  int get currentOrdersCount;
   @override
   @JsonKey(ignore: true)
   _$$UserDtoImplCopyWith<_$UserDtoImpl> get copyWith =>

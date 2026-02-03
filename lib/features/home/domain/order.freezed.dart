@@ -31,6 +31,7 @@ mixin _$AppOrder {
   String? get deliveryId => throw _privateConstructorUsedError;
   GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
   double? get deliveryHeading => throw _privateConstructorUsedError;
+  RejectionStatus get rejectionStatus => throw _privateConstructorUsedError;
   List<OrderItem> get items => throw _privateConstructorUsedError;
   double get subTotal => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
@@ -62,6 +63,7 @@ abstract class $AppOrderCopyWith<$Res> {
       String? deliveryId,
       GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      RejectionStatus rejectionStatus,
       List<OrderItem> items,
       double subTotal,
       double total,
@@ -98,6 +100,7 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? rejectionStatus = null,
     Object? items = null,
     Object? subTotal = null,
     Object? total = null,
@@ -164,6 +167,10 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      rejectionStatus: null == rejectionStatus
+          ? _value.rejectionStatus
+          : rejectionStatus // ignore: cast_nullable_to_non_nullable
+              as RejectionStatus,
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
@@ -220,6 +227,7 @@ abstract class _$$AppOrderImplCopyWith<$Res>
       String? deliveryId,
       GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      RejectionStatus rejectionStatus,
       List<OrderItem> items,
       double subTotal,
       double total,
@@ -255,6 +263,7 @@ class __$$AppOrderImplCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? rejectionStatus = null,
     Object? items = null,
     Object? subTotal = null,
     Object? total = null,
@@ -321,6 +330,10 @@ class __$$AppOrderImplCopyWithImpl<$Res>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      rejectionStatus: null == rejectionStatus
+          ? _value.rejectionStatus
+          : rejectionStatus // ignore: cast_nullable_to_non_nullable
+              as RejectionStatus,
       items: null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
@@ -360,6 +373,7 @@ class _$AppOrderImpl extends _AppOrder {
       required this.deliveryId,
       required this.deliveryGeoPoint,
       required this.deliveryHeading,
+      this.rejectionStatus = RejectionStatus.none,
       final List<OrderItem> items = const [],
       this.subTotal = 0.0,
       this.total = 0.0,
@@ -397,6 +411,9 @@ class _$AppOrderImpl extends _AppOrder {
   final GeoPoint? deliveryGeoPoint;
   @override
   final double? deliveryHeading;
+  @override
+  @JsonKey()
+  final RejectionStatus rejectionStatus;
   final List<OrderItem> _items;
   @override
   @JsonKey()
@@ -417,7 +434,7 @@ class _$AppOrderImpl extends _AppOrder {
 
   @override
   String toString() {
-    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee)';
+    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee)';
   }
 
   @JsonKey(ignore: true)
@@ -444,6 +461,7 @@ abstract class _AppOrder extends AppOrder {
       required final String? deliveryId,
       required final GeoPoint? deliveryGeoPoint,
       required final double? deliveryHeading,
+      final RejectionStatus rejectionStatus,
       final List<OrderItem> items,
       final double subTotal,
       final double total,
@@ -480,6 +498,8 @@ abstract class _AppOrder extends AppOrder {
   GeoPoint? get deliveryGeoPoint;
   @override
   double? get deliveryHeading;
+  @override
+  RejectionStatus get rejectionStatus;
   @override
   List<OrderItem> get items;
   @override

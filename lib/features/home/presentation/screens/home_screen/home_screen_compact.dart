@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/core_features/theme/presentation/utils/custom_colors.dart';
 import '../../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../../core/presentation/screens/nested_screen_scaffold.dart';
+import '../../../../../core/presentation/styles/styles.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../../../core/presentation/widgets/loading_widgets.dart';
 import '../../components/retry_again_component.dart';
 import '../../components/upcoming_orders_component.dart';
+import '../../providers/driver_availability_provider.dart';
 import '../../providers/location_stream_provider.dart';
+import '../../providers/order_rejection_listener_provider.dart';
 import '../../providers/save_route_history_provider.dart';
 import '../../providers/update_delivery_geo_point_provider.dart';
 import '../../utils/location_error.dart';
@@ -26,19 +30,124 @@ class HomeScreenCompact extends HookConsumerWidget {
     // FIX: Save route history every 15s or 100m for dispute resolution
     ref.listen(saveRouteHistoryProvider, (previous, next) {});
 
+    // Listen to order rejection status updates
+    ref.watch(orderRejectionListenerProvider);
+
+    final availabilityAsync = ref.watch(driverAvailabilityProvider);
+
     return NestedScreenScaffold(
-      body: locationAsync.when(
-        skipLoadingOnReload: true,
-        skipLoadingOnRefresh: !locationAsync.hasError,
-        loading: () =>
-            TitledLoadingIndicator(message: tr(context).determine_location),
-        error: (error, st) => RetryAgainComponent(
-          description: (error as LocationError).getErrorText(context),
-          onPressed: () {
-            ref.invalidate(locationStreamProvider);
-          },
-        ),
-        data: (_) => const UpcomingOrdersComponent(),
+      body: Column(
+        children: [
+          // App Bar with Online/Offline Switch
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.screenPaddingH28,
+              vertical: Sizes.screenPaddingV16,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              border: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    tr(context).home,
+                    style: TextStyles.f20(context).copyWith(
+                      fontWeight: FontStyles.fontWeightSemiBold,
+                    ),
+                  ),
+                ),
+                // Online/Offline Switch
+                availabilityAsync.when(
+                  loading: () => const SizedBox(
+                    width: 80,
+                    child: Center(
+                        child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )),
+                  ),
+                  error: (_, __) => const SizedBox.shrink(),
+                  data: (isOnline) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: isOnline
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: isOnline ? Colors.green : Colors.grey,
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: isOnline ? Colors.green : Colors.grey,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          isOnline
+                              ? tr(context).available
+                              : tr(context).unavailable,
+                          style: TextStyles.f14(context).copyWith(
+                            color: isOnline ? Colors.green : Colors.grey,
+                            fontWeight: FontStyles.fontWeightSemiBold,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        SizedBox(
+                          height: 24,
+                          child: Switch(
+                            value: isOnline,
+                            onChanged: (_) {
+                              ref
+                                  .read(driverAvailabilityProvider.notifier)
+                                  .toggleAvailability();
+                            },
+                            activeColor: Colors.green,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Body content
+          Expanded(
+            child: locationAsync.when(
+              skipLoadingOnReload: true,
+              skipLoadingOnRefresh: !locationAsync.hasError,
+              loading: () => TitledLoadingIndicator(
+                  message: tr(context).determine_location),
+              error: (error, st) => RetryAgainComponent(
+                description: (error as LocationError).getErrorText(context),
+                onPressed: () {
+                  ref.invalidate(locationStreamProvider);
+                },
+              ),
+              data: (_) => const UpcomingOrdersComponent(),
+            ),
+          ),
+        ],
       ),
     );
   }

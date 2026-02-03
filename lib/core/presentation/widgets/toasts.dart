@@ -13,9 +13,19 @@ abstract class Toasts {
     required String title,
     required String description,
   }) {
+    final isDesktop = MediaQuery.of(context).size.width > 900;
+
     CustomToast.showToast(
       context,
       positionedToastBuilder: (context, child) {
+        if (isDesktop) {
+          return Positioned(
+            bottom: 24,
+            right: 24,
+            width: 400, // Fixed width for desktop
+            child: child,
+          );
+        }
         return Positioned(
           bottom: 0,
           right: 0,
@@ -29,20 +39,24 @@ abstract class Toasts {
         children: <Widget>[
           Text(
             title,
-            style: TextStyles.f16SemiBold(context).copyWith(color: AppStaticColors.lightBlack),
+            style: TextStyles.f16SemiBold(context)
+                .copyWith(color: AppStaticColors.lightBlack),
           ),
           const SizedBox(
             height: Sizes.marginV2,
           ),
           Text(
             description,
-            style: TextStyles.f14(context).copyWith(color: AppStaticColors.lightBlack),
+            style: TextStyles.f14(context)
+                .copyWith(color: AppStaticColors.lightBlack),
           ),
         ],
       ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: Sizes.marginH20,
-      ),
+      margin: isDesktop
+          ? EdgeInsets.zero // Positioned handles margin
+          : const EdgeInsets.symmetric(
+              horizontal: Sizes.marginH20,
+            ),
     );
   }
 

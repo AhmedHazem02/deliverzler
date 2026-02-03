@@ -9,6 +9,7 @@ import '../../../../core/presentation/widgets/toasts.dart';
 import '../../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../domain/order.dart';
 import '../components/dialogs/cancel_order_dialog.dart';
+import '../components/dialogs/excuse_submission_dialog.dart';
 import '../components/dialogs/order_details_dialog.dart';
 
 abstract class OrderDialogs {
@@ -63,6 +64,28 @@ abstract class OrderDialogs {
       confirmTitle: tr(context).confirm,
       confirmCallback: (ctx) =>
           NavigationService.popDialog(ctx, result: cancelNoteController!.text),
+    ).then((result) {
+      return result as String?;
+    });
+  }
+
+  static Future<String?> showExcuseSubmissionDialog(
+      BuildContext context) async {
+    TextEditingController? excuseReasonController;
+    return Dialogs.showConfirmDialog(
+      context,
+      title: tr(context).submitExcuseQuestion,
+      content: (_) => HookBuilder(
+        builder: (context) {
+          excuseReasonController = useTextEditingController(text: '');
+          return ExcuseSubmissionDialog(
+            excuseReasonController: excuseReasonController!,
+          );
+        },
+      ),
+      confirmTitle: tr(context).confirm,
+      confirmCallback: (ctx) => NavigationService.popDialog(ctx,
+          result: excuseReasonController!.text),
     ).then((result) {
       return result as String?;
     });

@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../core/infrastructure/services/location_service.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../utils/location_error.dart';
+import 'heartbeat_provider.dart';
 
 part 'location_stream_provider.g.dart';
 
@@ -140,6 +141,14 @@ Stream<Position> locationStream(Ref ref) async* {
     // B. Emit the Real Position (The Truth)
     yield realPos;
     currentUiPosition = realPos;
+
+    // Send heartbeat on location update (updates lastActiveAt)
+    try {
+      ref.read(heartbeatProvider.notifier).sendHeartbeat();
+    } catch (e) {
+      // Silently fail - don't disrupt location stream
+      debugPrint('⚠️ Heartbeat failed: $e');
+    }
 
     // C. Dead Reckoning Trigger (Tunnel Mode)
     // Only project if moving significantly (> 1.5 m/s to avoid drift when stopped)

@@ -926,6 +926,66 @@ abstract class AppLocalizations {
   /// **'Cancel the order?'**
   String get cancelTheOrder;
 
+  /// No description provided for @submitExcuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Excuse'**
+  String get submitExcuse;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get unavailable;
+
+  /// No description provided for @reasonForRejection.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for Rejection'**
+  String get reasonForRejection;
+
+  /// No description provided for @typeYourReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Type your reason for rejecting the order'**
+  String get typeYourReason;
+
+  /// No description provided for @excuseSubmissionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: Your request will be sent to admin for review and you\'ll receive a decision soon'**
+  String get excuseSubmissionNote;
+
+  /// No description provided for @submitExcuseQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit excuse for this order?'**
+  String get submitExcuseQuestion;
+
+  /// No description provided for @waitingAdminReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for admin review'**
+  String get waitingAdminReview;
+
+  /// No description provided for @excuseSubmittedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Excuse submitted successfully'**
+  String get excuseSubmittedSuccessfully;
+
+  /// No description provided for @cannotSubmitExcuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot submit excuse now'**
+  String get cannotSubmitExcuse;
+
   /// No description provided for @doYouWantToDeliverTheOrder.
   ///
   /// In en, this message translates to:

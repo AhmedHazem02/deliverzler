@@ -450,6 +450,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelTheOrder => 'Cancel the order?';
 
   @override
+  String get submitExcuse => 'Submit Excuse';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get unavailable => 'Unavailable';
+
+  @override
+  String get reasonForRejection => 'Reason for Rejection';
+
+  @override
+  String get typeYourReason => 'Type your reason for rejecting the order';
+
+  @override
+  String get excuseSubmissionNote =>
+      'Note: Your request will be sent to admin for review and you\'ll receive a decision soon';
+
+  @override
+  String get submitExcuseQuestion => 'Submit excuse for this order?';
+
+  @override
+  String get waitingAdminReview => 'Waiting for admin review';
+
+  @override
+  String get excuseSubmittedSuccessfully => 'Excuse submitted successfully';
+
+  @override
+  String get cannotSubmitExcuse => 'Cannot submit excuse now';
+
+  @override
   String get doYouWantToDeliverTheOrder => 'Do you want to Deliver the order?';
 
   @override

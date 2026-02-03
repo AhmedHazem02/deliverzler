@@ -19,8 +19,10 @@ class ProfileRepo {
 
   final ProfileRemoteDataSource remoteDataSource;
 
-  Future<String> uploadProfileImage(Uint8List imageBytes, String filename) async {
-    final imageUrl = await remoteDataSource.uploadProfileImage(imageBytes, filename);
+  Future<String> uploadProfileImage(
+      Uint8List imageBytes, String filename) async {
+    final imageUrl =
+        await remoteDataSource.uploadProfileImage(imageBytes, filename);
     return imageUrl;
   }
 
@@ -43,5 +45,8 @@ class ProfileRepo {
       longitude: longitude,
     );
   }
-}
 
+  Future<String?> getDriverPhotoUrl(String uid) async {
+    return await remoteDataSource.getDriverPhotoUrl(uid);
+  }
+}

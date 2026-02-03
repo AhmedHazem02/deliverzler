@@ -96,7 +96,7 @@ class SaveRouteHistory extends _$SaveRouteHistory {
     for (final order in myDeliveryOrders) {
       futures.add(
         dataSource.addRoutePoint(
-          orderId: order.id,
+          orderId: order.id.toString(),
           routePoint: routePoint,
         ),
       );

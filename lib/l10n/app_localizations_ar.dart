@@ -447,6 +447,37 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cancelTheOrder => 'إلغاء الطلب؟';
 
   @override
+  String get submitExcuse => 'تقديم اعتذار';
+
+  @override
+  String get available => 'متاح';
+
+  @override
+  String get unavailable => 'غير متاح';
+
+  @override
+  String get reasonForRejection => 'سبب رفض الطلب';
+
+  @override
+  String get typeYourReason => 'اكتب سبب رفضك للطلب';
+
+  @override
+  String get excuseSubmissionNote =>
+      'ملاحظة: سيتم إرسال طلبك للإدارة للمراجعة وستتلقى قراراً قريباً';
+
+  @override
+  String get submitExcuseQuestion => 'تقديم اعتذار عن هذا الطلب؟';
+
+  @override
+  String get waitingAdminReview => 'في انتظار مراجعة الإدارة';
+
+  @override
+  String get excuseSubmittedSuccessfully => 'تم تقديم الاعتذار بنجاح';
+
+  @override
+  String get cannotSubmitExcuse => 'لا يمكن تقديم الاعتذار الآن';
+
+  @override
   String get doYouWantToDeliverTheOrder => 'هل تريد توصيل هذا الطلب؟';
 
   @override

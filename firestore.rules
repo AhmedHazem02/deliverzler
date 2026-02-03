@@ -45,16 +45,24 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // ملف تعريف السائق
+    // ملف تعريف السائق وطلبات التقديم
     match /drivers/{driverId} {
+      // القراءة: السائق نفسه أو الأدمن
       allow read: if request.auth != null && 
                      (request.auth.uid == driverId ||
                       isAdmin());
 
-      allow update: if request.auth != null && 
+      // الإنشاء: السائق يقدر يقدم طلب (create)
+      allow create: if request.auth != null && 
                        request.auth.uid == driverId;
 
-      allow write: if isAdmin();
+      // التحديث: السائق يقدر يحدث بياناته أو الأدمن
+      allow update: if request.auth != null && 
+                       (request.auth.uid == driverId ||
+                        isAdmin());
+
+      // الحذف: الأدمن فقط
+      allow delete: if isAdmin();
     }
 
     // المناطق النشطة

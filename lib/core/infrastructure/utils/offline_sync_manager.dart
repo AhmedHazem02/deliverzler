@@ -48,7 +48,7 @@ class OfflineSyncManager {
       final json = _prefs.getString(_storageKey);
       if (json == null || json.isEmpty) return [];
 
-      final List<dynamic> decoded = jsonDecode(json);
+      final decoded = jsonDecode(json) as List<dynamic>;
       return decoded
           .map(
               (item) => PendingOperation.fromJson(item as Map<String, dynamic>))

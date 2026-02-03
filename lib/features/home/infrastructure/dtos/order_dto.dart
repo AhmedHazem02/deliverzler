@@ -27,6 +27,7 @@ class OrderDto with _$OrderDto {
     required String? deliveryId,
     @GeoPointConverter() required GeoPoint? deliveryGeoPoint,
     required double? deliveryHeading,
+    @Default(RejectionStatus.none) RejectionStatus rejectionStatus,
     @Default([]) List<OrderItemDto> items,
     @Default(0.0) double subTotal,
     @Default(0.0) double total,
@@ -52,6 +53,7 @@ class OrderDto with _$OrderDto {
       deliveryId: order.deliveryId,
       deliveryGeoPoint: order.deliveryGeoPoint,
       deliveryHeading: order.deliveryHeading,
+      rejectionStatus: order.rejectionStatus,
       items: order.items
           .map((item) => OrderItemDto(
                 id: item.id,
@@ -102,6 +104,7 @@ class OrderDto with _$OrderDto {
       deliveryId: deliveryId,
       deliveryGeoPoint: deliveryGeoPoint,
       deliveryHeading: deliveryHeading,
+      rejectionStatus: rejectionStatus,
       items: items.map((item) => item.toDomain()).toList(),
       subTotal: subTotal == 0
           ? items.fold(0.0, (sum, item) => sum + item.total)

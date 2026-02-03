@@ -7,7 +7,7 @@ part of 'save_route_history_provider.dart';
 // **************************************************************************
 
 String _$routeHistoryRemoteDataSourceHash() =>
-    r'c81a7bc55a5967c6b46e7f7628aa33baaa0c109d';
+    r'8eed1a3f8cab891c0dfb994e5dd95dac82db5975';
 
 /// Provider for RouteHistoryRemoteDataSource
 ///
@@ -26,7 +26,7 @@ final routeHistoryRemoteDataSourceProvider =
 
 typedef RouteHistoryRemoteDataSourceRef
     = ProviderRef<RouteHistoryRemoteDataSource>;
-String _$saveRouteHistoryHash() => r'd9d347b7fd45dd97e3807b9e1da129ff1b199f10';
+String _$saveRouteHistoryHash() => r'476b9aa1b2760e6a3813953499640a909b4889bd';
 
 /// Saves route history points every 10-15 seconds
 /// This creates a track history for dispute resolution and performance analysis

@@ -36,10 +36,12 @@ class ProfileRemoteDataSource {
 
   static const String usersStorageFolderPath = 'users';
 
-  static String userStorageFolderPath(String uid) => '$usersStorageFolderPath/$uid';
+  static String userStorageFolderPath(String uid) =>
+      '$usersStorageFolderPath/$uid';
 
   /// Upload profile image from bytes (cross-platform)
-  Future<String> uploadProfileImage(Uint8List imageBytes, String filename) async {
+  Future<String> uploadProfileImage(
+      Uint8List imageBytes, String filename) async {
     final uid = ref.read(currentUserProvider).id;
     final imageUrl = await firebaseStorage.uploadImage(
       //File name is always user's uid, to replace the file when updating it.
@@ -82,6 +84,18 @@ class ProfileRemoteDataSource {
       merge: true,
     );
   }
+
+  /// Get driver photo URL from drivers collection
+  Future<String?> getDriverPhotoUrl(String uid) async {
+    try {
+      final driverDoc = await firebaseFirestore.getData(path: 'drivers/$uid');
+      final data = driverDoc.data() as Map<String, dynamic>?;
+      if (data != null) {
+        return data['photoUrl'] as String?;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }
-
-

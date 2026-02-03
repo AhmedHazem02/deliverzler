@@ -37,3 +37,15 @@ enum DeliveryStatus {
 
   final String jsonValue;
 }
+
+@JsonEnum(valueField: 'jsonValue')
+enum RejectionStatus {
+  none('none'),
+  requested('requested'),
+  adminApproved('adminApproved'),
+  adminRefused('adminRefused');
+
+  const RejectionStatus(this.jsonValue);
+
+  final String jsonValue;
+}

@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../domain/models/delivery_order.dart';
 import '../../../../core/infrastructure/utils/retry_utility.dart';
 import '../../../../core/infrastructure/utils/network_retry_strategy.dart';
 import '../../../../core/infrastructure/utils/geo_point_validator.dart';
@@ -57,7 +59,7 @@ class UpdateDeliveryStatusNotifier
 
       // إضافة الموقع إذا كان صحيحاً
       if (GeoPointValidator.isValidGeoPoint(location)) {
-        updateData['location'] = location;
+        updateData['location'] = location as Object;
       }
 
       // 3️⃣ محاولة التحديث مع إعادة محاولة ذكية

@@ -1,48 +1,44 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../../core/presentation/screens/full_screen_scaffold.dart';
-import '../../components/auth_settings_bar.dart';
 import '../../providers/sign_up_provider.dart';
-import '../../components/driver_signup_form_component.dart';
+import 'desktop_signup_layout.dart';
+import 'mobile_signup_layout.dart';
 
-class SignUpScreen extends ConsumerWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Precache background image for smoother loading on desktop
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      precacheImage(
+        const AssetImage('assets/images/login/login_background.png'),
+        context,
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     ref.easyListen(signUpStateProvider);
     return FullScreenScaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Settings bar (Theme & Language)
-              const AuthSettingsBar(),
-              const SizedBox(height: 16),
-              // Header
-              Text(
-                tr(context).driverApplicationTitle,
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                tr(context).driverApplicationSubtitle,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              const DriverSignupFormComponent(),
-            ],
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 900) {
+              return const DesktopSignupLayout();
+            } else {
+              return const MobileSignupLayout();
+            }
+          },
         ),
       ),
     );

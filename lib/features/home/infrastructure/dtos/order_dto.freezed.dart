@@ -36,6 +36,7 @@ mixin _$OrderDto {
   @GeoPointConverter()
   GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
   double? get deliveryHeading => throw _privateConstructorUsedError;
+  RejectionStatus get rejectionStatus => throw _privateConstructorUsedError;
   List<OrderItemDto> get items => throw _privateConstructorUsedError;
   double get subTotal => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
@@ -68,6 +69,7 @@ abstract class $OrderDtoCopyWith<$Res> {
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      RejectionStatus rejectionStatus,
       List<OrderItemDto> items,
       double subTotal,
       double total,
@@ -104,6 +106,7 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? rejectionStatus = null,
     Object? items = null,
     Object? subTotal = null,
     Object? total = null,
@@ -167,6 +170,10 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      rejectionStatus: null == rejectionStatus
+          ? _value.rejectionStatus
+          : rejectionStatus // ignore: cast_nullable_to_non_nullable
+              as RejectionStatus,
       items: null == items
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
@@ -226,6 +233,7 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
       String? deliveryId,
       @GeoPointConverter() GeoPoint? deliveryGeoPoint,
       double? deliveryHeading,
+      RejectionStatus rejectionStatus,
       List<OrderItemDto> items,
       double subTotal,
       double total,
@@ -261,6 +269,7 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? deliveryId = freezed,
     Object? deliveryGeoPoint = freezed,
     Object? deliveryHeading = freezed,
+    Object? rejectionStatus = null,
     Object? items = null,
     Object? subTotal = null,
     Object? total = null,
@@ -324,6 +333,10 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryHeading
           : deliveryHeading // ignore: cast_nullable_to_non_nullable
               as double?,
+      rejectionStatus: null == rejectionStatus
+          ? _value.rejectionStatus
+          : rejectionStatus // ignore: cast_nullable_to_non_nullable
+              as RejectionStatus,
       items: null == items
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
@@ -366,6 +379,7 @@ class _$OrderDtoImpl extends _OrderDto {
       required this.deliveryId,
       @GeoPointConverter() required this.deliveryGeoPoint,
       required this.deliveryHeading,
+      this.rejectionStatus = RejectionStatus.none,
       final List<OrderItemDto> items = const [],
       this.subTotal = 0.0,
       this.total = 0.0,
@@ -407,6 +421,9 @@ class _$OrderDtoImpl extends _OrderDto {
   final GeoPoint? deliveryGeoPoint;
   @override
   final double? deliveryHeading;
+  @override
+  @JsonKey()
+  final RejectionStatus rejectionStatus;
   final List<OrderItemDto> _items;
   @override
   @JsonKey()
@@ -430,7 +447,7 @@ class _$OrderDtoImpl extends _OrderDto {
 
   @override
   String toString() {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, id: $id)';
+    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, id: $id)';
   }
 
   @override
@@ -463,6 +480,8 @@ class _$OrderDtoImpl extends _OrderDto {
                 other.deliveryGeoPoint == deliveryGeoPoint) &&
             (identical(other.deliveryHeading, deliveryHeading) ||
                 other.deliveryHeading == deliveryHeading) &&
+            (identical(other.rejectionStatus, rejectionStatus) ||
+                other.rejectionStatus == rejectionStatus) &&
             const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.subTotal, subTotal) ||
                 other.subTotal == subTotal) &&
@@ -490,6 +509,7 @@ class _$OrderDtoImpl extends _OrderDto {
         deliveryId,
         deliveryGeoPoint,
         deliveryHeading,
+        rejectionStatus,
         const DeepCollectionEquality().hash(_items),
         subTotal,
         total,
@@ -520,6 +540,7 @@ abstract class _OrderDto extends OrderDto {
       required final String? deliveryId,
       @GeoPointConverter() required final GeoPoint? deliveryGeoPoint,
       required final double? deliveryHeading,
+      final RejectionStatus rejectionStatus,
       final List<OrderItemDto> items,
       final double subTotal,
       final double total,
@@ -560,6 +581,8 @@ abstract class _OrderDto extends OrderDto {
   GeoPoint? get deliveryGeoPoint;
   @override
   double? get deliveryHeading;
+  @override
+  RejectionStatus get rejectionStatus;
   @override
   List<OrderItemDto> get items;
   @override

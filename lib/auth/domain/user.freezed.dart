@@ -21,6 +21,10 @@ mixin _$User {
   String? get name => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
+  bool get isOnline => throw _privateConstructorUsedError;
+  DateTime? get lastActiveAt => throw _privateConstructorUsedError;
+  int get rejectionsCounter => throw _privateConstructorUsedError;
+  int get currentOrdersCount => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
@@ -32,7 +36,15 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {String id, String email, String? name, String? phone, String? image});
+      {String id,
+      String email,
+      String? name,
+      String? phone,
+      String? image,
+      bool isOnline,
+      DateTime? lastActiveAt,
+      int rejectionsCounter,
+      int currentOrdersCount});
 }
 
 /// @nodoc
@@ -53,6 +65,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = freezed,
     Object? phone = freezed,
     Object? image = freezed,
+    Object? isOnline = null,
+    Object? lastActiveAt = freezed,
+    Object? rejectionsCounter = null,
+    Object? currentOrdersCount = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -75,6 +91,22 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: freezed == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      rejectionsCounter: null == rejectionsCounter
+          ? _value.rejectionsCounter
+          : rejectionsCounter // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentOrdersCount: null == currentOrdersCount
+          ? _value.currentOrdersCount
+          : currentOrdersCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -87,7 +119,15 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, String email, String? name, String? phone, String? image});
+      {String id,
+      String email,
+      String? name,
+      String? phone,
+      String? image,
+      bool isOnline,
+      DateTime? lastActiveAt,
+      int rejectionsCounter,
+      int currentOrdersCount});
 }
 
 /// @nodoc
@@ -105,6 +145,10 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? phone = freezed,
     Object? image = freezed,
+    Object? isOnline = null,
+    Object? lastActiveAt = freezed,
+    Object? rejectionsCounter = null,
+    Object? currentOrdersCount = null,
   }) {
     return _then(_$UserImpl(
       id: null == id
@@ -127,6 +171,22 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
               as String?,
+      isOnline: null == isOnline
+          ? _value.isOnline
+          : isOnline // ignore: cast_nullable_to_non_nullable
+              as bool,
+      lastActiveAt: freezed == lastActiveAt
+          ? _value.lastActiveAt
+          : lastActiveAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      rejectionsCounter: null == rejectionsCounter
+          ? _value.rejectionsCounter
+          : rejectionsCounter // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentOrdersCount: null == currentOrdersCount
+          ? _value.currentOrdersCount
+          : currentOrdersCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -139,7 +199,11 @@ class _$UserImpl extends _User {
       required this.email,
       required this.name,
       required this.phone,
-      required this.image})
+      required this.image,
+      this.isOnline = false,
+      this.lastActiveAt,
+      this.rejectionsCounter = 0,
+      this.currentOrdersCount = 0})
       : super._();
 
   @override
@@ -152,10 +216,21 @@ class _$UserImpl extends _User {
   final String? phone;
   @override
   final String? image;
+  @override
+  @JsonKey()
+  final bool isOnline;
+  @override
+  final DateTime? lastActiveAt;
+  @override
+  @JsonKey()
+  final int rejectionsCounter;
+  @override
+  @JsonKey()
+  final int currentOrdersCount;
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, name: $name, phone: $phone, image: $image)';
+    return 'User(id: $id, email: $email, name: $name, phone: $phone, image: $image, isOnline: $isOnline, lastActiveAt: $lastActiveAt, rejectionsCounter: $rejectionsCounter, currentOrdersCount: $currentOrdersCount)';
   }
 
   @override
@@ -167,11 +242,20 @@ class _$UserImpl extends _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.isOnline, isOnline) ||
+                other.isOnline == isOnline) &&
+            (identical(other.lastActiveAt, lastActiveAt) ||
+                other.lastActiveAt == lastActiveAt) &&
+            (identical(other.rejectionsCounter, rejectionsCounter) ||
+                other.rejectionsCounter == rejectionsCounter) &&
+            (identical(other.currentOrdersCount, currentOrdersCount) ||
+                other.currentOrdersCount == currentOrdersCount));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, name, phone, image);
+  int get hashCode => Object.hash(runtimeType, id, email, name, phone, image,
+      isOnline, lastActiveAt, rejectionsCounter, currentOrdersCount);
 
   @JsonKey(ignore: true)
   @override
@@ -186,7 +270,11 @@ abstract class _User extends User {
       required final String email,
       required final String? name,
       required final String? phone,
-      required final String? image}) = _$UserImpl;
+      required final String? image,
+      final bool isOnline,
+      final DateTime? lastActiveAt,
+      final int rejectionsCounter,
+      final int currentOrdersCount}) = _$UserImpl;
   const _User._() : super._();
 
   @override
@@ -199,6 +287,14 @@ abstract class _User extends User {
   String? get phone;
   @override
   String? get image;
+  @override
+  bool get isOnline;
+  @override
+  DateTime? get lastActiveAt;
+  @override
+  int get rejectionsCounter;
+  @override
+  int get currentOrdersCount;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

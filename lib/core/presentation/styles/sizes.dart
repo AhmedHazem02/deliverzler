@@ -1,13 +1,15 @@
 part of 'styles.dart';
 
 abstract class Sizes {
-  static final double statusBarHeight =
-      MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).padding.top;
+  static final double statusBarHeight = MediaQueryData.fromView(
+          WidgetsBinding.instance.platformDispatcher.views.single)
+      .padding
+      .top;
 
-  static final double homeIndicatorHeight =
-      MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single)
-          .viewPadding
-          .bottom;
+  static final double homeIndicatorHeight = MediaQueryData.fromView(
+          WidgetsBinding.instance.platformDispatcher.views.single)
+      .viewPadding
+      .bottom;
 
   /// Font Sizes
   /// You can use these directly if you need, but usually there should be a predefined style in TextStyles
@@ -55,6 +57,7 @@ abstract class Sizes {
   static const double paddingV4 = 4;
   static const double paddingH20 = 20;
   static const double paddingH14 = 14;
+  static const double paddingH12 = 12;
   static const double paddingH8 = 8;
   static const double paddingH4 = 4;
 
@@ -72,6 +75,7 @@ abstract class Sizes {
 
   // Card
   static const double cardR12 = 12;
+  static const double cardR8 = 8;
   static const double cardPaddingV16 = 16;
   static const double cardPaddingH20 = 20;
 

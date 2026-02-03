@@ -31,7 +31,7 @@ class DriverApplicationRemoteDataSource {
   final FirebaseFirestoreFacade firebaseFirestore;
   final SupabaseStorageService supabaseStorage;
 
-  static const String applicationsCollectionPath = 'driver_requests';
+  static const String applicationsCollectionPath = 'drivers';
 
   static String applicationDocPath(String applicationId) =>
       '$applicationsCollectionPath/$applicationId';

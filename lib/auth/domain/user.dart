@@ -12,6 +12,10 @@ class User with _$User {
     required String? name,
     required String? phone,
     required String? image,
+    @Default(false) bool isOnline,
+    DateTime? lastActiveAt,
+    @Default(0) int rejectionsCounter,
+    @Default(0) int currentOrdersCount,
   }) = _User;
   const User._();
 

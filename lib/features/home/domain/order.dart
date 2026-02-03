@@ -28,6 +28,7 @@ class AppOrder with _$AppOrder {
     required String? deliveryId,
     required GeoPoint? deliveryGeoPoint,
     required double? deliveryHeading,
+    @Default(RejectionStatus.none) RejectionStatus rejectionStatus,
     @Default([]) List<OrderItem> items,
     @Default(0.0) double subTotal,
     @Default(0.0) double total,
