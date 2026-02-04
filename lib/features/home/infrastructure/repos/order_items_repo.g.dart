@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'firebase_auth_facade.dart';
+part of 'order_items_repo.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthFacadeHash() =>
-    r'd267419a088951d8f52f3f6ac88ecb2b118933a3';
+String _$orderItemsRepoHash() => r'2a0051e09a9d7e053e2dddffde447aa8775312ea';
 
-/// See also [firebaseAuthFacade].
-@ProviderFor(firebaseAuthFacade)
-final firebaseAuthFacadeProvider = Provider<FirebaseAuthFacade>.internal(
-  firebaseAuthFacade,
-  name: r'firebaseAuthFacadeProvider',
+/// See also [orderItemsRepo].
+@ProviderFor(orderItemsRepo)
+final orderItemsRepoProvider = Provider<OrderItemsRepo>.internal(
+  orderItemsRepo,
+  name: r'orderItemsRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$firebaseAuthFacadeHash,
+      : _$orderItemsRepoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef FirebaseAuthFacadeRef = ProviderRef<FirebaseAuthFacade>;
+typedef OrderItemsRepoRef = ProviderRef<OrderItemsRepo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

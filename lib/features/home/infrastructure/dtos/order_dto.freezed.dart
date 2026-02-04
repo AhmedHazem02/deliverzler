@@ -20,27 +20,54 @@ OrderDto _$OrderDtoFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$OrderDto {
-  int get date => throw _privateConstructorUsedError;
+// Date field mapping
+  @JsonKey(name: 'created_at', readValue: _readDateValue)
+  int get date =>
+      throw _privateConstructorUsedError; // Pickup option (default to delivery)
   PickupOption get pickupOption => throw _privateConstructorUsedError;
-  String get paymentMethod => throw _privateConstructorUsedError;
-  @JsonKey(name: 'addressModel')
-  AddressDto? get address => throw _privateConstructorUsedError;
+  String get paymentMethod =>
+      throw _privateConstructorUsedError; // Customer fields mapping
+  @JsonKey(name: 'customer_id')
   String get userId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'customer_name')
   String get userName => throw _privateConstructorUsedError;
-  String get userImage => throw _privateConstructorUsedError;
+  @JsonKey(name: 'customer_phone')
   String get userPhone => throw _privateConstructorUsedError;
-  String get userNote => throw _privateConstructorUsedError;
-  String? get employeeCancelNote => throw _privateConstructorUsedError;
-  DeliveryStatus get deliveryStatus => throw _privateConstructorUsedError;
+  String get userImage => throw _privateConstructorUsedError;
+  String get userNote =>
+      throw _privateConstructorUsedError; // Address fields (flat structure in DB)
+  @JsonKey(name: 'delivery_state')
+  String? get deliveryState => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delivery_city')
+  String? get deliveryCity => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delivery_address')
+  String? get deliveryStreet =>
+      throw _privateConstructorUsedError; // Coordinates (separate lat/lng fields)
+  @JsonKey(name: 'delivery_latitude')
+  double? get deliveryLatitude => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delivery_longitude')
+  double? get deliveryLongitude =>
+      throw _privateConstructorUsedError; // Status field (with trim to handle trailing spaces)
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  DeliveryStatus get deliveryStatus =>
+      throw _privateConstructorUsedError; // Driver assignment
+  @JsonKey(name: 'driver_id')
   String? get deliveryId => throw _privateConstructorUsedError;
-  @GeoPointConverter()
-  GeoPoint? get deliveryGeoPoint => throw _privateConstructorUsedError;
-  double? get deliveryHeading => throw _privateConstructorUsedError;
-  RejectionStatus get rejectionStatus => throw _privateConstructorUsedError;
-  List<OrderItemDto> get items => throw _privateConstructorUsedError;
+  String? get employeeCancelNote => throw _privateConstructorUsedError;
+  RejectionStatus get rejectionStatus =>
+      throw _privateConstructorUsedError; // Price fields
   double get subTotal => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
-  double? get deliveryFee => throw _privateConstructorUsedError;
+  @JsonKey(name: 'delivery_price')
+  double? get deliveryFee =>
+      throw _privateConstructorUsedError; // Store information
+  @JsonKey(name: 'store_id')
+  String? get storeId =>
+      throw _privateConstructorUsedError; // Admin comment when excuse is refused
+  String? get adminComment =>
+      throw _privateConstructorUsedError; // List of driver IDs who rejected/excused this order
+  @JsonKey(name: 'rejected_by_drivers')
+  List<String> get rejectedByDrivers => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
 
@@ -55,28 +82,31 @@ abstract class $OrderDtoCopyWith<$Res> {
       _$OrderDtoCopyWithImpl<$Res, OrderDto>;
   @useResult
   $Res call(
-      {int date,
+      {@JsonKey(name: 'created_at', readValue: _readDateValue) int date,
       PickupOption pickupOption,
       String paymentMethod,
-      @JsonKey(name: 'addressModel') AddressDto? address,
-      String userId,
-      String userName,
+      @JsonKey(name: 'customer_id') String userId,
+      @JsonKey(name: 'customer_name') String userName,
+      @JsonKey(name: 'customer_phone') String userPhone,
       String userImage,
-      String userPhone,
       String userNote,
-      String? employeeCancelNote,
+      @JsonKey(name: 'delivery_state') String? deliveryState,
+      @JsonKey(name: 'delivery_city') String? deliveryCity,
+      @JsonKey(name: 'delivery_address') String? deliveryStreet,
+      @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
+      @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
       DeliveryStatus deliveryStatus,
-      String? deliveryId,
-      @GeoPointConverter() GeoPoint? deliveryGeoPoint,
-      double? deliveryHeading,
+      @JsonKey(name: 'driver_id') String? deliveryId,
+      String? employeeCancelNote,
       RejectionStatus rejectionStatus,
-      List<OrderItemDto> items,
       double subTotal,
       double total,
-      double? deliveryFee,
+      @JsonKey(name: 'delivery_price') double? deliveryFee,
+      @JsonKey(name: 'store_id') String? storeId,
+      String? adminComment,
+      @JsonKey(name: 'rejected_by_drivers') List<String> rejectedByDrivers,
       @JsonKey(includeToJson: false) String? id});
-
-  $AddressDtoCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -95,22 +125,26 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? date = null,
     Object? pickupOption = null,
     Object? paymentMethod = null,
-    Object? address = freezed,
     Object? userId = null,
     Object? userName = null,
-    Object? userImage = null,
     Object? userPhone = null,
+    Object? userImage = null,
     Object? userNote = null,
-    Object? employeeCancelNote = freezed,
+    Object? deliveryState = freezed,
+    Object? deliveryCity = freezed,
+    Object? deliveryStreet = freezed,
+    Object? deliveryLatitude = freezed,
+    Object? deliveryLongitude = freezed,
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
-    Object? deliveryGeoPoint = freezed,
-    Object? deliveryHeading = freezed,
+    Object? employeeCancelNote = freezed,
     Object? rejectionStatus = null,
-    Object? items = null,
     Object? subTotal = null,
     Object? total = null,
     Object? deliveryFee = freezed,
+    Object? storeId = freezed,
+    Object? adminComment = freezed,
+    Object? rejectedByDrivers = null,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
@@ -126,10 +160,6 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressDto?,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -138,22 +168,38 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      userImage: null == userImage
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
-              as String,
       userPhone: null == userPhone
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
+              as String,
+      userImage: null == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
               as String,
       userNote: null == userNote
           ? _value.userNote
           : userNote // ignore: cast_nullable_to_non_nullable
               as String,
-      employeeCancelNote: freezed == employeeCancelNote
-          ? _value.employeeCancelNote
-          : employeeCancelNote // ignore: cast_nullable_to_non_nullable
+      deliveryState: freezed == deliveryState
+          ? _value.deliveryState
+          : deliveryState // ignore: cast_nullable_to_non_nullable
               as String?,
+      deliveryCity: freezed == deliveryCity
+          ? _value.deliveryCity
+          : deliveryCity // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryStreet: freezed == deliveryStreet
+          ? _value.deliveryStreet
+          : deliveryStreet // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryLatitude: freezed == deliveryLatitude
+          ? _value.deliveryLatitude
+          : deliveryLatitude // ignore: cast_nullable_to_non_nullable
+              as double?,
+      deliveryLongitude: freezed == deliveryLongitude
+          ? _value.deliveryLongitude
+          : deliveryLongitude // ignore: cast_nullable_to_non_nullable
+              as double?,
       deliveryStatus: null == deliveryStatus
           ? _value.deliveryStatus
           : deliveryStatus // ignore: cast_nullable_to_non_nullable
@@ -162,22 +208,14 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
               as String?,
-      deliveryGeoPoint: freezed == deliveryGeoPoint
-          ? _value.deliveryGeoPoint
-          : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
-              as GeoPoint?,
-      deliveryHeading: freezed == deliveryHeading
-          ? _value.deliveryHeading
-          : deliveryHeading // ignore: cast_nullable_to_non_nullable
-              as double?,
+      employeeCancelNote: freezed == employeeCancelNote
+          ? _value.employeeCancelNote
+          : employeeCancelNote // ignore: cast_nullable_to_non_nullable
+              as String?,
       rejectionStatus: null == rejectionStatus
           ? _value.rejectionStatus
           : rejectionStatus // ignore: cast_nullable_to_non_nullable
               as RejectionStatus,
-      items: null == items
-          ? _value.items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<OrderItemDto>,
       subTotal: null == subTotal
           ? _value.subTotal
           : subTotal // ignore: cast_nullable_to_non_nullable
@@ -190,23 +228,23 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryFee
           : deliveryFee // ignore: cast_nullable_to_non_nullable
               as double?,
+      storeId: freezed == storeId
+          ? _value.storeId
+          : storeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rejectedByDrivers: null == rejectedByDrivers
+          ? _value.rejectedByDrivers
+          : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AddressDtoCopyWith<$Res>? get address {
-    if (_value.address == null) {
-      return null;
-    }
-
-    return $AddressDtoCopyWith<$Res>(_value.address!, (value) {
-      return _then(_value.copyWith(address: value) as $Val);
-    });
   }
 }
 
@@ -219,29 +257,31 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int date,
+      {@JsonKey(name: 'created_at', readValue: _readDateValue) int date,
       PickupOption pickupOption,
       String paymentMethod,
-      @JsonKey(name: 'addressModel') AddressDto? address,
-      String userId,
-      String userName,
+      @JsonKey(name: 'customer_id') String userId,
+      @JsonKey(name: 'customer_name') String userName,
+      @JsonKey(name: 'customer_phone') String userPhone,
       String userImage,
-      String userPhone,
       String userNote,
-      String? employeeCancelNote,
+      @JsonKey(name: 'delivery_state') String? deliveryState,
+      @JsonKey(name: 'delivery_city') String? deliveryCity,
+      @JsonKey(name: 'delivery_address') String? deliveryStreet,
+      @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
+      @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
       DeliveryStatus deliveryStatus,
-      String? deliveryId,
-      @GeoPointConverter() GeoPoint? deliveryGeoPoint,
-      double? deliveryHeading,
+      @JsonKey(name: 'driver_id') String? deliveryId,
+      String? employeeCancelNote,
       RejectionStatus rejectionStatus,
-      List<OrderItemDto> items,
       double subTotal,
       double total,
-      double? deliveryFee,
+      @JsonKey(name: 'delivery_price') double? deliveryFee,
+      @JsonKey(name: 'store_id') String? storeId,
+      String? adminComment,
+      @JsonKey(name: 'rejected_by_drivers') List<String> rejectedByDrivers,
       @JsonKey(includeToJson: false) String? id});
-
-  @override
-  $AddressDtoCopyWith<$Res>? get address;
 }
 
 /// @nodoc
@@ -258,22 +298,26 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? date = null,
     Object? pickupOption = null,
     Object? paymentMethod = null,
-    Object? address = freezed,
     Object? userId = null,
     Object? userName = null,
-    Object? userImage = null,
     Object? userPhone = null,
+    Object? userImage = null,
     Object? userNote = null,
-    Object? employeeCancelNote = freezed,
+    Object? deliveryState = freezed,
+    Object? deliveryCity = freezed,
+    Object? deliveryStreet = freezed,
+    Object? deliveryLatitude = freezed,
+    Object? deliveryLongitude = freezed,
     Object? deliveryStatus = null,
     Object? deliveryId = freezed,
-    Object? deliveryGeoPoint = freezed,
-    Object? deliveryHeading = freezed,
+    Object? employeeCancelNote = freezed,
     Object? rejectionStatus = null,
-    Object? items = null,
     Object? subTotal = null,
     Object? total = null,
     Object? deliveryFee = freezed,
+    Object? storeId = freezed,
+    Object? adminComment = freezed,
+    Object? rejectedByDrivers = null,
     Object? id = freezed,
   }) {
     return _then(_$OrderDtoImpl(
@@ -289,10 +333,6 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressDto?,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -301,22 +341,38 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
               as String,
-      userImage: null == userImage
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
-              as String,
       userPhone: null == userPhone
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
+              as String,
+      userImage: null == userImage
+          ? _value.userImage
+          : userImage // ignore: cast_nullable_to_non_nullable
               as String,
       userNote: null == userNote
           ? _value.userNote
           : userNote // ignore: cast_nullable_to_non_nullable
               as String,
-      employeeCancelNote: freezed == employeeCancelNote
-          ? _value.employeeCancelNote
-          : employeeCancelNote // ignore: cast_nullable_to_non_nullable
+      deliveryState: freezed == deliveryState
+          ? _value.deliveryState
+          : deliveryState // ignore: cast_nullable_to_non_nullable
               as String?,
+      deliveryCity: freezed == deliveryCity
+          ? _value.deliveryCity
+          : deliveryCity // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryStreet: freezed == deliveryStreet
+          ? _value.deliveryStreet
+          : deliveryStreet // ignore: cast_nullable_to_non_nullable
+              as String?,
+      deliveryLatitude: freezed == deliveryLatitude
+          ? _value.deliveryLatitude
+          : deliveryLatitude // ignore: cast_nullable_to_non_nullable
+              as double?,
+      deliveryLongitude: freezed == deliveryLongitude
+          ? _value.deliveryLongitude
+          : deliveryLongitude // ignore: cast_nullable_to_non_nullable
+              as double?,
       deliveryStatus: null == deliveryStatus
           ? _value.deliveryStatus
           : deliveryStatus // ignore: cast_nullable_to_non_nullable
@@ -325,22 +381,14 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
               as String?,
-      deliveryGeoPoint: freezed == deliveryGeoPoint
-          ? _value.deliveryGeoPoint
-          : deliveryGeoPoint // ignore: cast_nullable_to_non_nullable
-              as GeoPoint?,
-      deliveryHeading: freezed == deliveryHeading
-          ? _value.deliveryHeading
-          : deliveryHeading // ignore: cast_nullable_to_non_nullable
-              as double?,
+      employeeCancelNote: freezed == employeeCancelNote
+          ? _value.employeeCancelNote
+          : employeeCancelNote // ignore: cast_nullable_to_non_nullable
+              as String?,
       rejectionStatus: null == rejectionStatus
           ? _value.rejectionStatus
           : rejectionStatus // ignore: cast_nullable_to_non_nullable
               as RejectionStatus,
-      items: null == items
-          ? _value._items
-          : items // ignore: cast_nullable_to_non_nullable
-              as List<OrderItemDto>,
       subTotal: null == subTotal
           ? _value.subTotal
           : subTotal // ignore: cast_nullable_to_non_nullable
@@ -353,6 +401,18 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryFee
           : deliveryFee // ignore: cast_nullable_to_non_nullable
               as double?,
+      storeId: freezed == storeId
+          ? _value.storeId
+          : storeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rejectedByDrivers: null == rejectedByDrivers
+          ? _value._rejectedByDrivers
+          : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -363,91 +423,164 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable(createToJson: false)
-class _$OrderDtoImpl extends _OrderDto {
+class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   const _$OrderDtoImpl(
-      {required this.date,
-      required this.pickupOption,
-      required this.paymentMethod,
-      @JsonKey(name: 'addressModel') required this.address,
-      required this.userId,
-      required this.userName,
-      required this.userImage,
-      required this.userPhone,
-      required this.userNote,
-      required this.employeeCancelNote,
+      {@JsonKey(name: 'created_at', readValue: _readDateValue)
+      required this.date,
+      this.pickupOption = PickupOption.delivery,
+      this.paymentMethod = 'cash',
+      @JsonKey(name: 'customer_id') required this.userId,
+      @JsonKey(name: 'customer_name') required this.userName,
+      @JsonKey(name: 'customer_phone') required this.userPhone,
+      this.userImage = '',
+      this.userNote = '',
+      @JsonKey(name: 'delivery_state') this.deliveryState,
+      @JsonKey(name: 'delivery_city') this.deliveryCity,
+      @JsonKey(name: 'delivery_address') this.deliveryStreet,
+      @JsonKey(name: 'delivery_latitude') this.deliveryLatitude,
+      @JsonKey(name: 'delivery_longitude') this.deliveryLongitude,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
       required this.deliveryStatus,
-      required this.deliveryId,
-      @GeoPointConverter() required this.deliveryGeoPoint,
-      required this.deliveryHeading,
+      @JsonKey(name: 'driver_id') this.deliveryId,
+      this.employeeCancelNote,
       this.rejectionStatus = RejectionStatus.none,
-      final List<OrderItemDto> items = const [],
       this.subTotal = 0.0,
-      this.total = 0.0,
-      this.deliveryFee,
+      required this.total,
+      @JsonKey(name: 'delivery_price') this.deliveryFee,
+      @JsonKey(name: 'store_id') this.storeId,
+      this.adminComment,
+      @JsonKey(name: 'rejected_by_drivers')
+      final List<String> rejectedByDrivers = const [],
       @JsonKey(includeToJson: false) this.id})
-      : _items = items,
+      : _rejectedByDrivers = rejectedByDrivers,
         super._();
 
   factory _$OrderDtoImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderDtoImplFromJson(json);
 
+// Date field mapping
   @override
+  @JsonKey(name: 'created_at', readValue: _readDateValue)
   final int date;
+// Pickup option (default to delivery)
   @override
+  @JsonKey()
   final PickupOption pickupOption;
   @override
+  @JsonKey()
   final String paymentMethod;
+// Customer fields mapping
   @override
-  @JsonKey(name: 'addressModel')
-  final AddressDto? address;
-  @override
+  @JsonKey(name: 'customer_id')
   final String userId;
   @override
+  @JsonKey(name: 'customer_name')
   final String userName;
   @override
-  final String userImage;
-  @override
+  @JsonKey(name: 'customer_phone')
   final String userPhone;
   @override
+  @JsonKey()
+  final String userImage;
+  @override
+  @JsonKey()
   final String userNote;
+// Address fields (flat structure in DB)
+  @override
+  @JsonKey(name: 'delivery_state')
+  final String? deliveryState;
+  @override
+  @JsonKey(name: 'delivery_city')
+  final String? deliveryCity;
+  @override
+  @JsonKey(name: 'delivery_address')
+  final String? deliveryStreet;
+// Coordinates (separate lat/lng fields)
+  @override
+  @JsonKey(name: 'delivery_latitude')
+  final double? deliveryLatitude;
+  @override
+  @JsonKey(name: 'delivery_longitude')
+  final double? deliveryLongitude;
+// Status field (with trim to handle trailing spaces)
+  @override
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  final DeliveryStatus deliveryStatus;
+// Driver assignment
+  @override
+  @JsonKey(name: 'driver_id')
+  final String? deliveryId;
   @override
   final String? employeeCancelNote;
   @override
-  final DeliveryStatus deliveryStatus;
-  @override
-  final String? deliveryId;
-  @override
-  @GeoPointConverter()
-  final GeoPoint? deliveryGeoPoint;
-  @override
-  final double? deliveryHeading;
-  @override
   @JsonKey()
   final RejectionStatus rejectionStatus;
-  final List<OrderItemDto> _items;
-  @override
-  @JsonKey()
-  List<OrderItemDto> get items {
-    if (_items is EqualUnmodifiableListView) return _items;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_items);
-  }
-
+// Price fields
   @override
   @JsonKey()
   final double subTotal;
   @override
-  @JsonKey()
   final double total;
   @override
+  @JsonKey(name: 'delivery_price')
   final double? deliveryFee;
+// Store information
+  @override
+  @JsonKey(name: 'store_id')
+  final String? storeId;
+// Admin comment when excuse is refused
+  @override
+  final String? adminComment;
+// List of driver IDs who rejected/excused this order
+  final List<String> _rejectedByDrivers;
+// List of driver IDs who rejected/excused this order
+  @override
+  @JsonKey(name: 'rejected_by_drivers')
+  List<String> get rejectedByDrivers {
+    if (_rejectedByDrivers is EqualUnmodifiableListView)
+      return _rejectedByDrivers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rejectedByDrivers);
+  }
+
   @override
   @JsonKey(includeToJson: false)
   final String? id;
 
   @override
-  String toString() {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, id: $id)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, userId: $userId, userName: $userName, userPhone: $userPhone, userImage: $userImage, userNote: $userNote, deliveryState: $deliveryState, deliveryCity: $deliveryCity, deliveryStreet: $deliveryStreet, deliveryLatitude: $deliveryLatitude, deliveryLongitude: $deliveryLongitude, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, employeeCancelNote: $employeeCancelNote, rejectionStatus: $rejectionStatus, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, id: $id)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'OrderDto'))
+      ..add(DiagnosticsProperty('date', date))
+      ..add(DiagnosticsProperty('pickupOption', pickupOption))
+      ..add(DiagnosticsProperty('paymentMethod', paymentMethod))
+      ..add(DiagnosticsProperty('userId', userId))
+      ..add(DiagnosticsProperty('userName', userName))
+      ..add(DiagnosticsProperty('userPhone', userPhone))
+      ..add(DiagnosticsProperty('userImage', userImage))
+      ..add(DiagnosticsProperty('userNote', userNote))
+      ..add(DiagnosticsProperty('deliveryState', deliveryState))
+      ..add(DiagnosticsProperty('deliveryCity', deliveryCity))
+      ..add(DiagnosticsProperty('deliveryStreet', deliveryStreet))
+      ..add(DiagnosticsProperty('deliveryLatitude', deliveryLatitude))
+      ..add(DiagnosticsProperty('deliveryLongitude', deliveryLongitude))
+      ..add(DiagnosticsProperty('deliveryStatus', deliveryStatus))
+      ..add(DiagnosticsProperty('deliveryId', deliveryId))
+      ..add(DiagnosticsProperty('employeeCancelNote', employeeCancelNote))
+      ..add(DiagnosticsProperty('rejectionStatus', rejectionStatus))
+      ..add(DiagnosticsProperty('subTotal', subTotal))
+      ..add(DiagnosticsProperty('total', total))
+      ..add(DiagnosticsProperty('deliveryFee', deliveryFee))
+      ..add(DiagnosticsProperty('storeId', storeId))
+      ..add(DiagnosticsProperty('adminComment', adminComment))
+      ..add(DiagnosticsProperty('rejectedByDrivers', rejectedByDrivers))
+      ..add(DiagnosticsProperty('id', id));
   }
 
   @override
@@ -460,34 +593,43 @@ class _$OrderDtoImpl extends _OrderDto {
                 other.pickupOption == pickupOption) &&
             (identical(other.paymentMethod, paymentMethod) ||
                 other.paymentMethod == paymentMethod) &&
-            (identical(other.address, address) || other.address == address) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
-            (identical(other.userImage, userImage) ||
-                other.userImage == userImage) &&
             (identical(other.userPhone, userPhone) ||
                 other.userPhone == userPhone) &&
+            (identical(other.userImage, userImage) ||
+                other.userImage == userImage) &&
             (identical(other.userNote, userNote) ||
                 other.userNote == userNote) &&
-            (identical(other.employeeCancelNote, employeeCancelNote) ||
-                other.employeeCancelNote == employeeCancelNote) &&
+            (identical(other.deliveryState, deliveryState) ||
+                other.deliveryState == deliveryState) &&
+            (identical(other.deliveryCity, deliveryCity) ||
+                other.deliveryCity == deliveryCity) &&
+            (identical(other.deliveryStreet, deliveryStreet) ||
+                other.deliveryStreet == deliveryStreet) &&
+            (identical(other.deliveryLatitude, deliveryLatitude) ||
+                other.deliveryLatitude == deliveryLatitude) &&
+            (identical(other.deliveryLongitude, deliveryLongitude) ||
+                other.deliveryLongitude == deliveryLongitude) &&
             (identical(other.deliveryStatus, deliveryStatus) ||
                 other.deliveryStatus == deliveryStatus) &&
             (identical(other.deliveryId, deliveryId) ||
                 other.deliveryId == deliveryId) &&
-            (identical(other.deliveryGeoPoint, deliveryGeoPoint) ||
-                other.deliveryGeoPoint == deliveryGeoPoint) &&
-            (identical(other.deliveryHeading, deliveryHeading) ||
-                other.deliveryHeading == deliveryHeading) &&
+            (identical(other.employeeCancelNote, employeeCancelNote) ||
+                other.employeeCancelNote == employeeCancelNote) &&
             (identical(other.rejectionStatus, rejectionStatus) ||
                 other.rejectionStatus == rejectionStatus) &&
-            const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.subTotal, subTotal) ||
                 other.subTotal == subTotal) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.deliveryFee, deliveryFee) ||
                 other.deliveryFee == deliveryFee) &&
+            (identical(other.storeId, storeId) || other.storeId == storeId) &&
+            (identical(other.adminComment, adminComment) ||
+                other.adminComment == adminComment) &&
+            const DeepCollectionEquality()
+                .equals(other._rejectedByDrivers, _rejectedByDrivers) &&
             (identical(other.id, id) || other.id == id));
   }
 
@@ -498,22 +640,26 @@ class _$OrderDtoImpl extends _OrderDto {
         date,
         pickupOption,
         paymentMethod,
-        address,
         userId,
         userName,
-        userImage,
         userPhone,
+        userImage,
         userNote,
-        employeeCancelNote,
+        deliveryState,
+        deliveryCity,
+        deliveryStreet,
+        deliveryLatitude,
+        deliveryLongitude,
         deliveryStatus,
         deliveryId,
-        deliveryGeoPoint,
-        deliveryHeading,
+        employeeCancelNote,
         rejectionStatus,
-        const DeepCollectionEquality().hash(_items),
         subTotal,
         total,
         deliveryFee,
+        storeId,
+        adminComment,
+        const DeepCollectionEquality().hash(_rejectedByDrivers),
         id
       ]);
 
@@ -526,296 +672,103 @@ class _$OrderDtoImpl extends _OrderDto {
 
 abstract class _OrderDto extends OrderDto {
   const factory _OrderDto(
-      {required final int date,
-      required final PickupOption pickupOption,
-      required final String paymentMethod,
-      @JsonKey(name: 'addressModel') required final AddressDto? address,
-      required final String userId,
-      required final String userName,
-      required final String userImage,
-      required final String userPhone,
-      required final String userNote,
-      required final String? employeeCancelNote,
+      {@JsonKey(name: 'created_at', readValue: _readDateValue)
+      required final int date,
+      final PickupOption pickupOption,
+      final String paymentMethod,
+      @JsonKey(name: 'customer_id') required final String userId,
+      @JsonKey(name: 'customer_name') required final String userName,
+      @JsonKey(name: 'customer_phone') required final String userPhone,
+      final String userImage,
+      final String userNote,
+      @JsonKey(name: 'delivery_state') final String? deliveryState,
+      @JsonKey(name: 'delivery_city') final String? deliveryCity,
+      @JsonKey(name: 'delivery_address') final String? deliveryStreet,
+      @JsonKey(name: 'delivery_latitude') final double? deliveryLatitude,
+      @JsonKey(name: 'delivery_longitude') final double? deliveryLongitude,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
       required final DeliveryStatus deliveryStatus,
-      required final String? deliveryId,
-      @GeoPointConverter() required final GeoPoint? deliveryGeoPoint,
-      required final double? deliveryHeading,
+      @JsonKey(name: 'driver_id') final String? deliveryId,
+      final String? employeeCancelNote,
       final RejectionStatus rejectionStatus,
-      final List<OrderItemDto> items,
       final double subTotal,
-      final double total,
-      final double? deliveryFee,
+      required final double total,
+      @JsonKey(name: 'delivery_price') final double? deliveryFee,
+      @JsonKey(name: 'store_id') final String? storeId,
+      final String? adminComment,
+      @JsonKey(name: 'rejected_by_drivers')
+      final List<String> rejectedByDrivers,
       @JsonKey(includeToJson: false) final String? id}) = _$OrderDtoImpl;
   const _OrderDto._() : super._();
 
   factory _OrderDto.fromJson(Map<String, dynamic> json) =
       _$OrderDtoImpl.fromJson;
 
-  @override
+  @override // Date field mapping
+  @JsonKey(name: 'created_at', readValue: _readDateValue)
   int get date;
-  @override
+  @override // Pickup option (default to delivery)
   PickupOption get pickupOption;
   @override
   String get paymentMethod;
-  @override
-  @JsonKey(name: 'addressModel')
-  AddressDto? get address;
-  @override
+  @override // Customer fields mapping
+  @JsonKey(name: 'customer_id')
   String get userId;
   @override
+  @JsonKey(name: 'customer_name')
   String get userName;
+  @override
+  @JsonKey(name: 'customer_phone')
+  String get userPhone;
   @override
   String get userImage;
   @override
-  String get userPhone;
-  @override
   String get userNote;
+  @override // Address fields (flat structure in DB)
+  @JsonKey(name: 'delivery_state')
+  String? get deliveryState;
+  @override
+  @JsonKey(name: 'delivery_city')
+  String? get deliveryCity;
+  @override
+  @JsonKey(name: 'delivery_address')
+  String? get deliveryStreet;
+  @override // Coordinates (separate lat/lng fields)
+  @JsonKey(name: 'delivery_latitude')
+  double? get deliveryLatitude;
+  @override
+  @JsonKey(name: 'delivery_longitude')
+  double? get deliveryLongitude;
+  @override // Status field (with trim to handle trailing spaces)
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  DeliveryStatus get deliveryStatus;
+  @override // Driver assignment
+  @JsonKey(name: 'driver_id')
+  String? get deliveryId;
   @override
   String? get employeeCancelNote;
   @override
-  DeliveryStatus get deliveryStatus;
-  @override
-  String? get deliveryId;
-  @override
-  @GeoPointConverter()
-  GeoPoint? get deliveryGeoPoint;
-  @override
-  double? get deliveryHeading;
-  @override
   RejectionStatus get rejectionStatus;
-  @override
-  List<OrderItemDto> get items;
-  @override
+  @override // Price fields
   double get subTotal;
   @override
   double get total;
   @override
+  @JsonKey(name: 'delivery_price')
   double? get deliveryFee;
+  @override // Store information
+  @JsonKey(name: 'store_id')
+  String? get storeId;
+  @override // Admin comment when excuse is refused
+  String? get adminComment;
+  @override // List of driver IDs who rejected/excused this order
+  @JsonKey(name: 'rejected_by_drivers')
+  List<String> get rejectedByDrivers;
   @override
   @JsonKey(includeToJson: false)
   String? get id;
   @override
   @JsonKey(ignore: true)
   _$$OrderDtoImplCopyWith<_$OrderDtoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-AddressDto _$AddressDtoFromJson(Map<String, dynamic> json) {
-  return _AddressDto.fromJson(json);
-}
-
-/// @nodoc
-mixin _$AddressDto {
-  String get state => throw _privateConstructorUsedError;
-  String get city => throw _privateConstructorUsedError;
-  String get street => throw _privateConstructorUsedError;
-  String get mobile => throw _privateConstructorUsedError;
-  @GeoPointConverter()
-  GeoPoint? get geoPoint => throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $AddressDtoCopyWith<AddressDto> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $AddressDtoCopyWith<$Res> {
-  factory $AddressDtoCopyWith(
-          AddressDto value, $Res Function(AddressDto) then) =
-      _$AddressDtoCopyWithImpl<$Res, AddressDto>;
-  @useResult
-  $Res call(
-      {String state,
-      String city,
-      String street,
-      String mobile,
-      @GeoPointConverter() GeoPoint? geoPoint});
-}
-
-/// @nodoc
-class _$AddressDtoCopyWithImpl<$Res, $Val extends AddressDto>
-    implements $AddressDtoCopyWith<$Res> {
-  _$AddressDtoCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? state = null,
-    Object? city = null,
-    Object? street = null,
-    Object? mobile = null,
-    Object? geoPoint = freezed,
-  }) {
-    return _then(_value.copyWith(
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      street: null == street
-          ? _value.street
-          : street // ignore: cast_nullable_to_non_nullable
-              as String,
-      mobile: null == mobile
-          ? _value.mobile
-          : mobile // ignore: cast_nullable_to_non_nullable
-              as String,
-      geoPoint: freezed == geoPoint
-          ? _value.geoPoint
-          : geoPoint // ignore: cast_nullable_to_non_nullable
-              as GeoPoint?,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$AddressDtoImplCopyWith<$Res>
-    implements $AddressDtoCopyWith<$Res> {
-  factory _$$AddressDtoImplCopyWith(
-          _$AddressDtoImpl value, $Res Function(_$AddressDtoImpl) then) =
-      __$$AddressDtoImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String state,
-      String city,
-      String street,
-      String mobile,
-      @GeoPointConverter() GeoPoint? geoPoint});
-}
-
-/// @nodoc
-class __$$AddressDtoImplCopyWithImpl<$Res>
-    extends _$AddressDtoCopyWithImpl<$Res, _$AddressDtoImpl>
-    implements _$$AddressDtoImplCopyWith<$Res> {
-  __$$AddressDtoImplCopyWithImpl(
-      _$AddressDtoImpl _value, $Res Function(_$AddressDtoImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? state = null,
-    Object? city = null,
-    Object? street = null,
-    Object? mobile = null,
-    Object? geoPoint = freezed,
-  }) {
-    return _then(_$AddressDtoImpl(
-      state: null == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      street: null == street
-          ? _value.street
-          : street // ignore: cast_nullable_to_non_nullable
-              as String,
-      mobile: null == mobile
-          ? _value.mobile
-          : mobile // ignore: cast_nullable_to_non_nullable
-              as String,
-      geoPoint: freezed == geoPoint
-          ? _value.geoPoint
-          : geoPoint // ignore: cast_nullable_to_non_nullable
-              as GeoPoint?,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable(createToJson: false)
-class _$AddressDtoImpl extends _AddressDto {
-  const _$AddressDtoImpl(
-      {required this.state,
-      required this.city,
-      required this.street,
-      required this.mobile,
-      @GeoPointConverter() required this.geoPoint})
-      : super._();
-
-  factory _$AddressDtoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$AddressDtoImplFromJson(json);
-
-  @override
-  final String state;
-  @override
-  final String city;
-  @override
-  final String street;
-  @override
-  final String mobile;
-  @override
-  @GeoPointConverter()
-  final GeoPoint? geoPoint;
-
-  @override
-  String toString() {
-    return 'AddressDto(state: $state, city: $city, street: $street, mobile: $mobile, geoPoint: $geoPoint)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AddressDtoImpl &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.street, street) || other.street == street) &&
-            (identical(other.mobile, mobile) || other.mobile == mobile) &&
-            (identical(other.geoPoint, geoPoint) ||
-                other.geoPoint == geoPoint));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, state, city, street, mobile, geoPoint);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AddressDtoImplCopyWith<_$AddressDtoImpl> get copyWith =>
-      __$$AddressDtoImplCopyWithImpl<_$AddressDtoImpl>(this, _$identity);
-}
-
-abstract class _AddressDto extends AddressDto {
-  const factory _AddressDto(
-          {required final String state,
-          required final String city,
-          required final String street,
-          required final String mobile,
-          @GeoPointConverter() required final GeoPoint? geoPoint}) =
-      _$AddressDtoImpl;
-  const _AddressDto._() : super._();
-
-  factory _AddressDto.fromJson(Map<String, dynamic> json) =
-      _$AddressDtoImpl.fromJson;
-
-  @override
-  String get state;
-  @override
-  String get city;
-  @override
-  String get street;
-  @override
-  String get mobile;
-  @override
-  @GeoPointConverter()
-  GeoPoint? get geoPoint;
-  @override
-  @JsonKey(ignore: true)
-  _$$AddressDtoImplCopyWith<_$AddressDtoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

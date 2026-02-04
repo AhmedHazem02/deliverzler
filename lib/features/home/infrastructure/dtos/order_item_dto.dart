@@ -8,13 +8,13 @@ part 'order_item_dto.g.dart';
 @freezed
 class OrderItemDto with _$OrderItemDto {
   const factory OrderItemDto({
-    required String id,
-    required String name,
+    @Default('') String id,
+    @Default('') String name,
     String? imageUrl,
     @Default('') String? image, // Alternative field name in Firestore
-    required int quantity,
-    required double price,
-    required double total,
+    @Default(0) int quantity,
+    @Default(0.0) double price,
+    @Default(0.0) double total,
     String? category,
     String? description,
   }) = _OrderItemDto;

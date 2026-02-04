@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UpdateDeliveryStatusDto {
   @JsonKey(includeToJson: false)
   String get orderId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
   DeliveryStatus get deliveryStatus => throw _privateConstructorUsedError;
   @JsonKey(disallowNullValue: true)
   String? get deliveryId => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $UpdateDeliveryStatusDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String orderId,
-      DeliveryStatus deliveryStatus,
+      @JsonKey(name: 'status') DeliveryStatus deliveryStatus,
       @JsonKey(disallowNullValue: true) String? deliveryId,
       @JsonKey(disallowNullValue: true) String? employeeCancelNote});
 }
@@ -94,7 +95,7 @@ abstract class _$$UpdateDeliveryStatusDtoImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(includeToJson: false) String orderId,
-      DeliveryStatus deliveryStatus,
+      @JsonKey(name: 'status') DeliveryStatus deliveryStatus,
       @JsonKey(disallowNullValue: true) String? deliveryId,
       @JsonKey(disallowNullValue: true) String? employeeCancelNote});
 }
@@ -143,7 +144,7 @@ class __$$UpdateDeliveryStatusDtoImplCopyWithImpl<$Res>
 class _$UpdateDeliveryStatusDtoImpl implements _UpdateDeliveryStatusDto {
   const _$UpdateDeliveryStatusDtoImpl(
       {@JsonKey(includeToJson: false) required this.orderId,
-      required this.deliveryStatus,
+      @JsonKey(name: 'status') required this.deliveryStatus,
       @JsonKey(disallowNullValue: true) this.deliveryId,
       @JsonKey(disallowNullValue: true) this.employeeCancelNote});
 
@@ -151,6 +152,7 @@ class _$UpdateDeliveryStatusDtoImpl implements _UpdateDeliveryStatusDto {
   @JsonKey(includeToJson: false)
   final String orderId;
   @override
+  @JsonKey(name: 'status')
   final DeliveryStatus deliveryStatus;
   @override
   @JsonKey(disallowNullValue: true)
@@ -201,7 +203,7 @@ class _$UpdateDeliveryStatusDtoImpl implements _UpdateDeliveryStatusDto {
 abstract class _UpdateDeliveryStatusDto implements UpdateDeliveryStatusDto {
   const factory _UpdateDeliveryStatusDto(
           {@JsonKey(includeToJson: false) required final String orderId,
-          required final DeliveryStatus deliveryStatus,
+          @JsonKey(name: 'status') required final DeliveryStatus deliveryStatus,
           @JsonKey(disallowNullValue: true) final String? deliveryId,
           @JsonKey(disallowNullValue: true) final String? employeeCancelNote}) =
       _$UpdateDeliveryStatusDtoImpl;
@@ -210,6 +212,7 @@ abstract class _UpdateDeliveryStatusDto implements UpdateDeliveryStatusDto {
   @JsonKey(includeToJson: false)
   String get orderId;
   @override
+  @JsonKey(name: 'status')
   DeliveryStatus get deliveryStatus;
   @override
   @JsonKey(disallowNullValue: true)

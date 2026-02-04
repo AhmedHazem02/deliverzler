@@ -709,4 +709,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get editProfile => 'تعديل الملف الشخصي';
+
+  @override
+  String get excuseRefused => 'تم رفض الاعتذار';
+
+  @override
+  String get mustDeliverOrder => 'يجب عليك توصيل هذا الطلب إلزامياً';
+
+  @override
+  String get refusalReason => 'السبب';
+
+  @override
+  String get pendingAdminReview => 'طلبات بانتظار المراجعة';
+
+  @override
+  String get buttonsDisabledUntilReview =>
+      'الأزرار معطلة لحين مراجعة الإدارة لطلبك';
 }

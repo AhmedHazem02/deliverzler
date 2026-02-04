@@ -40,6 +40,7 @@ class MapConfirmButtonComponent extends ConsumerWidget {
                   final params = UpdateDeliveryStatus(
                     orderId: order.id,
                     deliveryStatus: DeliveryStatus.delivered,
+                    deliveryId: ref.read(currentUserProvider).id,
                   );
                   ref.read(mapConfirmOrderStatusProvider.notifier).confirmOrder(params);
                 },

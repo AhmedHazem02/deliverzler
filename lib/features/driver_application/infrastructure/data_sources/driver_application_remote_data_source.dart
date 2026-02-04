@@ -1,4 +1,5 @@
 ﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/infrastructure/network/main_api/api_callers/firebase_firestore_facade.dart';
@@ -38,28 +39,47 @@ class DriverApplicationRemoteDataSource {
 
   /// Submit a new driver application
   Future<String> submitApplication(DriverApplicationDto applicationDto) async {
-    final applicationId = await firebaseFirestore.addDataToCollection(
-      path: applicationsCollectionPath,
-      data: applicationDto.toFirestore(),
-    );
+    debugPrint('🔥 [DriverAppRemote] submitApplication called');
+    debugPrint('🔥 [DriverAppRemote] userId: ${applicationDto.userId}');
+    
+    final applicationId = applicationDto.userId;
+    final data = applicationDto.toFirestore();
+    
+    debugPrint('🔥 [DriverAppRemote] applicationId: $applicationId');
+    debugPrint('🔥 [DriverAppRemote] Document path: ${applicationDocPath(applicationId)}');
+    debugPrint('🔥 [DriverAppRemote] Data to save: $data');
+    
+    try {
+      await firebaseFirestore.setData(
+        path: applicationDocPath(applicationId),
+        data: data,
+        merge: true,
+      );
+      debugPrint('✅ [DriverAppRemote] Application saved to Firestore successfully!');
+    } catch (e, stackTrace) {
+      debugPrint('❌ [DriverAppRemote] Failed to save to Firestore!');
+      debugPrint('❌ [DriverAppRemote] Error: $e');
+      debugPrint('❌ [DriverAppRemote] Stack trace: $stackTrace');
+      rethrow;
+    }
+    
     return applicationId;
   }
 
   /// Get application by user ID
   Future<DriverApplicationDto?> getApplicationByUserId(String userId) async {
     try {
-      final querySnapshot = await firebaseFirestore.getCollectionData(
-        path: applicationsCollectionPath,
-        queryBuilder: (query) =>
-            query.where('userId', isEqualTo: userId).limit(1),
+      // Since we now use userId as document ID, we can fetch directly
+      final docSnapshot = await firebaseFirestore.getData(
+        path: applicationDocPath(userId),
       );
 
-      if (querySnapshot.docs.isEmpty) {
+      if (!docSnapshot.exists || docSnapshot.data() == null) {
         return null;
       }
 
       return DriverApplicationDto.fromFirestore(
-          querySnapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
+          docSnapshot as DocumentSnapshot<Map<String, dynamic>>);
     } catch (e) {
       throw Exception(
           'فشل تحميل طلب التقديم. تأكد من اتصالك بالإنترنت: ${e.toString()}');
@@ -83,18 +103,17 @@ class DriverApplicationRemoteDataSource {
 
   /// Watch application status changes in real-time
   Stream<DriverApplication?> watchApplicationByUserId(String userId) {
+    // Watch the specific document directly since userId is the doc ID
     return firebaseFirestore
-        .collectionStream(
-      path: applicationsCollectionPath,
-      queryBuilder: (query) =>
-          query.where('userId', isEqualTo: userId).limit(1),
+        .documentStream(
+      path: applicationDocPath(userId),
     )
-        .map((querySnapshot) {
-      if (querySnapshot.docs.isEmpty) {
+        .map((docSnapshot) {
+      if (!docSnapshot.exists || docSnapshot.data() == null) {
         return null;
       }
       final dto = DriverApplicationDto.fromFirestore(
-          querySnapshot.docs.first as DocumentSnapshot<Map<String, dynamic>>);
+          docSnapshot as DocumentSnapshot<Map<String, dynamic>>);
       return dto.toDomain();
     }).handleError((error, stackTrace) {
       // Log the error for debugging

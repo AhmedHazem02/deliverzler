@@ -205,13 +205,13 @@ class __$$OrderItemDtoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$OrderItemDtoImpl extends _OrderItemDto {
   const _$OrderItemDtoImpl(
-      {required this.id,
-      required this.name,
+      {this.id = '',
+      this.name = '',
       this.imageUrl,
       this.image = '',
-      required this.quantity,
-      required this.price,
-      required this.total,
+      this.quantity = 0,
+      this.price = 0.0,
+      this.total = 0.0,
       this.category,
       this.description})
       : super._();
@@ -220,8 +220,10 @@ class _$OrderItemDtoImpl extends _OrderItemDto {
       _$$OrderItemDtoImplFromJson(json);
 
   @override
+  @JsonKey()
   final String id;
   @override
+  @JsonKey()
   final String name;
   @override
   final String? imageUrl;
@@ -230,10 +232,13 @@ class _$OrderItemDtoImpl extends _OrderItemDto {
   final String? image;
 // Alternative field name in Firestore
   @override
+  @JsonKey()
   final int quantity;
   @override
+  @JsonKey()
   final double price;
   @override
+  @JsonKey()
   final double total;
   @override
   final String? category;
@@ -286,13 +291,13 @@ class _$OrderItemDtoImpl extends _OrderItemDto {
 
 abstract class _OrderItemDto extends OrderItemDto {
   const factory _OrderItemDto(
-      {required final String id,
-      required final String name,
+      {final String id,
+      final String name,
       final String? imageUrl,
       final String? image,
-      required final int quantity,
-      required final double price,
-      required final double total,
+      final int quantity,
+      final double price,
+      final double total,
       final String? category,
       final String? description}) = _$OrderItemDtoImpl;
   const _OrderItemDto._() : super._();

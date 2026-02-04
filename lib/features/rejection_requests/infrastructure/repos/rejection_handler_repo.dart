@@ -58,7 +58,7 @@ class RejectionHandlerRepo {
       await db.runTransaction((transaction) async {
         // References
         final orderRef = db.collection('orders').doc(orderId);
-        final driverRef = db.collection('users').doc(driverId);
+        final driverRef = db.collection('drivers').doc(driverId);
         final requestRef = db.collection('rejection_requests').doc(requestId);
 
         // Read current values

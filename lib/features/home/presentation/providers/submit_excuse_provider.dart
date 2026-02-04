@@ -17,7 +17,7 @@ class SubmitExcuseController extends _$SubmitExcuseController {
     required AppOrder order,
     required String reason,
   }) async {
-    state = const AsyncValue.loading();
+    // AsyncValue.guard automatically handles loading state
     state = await AsyncValue.guard(() async {
       final user = ref.read(currentUserProvider);
       final dataSource = ref.read(rejectionRequestsRemoteDataSourceProvider);

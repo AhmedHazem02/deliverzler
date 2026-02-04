@@ -29,7 +29,7 @@ class AuthRemoteDataSource {
   final FirebaseAuthFacade firebaseAuth;
   final FirebaseFirestoreFacade firebaseFirestore;
 
-  static const String usersCollectionPath = 'users';
+  static const String usersCollectionPath = 'drivers';
 
   static String userDocPath(String uid) => '$usersCollectionPath/$uid';
 
@@ -47,17 +47,46 @@ class AuthRemoteDataSource {
     required String password,
     String? name,
   }) async {
-    final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      debugPrint('🔵 [AuthRemote] Step 1: Starting registration for email: $email');
+      
+      debugPrint('🔵 [AuthRemote] Step 1.1: Calling firebaseAuth.createUserWithEmailAndPassword...');
+      final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      
+      debugPrint('🔵 [AuthRemote] Step 2: Firebase Auth account created successfully');
+      debugPrint('🔵 [AuthRemote] User UID: ${userCredential.user?.uid}');
+      debugPrint('🔵 [AuthRemote] User Email: ${userCredential.user?.email}');
 
-    final userDto = UserDto.fromUserCredential(userCredential.user!);
+      debugPrint('🔵 [AuthRemote] Step 3: Creating UserDto from credential...');
+      final userDto = UserDto.fromUserCredential(userCredential.user!);
+      debugPrint('🔵 [AuthRemote] Step 3 SUCCESS: UserDto created');
 
-    // If a name was provided, set it on the Firestore user doc as well
-    final updated = userDto.copyWith(name: name ?? userDto.name);
-    await setUserData(updated);
-    return updated;
+      // Set name and status for driver registration
+      debugPrint('🔵 [AuthRemote] Step 4: Updating UserDto with name and status...');
+      final updated = userDto.copyWith(
+        name: name ?? userDto.name,
+        status: 'pending', // Driver starts with pending status
+      );
+      
+      debugPrint('🔵 [AuthRemote] Step 4 SUCCESS: UserDto updated');
+      debugPrint('🔵 [AuthRemote] UserDto JSON: ${updated.toJson()}');
+      
+      debugPrint('🔵 [AuthRemote] Step 5: Saving to Firestore...');
+      await setUserData(updated);
+      debugPrint('✅ [AuthRemote] Step 5 SUCCESS: User saved to Firestore');
+      
+      debugPrint('✅ [AuthRemote] Registration completed successfully!');
+      return updated;
+    } catch (e, stackTrace) {
+      debugPrint('❌ [AuthRemote] ERROR in registerWithEmail!');
+      debugPrint('❌ [AuthRemote] Error Type: ${e.runtimeType}');
+      debugPrint('❌ [AuthRemote] Error: $e');
+      debugPrint('❌ [AuthRemote] Stack: $stackTrace');
+      rethrow;
+    }
   }
 
   Future<String> getUserAuthUid() async {

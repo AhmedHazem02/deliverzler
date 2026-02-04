@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../presentation/utils/riverpod_framework.dart';
 import '../../../error/app_exception.dart';
@@ -11,9 +12,20 @@ part 'firebase_auth_facade.g.dart';
 //Our main API is Firebase
 @Riverpod(keepAlive: true)
 FirebaseAuthFacade firebaseAuthFacade(Ref ref) {
-  return FirebaseAuthFacade(
-    firebaseAuth: FirebaseAuth.instance,
-  );
+  try {
+    final firebaseAuthInstance = FirebaseAuth.instance;
+    return FirebaseAuthFacade(
+      firebaseAuth: firebaseAuthInstance,
+    );
+  } catch (e, st) {
+    debugPrint('❌ [FirebaseAuthFacade] Failed to get FirebaseAuth.instance: $e');
+    debugPrint('❌ [FirebaseAuthFacade] Stack: $st');
+    // Provide a clearer ServerException so callers don't receive JS interop TypeErrors
+    throw const ServerException(
+      type: ServerExceptionType.unknown,
+      message: 'Firebase is not initialized. Check firebase_options and dart-define configs.',
+    );
+  }
 }
 
 class FirebaseAuthFacade {
@@ -43,14 +55,26 @@ class FirebaseAuthFacade {
     required String email,
     required String password,
   }) async {
-    return _errorHandler(
-      () async {
-        return firebaseAuth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-      },
-    );
+    // Direct call to avoid JS Interop casting issues in _errorHandler for now
+    try {
+      debugPrint('🟣 [FirebaseAuthFacade] createUserWithEmailAndPassword called');
+      debugPrint('🟣 [FirebaseAuthFacade] Email: $email');
+      
+      final result = await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      
+      debugPrint('✅ [FirebaseAuthFacade] SUCCESS: User created');
+      debugPrint('✅ [FirebaseAuthFacade] UID: ${result.user?.uid}');
+      return result;
+    } catch (e, stackTrace) {
+      debugPrint('❌ [FirebaseAuthFacade] ERROR in createUserWithEmailAndPassword!');
+      debugPrint('❌ [FirebaseAuthFacade] Error Type: ${e.runtimeType}');
+      debugPrint('❌ [FirebaseAuthFacade] Error: $e');
+      debugPrint('❌ [FirebaseAuthFacade] Stack: $stackTrace');
+      rethrow;
+    }
   }
 
   Future<User> getCurrentUser() async {
@@ -86,20 +110,33 @@ class FirebaseAuthFacade {
   }
 
   Future<void> sendEmailVerification() async {
-    return _errorHandler(
-      () async {
-        final currentUser = firebaseAuth.currentUser;
-        if (currentUser != null && !currentUser.emailVerified) {
-          return currentUser.sendEmailVerification();
-        } else if (currentUser == null) {
-          throw const ServerException(
-            type: ServerExceptionType.unauthorized,
-            message: 'No user signed in',
-          );
-        }
-        // If already verified, do nothing
-      },
-    );
+    try {
+      debugPrint('🟣 [FirebaseAuthFacade] sendEmailVerification called');
+      final currentUser = firebaseAuth.currentUser;
+      debugPrint('🟣 [FirebaseAuthFacade] currentUser: ${currentUser?.uid}');
+      debugPrint('🟣 [FirebaseAuthFacade] emailVerified: ${currentUser?.emailVerified}');
+      
+      if (currentUser != null && !currentUser.emailVerified) {
+        debugPrint('🟣 [FirebaseAuthFacade] Sending verification email...');
+        await currentUser.sendEmailVerification();
+        debugPrint('✅ [FirebaseAuthFacade] Verification email sent!');
+        return;
+      } else if (currentUser == null) {
+        debugPrint('❌ [FirebaseAuthFacade] No user signed in!');
+        throw const ServerException(
+          type: ServerExceptionType.unauthorized,
+          message: 'No user signed in',
+        );
+      }
+      debugPrint('🟣 [FirebaseAuthFacade] Email already verified, skipping');
+      // If already verified, do nothing
+    } catch (e, stackTrace) {
+      debugPrint('❌ [FirebaseAuthFacade] ERROR in sendEmailVerification!');
+      debugPrint('❌ [FirebaseAuthFacade] Error Type: ${e.runtimeType}');
+      debugPrint('❌ [FirebaseAuthFacade] Error: $e');
+      debugPrint('❌ [FirebaseAuthFacade] Stack: $stackTrace');
+      rethrow;
+    }
   }
 
   Future<void> reloadUser() async {

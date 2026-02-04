@@ -33,6 +33,14 @@ class AppOrder with _$AppOrder {
     @Default(0.0) double subTotal,
     @Default(0.0) double total,
     double? deliveryFee,
+    // Store information
+    String? storeId,
+    String? storeName,
+    String? storeAddress,
+    // Admin comment when excuse is refused
+    String? adminComment,
+    // List of driver IDs who rejected/excused this order
+    @Default([]) List<String> rejectedByDrivers,
   }) = _AppOrder;
   const AppOrder._();
 

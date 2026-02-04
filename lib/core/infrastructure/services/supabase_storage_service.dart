@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -40,18 +40,32 @@ class SupabaseStorageService {
     dynamic file, // dart:io File on mobile, null on web
     XFile? webFile,
   }) async {
+    debugPrint('📤 [SupabaseStorage] uploadDocument called');
+    debugPrint('📤 [SupabaseStorage] userId: $userId');
+    debugPrint('📤 [SupabaseStorage] documentType: $documentType');
+    debugPrint('📤 [SupabaseStorage] file is null: ${file == null}');
+    debugPrint('📤 [SupabaseStorage] webFile is null: ${webFile == null}');
+    debugPrint('📤 [SupabaseStorage] Platform is web: $kIsWeb');
+    
     if (file == null && webFile == null) {
+      debugPrint('❌ [SupabaseStorage] ERROR: Both file and webFile are null!');
       throw ArgumentError('Either file or webFile must be provided');
     }
 
     final timestamp = DateTime.now().millisecondsSinceEpoch;
     final extension = _getFileExtension(file?.path ?? webFile!.path);
     final fileName = '$userId/$documentType\_$timestamp$extension';
+    
+    debugPrint('📤 [SupabaseStorage] Generated fileName: $fileName');
+    debugPrint('📤 [SupabaseStorage] File extension: $extension');
 
     try {
       if (kIsWeb && webFile != null) {
         // Web upload
+        debugPrint('📤 [SupabaseStorage] Starting WEB upload...');
         final bytes = await webFile.readAsBytes();
+        debugPrint('📤 [SupabaseStorage] File bytes read: ${bytes.length} bytes');
+        
         await _storage.from(_driverDocumentsBucket).uploadBinary(
               fileName,
               bytes,
@@ -60,8 +74,10 @@ class SupabaseStorageService {
                 upsert: true,
               ),
             );
+        debugPrint('✅ [SupabaseStorage] Web upload completed successfully');
       } else if (file != null) {
         // Mobile upload
+        debugPrint('📤 [SupabaseStorage] Starting MOBILE upload...');
         // Cast to dynamic to avoid 'dart:io' linking on web
         final dynamic storageBuilder = _storage.from(_driverDocumentsBucket);
         await storageBuilder.upload(
@@ -72,15 +88,25 @@ class SupabaseStorageService {
                 upsert: true,
               ),
             );
+        debugPrint('✅ [SupabaseStorage] Mobile upload completed successfully');
       }
 
       // Get the public URL
       final publicUrl =
           _storage.from(_driverDocumentsBucket).getPublicUrl(fileName);
-
+      
+      debugPrint('✅ [SupabaseStorage] Public URL generated: $publicUrl');
       return publicUrl;
     } on StorageException catch (e) {
+      debugPrint('❌ [SupabaseStorage] StorageException occurred!');
+      debugPrint('❌ [SupabaseStorage] Error message: ${e.message}');
+      debugPrint('❌ [SupabaseStorage] Error statusCode: ${e.statusCode}');
       throw Exception('Failed to upload document: ${e.message}');
+    } catch (e, stackTrace) {
+      debugPrint('❌ [SupabaseStorage] Unexpected error occurred!');
+      debugPrint('❌ [SupabaseStorage] Error: $e');
+      debugPrint('❌ [SupabaseStorage] Stack trace: $stackTrace');
+      rethrow;
     }
   }
 

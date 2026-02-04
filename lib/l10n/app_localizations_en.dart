@@ -715,4 +715,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editProfile => 'Edit Profile';
+
+  @override
+  String get excuseRefused => 'Excuse Refused';
+
+  @override
+  String get mustDeliverOrder => 'You must deliver this order';
+
+  @override
+  String get refusalReason => 'Reason';
+
+  @override
+  String get pendingAdminReview => 'Orders pending review';
+
+  @override
+  String get buttonsDisabledUntilReview =>
+      'Actions disabled until admin reviews your request';
 }

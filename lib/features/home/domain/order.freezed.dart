@@ -35,7 +35,15 @@ mixin _$AppOrder {
   List<OrderItem> get items => throw _privateConstructorUsedError;
   double get subTotal => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
-  double? get deliveryFee => throw _privateConstructorUsedError;
+  double? get deliveryFee =>
+      throw _privateConstructorUsedError; // Store information
+  String? get storeId => throw _privateConstructorUsedError;
+  String? get storeName => throw _privateConstructorUsedError;
+  String? get storeAddress =>
+      throw _privateConstructorUsedError; // Admin comment when excuse is refused
+  String? get adminComment =>
+      throw _privateConstructorUsedError; // List of driver IDs who rejected/excused this order
+  List<String> get rejectedByDrivers => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppOrderCopyWith<AppOrder> get copyWith =>
@@ -67,7 +75,12 @@ abstract class $AppOrderCopyWith<$Res> {
       List<OrderItem> items,
       double subTotal,
       double total,
-      double? deliveryFee});
+      double? deliveryFee,
+      String? storeId,
+      String? storeName,
+      String? storeAddress,
+      String? adminComment,
+      List<String> rejectedByDrivers});
 
   $AddressCopyWith<$Res>? get address;
 }
@@ -105,6 +118,11 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
     Object? subTotal = null,
     Object? total = null,
     Object? deliveryFee = freezed,
+    Object? storeId = freezed,
+    Object? storeName = freezed,
+    Object? storeAddress = freezed,
+    Object? adminComment = freezed,
+    Object? rejectedByDrivers = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -187,6 +205,26 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
           ? _value.deliveryFee
           : deliveryFee // ignore: cast_nullable_to_non_nullable
               as double?,
+      storeId: freezed == storeId
+          ? _value.storeId
+          : storeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storeName: freezed == storeName
+          ? _value.storeName
+          : storeName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storeAddress: freezed == storeAddress
+          ? _value.storeAddress
+          : storeAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rejectedByDrivers: null == rejectedByDrivers
+          ? _value.rejectedByDrivers
+          : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 
@@ -231,7 +269,12 @@ abstract class _$$AppOrderImplCopyWith<$Res>
       List<OrderItem> items,
       double subTotal,
       double total,
-      double? deliveryFee});
+      double? deliveryFee,
+      String? storeId,
+      String? storeName,
+      String? storeAddress,
+      String? adminComment,
+      List<String> rejectedByDrivers});
 
   @override
   $AddressCopyWith<$Res>? get address;
@@ -268,6 +311,11 @@ class __$$AppOrderImplCopyWithImpl<$Res>
     Object? subTotal = null,
     Object? total = null,
     Object? deliveryFee = freezed,
+    Object? storeId = freezed,
+    Object? storeName = freezed,
+    Object? storeAddress = freezed,
+    Object? adminComment = freezed,
+    Object? rejectedByDrivers = null,
   }) {
     return _then(_$AppOrderImpl(
       id: null == id
@@ -350,6 +398,26 @@ class __$$AppOrderImplCopyWithImpl<$Res>
           ? _value.deliveryFee
           : deliveryFee // ignore: cast_nullable_to_non_nullable
               as double?,
+      storeId: freezed == storeId
+          ? _value.storeId
+          : storeId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storeName: freezed == storeName
+          ? _value.storeName
+          : storeName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storeAddress: freezed == storeAddress
+          ? _value.storeAddress
+          : storeAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      rejectedByDrivers: null == rejectedByDrivers
+          ? _value._rejectedByDrivers
+          : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -377,8 +445,14 @@ class _$AppOrderImpl extends _AppOrder {
       final List<OrderItem> items = const [],
       this.subTotal = 0.0,
       this.total = 0.0,
-      this.deliveryFee})
+      this.deliveryFee,
+      this.storeId,
+      this.storeName,
+      this.storeAddress,
+      this.adminComment,
+      final List<String> rejectedByDrivers = const []})
       : _items = items,
+        _rejectedByDrivers = rejectedByDrivers,
         super._();
 
   @override
@@ -431,10 +505,31 @@ class _$AppOrderImpl extends _AppOrder {
   final double total;
   @override
   final double? deliveryFee;
+// Store information
+  @override
+  final String? storeId;
+  @override
+  final String? storeName;
+  @override
+  final String? storeAddress;
+// Admin comment when excuse is refused
+  @override
+  final String? adminComment;
+// List of driver IDs who rejected/excused this order
+  final List<String> _rejectedByDrivers;
+// List of driver IDs who rejected/excused this order
+  @override
+  @JsonKey()
+  List<String> get rejectedByDrivers {
+    if (_rejectedByDrivers is EqualUnmodifiableListView)
+      return _rejectedByDrivers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rejectedByDrivers);
+  }
 
   @override
   String toString() {
-    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee)';
+    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, storeName: $storeName, storeAddress: $storeAddress, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers)';
   }
 
   @JsonKey(ignore: true)
@@ -465,7 +560,12 @@ abstract class _AppOrder extends AppOrder {
       final List<OrderItem> items,
       final double subTotal,
       final double total,
-      final double? deliveryFee}) = _$AppOrderImpl;
+      final double? deliveryFee,
+      final String? storeId,
+      final String? storeName,
+      final String? storeAddress,
+      final String? adminComment,
+      final List<String> rejectedByDrivers}) = _$AppOrderImpl;
   const _AppOrder._() : super._();
 
   @override
@@ -508,6 +608,16 @@ abstract class _AppOrder extends AppOrder {
   double get total;
   @override
   double? get deliveryFee;
+  @override // Store information
+  String? get storeId;
+  @override
+  String? get storeName;
+  @override
+  String? get storeAddress;
+  @override // Admin comment when excuse is refused
+  String? get adminComment;
+  @override // List of driver IDs who rejected/excused this order
+  List<String> get rejectedByDrivers;
   @override
   @JsonKey(ignore: true)
   _$$AppOrderImplCopyWith<_$AppOrderImpl> get copyWith =>

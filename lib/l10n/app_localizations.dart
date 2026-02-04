@@ -1429,6 +1429,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit Profile'**
   String get editProfile;
+
+  /// No description provided for @excuseRefused.
+  ///
+  /// In en, this message translates to:
+  /// **'Excuse Refused'**
+  String get excuseRefused;
+
+  /// No description provided for @mustDeliverOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'You must deliver this order'**
+  String get mustDeliverOrder;
+
+  /// No description provided for @refusalReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get refusalReason;
+
+  /// No description provided for @pendingAdminReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders pending review'**
+  String get pendingAdminReview;
+
+  /// No description provided for @buttonsDisabledUntilReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions disabled until admin reviews your request'**
+  String get buttonsDisabledUntilReview;
 }
 
 class _AppLocalizationsDelegate

@@ -13,6 +13,7 @@ import '../../domain/update_delivery_status.dart';
 import '../../domain/value_objects.dart';
 import '../providers/selected_order_provider.dart';
 import '../providers/submit_excuse_provider.dart';
+import '../providers/upcoming_orders_provider.dart';
 import '../providers/update_delivery_status_provider/update_delivery_status_provider.dart';
 import '../widgets/order_dialogs.dart';
 import 'card_button_component.dart';
@@ -31,9 +32,11 @@ class CardItemComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(currentUserProvider.select((user) => user.id));
-    final isUpcomingOrder = order.deliveryStatus == DeliveryStatus.upcoming;
+    final isConfirmedOrder = order.deliveryStatus == DeliveryStatus.confirmed;
     final isRejectionPending =
         order.rejectionStatus == RejectionStatus.requested;
+    final isAdminRefused =
+        order.rejectionStatus == RejectionStatus.adminRefused;
 
     ({bool canProceed, bool isLoading}) fetchOrderAuthority() {
       return ref.read(ordersServiceProvider).orderAuthority(
@@ -110,38 +113,22 @@ class CardItemComponent extends ConsumerWidget {
       }
     }
 
-    Future<void> cancelOrder() async {
-      final authority = fetchOrderAuthority();
-
-      switch (authority) {
-        case (canProceed: true, isLoading: false):
-          return OrderDialogs.showCancelOrderDialog(context).then(
-            (cancelNote) {
-              if (cancelNote != null) {
-                final params = UpdateDeliveryStatus(
-                  orderId: order.id,
-                  deliveryStatus: DeliveryStatus.canceled,
-                  employeeCancelNote: cancelNote,
-                );
-                ref
-                    .read(updateDeliveryStatusControllerProvider.notifier)
-                    .updateStatus(params);
-              }
-            },
-          );
-        case (canProceed: false, isLoading: false):
-          OrderDialogs.showCanNotProceedDialog(context);
-        case _:
-          return;
-      }
-    }
-
     Future<void> submitExcuse() async {
+      // Cannot submit excuse if already pending or admin refused
       if (isRejectionPending) {
         Toasts.showTitledToast(
           context,
           title: tr(context).cannotSubmitExcuse,
           description: tr(context).waitingAdminReview,
+        );
+        return;
+      }
+
+      if (isAdminRefused) {
+        Toasts.showTitledToast(
+          context,
+          title: tr(context).excuseRefused,
+          description: tr(context).mustDeliverOrder,
         );
         return;
       }
@@ -159,6 +146,9 @@ class CardItemComponent extends ConsumerWidget {
                       order: order,
                       reason: excuseReason,
                     );
+
+                // Force refresh orders to get updated rejectionStatus
+                ref.invalidate(upcomingOrdersProvider);
 
                 if (context.mounted) {
                   Toasts.showTitledToast(
@@ -236,21 +226,35 @@ class CardItemComponent extends ConsumerWidget {
                     width: 1,
                   ),
                 ),
-                child: Row(
+                child: Column(
                   children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: Sizes.marginH8),
-                    Expanded(
-                      child: Text(
-                        tr(context).waitingAdminReview,
-                        style: TextStyles.f14(context).copyWith(
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.hourglass_top,
                           color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w500,
+                          size: 20,
                         ),
+                        const SizedBox(width: Sizes.marginH8),
+                        Expanded(
+                          child: Text(
+                            tr(context).waitingAdminReview,
+                            style: TextStyles.f14(context).copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Sizes.marginV6),
+                    Text(
+                      tr(context).buttonsDisabledUntilReview,
+                      style: TextStyles.f12(context).copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.8),
                       ),
                     ),
                   ],
@@ -260,42 +264,90 @@ class CardItemComponent extends ConsumerWidget {
               const SizedBox(
                 height: Sizes.marginV8,
               ),
-            if (!isUpcomingOrder)
+            // Admin refused excuse - mandatory delivery warning
+            if (isAdminRefused)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: Sizes.paddingV8,
+                  horizontal: Sizes.paddingH12,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(Sizes.cardR8),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.error.withOpacity(0.5),
+                    width: 1.5,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.warning_amber_rounded,
+                          color: Theme.of(context).colorScheme.error,
+                          size: 24,
+                        ),
+                        const SizedBox(width: Sizes.marginH8),
+                        Expanded(
+                          child: Text(
+                            tr(context).mustDeliverOrder,
+                            style: TextStyles.f14(context).copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (order.adminComment != null &&
+                        order.adminComment!.isNotEmpty) ...[
+                      const SizedBox(height: Sizes.marginV8),
+                      Text(
+                        '${tr(context).refusalReason}: ${order.adminComment}',
+                        style: TextStyles.f12(context).copyWith(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .error
+                              .withOpacity(0.8),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            if (isAdminRefused)
+              const SizedBox(
+                height: Sizes.marginV8,
+              ),
+            // Show map button only for onTheWay orders
+            if (!isConfirmedOrder)
               CardButtonComponent(
                 title: tr(context).showMap,
                 isColored: true,
                 onPressed: isRejectionPending ? null : showMap,
               ),
-            const SizedBox(
-              height: Sizes.marginV6,
-            ),
+            if (!isConfirmedOrder)
+              const SizedBox(
+                height: Sizes.marginV6,
+              ),
+            // Show excuse button ONLY for confirmed orders (not onTheWay)
+            // and only if admin hasn't refused
+            if (isConfirmedOrder && !isAdminRefused)
+              CardButtonComponent(
+                title: tr(context).submitExcuse,
+                isColored: false,
+                onPressed: isRejectionPending ? null : submitExcuse,
+              ),
+            if (isConfirmedOrder && !isAdminRefused)
+              const SizedBox(
+                height: Sizes.marginV6,
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: CardButtonComponent(
-                    title: tr(context).cancel,
-                    isColored: false,
-                    onPressed: isRejectionPending ? null : cancelOrder,
-                  ),
-                ),
-                const SizedBox(width: Sizes.marginH8),
-                Expanded(
-                  child: CardButtonComponent(
-                    title: tr(context).submitExcuse,
-                    isColored: false,
-                    onPressed: isRejectionPending ? null : submitExcuse,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: Sizes.marginV6,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (isUpcomingOrder)
+                if (isConfirmedOrder)
                   Expanded(
                     child: CardButtonComponent(
                       title: tr(context).deliver,

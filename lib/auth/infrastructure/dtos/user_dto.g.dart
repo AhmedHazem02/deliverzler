@@ -17,6 +17,7 @@ _$UserDtoImpl _$$UserDtoImplFromJson(Map<String, dynamic> json) =>
       lastActiveAt: _timestampFromJson(json['lastActiveAt']),
       rejectionsCounter: (json['rejectionsCounter'] as num?)?.toInt() ?? 0,
       currentOrdersCount: (json['currentOrdersCount'] as num?)?.toInt() ?? 0,
+      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
@@ -30,4 +31,5 @@ Map<String, dynamic> _$$UserDtoImplToJson(_$UserDtoImpl instance) =>
       'lastActiveAt': _timestampToJson(instance.lastActiveAt),
       'rejectionsCounter': instance.rejectionsCounter,
       'currentOrdersCount': instance.currentOrdersCount,
+      'status': instance.status,
     };

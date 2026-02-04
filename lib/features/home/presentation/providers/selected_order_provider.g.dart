@@ -6,7 +6,7 @@ part of 'selected_order_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectedOrderHash() => r'6f32a890077e74514e108bb80b92d8dfe589a6da';
+String _$selectedOrderHash() => r'1be5af04f916d765d0f3272cc4522bdee2fea6e2';
 
 /// See also [selectedOrder].
 @ProviderFor(selectedOrder)
@@ -21,7 +21,7 @@ final selectedOrderProvider = AutoDisposeProvider<Option<AppOrder>>.internal(
 );
 
 typedef SelectedOrderRef = AutoDisposeProviderRef<Option<AppOrder>>;
-String _$selectedOrderIdHash() => r'6edca62f55cbf992a7f1318ab89650ea4e57d284';
+String _$selectedOrderIdHash() => r'20f7120a318e54ac3b20005628c4fc9f7998ff6c';
 
 /// See also [SelectedOrderId].
 @ProviderFor(SelectedOrderId)

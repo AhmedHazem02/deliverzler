@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
+import 'package:flutter/foundation.dart';
 
 import '../../../core/infrastructure/error/app_exception.dart';
 import '../../../core/infrastructure/network/network_info.dart';
@@ -43,12 +44,24 @@ class AuthRepo {
     required String password,
     String? name,
   }) async {
-    final userDto = await remoteDataSource.registerWithEmail(
-      email: email,
-      password: password,
-      name: name,
-    );
-    return userDto.toDomain();
+    debugPrint('🟠 [AuthRepo] registerWithEmail called');
+    debugPrint('🟠 [AuthRepo] Email: $email, Name: $name');
+    
+    try {
+      final userDto = await remoteDataSource.registerWithEmail(
+        email: email,
+        password: password,
+        name: name,
+      );
+      debugPrint('✅ [AuthRepo] registerWithEmail SUCCESS');
+      return userDto.toDomain();
+    } catch (e, stackTrace) {
+      debugPrint('❌ [AuthRepo] registerWithEmail ERROR!');
+      debugPrint('❌ [AuthRepo] Error Type: ${e.runtimeType}');
+      debugPrint('❌ [AuthRepo] Error: $e');
+      debugPrint('❌ [AuthRepo] Stack: $stackTrace');
+      rethrow;
+    }
   }
 
   Future<String> getUserAuthUid() async {

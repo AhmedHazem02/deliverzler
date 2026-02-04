@@ -18,7 +18,18 @@ class TargetLocationGeoPoint extends _$TargetLocationGeoPoint {
       () => ref.watch(
         selectedOrderProvider.select(
           (order) => order.flatMap(
-            (o) => Option<GeoPoint>.fromNullable(o.address?.geoPoint),
+            (o) {
+              print('🔍 [TargetLocation] Processing Order ID: ${o.id}');
+              print('🔍 [TargetLocation] Address present: ${o.address != null}');
+              print('🔍 [TargetLocation] GeoPoint present: ${o.address?.geoPoint != null}');
+              if (o.address?.geoPoint != null) {
+                  print('🔍 [TargetLocation] Lat: ${o.address?.geoPoint?.latitude}, Lng: ${o.address?.geoPoint?.longitude}');
+              } else {
+                  print('🔍 [TargetLocation] GeoPoint is NULL!');
+                  print('🔍 [TargetLocation] Fallback DeliveryGeoPoint: ${o.deliveryGeoPoint != null}');
+              }
+              return Option<GeoPoint>.fromNullable(o.address?.geoPoint);
+            },
           ),
         ),
       ),

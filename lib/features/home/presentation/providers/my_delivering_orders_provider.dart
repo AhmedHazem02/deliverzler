@@ -11,12 +11,23 @@ List<AppOrder> myDeliveringOrders(Ref ref) {
   final userId = ref.watch(currentUserProvider.select((user) => user.id));
   final orders = ref.watch(
     upcomingOrdersProvider.select(
-      (orders) => orders.valueOrNull
-          ?.where(
-            (order) =>
-                order.deliveryId == userId && order.deliveryStatus == DeliveryStatus.onTheWay,
-          )
-          .toList(),
+      (orders) {
+        final allOrders = orders.valueOrNull ?? [];
+        print('🔍 [MyDeliveringOrders] Total upcoming orders: ${allOrders.length}');
+        
+        final filtered = allOrders
+            .where(
+              (order) {
+                final match = order.deliveryId == userId && order.deliveryStatus == DeliveryStatus.onTheWay;
+                if (order.deliveryStatus == DeliveryStatus.onTheWay) {
+                   print('🔍 [MyDeliveringOrders] Found onTheWay order: ${order.id}, DeliveryId: ${order.deliveryId}, MyId: $userId, Match: $match');
+                }
+                return match;
+              },
+            )
+            .toList();
+        return filtered;
+      },
     ),
   );
   return orders ?? [];

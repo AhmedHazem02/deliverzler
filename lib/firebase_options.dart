@@ -41,38 +41,13 @@ class DefaultFirebaseOptions {
 }
 
 class _FirebaseOptionsFactory {
-  static FirebaseOptions get web => FirebaseOptions(
-        apiKey: _require(
-          _FirebaseEnv.webApiKey,
-          'FIREBASE_WEB_API_KEY',
-          'web',
-        ),
-        appId: _require(
-          _FirebaseEnv.webAppId,
-          'FIREBASE_WEB_APP_ID',
-          'web',
-        ),
-        messagingSenderId: _require(
-          _FirebaseEnv.webMessagingSenderId,
-          'FIREBASE_WEB_MESSAGING_SENDER_ID',
-          'web',
-        ),
-        projectId: _require(
-          _FirebaseEnv.webProjectId,
-          'FIREBASE_WEB_PROJECT_ID',
-          'web',
-        ),
-        authDomain: _require(
-          _FirebaseEnv.webAuthDomain,
-          'FIREBASE_WEB_AUTH_DOMAIN',
-          'web',
-        ),
-        storageBucket: _require(
-          _FirebaseEnv.webStorageBucket,
-          'FIREBASE_WEB_STORAGE_BUCKET',
-          'web',
-        ),
-        measurementId: _optional(_FirebaseEnv.webMeasurementId),
+  static FirebaseOptions get web => const FirebaseOptions(
+        apiKey: 'AIzaSyBJl538WLhVGpdSbi5XcPIpdjRWX5N1SrM',
+        appId: '1:896018485696:web:1b1a6225df119d2a087825',
+        messagingSenderId: '896018485696',
+        projectId: 'studio-2837415731-5df0e',
+        authDomain: 'studio-2837415731-5df0e.firebaseapp.com',
+        storageBucket: 'studio-2837415731-5df0e.firebasestorage.app',
       );
 
   static FirebaseOptions get android => FirebaseOptions(

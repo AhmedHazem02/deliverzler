@@ -8,13 +8,13 @@ part of 'order_item_dto.dart';
 
 _$OrderItemDtoImpl _$$OrderItemDtoImplFromJson(Map<String, dynamic> json) =>
     _$OrderItemDtoImpl(
-      id: json['id'] as String,
-      name: json['name'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
       imageUrl: json['imageUrl'] as String?,
       image: json['image'] as String? ?? '',
-      quantity: (json['quantity'] as num).toInt(),
-      price: (json['price'] as num).toDouble(),
-      total: (json['total'] as num).toDouble(),
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      total: (json['total'] as num?)?.toDouble() ?? 0.0,
       category: json['category'] as String?,
       description: json['description'] as String?,
     );

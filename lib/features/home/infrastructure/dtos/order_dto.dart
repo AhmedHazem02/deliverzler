@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/domain/json_converters/geo_point_converter.dart';
@@ -7,31 +8,91 @@ import '../../domain/value_objects.dart';
 import 'order_item_dto.dart';
 
 part 'order_dto.freezed.dart';
-
 part 'order_dto.g.dart';
+
+// Helper function to trim status field (fixes "upcoming " with trailing space)
+// Also handles legacy data where actual status is in 'deliveryStatus' field
+Object? _readStatusValue(Map json, String key) {
+  final value = json[key];
+  if (value is String) {
+    final trimmed = value.trim();
+    // If status is 'upcoming' but deliveryStatus has actual status, use deliveryStatus
+    if (trimmed == 'upcoming' && json['deliveryStatus'] != null) {
+      final deliveryStatus = json['deliveryStatus'];
+      if (deliveryStatus is String && deliveryStatus.trim() != 'upcoming') {
+        debugPrint(
+            '🔄 [OrderDto] Fallback: status="$trimmed" → using deliveryStatus="$deliveryStatus"');
+        return deliveryStatus.trim();
+      }
+    }
+    return trimmed;
+  }
+  return value;
+}
+
+// Helper function to convert created_at to milliseconds
+int _readDateValue(Map json, String key) {
+  final value = json['created_at'];
+  if (value is String) {
+    return DateTime.parse(value).millisecondsSinceEpoch;
+  } else if (value is Timestamp) {
+    return value.millisecondsSinceEpoch;
+  } else if (value is int) {
+    return value;
+  }
+  return DateTime.now().millisecondsSinceEpoch;
+}
 
 @Freezed(toJson: false)
 class OrderDto with _$OrderDto {
   const factory OrderDto({
-    required int date,
-    required PickupOption pickupOption,
-    required String paymentMethod,
-    @JsonKey(name: 'addressModel') required AddressDto? address,
-    required String userId,
-    required String userName,
-    required String userImage,
-    required String userPhone,
-    required String userNote,
-    required String? employeeCancelNote,
+    // Date field mapping
+    @JsonKey(name: 'created_at', readValue: _readDateValue) required int date,
+
+    // Pickup option (default to delivery)
+    @Default(PickupOption.delivery) PickupOption pickupOption,
+    @Default('cash') String paymentMethod,
+
+    // Customer fields mapping
+    @JsonKey(name: 'customer_id') required String userId,
+    @JsonKey(name: 'customer_name') required String userName,
+    @JsonKey(name: 'customer_phone') required String userPhone,
+    @Default('') String userImage,
+    @Default('') String userNote,
+
+    // Address fields (flat structure in DB)
+    @JsonKey(name: 'delivery_state') String? deliveryState,
+    @JsonKey(name: 'delivery_city') String? deliveryCity,
+    @JsonKey(name: 'delivery_address') String? deliveryStreet,
+
+    // Coordinates (separate lat/lng fields)
+    @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
+    @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
+
+    // Status field (with trim to handle trailing spaces)
+    @JsonKey(name: 'status', readValue: _readStatusValue)
     required DeliveryStatus deliveryStatus,
-    required String? deliveryId,
-    @GeoPointConverter() required GeoPoint? deliveryGeoPoint,
-    required double? deliveryHeading,
+
+    // Driver assignment
+    @JsonKey(name: 'driver_id') String? deliveryId,
+    String? employeeCancelNote,
     @Default(RejectionStatus.none) RejectionStatus rejectionStatus,
-    @Default([]) List<OrderItemDto> items,
+
+    // Price fields
     @Default(0.0) double subTotal,
-    @Default(0.0) double total,
-    double? deliveryFee,
+    required double total,
+    @JsonKey(name: 'delivery_price') double? deliveryFee,
+
+    // Store information
+    @JsonKey(name: 'store_id') String? storeId,
+
+    // Admin comment when excuse is refused
+    String? adminComment,
+
+    // List of driver IDs who rejected/excused this order
+    @JsonKey(name: 'rejected_by_drivers')
+    @Default([])
+    List<String> rejectedByDrivers,
     @JsonKey(includeToJson: false) String? id,
   }) = _OrderDto;
 
@@ -41,36 +102,27 @@ class OrderDto with _$OrderDto {
       date: order.date,
       pickupOption: order.pickupOption,
       paymentMethod: order.paymentMethod,
-      address:
-          order.address != null ? AddressDto.fromDomain(order.address!) : null,
       userId: order.userId,
       userName: order.userName,
-      userImage: order.userImage,
       userPhone: order.userPhone,
+      userImage: order.userImage,
       userNote: order.userNote,
+      deliveryState: order.address?.state,
+      deliveryCity: order.address?.city,
+      deliveryStreet: order.address?.street,
+      deliveryLatitude: order.deliveryGeoPoint?.latitude,
+      deliveryLongitude: order.deliveryGeoPoint?.longitude,
       employeeCancelNote: order.employeeCancelNote,
       deliveryStatus: order.deliveryStatus,
       deliveryId: order.deliveryId,
-      deliveryGeoPoint: order.deliveryGeoPoint,
-      deliveryHeading: order.deliveryHeading,
       rejectionStatus: order.rejectionStatus,
-      items: order.items
-          .map((item) => OrderItemDto(
-                id: item.id,
-                name: item.name,
-                imageUrl: item.imageUrl,
-                quantity: item.quantity,
-                price: item.price,
-                total: item.total,
-                category: item.category,
-                description: item.description,
-              ))
-          .toList(),
       subTotal: order.subTotal,
       total: order.total,
       deliveryFee: order.deliveryFee,
+      storeId: order.storeId,
     );
   }
+
   const OrderDto._();
 
   factory OrderDto.fromJson(Map<String, dynamic> json) =>
@@ -88,12 +140,26 @@ class OrderDto with _$OrderDto {
   }
 
   AppOrder toDomain() {
+    // Build Address entity from flat fields
+    Address? addressEntity;
+    if (deliveryCity != null || deliveryStreet != null) {
+      addressEntity = Address(
+        state: deliveryState ?? '',
+        city: deliveryCity ?? '',
+        street: deliveryStreet ?? '',
+        mobile: userPhone,
+        geoPoint: (deliveryLatitude != null && deliveryLongitude != null)
+            ? GeoPoint(deliveryLatitude!, deliveryLongitude!)
+            : null,
+      );
+    }
+
     return AppOrder(
       id: id ?? '',
       date: date,
       pickupOption: pickupOption,
       paymentMethod: paymentMethod,
-      address: address?.toDomain(),
+      address: addressEntity,
       userId: userId,
       userName: userName,
       userImage: userImage,
@@ -102,50 +168,20 @@ class OrderDto with _$OrderDto {
       employeeCancelNote: employeeCancelNote,
       deliveryStatus: deliveryStatus,
       deliveryId: deliveryId,
-      deliveryGeoPoint: deliveryGeoPoint,
-      deliveryHeading: deliveryHeading,
+      deliveryGeoPoint: (deliveryLatitude != null && deliveryLongitude != null)
+          ? GeoPoint(deliveryLatitude!, deliveryLongitude!)
+          : null,
+      deliveryHeading: null,
       rejectionStatus: rejectionStatus,
-      items: items.map((item) => item.toDomain()).toList(),
-      subTotal: subTotal == 0
-          ? items.fold(0.0, (sum, item) => sum + item.total)
-          : subTotal,
+      items: [], // Items will be loaded separately
+      subTotal: subTotal,
       total: total,
-      deliveryFee: deliveryFee,
-    );
-  }
-}
-
-@Freezed(toJson: false)
-class AddressDto with _$AddressDto {
-  const factory AddressDto({
-    required String state,
-    required String city,
-    required String street,
-    required String mobile,
-    @GeoPointConverter() required GeoPoint? geoPoint,
-  }) = _AddressDto;
-  const AddressDto._();
-
-  factory AddressDto.fromJson(Map<String, dynamic> json) =>
-      _$AddressDtoFromJson(json);
-
-  factory AddressDto.fromDomain(Address address) {
-    return AddressDto(
-      state: address.state,
-      city: address.city,
-      street: address.street,
-      mobile: address.mobile,
-      geoPoint: address.geoPoint,
-    );
-  }
-
-  Address toDomain() {
-    return Address(
-      state: state,
-      city: city,
-      street: street,
-      mobile: mobile,
-      geoPoint: geoPoint,
+      deliveryFee: deliveryFee ?? 0.0,
+      storeId: storeId,
+      storeName: null, // Will be loaded separately if needed
+      storeAddress: null, // Will be loaded separately if needed
+      adminComment: adminComment,
+      rejectedByDrivers: rejectedByDrivers,
     );
   }
 }

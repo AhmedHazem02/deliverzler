@@ -7,7 +7,7 @@ part of 'my_delivering_orders_provider.dart';
 // **************************************************************************
 
 String _$myDeliveringOrdersHash() =>
-    r'3c1175ef1ef1a4a44b74364172d18d3af5b10201';
+    r'9220eb11ce2b682fee233949a0d654de125acce5';
 
 /// See also [myDeliveringOrders].
 @ProviderFor(myDeliveringOrders)

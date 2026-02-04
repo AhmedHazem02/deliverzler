@@ -231,5 +231,11 @@
   "applicationSubmittedDesc": "سيتم مراجعة طلبك من قبل فريقنا. ستصلك رسالة بريد إلكتروني عند قبول طلبك. يرجى تسجيل الدخول بعد استلام رسالة الموافقة.",
   "@_PROFILE_EDIT": {},
   "dataUpdatedSuccessfully": "تم تحديث البيانات بنجاح",
-  "editProfile": "تعديل الملف الشخصي"
+  "editProfile": "تعديل الملف الشخصي",
+  "@_ORDER_REJECTION": {},
+  "excuseRefused": "تم رفض الاعتذار",
+  "mustDeliverOrder": "يجب عليك توصيل هذا الطلب إلزامياً",
+  "refusalReason": "السبب",
+  "pendingAdminReview": "طلبات بانتظار المراجعة",
+  "buttonsDisabledUntilReview": "الأزرار معطلة لحين مراجعة الإدارة لطلبك"
 }

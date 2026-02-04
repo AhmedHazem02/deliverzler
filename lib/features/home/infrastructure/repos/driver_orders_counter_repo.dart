@@ -35,7 +35,7 @@ class DriverOrdersCounterRepo {
   Future<void> incrementOrdersCount(String driverId) async {
     try {
       final db = FirebaseFirestore.instance;
-      final driverRef = db.collection('users').doc(driverId);
+      final driverRef = db.collection('drivers').doc(driverId);
 
       await db.runTransaction((transaction) async {
         final driverDoc = await transaction.get(driverRef);
@@ -66,7 +66,7 @@ class DriverOrdersCounterRepo {
   Future<void> decrementOrdersCount(String driverId) async {
     try {
       final db = FirebaseFirestore.instance;
-      final driverRef = db.collection('users').doc(driverId);
+      final driverRef = db.collection('drivers').doc(driverId);
 
       await db.runTransaction((transaction) async {
         final driverDoc = await transaction.get(driverRef);
@@ -100,7 +100,7 @@ class DriverOrdersCounterRepo {
   Future<int> getCurrentOrdersCount(String driverId) async {
     try {
       final response = await firebaseFirestore.getData(
-        path: 'users/$driverId',
+        path: 'drivers/$driverId',
       );
 
       if (response.data() != null) {
@@ -121,7 +121,7 @@ class DriverOrdersCounterRepo {
   Future<void> resetOrdersCount(String driverId) async {
     try {
       await firebaseFirestore.updateData(
-        path: 'users/$driverId',
+        path: 'drivers/$driverId',
         data: {'currentOrdersCount': 0},
       );
     } catch (e) {

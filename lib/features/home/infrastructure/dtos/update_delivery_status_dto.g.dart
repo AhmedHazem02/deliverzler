@@ -9,7 +9,7 @@ part of 'update_delivery_status_dto.dart';
 Map<String, dynamic> _$$UpdateDeliveryStatusDtoImplToJson(
     _$UpdateDeliveryStatusDtoImpl instance) {
   final val = <String, dynamic>{
-    'deliveryStatus': _$DeliveryStatusEnumMap[instance.deliveryStatus]!,
+    'status': _$DeliveryStatusEnumMap[instance.deliveryStatus]!,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -25,7 +25,7 @@ Map<String, dynamic> _$$UpdateDeliveryStatusDtoImplToJson(
 
 const _$DeliveryStatusEnumMap = {
   DeliveryStatus.pending: 'pending',
-  DeliveryStatus.upcoming: 'upcoming',
+  DeliveryStatus.confirmed: 'confirmed',
   DeliveryStatus.onTheWay: 'onTheWay',
   DeliveryStatus.delivered: 'delivered',
   DeliveryStatus.canceled: 'canceled',

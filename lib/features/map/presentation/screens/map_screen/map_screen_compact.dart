@@ -12,7 +12,6 @@ import '../../../../home/presentation/components/retry_again_component.dart';
 import '../../../../home/presentation/providers/location_stream_provider.dart';
 import '../../../../home/presentation/utils/location_error.dart';
 import '../../components/platform_aware_map_component.dart';
-import '../../components/map_confirm_button_component.dart';
 import '../../components/map_directions_info_component.dart';
 import '../../components/map_floating_action_button.dart';
 import '../../components/map_floating_search_bar.dart';
@@ -92,7 +91,6 @@ class MapScreenCompact extends HookConsumerWidget {
             PlatformAwareMapComponent(),
             MapDirectionsInfoComponent(),
             MapPhoneCallComponent(),
-            MapConfirmButtonComponent(),
             MapFloatingSearchBar(),
             MapFloatingActionButton(),
           ],

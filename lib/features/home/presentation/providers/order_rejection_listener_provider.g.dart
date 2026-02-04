@@ -7,7 +7,7 @@ part of 'order_rejection_listener_provider.dart';
 // **************************************************************************
 
 String _$orderRejectionListenerHash() =>
-    r'fcd016d5c888ad485c4eac97e005b0fdc960154e';
+    r'0b9b1dc7646a74445acbdf40b7b4e8ce37f9d297';
 
 /// Listens to order rejection status changes for current driver's orders
 /// Shows notification when admin approves or rejects driver's excuse

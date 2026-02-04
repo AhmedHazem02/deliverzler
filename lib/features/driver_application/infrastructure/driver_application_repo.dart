@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/infrastructure/network/network_info.dart';
@@ -52,8 +53,16 @@ class DriverApplicationRepo {
     XFile? vehicleInsuranceWeb,
     String? notes,
   }) async {
+    debugPrint('🟢 [DriverAppRepo] ========== START SUBMIT APPLICATION ==========');
+    debugPrint('🟢 [DriverAppRepo] User ID: $userId');
+    debugPrint('🟢 [DriverAppRepo] Name: $name');
+    debugPrint('🟢 [DriverAppRepo] Email: $email');
+    debugPrint('🟢 [DriverAppRepo] Phone: $phone');
+    
     // Check for existing application to update instead of creating new one
+    debugPrint('🟢 [DriverAppRepo] Step 1: Checking for existing application...');
     final existingApp = await getApplicationByUserId(userId);
+    debugPrint('🟢 [DriverAppRepo] Existing app found: ${existingApp != null}');
 
     if (existingApp != null) {
       await updateApplication(
@@ -89,61 +98,100 @@ class DriverApplicationRepo {
       return existingApp.id;
     }
 
+    debugPrint('🟢 [DriverAppRepo] Step 2: Starting document uploads...');
     // Upload all documents to Supabase Storage
     final documentUrls = <String, String>{};
 
     // Photo
     if (photo != null || photoWeb != null) {
-      documentUrls['photo'] = await remoteDataSource.uploadDocument(
-        userId: userId,
-        documentType: 'photo',
-        file: photo,
-        webFile: photoWeb,
-      );
+      debugPrint('🟢 [DriverAppRepo] Step 2.1: Uploading photo...');
+      try {
+        documentUrls['photo'] = await remoteDataSource.uploadDocument(
+          userId: userId,
+          documentType: 'photo',
+          file: photo,
+          webFile: photoWeb,
+        );
+        debugPrint('✅ [DriverAppRepo] Photo uploaded: ${documentUrls['photo']}');
+      } catch (e) {
+        debugPrint('❌ [DriverAppRepo] Photo upload FAILED: $e');
+        rethrow;
+      }
     }
 
     // ID Document
     if (idDocument != null || idDocumentWeb != null) {
-      documentUrls['idDocument'] = await remoteDataSource.uploadDocument(
-        userId: userId,
-        documentType: 'idDocument',
-        file: idDocument,
-        webFile: idDocumentWeb,
-      );
+      debugPrint('🟢 [DriverAppRepo] Step 2.2: Uploading ID document...');
+      try {
+        documentUrls['idDocument'] = await remoteDataSource.uploadDocument(
+          userId: userId,
+          documentType: 'idDocument',
+          file: idDocument,
+          webFile: idDocumentWeb,
+        );
+        debugPrint('✅ [DriverAppRepo] ID document uploaded: ${documentUrls['idDocument']}');
+      } catch (e) {
+        debugPrint('❌ [DriverAppRepo] ID document upload FAILED: $e');
+        rethrow;
+      }
     }
 
     // License
     if (license != null || licenseWeb != null) {
-      documentUrls['license'] = await remoteDataSource.uploadDocument(
-        userId: userId,
-        documentType: 'license',
-        file: license,
-        webFile: licenseWeb,
-      );
+      debugPrint('🟢 [DriverAppRepo] Step 2.3: Uploading license...');
+      try {
+        documentUrls['license'] = await remoteDataSource.uploadDocument(
+          userId: userId,
+          documentType: 'license',
+          file: license,
+          webFile: licenseWeb,
+        );
+       
+      } catch (e) {
+       
+        rethrow;
+      }
     }
 
     // Vehicle Registration
     if (vehicleRegistration != null || vehicleRegistrationWeb != null) {
-      documentUrls['vehicleRegistration'] =
-          await remoteDataSource.uploadDocument(
-        userId: userId,
-        documentType: 'vehicleRegistration',
-        file: vehicleRegistration,
-        webFile: vehicleRegistrationWeb,
-      );
+      
+      try {
+        documentUrls['vehicleRegistration'] =
+            await remoteDataSource.uploadDocument(
+          userId: userId,
+          documentType: 'vehicleRegistration',
+          file: vehicleRegistration,
+          webFile: vehicleRegistrationWeb,
+        );
+       
+      } catch (e) {
+       
+        rethrow;
+      }
     }
 
     // Vehicle Insurance
     if (vehicleInsurance != null || vehicleInsuranceWeb != null) {
-      documentUrls['vehicleInsurance'] = await remoteDataSource.uploadDocument(
-        userId: userId,
-        documentType: 'vehicleInsurance',
-        file: vehicleInsurance,
-        webFile: vehicleInsuranceWeb,
-      );
+
+      try {
+        documentUrls['vehicleInsurance'] = await remoteDataSource.uploadDocument(
+          userId: userId,
+          documentType: 'vehicleInsurance',
+          file: vehicleInsurance,
+          webFile: vehicleInsuranceWeb,
+        );
+       
+      } catch (e) {
+       
+        rethrow;
+      }
     }
 
+          
+
     // Create the application
+    
     final application = DriverApplication(
       id: '', // Will be set by Firestore
       userId: userId,
@@ -165,8 +213,16 @@ class DriverApplicationRepo {
       notes: notes,
     );
 
+    
     final dto = DriverApplicationDto.fromDomain(application);
-    return remoteDataSource.submitApplication(dto);
+    try {
+      final applicationId = await remoteDataSource.submitApplication(dto);
+      
+      return applicationId;
+    } catch (e) {
+      
+      rethrow;
+    }
   }
 
   /// Get application by user ID

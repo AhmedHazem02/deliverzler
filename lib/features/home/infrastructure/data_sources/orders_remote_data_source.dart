@@ -41,18 +41,21 @@ class OrdersRemoteDataSource {
   Stream<List<OrderDto>> getUpcomingOrders() {
     // Simplified query without orderBy to avoid needing composite index
     // Sorting is done in memory instead
+    debugPrint('🔍 Querying orders with status field...');
     return firebaseFirestore
         .collectionStream(
       path: ordersCollectionPath,
       queryBuilder: (query) => query.where(
-        'deliveryStatus',
+        'status', // Changed from 'deliveryStatus' to match database field
         whereIn: [
-          DeliveryStatus.upcoming.name,
-          DeliveryStatus.onTheWay.name,
+          'confirmed', // Using confirmed instead of upcoming
+          'onTheWay',
         ],
       ),
     )
         .map((snapshot) {
+      debugPrint(
+          '📥 Received ${snapshot.docs.length} documents from Firestore');
       // Filter by pickupOption and sort by date in memory
       final orders = OrderDto.parseListOfDocument(snapshot.docs)
           .where((o) => o.pickupOption == PickupOption.delivery)
@@ -62,11 +65,12 @@ class OrdersRemoteDataSource {
     }).transform(
       StreamTransformer<List<OrderDto>, List<OrderDto>>.fromHandlers(
         handleData: (data, sink) {
-          debugPrint('📦 Orders received: ${data.length}');
+          debugPrint('📦 Orders received after filtering: ${data.length}');
           sink.add(data);
         },
         handleError: (error, stackTrace, sink) {
           debugPrint('❌ Orders error: $error');
+          debugPrint('Stack trace: $stackTrace');
           sink.add(<OrderDto>[]);
         },
       ),
@@ -75,33 +79,57 @@ class OrdersRemoteDataSource {
 
   /// Get orders assigned to a specific delivery user (on the way or delivered)
   Stream<List<OrderDto>> getMyOrders(String deliveryId) {
+    debugPrint('🔍 [getMyOrders] Querying MY orders for driver: $deliveryId');
+    debugPrint(
+        '🔍 [getMyOrders] Query: driver_id == $deliveryId AND status IN [onTheWay, delivered]');
+
     return firebaseFirestore
         .collectionStream(
       path: ordersCollectionPath,
       queryBuilder: (query) => query
-          .where('deliveryId', isEqualTo: deliveryId)
+          .where('driver_id',
+              isEqualTo: deliveryId) // Changed from 'deliveryId'
           .where(
-            'deliveryStatus',
+            'status', // Changed from 'deliveryStatus'
             whereIn: [
-              DeliveryStatus.onTheWay.name,
-              DeliveryStatus.delivered.name,
+              'onTheWay', // Using string values
+              'delivered',
             ],
           )
-          .orderBy('date', descending: true)
+          .orderBy('created_at', descending: true) // Changed from 'date'
           .limit(50),
     )
         .map((snapshot) {
-      final orders = OrderDto.parseListOfDocument(snapshot.docs)
-        ..sort((a, b) => b.date.compareTo(a.date));
+      debugPrint(
+          '📥 [getMyOrders] Received ${snapshot.docs.length} documents from Firestore');
+
+      if (snapshot.docs.isEmpty) {
+        debugPrint('⚠️ [getMyOrders] No documents found! Check:');
+        debugPrint('   1. driver_id in orders matches: $deliveryId');
+        debugPrint('   2. status is "onTheWay" or "delivered"');
+      }
+
+      final orders = OrderDto.parseListOfDocument(snapshot.docs);
+      debugPrint('📦 [getMyOrders] Parsed ${orders.length} orders');
+
+      // Log each order for debugging
+      for (var order in orders) {
+        debugPrint(
+            '   - Order ${order.id}: status=${order.deliveryStatus}, driver=${order.deliveryId}');
+      }
+
+      orders.sort((a, b) => b.date.compareTo(a.date));
       return orders;
     }).transform(
       StreamTransformer<List<OrderDto>, List<OrderDto>>.fromHandlers(
         handleData: (data, sink) {
-          debugPrint('📦 My orders received: ${data.length}');
+          debugPrint(
+              '📦 [getMyOrders] Final count after transform: ${data.length}');
           sink.add(data);
         },
         handleError: (error, stackTrace, sink) {
-          debugPrint('❌ My orders error: $error');
+          debugPrint('❌ [getMyOrders] ERROR: $error');
+          debugPrint('❌ Stack trace: $stackTrace');
           sink.add(<OrderDto>[]);
         },
       ),
@@ -158,6 +186,20 @@ class OrdersRemoteDataSource {
           return e is SocketException || e is TimeoutException;
         },
       );
+
+      // Increment totalDeliveries for the driver if the order is delivered
+      if (params.deliveryStatus == DeliveryStatus.delivered &&
+          params.deliveryId != null) {
+        debugPrint(
+            '🔄 Updating totalDeliveries for driver: ${params.deliveryId}');
+        await firebaseFirestore.updateData(
+          path: 'drivers/${params.deliveryId}',
+          data: {
+            'totalDeliveries': FieldValue.increment(1),
+          },
+        );
+      }
+
       debugPrint('✅ تم تحديث حالة الطلب: ${params.orderId}');
     } catch (e) {
       debugPrint('❌ خطأ في تحديث حالة الطلب: $e');

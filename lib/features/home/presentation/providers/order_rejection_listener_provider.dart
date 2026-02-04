@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../auth/domain/user.dart';
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
+import '../../../../core/infrastructure/notification/notification_service.dart';
 import '../../../../core/presentation/widgets/toasts.dart';
 import '../../../../core/presentation/helpers/localization_helper.dart';
 import '../../domain/value_objects.dart';
@@ -17,11 +18,13 @@ part 'order_rejection_listener_provider.g.dart';
 @Riverpod(keepAlive: true)
 class OrderRejectionListener extends _$OrderRejectionListener {
   StreamSubscription<QuerySnapshot>? _subscription;
+  final Set<String> _processedOrders = {};
 
   @override
   void build() {
     ref.onDispose(() {
       _subscription?.cancel();
+      _processedOrders.clear();
     });
 
     // Start listening
@@ -36,10 +39,10 @@ class OrderRejectionListener extends _$OrderRejectionListener {
       _subscription?.cancel();
       _subscription = FirebaseFirestore.instance
           .collection('orders')
-          .where('deliveryId', isEqualTo: user.id)
+          .where('driver_id', isEqualTo: user.id)
           .where('rejectionStatus', whereIn: [
-            RejectionStatus.adminApproved.name,
-            RejectionStatus.adminRefused.name,
+            RejectionStatus.adminApproved.jsonValue,
+            RejectionStatus.adminRefused.jsonValue,
           ])
           .snapshots()
           .listen(
@@ -55,7 +58,9 @@ class OrderRejectionListener extends _$OrderRejectionListener {
 
   void _handleOrderUpdates(QuerySnapshot snapshot) {
     for (final change in snapshot.docChanges) {
-      if (change.type == DocumentChangeType.modified) {
+      // Only process added documents (new notifications) or modified ones
+      if (change.type == DocumentChangeType.added ||
+          change.type == DocumentChangeType.modified) {
         _handleOrderChange(change.doc);
       }
     }
@@ -69,8 +74,16 @@ class OrderRejectionListener extends _$OrderRejectionListener {
     if (rejectionStatusString == null) return;
 
     final orderId = doc.id;
+
+    // Avoid duplicate notifications
+    final notificationKey = '${orderId}_$rejectionStatusString';
+    if (_processedOrders.contains(notificationKey)) return;
+    _processedOrders.add(notificationKey);
+
+    final adminComment = data['adminComment'] as String?;
+
     final rejectionStatus = RejectionStatus.values.firstWhere(
-      (e) => e.name == rejectionStatusString,
+      (e) => e.jsonValue == rejectionStatusString,
       orElse: () => RejectionStatus.none,
     );
 
@@ -80,7 +93,7 @@ class OrderRejectionListener extends _$OrderRejectionListener {
         _showApprovedNotification(orderId);
         break;
       case RejectionStatus.adminRefused:
-        _showRefusedNotification(orderId);
+        _showRefusedNotification(orderId, adminComment);
         break;
       default:
         break;
@@ -89,11 +102,26 @@ class OrderRejectionListener extends _$OrderRejectionListener {
 
   void _showApprovedNotification(String orderId) {
     debugPrint('✅ تم قبول اعتذارك عن الطلب #${orderId.substring(0, 8)}');
-    // TODO: Show notification in UI when BuildContext is available
+
+    // Show local push notification
+    final notificationService = ref.read(notificationServiceProvider);
+    notificationService.showLocalNotification(
+      title: 'تم قبول اعتذارك',
+      body: 'تم قبول اعتذارك عن الطلب #${orderId.substring(0, 8)}',
+    );
   }
 
-  void _showRefusedNotification(String orderId) {
+  void _showRefusedNotification(String orderId, String? adminComment) {
     debugPrint('❌ تم رفض اعتذارك عن الطلب #${orderId.substring(0, 8)}');
-    // TODO: Show notification in UI when BuildContext is available
+
+    // Show local push notification
+    final notificationService = ref.read(notificationServiceProvider);
+    final reason = adminComment != null && adminComment.isNotEmpty
+        ? '\nالسبب: $adminComment'
+        : '';
+    notificationService.showLocalNotification(
+      title: '⚠️ تم رفض اعتذارك - توجه إلزامي',
+      body: 'يجب عليك توصيل الطلب #${orderId.substring(0, 8)} إلزامياً$reason',
+    );
   }
 }

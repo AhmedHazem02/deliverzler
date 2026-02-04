@@ -7,7 +7,7 @@ part of 'target_location_marker_provider.dart';
 // **************************************************************************
 
 String _$targetLocationMarkerHash() =>
-    r'b20da63342bc460cc77d2b7c441b9c2d154eb1b6';
+    r'9294b0c0a15a91a1e72416393c0afdb6f22824e3';
 
 /// See also [targetLocationMarker].
 @ProviderFor(targetLocationMarker)

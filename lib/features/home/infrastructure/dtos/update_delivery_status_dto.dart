@@ -11,7 +11,7 @@ part 'update_delivery_status_dto.g.dart';
 class UpdateDeliveryStatusDto with _$UpdateDeliveryStatusDto {
   const factory UpdateDeliveryStatusDto({
     @JsonKey(includeToJson: false) required String orderId,
-    required DeliveryStatus deliveryStatus,
+    @JsonKey(name: 'status') required DeliveryStatus deliveryStatus,
     @JsonKey(disallowNullValue: true) String? deliveryId,
     @JsonKey(disallowNullValue: true) String? employeeCancelNote,
   }) = _UpdateDeliveryStatusDto;

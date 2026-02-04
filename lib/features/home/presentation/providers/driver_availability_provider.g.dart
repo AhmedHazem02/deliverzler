@@ -7,7 +7,7 @@ part of 'driver_availability_provider.dart';
 // **************************************************************************
 
 String _$driverAvailabilityHash() =>
-    r'074b3fa99b8d52fa8968c5a726bcdaaec216b8e6';
+    r'b6d8a6d51de6f57b610f6d76c2b1b345d0a1cde0';
 
 /// Provider for managing driver's online/offline status.
 ///

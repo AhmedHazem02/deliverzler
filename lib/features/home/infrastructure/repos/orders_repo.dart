@@ -27,26 +27,58 @@ class OrdersRepo {
 
   Stream<List<AppOrder>> getUpcomingOrders(String userId) {
     debugPrint('🏪 OrdersRepo.getUpcomingOrders called for userId: $userId');
+    debugPrint('🔑 Current Driver ID (userId): $userId');
     return remoteDataSource.getUpcomingOrders().map(
       (orders) {
         debugPrint('📦 Raw orders from remote: ${orders.length}');
+        debugPrint('=' * 60);
         final filtered = orders
             .where(
               (order) {
                 final status = order.deliveryStatus;
-                // Show all upcoming orders (available for any delivery to take)
-                // OR orders that are on the way and assigned to this delivery
-                final shouldInclude = status == DeliveryStatus.upcoming ||
-                    (status == DeliveryStatus.onTheWay &&
-                        order.deliveryId == userId);
+                final driverId = order.deliveryId;
+
+                debugPrint('🔍 Checking Order: ${order.id}');
+                debugPrint('   - Status: $status');
                 debugPrint(
-                    '  Order ${order.id}: status=$status, deliveryId=${order.deliveryId}, include=$shouldInclude');
+                    '   - Assigned Driver ID: ${driverId ?? "UNASSIGNED"}');
+                debugPrint('   - Current User ID: $userId');
+                debugPrint('   - IDs Match: ${driverId == userId}');
+                debugPrint(
+                    '   - Rejected By Drivers: ${order.rejectedByDrivers}');
+                debugPrint(
+                    '   - Is Rejected By Me: ${order.rejectedByDrivers.contains(userId)}');
+
+                // Show confirmed orders ONLY if:
+                // 1. It's unassigned (deliveryId is null/empty) -> Show to everyone
+                // 2. OR It's assigned to THIS driver (deliveryId == userId)
+                // 3. AND this driver hasn't rejected it before
+                final isConfirmedAndRelevant =
+                    status == DeliveryStatus.confirmed &&
+                        (driverId == null ||
+                            driverId.isEmpty ||
+                            driverId == userId) &&
+                        !order.rejectedByDrivers.contains(userId);
+
+                // Show orders on the way ONLY if assigned to this driver
+                final isOnTheWayAndMine =
+                    status == DeliveryStatus.onTheWay && driverId == userId;
+
+                final shouldInclude =
+                    isConfirmedAndRelevant || isOnTheWayAndMine;
+
+                debugPrint('   - Should Include: $shouldInclude');
+                debugPrint(
+                    '   - Reason: ${isConfirmedAndRelevant ? "Confirmed & Relevant" : isOnTheWayAndMine ? "OnTheWay & Mine" : "Filtered Out"}');
+                debugPrint('-' * 60);
+
                 return shouldInclude;
               },
             )
             .map((o) => o.toDomain())
             .toList();
         debugPrint('✅ Filtered orders: ${filtered.length}');
+        debugPrint('=' * 60);
         return filtered;
       },
     );
@@ -74,4 +106,3 @@ class OrdersRepo {
         );
   }
 }
-

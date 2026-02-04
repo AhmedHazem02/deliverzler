@@ -30,7 +30,9 @@ class CardOrderDetailsComponent extends StatelessWidget {
               width: Sizes.icon8,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: order.deliveryStatus == DeliveryStatus.upcoming ? Colors.green : Colors.blue,
+                color: order.deliveryStatus == DeliveryStatus.confirmed
+                    ? Colors.green
+                    : Colors.blue,
               ),
             ),
             const SizedBox(
@@ -38,12 +40,13 @@ class CardOrderDetailsComponent extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                order.deliveryStatus == DeliveryStatus.upcoming
+                order.deliveryStatus == DeliveryStatus.confirmed
                     ? tr(context).orderUpcoming
                     : tr(context).orderOnTheWay,
                 style: TextStyles.f14(context).copyWith(
-                  color:
-                      order.deliveryStatus == DeliveryStatus.upcoming ? Colors.green : Colors.blue,
+                  color: order.deliveryStatus == DeliveryStatus.confirmed
+                      ? Colors.green
+                      : Colors.blue,
                   fontWeight: FontStyles.fontWeightExtraBold,
                 ),
                 overflow: TextOverflow.ellipsis,

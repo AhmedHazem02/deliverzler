@@ -231,5 +231,11 @@
   "applicationSubmittedDesc": "Your application will be reviewed by our team. You will receive an email notification once your application is approved. Please sign in after receiving the approval email.",
   "@_PROFILE_EDIT": {},
   "dataUpdatedSuccessfully": "Data updated successfully",
-  "editProfile": "Edit Profile"
+  "editProfile": "Edit Profile",
+  "@_ORDER_REJECTION": {},
+  "excuseRefused": "Excuse Refused",
+  "mustDeliverOrder": "You must deliver this order",
+  "refusalReason": "Reason",
+  "pendingAdminReview": "Orders pending review",
+  "buttonsDisabledUntilReview": "Actions disabled until admin reviews your request"
 }

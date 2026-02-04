@@ -7,7 +7,7 @@ part of 'update_user_location_provider.dart';
 // **************************************************************************
 
 String _$updateUserLocationStateHash() =>
-    r'fc75d1a1eb509fce5e2206150f122cbbc4f9547c';
+    r'99a77876ce3a058cc9abfdee0b8f052fd6e39cfe';
 
 /// See also [updateUserLocationState].
 @ProviderFor(updateUserLocationState)

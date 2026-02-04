@@ -12,8 +12,14 @@ part 'upcoming_orders_provider.g.dart';
 Stream<List<AppOrder>> upcomingOrders(Ref ref) {
   debugPrint('🔍 upcomingOrders provider called');
   try {
-    final userId = ref.watch(currentUserProvider.select((user) => user.id));
-    debugPrint('👤 Current userId: $userId');
+    final user = ref.watch(currentUserProvider);
+    final userId = user.id;
+    debugPrint('👤 Current User Full Details:');
+    debugPrint('   - ID: $userId');
+    debugPrint('   - Name: ${user.name}');
+    debugPrint('   - Email: ${user.email}');
+    debugPrint('   - Phone: ${user.phone}');
+    
     final ordersStream =
         ref.watch(ordersRepoProvider).getUpcomingOrders(userId);
     return ordersStream.map((orders) {

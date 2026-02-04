@@ -31,7 +31,7 @@ class DriverAvailability extends _$DriverAvailability {
 
     try {
       await firebaseFirestore.updateData(
-        path: 'users/$userId',
+        path: 'drivers/$userId',
         data: {
           'isOnline': newState,
           'lastActiveAt': FieldValue.serverTimestamp(),
@@ -60,7 +60,7 @@ class DriverAvailability extends _$DriverAvailability {
 
     try {
       await firebaseFirestore.updateData(
-        path: 'users/$userId',
+        path: 'drivers/$userId',
         data: {
           'isOnline': isOnline,
           'lastActiveAt': FieldValue.serverTimestamp(),

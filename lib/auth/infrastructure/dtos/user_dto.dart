@@ -34,6 +34,7 @@ class UserDto with _$UserDto {
     DateTime? lastActiveAt,
     @Default(0) int rejectionsCounter,
     @Default(0) int currentOrdersCount,
+    String? status, // Driver status: pending, approved, rejected
   }) = _UserDto;
 
   const UserDto._();
@@ -52,6 +53,7 @@ class UserDto with _$UserDto {
       lastActiveAt: null,
       rejectionsCounter: 0,
       currentOrdersCount: 0,
+      status: null, // Will be set later in registerWithEmail
     );
   }
 

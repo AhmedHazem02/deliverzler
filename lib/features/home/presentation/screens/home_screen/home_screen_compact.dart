@@ -11,6 +11,7 @@ import '../../components/upcoming_orders_component.dart';
 import '../../providers/driver_availability_provider.dart';
 import '../../providers/location_stream_provider.dart';
 import '../../providers/order_rejection_listener_provider.dart';
+import '../../providers/pending_review_orders_provider.dart';
 import '../../providers/save_route_history_provider.dart';
 import '../../providers/update_delivery_geo_point_provider.dart';
 import '../../utils/location_error.dart';
@@ -130,6 +131,39 @@ class HomeScreenCompact extends HookConsumerWidget {
                 ),
               ],
             ),
+          ),
+          // Pending review indicator
+          Builder(
+            builder: (context) {
+              final pendingCount = ref.watch(pendingReviewCountProvider);
+              if (pendingCount == 0) return const SizedBox.shrink();
+
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.screenPaddingH28,
+                  vertical: Sizes.paddingV8,
+                ),
+                color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.hourglass_top,
+                      color: Theme.of(context).colorScheme.secondary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${tr(context).pendingAdminReview}: $pendingCount',
+                      style: TextStyles.f14(context).copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
           // Body content
           Expanded(

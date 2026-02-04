@@ -28,7 +28,7 @@ enum PickupOption {
 @JsonEnum(valueField: 'jsonValue')
 enum DeliveryStatus {
   pending('pending'),
-  upcoming('upcoming'),
+  confirmed('confirmed'),
   onTheWay('onTheWay'),
   delivered('delivered'),
   canceled('canceled');

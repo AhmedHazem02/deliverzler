@@ -116,10 +116,14 @@ class DriverApplicationDto with _$DriverApplicationDto {
       return null;
     }
 
+    final rawStatus = data['status'] as String?;
+    print('🔍 [DriverApplicationDto] Reading Doc ID: ${doc.id}');
+    print('🔍 [DriverApplicationDto] Raw Status: "$rawStatus"');
+    
     return DriverApplicationDto(
       id: doc.id,
       userId: data['userId'] as String? ?? '',
-      status: data['status'] as String? ?? 'pending',
+      status: rawStatus ?? 'pending',
       type: data['type'] as String? ?? 'driver',
       name: data['name'] as String? ?? '',
       email: data['email'] as String? ?? '',

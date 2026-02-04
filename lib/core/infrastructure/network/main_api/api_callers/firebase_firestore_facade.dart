@@ -33,12 +33,14 @@ class FirebaseFirestoreFacade {
     required Map<String, dynamic> data,
     bool merge = false,
   }) async {
-    return _futureErrorHandler(
-      () async {
-        final reference = firebaseFirestore.doc(path);
-        return reference.set(data, SetOptions(merge: merge));
-      },
-    );
+    // Direct call to avoid JS Interop casting issues in _futureErrorHandler for now
+    try {
+      final reference = firebaseFirestore.doc(path);
+      return await reference.set(data, SetOptions(merge: merge));
+    } catch (e) {
+      print('❌ [FirebaseFirestoreFacade] setData Error: $e');
+      rethrow;
+    }
   }
 
   Future<void> updateData({

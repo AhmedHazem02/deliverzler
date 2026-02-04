@@ -7,7 +7,7 @@ part of 'target_location_geo_point_provider.dart';
 // **************************************************************************
 
 String _$targetLocationGeoPointHash() =>
-    r'ab8125d4572c8401e005f3e06dc65abac6022417';
+    r'74fcd50646a9000b99c3fae54154ed6a7ad008a9';
 
 /// See also [TargetLocationGeoPoint].
 @ProviderFor(TargetLocationGeoPoint)

@@ -16,8 +16,7 @@ class CachedNetworkImageCircular extends ConsumerWidget {
   const CachedNetworkImageCircular({
     required this.imageUrl,
     required this.radius,
-    this.spareImageUrl =
-        'https://firebasestorage.googleapis.com/v0/b/deliverzler.appspot.com/o/public%2Fplaceholder.png?alt=media',
+    this.spareImageUrl = '',  // Use empty string, will fall back to local asset
     this.maxHeightDiskCache = 400,
     this.maxWidthDiskCache = 400,
     super.key,
@@ -37,7 +36,11 @@ class CachedNetworkImageCircular extends ConsumerWidget {
       errorListener: (error) {
         _reportImageError(ref, error);
       },
-      imageUrl: imageUrl != null && imageUrl!.contains('http') ? imageUrl! : spareImageUrl,
+      imageUrl: (imageUrl != null && imageUrl!.contains('http')) 
+          ? imageUrl! 
+          : (spareImageUrl.isNotEmpty && spareImageUrl.contains('http')) 
+              ? spareImageUrl 
+              : 'https://via.placeholder.com/150',
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: radius,
         backgroundImage: imageProvider,
