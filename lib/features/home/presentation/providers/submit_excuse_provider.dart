@@ -37,12 +37,13 @@ class SubmitExcuseController extends _$SubmitExcuseController {
       // Submit to Firestore
       await dataSource.createRejectionRequest(rejectionRequest);
 
-      // Update order rejectionStatus to 'requested'
+      // Update order: set rejectionStatus to 'requested' and add driver to rejected_by_drivers
       await FirebaseFirestore.instance
           .collection('orders')
           .doc(order.id)
           .update({
         'rejectionStatus': 'requested',
+        'rejected_by_drivers': FieldValue.arrayUnion([user.id]),
       });
     });
   }

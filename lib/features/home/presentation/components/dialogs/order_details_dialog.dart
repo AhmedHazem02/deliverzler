@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../../core/presentation/styles/styles.dart';
@@ -140,6 +141,8 @@ class OrderDetailsDialog extends StatelessWidget {
                                       order.storeAddress!.isNotEmpty)
                                   ? order.storeAddress!
                                   : '';
+                      final storePhone = store?.phone ?? '';
+                      final storeCategory = store?.category ?? 'متجر';
 
                       return Container(
                         padding: const EdgeInsets.all(16),
@@ -154,53 +157,98 @@ class OrderDetailsDialog extends StatelessWidget {
                                 Theme.of(context).dividerColor.withOpacity(0.5),
                           ),
                         ),
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Icon(
-                                Icons.store_outlined,
-                                color: Theme.of(context).colorScheme.primary,
-                                size: 24,
-                              ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Icon(
+                                    Icons.store_outlined,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 24,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        displayName,
+                                        style: TextStyles.f16(context).copyWith(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        storeCategory,
+                                        style: TextStyles.f12(context).copyWith(
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'اسم المتجر',
-                                    style: TextStyles.f12(context).copyWith(
+                            if (storePhone.isNotEmpty ||
+                                displayAddress.isNotEmpty) ...[
+                              const SizedBox(height: 12),
+                              const Divider(height: 1),
+                              const SizedBox(height: 12),
+                              if (storePhone.isNotEmpty) ...[
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone_outlined,
+                                      size: 16,
                                       color: Theme.of(context).hintColor,
                                     ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    displayName,
-                                    style: TextStyles.f14(context).copyWith(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  if (displayAddress.isNotEmpty) ...[
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      displayAddress,
-                                      style: TextStyles.f12(context).copyWith(
-                                        color: Theme.of(context).hintColor,
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        storePhone,
+                                        style: TextStyles.f12(context).copyWith(
+                                          color: Theme.of(context).hintColor,
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ],
-                              ),
-                            ),
+                                ),
+                              ],
+                              if (displayAddress.isNotEmpty) ...[
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.location_on_outlined,
+                                      size: 16,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        displayAddress,
+                                        style: TextStyles.f12(context).copyWith(
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
                           ],
                         ),
                       );
@@ -546,56 +594,79 @@ class OrderDetailsDialog extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        // Totals Section
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
-                Theme.of(context).colorScheme.primaryContainer.withOpacity(0.1),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-            ),
-          ),
-          child: Column(
-            children: [
-              _buildDetailRow(
-                context,
-                'المجموع الفرعي',
-                '${order.subTotal.toStringAsFixed(0)} ${tr(context).currency}',
-                isBold: false,
-              ),
-              if (order.deliveryFee != null && order.deliveryFee! > 0) ...[
-                const SizedBox(height: 8),
-                _buildDetailRow(
-                  context,
-                  'رسوم التوصيل',
-                  '${order.deliveryFee!.toStringAsFixed(0)} ${tr(context).currency}',
-                  isBold: false,
+        // Totals Section - Calculate correct subtotal and fetch delivery fee
+        FutureBuilder<double>(
+          future: _fetchDeliveryFee(),
+          builder: (context, snapshot) {
+            // Calculate actual subtotal from items: price * quantity for each item
+            final calculatedSubtotal = items.fold<double>(
+              0.0,
+              (sum, item) => sum + (item.price * item.quantity),
+            );
+
+            // Always use calculated subtotal from items
+            final displaySubtotal = calculatedSubtotal;
+
+            final deliveryFee = snapshot.data ?? 0.0;
+            final calculatedTotal = displaySubtotal + deliveryFee;
+
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.3),
+                    Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-              ],
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Divider(
-                  color: Theme.of(context).dividerColor,
-                  thickness: 1,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
                 ),
               ),
-              _buildDetailRow(
-                context,
-                'المجموع الكلي',
-                '${order.total.toStringAsFixed(0)} ${tr(context).currency}',
-                isBold: true,
-                valueColor: Theme.of(context).colorScheme.primary,
+              child: Column(
+                children: [
+                  _buildDetailRow(
+                    context,
+                    'المجموع الفرعي',
+                    '${displaySubtotal.toStringAsFixed(0)} ${tr(context).currency}',
+                    isBold: false,
+                  ),
+                  if (deliveryFee > 0) ...[
+                    const SizedBox(height: 8),
+                    _buildDetailRow(
+                      context,
+                      'رسوم التوصيل',
+                      '${deliveryFee.toStringAsFixed(0)} ${tr(context).currency}',
+                      isBold: false,
+                    ),
+                  ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Divider(
+                      color: Theme.of(context).dividerColor,
+                      thickness: 1,
+                    ),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    'المجموع الكلي',
+                    '${calculatedTotal.toStringAsFixed(0)} ${tr(context).currency}',
+                    isBold: true,
+                    valueColor: Theme.of(context).colorScheme.primary,
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ],
     );
@@ -698,6 +769,25 @@ class OrderDetailsDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<double> _fetchDeliveryFee() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('settings')
+          .doc('driverCommission')
+          .get();
+
+      if (doc.exists) {
+        final data = doc.data();
+        if (data != null && data.containsKey('rate')) {
+          return ((data['rate'] as num?) ?? 0).toDouble();
+        }
+      }
+      return 0.0;
+    } catch (e) {
+      return 0.0;
+    }
   }
 
   Widget _buildOrderItem(BuildContext context, OrderItem item) {
@@ -839,7 +929,7 @@ class OrderDetailsDialog extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          // Item Total Price
+          // Item Total Price (calculated from price * quantity)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
@@ -847,7 +937,7 @@ class OrderDetailsDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              '${item.total.toStringAsFixed(0)}',
+              '${(item.price * item.quantity).toStringAsFixed(0)}',
               style: TextStyles.f14(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,
