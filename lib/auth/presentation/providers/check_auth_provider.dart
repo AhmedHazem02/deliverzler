@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../../../auth/domain/email_not_verified_exception.dart';
 import '../../../auth/domain/user.dart';
 import '../../../auth/infrastructure/repos/auth_repo.dart';
@@ -26,12 +28,28 @@ Future<User> checkAuth(Ref ref) async {
 
     if (!isVerified) {
       // Get user data to retrieve email
-      final user = await ref.watch(authRepoProvider).getUserData(uid);
+      User user;
+      try {
+        user = await ref.watch(authRepoProvider).getUserData(uid);
+      } catch (e) {
+        // If user data doesn't exist, we can't verify email - sign out
+        await ref.watch(authRepoProvider).signOut();
+        rethrow;
+      }
       // Don't authenticate, throw exception to redirect to verification
       throw EmailNotVerifiedException(email: user.email);
     }
 
-    final user = await ref.watch(authRepoProvider).getUserData(uid);
+    User user;
+    try {
+      user = await ref.watch(authRepoProvider).getUserData(uid);
+    } catch (e) {
+      debugPrint('⚠️ [CheckAuth] User data not found for uid: $uid');
+      debugPrint('⚠️ [CheckAuth] Signing out...');
+      // Sign out if user data doesn't exist
+      await ref.watch(authRepoProvider).signOut();
+      rethrow;
+    }
 
     // Authenticate user after email verification confirmed
     sub.read().authenticateUser(user);

@@ -253,7 +253,7 @@ class DriverSignupFormComponent extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Error message
-          if (errorMessage.value != null)
+          if (errorMessage.value != null && errorMessage.value!.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: Sizes.marginV16),
               padding: const EdgeInsets.all(Sizes.marginV12),
