@@ -32,6 +32,9 @@ extension _ServerErrorExtension on ServerException {
       ServerExceptionType.authWrongPassword => tr(context).authWrongPasswordError,
       ServerExceptionType.authUserNotFound => tr(context).authUserNotFoundError,
       ServerExceptionType.authUserDisabled => tr(context).authUserDisabledError,
+      ServerExceptionType.authEmailAlreadyInUse => tr(context).authEmailAlreadyInUseError,
+      ServerExceptionType.authTooManyRequests => tr(context).tooManyRequestsError,
+      ServerExceptionType.authWeakPassword => tr(context).passwordMustBeAtLeast6Characters,
       ServerExceptionType.unknown => tr(context).unknownError,
     };
   }

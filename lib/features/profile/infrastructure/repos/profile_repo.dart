@@ -26,7 +26,6 @@ class ProfileRepo {
     return imageUrl;
   }
 
-  // TODO(Ahmed): updated cached image
   Future<void> updateProfileImage(String imageUrl) async {
     await remoteDataSource.updateProfileImage(imageUrl);
   }

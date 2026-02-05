@@ -487,7 +487,8 @@ class _StepIndicator extends StatelessWidget {
             return Expanded(
               child: Container(
                 height: 4,
-                margin: EdgeInsets.only(right: index < totalSteps - 1 ? 4 : 0),
+                margin: EdgeInsetsDirectional.only(
+                    end: index < totalSteps - 1 ? 4 : 0),
                 decoration: BoxDecoration(
                   color: isActive
                       ? Theme.of(context).primaryColor

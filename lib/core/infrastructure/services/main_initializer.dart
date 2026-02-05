@@ -75,8 +75,19 @@ Future<void> _precacheAssets(BuildContext context) async {
 }
 
 Future<void> _initSupabase() async {
-  const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-  const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
+  // Try to get from environment first
+  String supabaseUrl = const String.fromEnvironment('SUPABASE_URL');
+  String supabaseAnonKey = const String.fromEnvironment('SUPABASE_ANON_KEY');
+
+  // Fallback to hardcoded values for development if environment variables are missing
+  if (supabaseUrl.isEmpty) {
+    supabaseUrl = 'https://denazlkdamrsefwkdxmp.supabase.co';
+    log('⚠️ SUPABASE_URL not found in environment, using fallback');
+  }
+  if (supabaseAnonKey.isEmpty) {
+    supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRlbmF6bGtkYW1yc2Vmd2tkeG1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTAzMDAsImV4cCI6MjA4NDkyNjMwMH0.InD1f8XTqNVzmwWPxkEx6-L3iru9WVJyszAXd9JUhV4';
+    log('⚠️ SUPABASE_ANON_KEY not found in environment, using fallback');
+  }
 
   log('Supabase URL: ${supabaseUrl.isEmpty ? "EMPTY" : "Found (${supabaseUrl.length} chars)"}');
   log('Supabase Key: ${supabaseAnonKey.isEmpty ? "EMPTY" : "Found (${supabaseAnonKey.length} chars)"}');

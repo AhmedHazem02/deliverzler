@@ -48,14 +48,14 @@ class UserImageComponent extends ConsumerWidget {
     }
 
     return Stack(
-      alignment: Alignment.bottomRight,
+      alignment: AlignmentDirectional.bottomEnd,
       children: [
         CachedNetworkImageCircular(
           imageUrl: profileImage,
           radius: 64,
         ),
         Padding(
-          padding: const EdgeInsets.only(right: Sizes.paddingH8),
+          padding: const EdgeInsetsDirectional.only(end: Sizes.paddingH8),
           child: ImagePickComponent(
             pickFromCameraCallBack:
                 ref.isLoading(updateProfileImageStateProvider)

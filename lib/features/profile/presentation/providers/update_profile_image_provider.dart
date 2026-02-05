@@ -4,6 +4,8 @@ import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../infrastructure/repos/profile_repo.dart';
 
+import 'package:cached_network_image/cached_network_image.dart';
+
 part 'update_profile_image_provider.g.dart';
 
 //Using [Option] to indicate idle(none)/success(some) states.
@@ -22,6 +24,7 @@ class UpdateProfileImageState extends _$UpdateProfileImageState {
         imageData.filename,
       );
       await profileRepo.updateProfileImage(imageUrl);
+      await CachedNetworkImage.evictFromCache(imageUrl);
 
       ref.read(authStateProvider.notifier).updateUserImage(imageUrl);
 

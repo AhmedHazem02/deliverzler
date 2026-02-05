@@ -12,6 +12,8 @@ import '../data_sources/auth_local_data_source.dart';
 import '../data_sources/auth_remote_data_source.dart';
 import '../dtos/user_dto.dart';
 
+import '../../../core/infrastructure/network/main_api/extensions/firebase_error_extension.dart';
+
 part 'auth_repo.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -53,11 +55,14 @@ class AuthRepo {
       debugPrint('✅ [AuthRepo] registerWithEmail SUCCESS');
       return userDto.toDomain();
     } catch (e, stackTrace) {
-      debugPrint('❌ [AuthRepo] registerWithEmail ERROR!');
-      debugPrint('❌ [AuthRepo] Error Type: ${e.runtimeType}');
-      debugPrint('❌ [AuthRepo] Error: $e');
-      debugPrint('❌ [AuthRepo] Stack: $stackTrace');
-      rethrow;
+      if (e is FirebaseAuthException) {
+        debugPrint('❌ [AuthRepo] CloudAuth Error: ${e.code}');
+      } else {
+        debugPrint('❌ [AuthRepo] registerWithEmail ERROR!');
+        debugPrint('❌ [AuthRepo] Error: $e');
+        debugPrint('❌ [AuthRepo] Stack: $stackTrace');
+      }
+      throw e.firebaseErrorToServerException();
     }
   }
 

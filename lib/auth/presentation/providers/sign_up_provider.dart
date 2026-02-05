@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../../core/presentation/utils/fp_framework.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 import '../../infrastructure/repos/auth_repo.dart';
+import '../../../core/infrastructure/error/app_exception.dart';
 import '../../domain/user.dart';
 
 part 'sign_up_provider.g.dart';
@@ -51,12 +52,17 @@ class SignUpState extends _$SignUpState {
       debugPrint('✅ [SignUp Provider] ALL STEPS COMPLETED!');
       state = AsyncData(Some(fullUser));
     } catch (e, st) {
-      // Convert error to safe string to avoid JS interop TypeErrors
-      final errString = e.toString();
-      debugPrint('❌ [SignUp Provider] CAUGHT ERROR: $errString');
-      debugPrint('❌ [SignUp Provider] Error Type: ${e.runtimeType}');
-      debugPrint('❌ [SignUp Provider] Stack: $st');
-      state = AsyncError(errString, st);
+      if (e is AppException) {
+        debugPrint('❌ [SignUp Provider] Handled Error: ${e.message}');
+        state = AsyncError(e, st);
+      } else {
+        debugPrint('❌ [SignUp Provider] CAUGHT ERROR: $e');
+        debugPrint('❌ [SignUp Provider] Stack: $st');
+        
+        // Convert error to safe string to avoid JS interop TypeErrors
+        final errString = e.toString();
+        state = AsyncError(errString, st);
+      }
     }
   }
 }

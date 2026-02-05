@@ -16,5 +16,8 @@ enum ServerExceptionType {
   authInvalidEmail,
   authWrongPassword,
   authUserNotFound,
-  authUserDisabled;
+  authUserDisabled,
+  authEmailAlreadyInUse,
+  authTooManyRequests,
+  authWeakPassword;
 }

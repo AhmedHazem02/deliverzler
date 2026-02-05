@@ -60,7 +60,7 @@ extension FirebaseErrorExtension on Object {
     }
     if (errorString.contains('too-many-requests')) {
       return const ServerException(
-        type: ServerExceptionType.unknown,
+        type: ServerExceptionType.authTooManyRequests,
         message: 'Too many attempts. Please try again later.',
       );
     }
@@ -101,11 +101,11 @@ extension _FirebaseAuthErrorExtension on FirebaseAuthException {
           message: message ?? 'User account disabled',
         ),
       'email-already-in-use' => const ServerException(
-          type: ServerExceptionType.unknown,
+          type: ServerExceptionType.authEmailAlreadyInUse,
           message: 'This email is already registered. Please log in instead.',
         ),
       'weak-password' => const ServerException(
-          type: ServerExceptionType.unknown,
+          type: ServerExceptionType.authWeakPassword,
           message: 'Password is too weak. Please use a stronger password.',
         ),
       'operation-not-allowed' => const ServerException(
@@ -149,11 +149,11 @@ extension _FirebaseExceptionExtension on FirebaseException {
           message: message ?? 'User account disabled',
         ),
       'email-already-in-use' => const ServerException(
-          type: ServerExceptionType.unknown,
+          type: ServerExceptionType.authEmailAlreadyInUse,
           message: 'This email is already registered. Please log in instead.',
         ),
       'weak-password' => const ServerException(
-          type: ServerExceptionType.unknown,
+          type: ServerExceptionType.authWeakPassword,
           message: 'Password is too weak. Please use a stronger password.',
         ),
       'operation-not-allowed' => const ServerException(
@@ -161,7 +161,7 @@ extension _FirebaseExceptionExtension on FirebaseException {
           message: 'Sign up is currently disabled. Please try again later.',
         ),
       'too-many-requests' => const ServerException(
-          type: ServerExceptionType.unknown,
+          type: ServerExceptionType.authTooManyRequests,
           message: 'Too many attempts. Please try again later.',
         ),
       'network-request-failed' => const ServerException(
