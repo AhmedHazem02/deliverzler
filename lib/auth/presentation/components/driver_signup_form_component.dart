@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/infrastructure/error/app_exception.dart';
+import '../../../core/presentation/extensions/app_error_extension.dart';
 import '../../../core/presentation/helpers/localization_helper.dart';
 import '../../../core/presentation/routing/app_router.dart';
 import '../../../core/presentation/styles/styles.dart';
@@ -139,11 +140,7 @@ class DriverSignupFormComponent extends HookConsumerWidget {
         error: (error, _) {
           if (!context.mounted) return;
           isSubmitting.value = false;
-          if (error is ServerException) {
-            errorMessage.value = error.message;
-          } else {
-            errorMessage.value = error.toString();
-          }
+          errorMessage.value = error.errorMessage(context);
         },
       );
     });
@@ -514,7 +511,7 @@ class _StepIndicator extends StatelessWidget {
   }
 }
 
-class _AccountStep extends StatelessWidget {
+class _AccountStep extends HookWidget {
   const _AccountStep({
     super.key,
     required this.emailController,
@@ -530,6 +527,9 @@ class _AccountStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPasswordVisible = useState(false);
+    final isConfirmPasswordVisible = useState(false);
+
     return Column(
       children: [
         TextFormField(
@@ -548,8 +548,18 @@ class _AccountStep extends StatelessWidget {
           decoration: InputDecoration(
             labelText: tr(context).password,
             prefixIcon: const Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: Icon(
+                isPasswordVisible.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+              ),
+              onPressed: () {
+                isPasswordVisible.value = !isPasswordVisible.value;
+              },
+            ),
           ),
-          obscureText: true,
+          obscureText: !isPasswordVisible.value,
           validator: SignInWithEmail.validatePassword(context),
           enabled: !isSubmitting,
         ),
@@ -559,8 +569,18 @@ class _AccountStep extends StatelessWidget {
           decoration: InputDecoration(
             labelText: tr(context).confirmPassword,
             prefixIcon: const Icon(Icons.lock_outline),
+            suffixIcon: IconButton(
+              icon: Icon(
+                isConfirmPasswordVisible.value
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+              ),
+              onPressed: () {
+                isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+              },
+            ),
           ),
-          obscureText: true,
+          obscureText: !isConfirmPasswordVisible.value,
           validator: (v) {
             if (v != passwordController.text) {
               return tr(context).passwordsDoNotMatch;

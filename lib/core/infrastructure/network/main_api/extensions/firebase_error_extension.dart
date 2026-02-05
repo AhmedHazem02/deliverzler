@@ -81,12 +81,14 @@ extension FirebaseErrorExtension on Object {
 extension _FirebaseAuthErrorExtension on FirebaseAuthException {
   // TODO(Ahmed): Handle all auth exception cases and add unit tests
   ServerException firebaseAuthToServerException() {
-    return switch (code) {
+    final cleanCode = code.replaceFirst('auth/', '');
+    
+    return switch (cleanCode) {
       'invalid-email' => ServerException(
           type: ServerExceptionType.authInvalidEmail,
           message: message ?? 'Please enter a valid email address',
         ),
-      'wrong-password' => ServerException(
+      'wrong-password' || 'invalid-credential' => ServerException(
           type: ServerExceptionType.authWrongPassword,
           message: message ?? 'Wrong password',
         ),
@@ -110,13 +112,13 @@ extension _FirebaseAuthErrorExtension on FirebaseAuthException {
           type: ServerExceptionType.unknown,
           message: 'Sign up is currently disabled. Please try again later.',
         ),
-      _ => ServerException(
-          type: ServerExceptionType.unknown,
-          message: message?.isNotEmpty ?? false
+      _ => _fallbackMessageCheck(
+          message?.isNotEmpty ?? false
               ? message!
               : code.isNotEmpty
                   ? 'Error: $code'
                   : 'An error occurred during sign up. Please try again.',
+          exception: this,
         ),
     };
   }
@@ -126,7 +128,10 @@ extension _FirebaseExceptionExtension on FirebaseException {
   /// Handle Firebase Web SDK exceptions (FirebaseException instead of FirebaseAuthException)
   ServerException firebaseExceptionToServerException() {
     // Firebase Web uses 'code' property similar to FirebaseAuthException
-    return switch (code) {
+    // Some versions might return 'auth/code', others just 'code'
+    final cleanCode = code.replaceFirst('auth/', '');
+    
+    return switch (cleanCode) {
       'invalid-email' => ServerException(
           type: ServerExceptionType.authInvalidEmail,
           message: message ?? 'Please enter a valid email address',
@@ -163,10 +168,32 @@ extension _FirebaseExceptionExtension on FirebaseException {
           type: ServerExceptionType.general,
           message: 'Network error. Please check your connection.',
         ),
-      _ => ServerException(
-          type: ServerExceptionType.unknown,
-          message: message ?? 'An error occurred. Please try again.',
-        ),
+      _ => _fallbackMessageCheck(message ?? 'An error occurred. Please try again.', exception: this),
     };
   }
+}
+
+ServerException _fallbackMessageCheck(String message, {Object? exception}) {
+  final lowerMessage = message.toLowerCase();
+  
+  if (lowerMessage.contains('incorrect, malformed or has expired') || 
+      lowerMessage.contains('supplied auth credential') ||
+      lowerMessage.contains('invalid login credentials')) {
+    return const ServerException(
+      type: ServerExceptionType.authWrongPassword,
+      message: 'Invalid email or password',
+    );
+  }
+  
+  if (lowerMessage.contains('network') || lowerMessage.contains('connection')) {
+    return const ServerException(
+      type: ServerExceptionType.general,
+      message: 'Network error. Please check your connection.',
+    );
+  }
+
+  return ServerException(
+    type: ServerExceptionType.unknown,
+    message: message,
+  );
 }

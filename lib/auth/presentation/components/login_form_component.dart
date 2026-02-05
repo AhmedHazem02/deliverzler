@@ -8,6 +8,8 @@ import '../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../../core/presentation/widgets/platform_widgets/platform_icons.dart';
 import '../../domain/sign_in_with_email.dart';
 import '../providers/sign_in_provider.dart';
+import '../../../core/infrastructure/error/app_exception.dart';
+import '../../../core/presentation/extensions/app_error_extension.dart';
 
 class LoginFormComponent extends HookConsumerWidget {
   const LoginFormComponent({super.key});
@@ -17,6 +19,22 @@ class LoginFormComponent extends HookConsumerWidget {
     final loginFormKey = useMemoized(GlobalKey<FormState>.new);
     final emailController = useTextEditingController(text: '');
     final passwordController = useTextEditingController(text: '');
+    final isPasswordVisible = useState(false);
+    final errorMessage = useState<String?>(null);
+
+    ref.listen(signInStateProvider, (previous, next) {
+      next.when(
+        data: (_) {
+          errorMessage.value = null;
+        },
+        loading: () {
+          errorMessage.value = null;
+        },
+        error: (error, stackTrace) {
+          errorMessage.value = error.errorMessage(context);
+        },
+      );
+    });
 
     void signIn() {
       if (loginFormKey.currentState!.validate()) {
@@ -32,6 +50,19 @@ class LoginFormComponent extends HookConsumerWidget {
       key: loginFormKey,
       child: Column(
         children: [
+          if (errorMessage.value != null)
+            Container(
+              margin: const EdgeInsets.only(bottom: Sizes.marginV16),
+              padding: const EdgeInsets.all(Sizes.marginV12),
+              decoration: BoxDecoration(
+                color: Colors.red.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                errorMessage.value!,
+                style: TextStyle(color: Colors.red.shade700, fontSize: 13),
+              ),
+            ),
           TextFormField(
             key: const ValueKey('login_email'),
             controller: emailController,
@@ -69,13 +100,22 @@ class LoginFormComponent extends HookConsumerWidget {
                           .horizontal /
                       2,
                 ),
-                child: const Icon(Icons.password),
+                child: IconButton(
+                  icon: Icon(
+                    isPasswordVisible.value
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    isPasswordVisible.value = !isPasswordVisible.value;
+                  },
+                ),
               ),
               suffixIconConstraints: const BoxConstraints(),
             ),
             validator: SignInWithEmail.validatePassword(context),
             textInputAction: TextInputAction.go,
-            obscureText: true,
+            obscureText: !isPasswordVisible.value,
             onFieldSubmitted:
                 ref.isLoading(signInStateProvider) ? null : (_) => signIn(),
           ),

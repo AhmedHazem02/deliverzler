@@ -58,7 +58,6 @@ Future<void> _initFirebase() async {
     log('Firebase: Initialized successfully');
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    
   } catch (e) {
     log('Firebase: initialization FAILED');
     log('Error details: $e');

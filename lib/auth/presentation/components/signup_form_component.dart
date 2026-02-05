@@ -7,6 +7,7 @@ import '../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../presentation/providers/sign_up_provider.dart';
 import '../../../core/infrastructure/error/app_exception.dart';
+import '../../../core/presentation/extensions/app_error_extension.dart';
 import '../../domain/sign_in_with_email.dart';
 
 class SignupFormComponent extends HookConsumerWidget {
@@ -20,6 +21,8 @@ class SignupFormComponent extends HookConsumerWidget {
     final passwordController = useTextEditingController(text: '');
     final errorMessage = useState<String?>('');
 
+    final isPasswordVisible = useState(false);
+
     ref.listen(
       signUpStateProvider,
       (previous, next) {
@@ -29,11 +32,7 @@ class SignupFormComponent extends HookConsumerWidget {
           },
           loading: () {},
           error: (error, stackTrace) {
-            if (error is ServerException) {
-              errorMessage.value = error.message;
-            } else {
-              errorMessage.value = error.toString();
-            }
+            errorMessage.value = error.errorMessage(context);
           },
         );
       },
@@ -87,9 +86,21 @@ class SignupFormComponent extends HookConsumerWidget {
           const SizedBox(height: Sizes.marginV16),
           TextFormField(
             controller: passwordController,
-            decoration: InputDecoration(hintText: tr(context).password),
+            decoration: InputDecoration(
+              hintText: tr(context).password,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  isPasswordVisible.value
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  isPasswordVisible.value = !isPasswordVisible.value;
+                },
+              ),
+            ),
             validator: SignInWithEmail.validatePassword(context),
-            obscureText: true,
+            obscureText: !isPasswordVisible.value,
             textInputAction: TextInputAction.go,
             onFieldSubmitted:
                 ref.isLoading(signUpStateProvider) ? null : (_) => signUp(),

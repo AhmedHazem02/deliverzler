@@ -63,8 +63,7 @@ class OrdersRepo {
                 final isOnTheWayAndMine =
                     status == DeliveryStatus.onTheWay && isAssignedToMe;
 
-                final shouldInclude =
-                    isConfirmedAndMine || isOnTheWayAndMine;
+                final shouldInclude = isConfirmedAndMine || isOnTheWayAndMine;
 
                 debugPrint('   - Should Include: $shouldInclude');
                 debugPrint(
