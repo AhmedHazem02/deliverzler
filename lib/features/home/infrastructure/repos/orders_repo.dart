@@ -49,27 +49,26 @@ class OrdersRepo {
                 debugPrint(
                     '   - Is Rejected By Me: ${order.rejectedByDrivers.contains(userId)}');
 
-                // Show confirmed orders ONLY if:
-                // 1. It's unassigned (deliveryId is null/empty) -> Show to everyone
-                // 2. OR It's assigned to THIS driver (deliveryId == userId)
-                // 3. AND this driver hasn't rejected it before
-                final isConfirmedAndRelevant =
-                    status == DeliveryStatus.confirmed &&
-                        (driverId == null ||
-                            driverId.isEmpty ||
-                            driverId == userId) &&
-                        !order.rejectedByDrivers.contains(userId);
+                // Show orders ONLY if assigned to THIS driver (deliveryId == userId)
+                // If deliveryId is null or empty, the order waits for admin assignment
+                final isAssignedToMe = driverId != null &&
+                    driverId.isNotEmpty &&
+                    driverId == userId;
+
+                // Show confirmed orders ONLY if assigned to this driver
+                final isConfirmedAndMine =
+                    status == DeliveryStatus.confirmed && isAssignedToMe;
 
                 // Show orders on the way ONLY if assigned to this driver
                 final isOnTheWayAndMine =
-                    status == DeliveryStatus.onTheWay && driverId == userId;
+                    status == DeliveryStatus.onTheWay && isAssignedToMe;
 
                 final shouldInclude =
-                    isConfirmedAndRelevant || isOnTheWayAndMine;
+                    isConfirmedAndMine || isOnTheWayAndMine;
 
                 debugPrint('   - Should Include: $shouldInclude');
                 debugPrint(
-                    '   - Reason: ${isConfirmedAndRelevant ? "Confirmed & Relevant" : isOnTheWayAndMine ? "OnTheWay & Mine" : "Filtered Out"}');
+                    '   - Reason: ${isConfirmedAndMine ? "Confirmed & Assigned to Me" : isOnTheWayAndMine ? "OnTheWay & Assigned to Me" : "Filtered Out (Not Assigned to Me)"}');
                 debugPrint('-' * 60);
 
                 return shouldInclude;
