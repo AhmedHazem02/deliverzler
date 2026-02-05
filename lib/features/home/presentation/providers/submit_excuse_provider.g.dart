@@ -7,7 +7,7 @@ part of 'submit_excuse_provider.dart';
 // **************************************************************************
 
 String _$submitExcuseControllerHash() =>
-    r'802e49cfcbf7b0567e6a0dea7385e8be5c39ad01';
+    r'2ad8e56a6c4b8431431e407152ead5ba0e550425';
 
 /// See also [SubmitExcuseController].
 @ProviderFor(SubmitExcuseController)
