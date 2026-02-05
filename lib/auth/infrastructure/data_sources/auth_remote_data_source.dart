@@ -140,7 +140,8 @@ class AuthRemoteDataSource {
   Future<UserDto> getUserData(String uid) async {
     final response = await firebaseFirestore.getData(path: userDocPath(uid));
     if (response.data() case final data?) {
-      return UserDto.fromJson(data as Map<String, dynamic>);
+      // Use fromFirestoreData to handle both UserDto and DriverApplication formats
+      return UserDto.fromFirestoreData(data as Map<String, dynamic>);
     } else {
       throw const ServerException(
         type: ServerExceptionType.notFound,
