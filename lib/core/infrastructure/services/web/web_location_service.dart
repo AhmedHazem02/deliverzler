@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 
 /// Web-specific location service with background tracking support
 /// Implements clean architecture and high-performance patterns
 class WebLocationService {
   WebLocationService();
 
-  StreamController<Position>? _locationStreamController;
+  StreamController<geo.Position>? _locationStreamController;
   Timer? _backgroundLocationTimer;
-  StreamSubscription<html.Geoposition>? _positionSubscription;
+  StreamSubscription<dynamic>? _positionSubscription;
 
   static const int _backgroundUpdateInterval = 5; // seconds
   static const int _locationTimeout = 20; // seconds
@@ -37,19 +37,19 @@ class WebLocationService {
   }
 
   /// Get current position
-  Future<Position?> getCurrentPosition() async {
+  Future<geo.Position?> getCurrentPosition() async {
     return _getCurrentPosition();
   }
 
-  Future<Position?> _getCurrentPosition() async {
+  Future<geo.Position?> _getCurrentPosition() async {
     if (!isSupported) return null;
 
     try {
-      final completer = Completer<Position?>();
+      final completer = Completer<geo.Position?>();
       var completed = false;
 
       // Set timeout
-      Timer(_locationTimeout.seconds, () {
+      Timer(Duration(seconds: _locationTimeout), () {
         if (!completed) {
           completed = true;
           completer.complete(null);
@@ -58,10 +58,16 @@ class WebLocationService {
 
       html.window.navigator.geolocation
           .getCurrentPosition()
-          .then((html.Geoposition position) {
+          .then((dynamic position) {
         if (!completed) {
           completed = true;
-          completer.complete(_convertToPosition(position));
+          // Handle LegacyJavaScriptObject by casting to html.Geoposition
+          final html.Geoposition? geoPosition = position as html.Geoposition?;
+          if (geoPosition != null) {
+            completer.complete(_convertToPosition(geoPosition));
+          } else {
+            completer.complete(null);
+          }
         }
       }).catchError((Object error) {
         if (!completed) {
@@ -80,7 +86,7 @@ class WebLocationService {
   }
 
   /// Start location stream with high accuracy
-  Stream<Position> getPositionStream({
+  Stream<geo.Position> getPositionStream({
     int? intervalSeconds,
     double? distanceFilter,
   }) {
@@ -88,7 +94,7 @@ class WebLocationService {
       return _locationStreamController!.stream;
     }
 
-    _locationStreamController = StreamController<Position>.broadcast(
+    _locationStreamController = StreamController<geo.Position>.broadcast(
       onListen: () =>
           _startWatchingPosition(intervalSeconds ?? _backgroundUpdateInterval),
       onCancel: _stopWatchingPosition,
@@ -105,10 +111,26 @@ class WebLocationService {
       // Use watchPosition with stream
       _positionSubscription =
           html.window.navigator.geolocation.watchPosition().listen(
-        (html.Geoposition position) {
-          final pos = _convertToPosition(position);
-          if (pos != null && !(_locationStreamController?.isClosed ?? true)) {
-            _locationStreamController?.add(pos);
+        (dynamic position) {
+          try {
+            // Handle LegacyJavaScriptObject by casting to html.Geoposition
+            final html.Geoposition? geoPosition = position as html.Geoposition?;
+
+            if (geoPosition != null) {
+              // Convert the position to Dart Position object
+              final pos = _convertToPosition(geoPosition);
+
+              // Only add if conversion was successful and stream is open
+              if (pos != null &&
+                  !(_locationStreamController?.isClosed ?? true)) {
+                _locationStreamController?.add(pos);
+              }
+            }
+          } catch (e) {
+            if (kDebugMode) {
+              debugPrint(
+                  '[WebLocationService] Error processing position update: $e');
+            }
           }
         },
         onError: (Object error) {
@@ -132,7 +154,7 @@ class WebLocationService {
   /// Enable background location tracking using periodic updates
   /// Note: True background tracking requires service workers
   void enableBackgroundTracking({
-    required void Function(Position) onLocationUpdate,
+    required void Function(geo.Position) onLocationUpdate,
     int intervalSeconds = 5,
   }) {
     _backgroundLocationTimer?.cancel();
@@ -162,21 +184,22 @@ class WebLocationService {
   }
 
   /// Convert HTML Geoposition to Flutter Position
-  Position? _convertToPosition(html.Geoposition htmlPosition) {
+  geo.Position? _convertToPosition(html.Geoposition htmlPosition) {
     try {
       final coords = htmlPosition.coords;
       if (coords == null) return null;
-      return Position(
-        latitude: (coords.latitude ?? 0.0).toDouble(),
-        longitude: (coords.longitude ?? 0.0).toDouble(),
+
+      // Explicitly create the Dart object from the geolocator package
+      return geo.Position(
+        latitude: (coords.latitude as num?)?.toDouble() ?? 0.0,
+        longitude: (coords.longitude as num?)?.toDouble() ?? 0.0,
         timestamp: DateTime.now(),
-        accuracy: (coords.accuracy ?? 0.0).toDouble(),
-        altitude: (coords.altitude ?? 0.0).toDouble(),
-        heading: (coords.heading ?? 0.0).toDouble(),
-        speed: (coords.speed ?? 0.0).toDouble(),
-        speedAccuracy: 0,
-        // 🔥 ضف هذين السطرين لإسكات الخطأ
-        altitudeAccuracy: 0.0, 
+        accuracy: (coords.accuracy as num?)?.toDouble() ?? 0.0,
+        altitude: (coords.altitude as num?)?.toDouble() ?? 0.0,
+        heading: (coords.heading as num?)?.toDouble() ?? 0.0,
+        speed: (coords.speed as num?)?.toDouble() ?? 0.0,
+        speedAccuracy: 0.0,
+        altitudeAccuracy: 0.0,
         headingAccuracy: 0.0,
       );
     } catch (e) {
@@ -192,7 +215,7 @@ class WebLocationService {
     double endLatitude,
     double endLongitude,
   ) {
-    return Geolocator.distanceBetween(
+    return geo.Geolocator.distanceBetween(
       startLatitude,
       startLongitude,
       endLatitude,

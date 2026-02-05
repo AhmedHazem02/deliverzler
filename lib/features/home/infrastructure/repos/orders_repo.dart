@@ -26,28 +26,13 @@ class OrdersRepo {
       ref.read(ordersRemoteDataSourceProvider);
 
   Stream<List<AppOrder>> getUpcomingOrders(String userId) {
-    debugPrint('🏪 OrdersRepo.getUpcomingOrders called for userId: $userId');
-    debugPrint('🔑 Current Driver ID (userId): $userId');
     return remoteDataSource.getUpcomingOrders().map(
       (orders) {
-        debugPrint('📦 Raw orders from remote: ${orders.length}');
-        debugPrint('=' * 60);
         final filtered = orders
             .where(
               (order) {
                 final status = order.deliveryStatus;
                 final driverId = order.deliveryId;
-
-                debugPrint('🔍 Checking Order: ${order.id}');
-                debugPrint('   - Status: $status');
-                debugPrint(
-                    '   - Assigned Driver ID: ${driverId ?? "UNASSIGNED"}');
-                debugPrint('   - Current User ID: $userId');
-                debugPrint('   - IDs Match: ${driverId == userId}');
-                debugPrint(
-                    '   - Rejected By Drivers: ${order.rejectedByDrivers}');
-                debugPrint(
-                    '   - Is Rejected By Me: ${order.rejectedByDrivers.contains(userId)}');
 
                 // Show orders ONLY if assigned to THIS driver (deliveryId == userId)
                 // If deliveryId is null or empty, the order waits for admin assignment
@@ -65,18 +50,11 @@ class OrdersRepo {
 
                 final shouldInclude = isConfirmedAndMine || isOnTheWayAndMine;
 
-                debugPrint('   - Should Include: $shouldInclude');
-                debugPrint(
-                    '   - Reason: ${isConfirmedAndMine ? "Confirmed & Assigned to Me" : isOnTheWayAndMine ? "OnTheWay & Assigned to Me" : "Filtered Out (Not Assigned to Me)"}');
-                debugPrint('-' * 60);
-
                 return shouldInclude;
               },
             )
             .map((o) => o.toDomain())
             .toList();
-        debugPrint('✅ Filtered orders: ${filtered.length}');
-        debugPrint('=' * 60);
         return filtered;
       },
     );

@@ -28,6 +28,7 @@ class LocationService {
   LocationService({this.webLocationService});
 
   final WebLocationService? webLocationService;
+  
   Future<bool> isLocationServiceEnabled() async {
     return Geolocator.isLocationServiceEnabled();
   }
@@ -201,4 +202,3 @@ class LocationService {
     }
   }
 }
-

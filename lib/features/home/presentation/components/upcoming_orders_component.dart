@@ -37,8 +37,6 @@ class UpcomingOrdersComponent extends ConsumerWidget {
     );
 
     final upcomingOrdersAsync = ref.watch(upcomingOrdersProvider);
-    debugPrint(
-        '🖥️ UI rendering with async state: ${upcomingOrdersAsync.runtimeType}');
 
     Future<void> refresh() async {
       return ref.refresh(upcomingOrdersProvider.future).suppressError();
@@ -48,7 +46,6 @@ class UpcomingOrdersComponent extends ConsumerWidget {
       skipLoadingOnReload: true,
       skipLoadingOnRefresh: !upcomingOrdersAsync.hasError,
       data: (upcomingOrders) {
-        debugPrint('✨ UI received orders: ${upcomingOrders.length}');
         return PlatformRefreshIndicator(
           onRefresh: refresh,
           slivers: [

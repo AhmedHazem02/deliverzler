@@ -39,7 +39,7 @@ class OrderItemsRemoteDataSource {
     }
 
     try {
-      debugPrint('🔍 Fetching order items for order: $orderId');
+      
       
       final snapshot = await firebaseFirestore.getCollectionData(
         path: orderItemsCollectionPath,

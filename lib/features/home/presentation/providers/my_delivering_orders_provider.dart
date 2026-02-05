@@ -13,7 +13,6 @@ List<AppOrder> myDeliveringOrders(Ref ref) {
     upcomingOrdersProvider.select(
       (orders) {
         final allOrders = orders.valueOrNull ?? [];
-        print('🔍 [MyDeliveringOrders] Total upcoming orders: ${allOrders.length}');
         
         final filtered = allOrders
             .where(

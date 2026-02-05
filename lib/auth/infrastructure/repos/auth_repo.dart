@@ -44,9 +44,6 @@ class AuthRepo {
     required String password,
     String? name,
   }) async {
-    debugPrint('🟠 [AuthRepo] registerWithEmail called');
-    debugPrint('🟠 [AuthRepo] Email: $email, Name: $name');
-    
     try {
       final userDto = await remoteDataSource.registerWithEmail(
         email: email,

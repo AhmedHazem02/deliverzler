@@ -23,12 +23,8 @@ class SelectedOrderId extends _$SelectedOrderId {
 
     // First try onTheWay orders (driver actively delivering)
     final deliveringOrders = ref.watch(myDeliveringOrdersProvider);
-    print(
-        '🔍 [SelectedOrderId] Delivering Orders (onTheWay) count: ${deliveringOrders.length}');
 
     if (deliveringOrders.isNotEmpty) {
-      print(
-          '🔍 [SelectedOrderId] Auto-selecting onTheWay order: ${deliveringOrders.first.id}');
       return Some(deliveringOrders.first.id);
     }
 
@@ -41,16 +37,9 @@ class SelectedOrderId extends _$SelectedOrderId {
             order.deliveryStatus == DeliveryStatus.confirmed)
         .toList();
 
-    print(
-        '🔍 [SelectedOrderId] Confirmed Orders for driver count: ${confirmedOrders.length}');
-
     if (confirmedOrders.isNotEmpty) {
-      print(
-          '🔍 [SelectedOrderId] Auto-selecting confirmed order: ${confirmedOrders.first.id}');
       return Some(confirmedOrders.first.id);
     }
-
-    print('🔍 [SelectedOrderId] No orders found for driver.');
     return const None();
   }
 

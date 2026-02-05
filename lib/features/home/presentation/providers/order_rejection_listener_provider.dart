@@ -101,8 +101,6 @@ class OrderRejectionListener extends _$OrderRejectionListener {
   }
 
   void _showApprovedNotification(String orderId) {
-    debugPrint('✅ تم قبول اعتذارك عن الطلب #${orderId.substring(0, 8)}');
-
     // Show local push notification
     final notificationService = ref.read(notificationServiceProvider);
     notificationService.showLocalNotification(
@@ -112,8 +110,6 @@ class OrderRejectionListener extends _$OrderRejectionListener {
   }
 
   void _showRefusedNotification(String orderId, String? adminComment) {
-    debugPrint('❌ تم رفض اعتذارك عن الطلب #${orderId.substring(0, 8)}');
-
     // Show local push notification
     final notificationService = ref.read(notificationServiceProvider);
     final reason = adminComment != null && adminComment.isNotEmpty

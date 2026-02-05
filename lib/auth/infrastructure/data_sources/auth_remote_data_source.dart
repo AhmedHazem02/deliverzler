@@ -48,41 +48,21 @@ class AuthRemoteDataSource {
     String? name,
   }) async {
     try {
-      debugPrint(
-          '🔵 [AuthRemote] Step 1: Starting registration for email: $email');
-
-      debugPrint(
-          '🔵 [AuthRemote] Step 1.1: Calling firebaseAuth.createUserWithEmailAndPassword...');
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      debugPrint(
-          '🔵 [AuthRemote] Step 2: Firebase Auth account created successfully');
-      debugPrint('🔵 [AuthRemote] User UID: ${userCredential.user?.uid}');
-      debugPrint('🔵 [AuthRemote] User Email: ${userCredential.user?.email}');
-
-      debugPrint('🔵 [AuthRemote] Step 3: Creating UserDto from credential...');
       final userDto = UserDto.fromUserCredential(userCredential.user!);
-      debugPrint('🔵 [AuthRemote] Step 3 SUCCESS: UserDto created');
 
       // Set name and status for driver registration
-      debugPrint(
-          '🔵 [AuthRemote] Step 4: Updating UserDto with name and status...');
       final updated = userDto.copyWith(
         name: name ?? userDto.name,
         status: 'pending', // Driver starts with pending status
       );
 
-      debugPrint('🔵 [AuthRemote] Step 4 SUCCESS: UserDto updated');
-      debugPrint('🔵 [AuthRemote] UserDto JSON: ${updated.toJson()}');
-
-      debugPrint('🔵 [AuthRemote] Step 5: Saving to Firestore...');
       await setUserData(updated);
-      debugPrint('✅ [AuthRemote] Step 5 SUCCESS: User saved to Firestore');
 
-      debugPrint('✅ [AuthRemote] Registration completed successfully!');
       return updated;
     } catch (e, stackTrace) {
       debugPrint('❌ [AuthRemote] ERROR in registerWithEmail!');

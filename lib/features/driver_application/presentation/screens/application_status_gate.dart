@@ -68,29 +68,22 @@ class ApplicationStatusGate extends ConsumerWidget {
     DriverApplication? application,
   ) {
     if (application == null) {
-      print('🔍 [StatusGate] No application found. Redirecting to form.');
-      // No application - go to application form
+ // No application - go to application form
       context.go(DriverApplicationRoute(userId: userId).location);
       return;
     }
 
-    print('🔍 [StatusGate] Status: ${application.status}');
-    print('🔍 [StatusGate] Is Complete: ${application.isComplete}');
-
     // Check completeness first - if status is pending but data is missing,
     // it's a new registration that needs to fill the form
     if (application.status.isPending && !application.isComplete) {
-       print('🔍 [StatusGate] Status is pending but incomplete. Redirecting to form.');
        context.go(DriverApplicationRoute(userId: userId).location);
        return;
     }
 
     switch (application.status) {
       case ApplicationStatus.approved:
-        print('🔍 [StatusGate] Status is APPROVED.');
         // Approved - only go to home if we are currently at the status gate or login related routes
         final location = GoRouterState.of(context).matchedLocation;
-        print('🔍 [StatusGate] Current location: $location');
         
         final isStatusRoute = location == const SplashRoute().location ||
             location == const SignInRoute().location ||
@@ -100,18 +93,14 @@ class ApplicationStatusGate extends ConsumerWidget {
             location == '/driver-application';
 
         if (isStatusRoute) {
-          print('🔍 [StatusGate] Redirecting to Home.');
           context.go(const HomeRoute().location);
         } else {
-          print('🔍 [StatusGate] Already on a valid route.');
         }
       case ApplicationStatus.pending:
       case ApplicationStatus.underReview:
-        print('🔍 [StatusGate] Status is Pending/UnderReview. Redirecting to Pending Screen.');
         // Waiting for approval - show pending screen
         context.go(PendingApprovalRoute(userId: userId).location);
       case ApplicationStatus.rejected:
-        print('🔍 [StatusGate] Status is Rejected. Redirecting to Pending Screen (Rejection).');
         // Rejected - show pending screen with rejection info
         context.go(PendingApprovalRoute(userId: userId).location);
     }
