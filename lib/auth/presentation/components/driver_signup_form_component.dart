@@ -253,14 +253,33 @@ class DriverSignupFormComponent extends HookConsumerWidget {
           if (errorMessage.value != null && errorMessage.value!.isNotEmpty)
             Container(
               margin: const EdgeInsets.only(bottom: Sizes.marginV16),
-              padding: const EdgeInsets.all(Sizes.marginV12),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Sizes.marginH16,
+                vertical: Sizes.marginV12,
+              ),
               decoration: BoxDecoration(
                 color: Colors.red.shade100,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                errorMessage.value!,
-                style: TextStyle(color: Colors.red.shade700, fontSize: 13),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      errorMessage.value!,
+                      style:
+                          TextStyle(color: Colors.red.shade700, fontSize: 13),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  InkWell(
+                    onTap: () => errorMessage.value = null,
+                    child: Icon(
+                      Icons.close,
+                      size: 20,
+                      color: Colors.red.shade700,
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -325,8 +344,12 @@ class DriverSignupFormComponent extends HookConsumerWidget {
               if (currentStep.value > 0)
                 Expanded(
                   child: OutlinedButton(
-                    onPressed:
-                        isSubmitting.value ? null : () => currentStep.value--,
+                    onPressed: isSubmitting.value
+                        ? null
+                        : () {
+                            errorMessage.value = null;
+                            currentStep.value--;
+                          },
                     child: Text(tr(context).previous),
                   ),
                 ),
@@ -342,6 +365,7 @@ class DriverSignupFormComponent extends HookConsumerWidget {
                       : () {
                           if (currentStep.value < 4) {
                             if (validateCurrentStep()) {
+                              errorMessage.value = null;
                               currentStep.value++;
                             } else {
                               errorMessage.value = tr(context).fillAllFields;
