@@ -48,15 +48,18 @@ class AuthRemoteDataSource {
     String? name,
   }) async {
     try {
-      debugPrint('🔵 [AuthRemote] Step 1: Starting registration for email: $email');
-      
-      debugPrint('🔵 [AuthRemote] Step 1.1: Calling firebaseAuth.createUserWithEmailAndPassword...');
+      debugPrint(
+          '🔵 [AuthRemote] Step 1: Starting registration for email: $email');
+
+      debugPrint(
+          '🔵 [AuthRemote] Step 1.1: Calling firebaseAuth.createUserWithEmailAndPassword...');
       final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
-      debugPrint('🔵 [AuthRemote] Step 2: Firebase Auth account created successfully');
+
+      debugPrint(
+          '🔵 [AuthRemote] Step 2: Firebase Auth account created successfully');
       debugPrint('🔵 [AuthRemote] User UID: ${userCredential.user?.uid}');
       debugPrint('🔵 [AuthRemote] User Email: ${userCredential.user?.email}');
 
@@ -65,19 +68,20 @@ class AuthRemoteDataSource {
       debugPrint('🔵 [AuthRemote] Step 3 SUCCESS: UserDto created');
 
       // Set name and status for driver registration
-      debugPrint('🔵 [AuthRemote] Step 4: Updating UserDto with name and status...');
+      debugPrint(
+          '🔵 [AuthRemote] Step 4: Updating UserDto with name and status...');
       final updated = userDto.copyWith(
         name: name ?? userDto.name,
         status: 'pending', // Driver starts with pending status
       );
-      
+
       debugPrint('🔵 [AuthRemote] Step 4 SUCCESS: UserDto updated');
       debugPrint('🔵 [AuthRemote] UserDto JSON: ${updated.toJson()}');
-      
+
       debugPrint('🔵 [AuthRemote] Step 5: Saving to Firestore...');
       await setUserData(updated);
       debugPrint('✅ [AuthRemote] Step 5 SUCCESS: User saved to Firestore');
-      
+
       debugPrint('✅ [AuthRemote] Registration completed successfully!');
       return updated;
     } catch (e, stackTrace) {
@@ -90,16 +94,16 @@ class AuthRemoteDataSource {
   }
 
   Future<String> getUserAuthUid() async {
-   // debugPrint('🔐 [AuthRemote] getUserAuthUid started');
+    // debugPrint('🔐 [AuthRemote] getUserAuthUid started');
     // 1. Check if user is already loaded synchronously
     if (firebaseAuth.firebaseAuth.currentUser != null) {
-  //    debugPrint(
-   //       '🔐 [AuthRemote] User found synchronously: ${firebaseAuth.firebaseAuth.currentUser!.uid}');
+      //    debugPrint(
+      //       '🔐 [AuthRemote] User found synchronously: ${firebaseAuth.firebaseAuth.currentUser!.uid}');
       return firebaseAuth.firebaseAuth.currentUser!.uid;
     }
 
     //debugPrint(
-      //  '🔐 [AuthRemote] User not found synchronously, waiting for stream...');
+    //  '🔐 [AuthRemote] User not found synchronously, waiting for stream...');
 
     // 2. If not, wait for the stream to emit a user with retry mechanism
     // This helps on web refreshes where persistence takes a moment to load
@@ -108,7 +112,7 @@ class AuthRemoteDataSource {
 
     for (int attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-       // debugPrint('🔐 [AuthRemote] Attempt $attempt/$maxRetries');
+        // debugPrint('🔐 [AuthRemote] Attempt $attempt/$maxRetries');
         final user = await firebaseAuth.authStateChanges.firstWhere((user) {
           //debugPrint('🔐 [AuthRemote] Stream emitted: ${user?.uid}');
           return user != null;
@@ -118,7 +122,7 @@ class AuthRemoteDataSource {
       } catch (e) {
         //debugPrint('🔐 [AuthRemote] Attempt $attempt failed: $e');
         if (attempt == maxRetries) {
-       //   debugPrint( '🔐 [AuthRemote] All attempts exhausted, user is truly not signed in');
+          //   debugPrint( '🔐 [AuthRemote] All attempts exhausted, user is truly not signed in');
           // All attempts failed => User is truly null
           throw const ServerException(
             type: ServerExceptionType.unauthorized,

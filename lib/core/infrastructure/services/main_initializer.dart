@@ -79,8 +79,12 @@ Future<void> _initSupabase() async {
   const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
   const supabaseAnonKey = String.fromEnvironment('SUPABASE_ANON_KEY');
 
+  log('Supabase URL: ${supabaseUrl.isEmpty ? "EMPTY" : "Found (${supabaseUrl.length} chars)"}');
+  log('Supabase Key: ${supabaseAnonKey.isEmpty ? "EMPTY" : "Found (${supabaseAnonKey.length} chars)"}');
+
   if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
-    log('Supabase configuration not found - storage features will be limited');
+    log('⚠️ Supabase configuration not found - storage features will be limited');
+    log('⚠️ Make sure SUPABASE_URL and SUPABASE_ANON_KEY are defined in dart-define');
     return;
   }
 
@@ -89,9 +93,9 @@ Future<void> _initSupabase() async {
       url: supabaseUrl,
       anonKey: supabaseAnonKey,
     );
-    log('Supabase initialized successfully');
+    log('✅ Supabase initialized successfully');
   } catch (e) {
-    log('Supabase initialization failed: $e');
+    log('❌ Supabase initialization failed: $e');
   }
 }
 
