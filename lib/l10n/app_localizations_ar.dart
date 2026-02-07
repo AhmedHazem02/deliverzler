@@ -725,4 +725,8 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get buttonsDisabledUntilReview =>
       'الأزرار معطلة لحين مراجعة الإدارة لطلبك';
+
+  @override
+  String get pleaseGoOnlineToReceiveOrders =>
+      'يرجى الاتصال بالإنترنت لاستقبال الطلبات';
 }

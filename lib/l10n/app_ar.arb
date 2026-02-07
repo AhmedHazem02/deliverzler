@@ -237,5 +237,6 @@
   "mustDeliverOrder": "يجب عليك توصيل هذا الطلب إلزامياً",
   "refusalReason": "السبب",
   "pendingAdminReview": "طلبات بانتظار المراجعة",
-  "buttonsDisabledUntilReview": "الأزرار معطلة لحين مراجعة الإدارة لطلبك"
+  "buttonsDisabledUntilReview": "الأزرار معطلة لحين مراجعة الإدارة لطلبك",
+  "pleaseGoOnlineToReceiveOrders": "يرجى الاتصال بالإنترنت لاستقبال الطلبات"
 }

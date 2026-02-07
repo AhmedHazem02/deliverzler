@@ -132,6 +132,53 @@ class HomeScreenCompact extends HookConsumerWidget {
               ],
             ),
           ),
+          // Offline Status Banner
+          availabilityAsync.when(
+            data: (isOnline) {
+              if (isOnline) return const SizedBox.shrink();
+              return Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.screenPaddingH28,
+                  vertical: Sizes.paddingV12, // Increased padding
+                ),
+                color: Colors.red.withOpacity(0.9), // Slightly transparent red
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.wifi_off_rounded, // Better icon for offline
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            tr(context).youAreCurrentlyOffline,
+                            style: TextStyles.f16(context).copyWith( // Larger font
+                              color: Colors.white,
+                              fontWeight: FontStyles.fontWeightBold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            tr(context).pleaseGoOnlineToReceiveOrders,
+                            style: TextStyles.f12(context).copyWith(
+                              color: Colors.white.withOpacity(0.9),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
+          ),
           // Pending review indicator
           Builder(
             builder: (context) {

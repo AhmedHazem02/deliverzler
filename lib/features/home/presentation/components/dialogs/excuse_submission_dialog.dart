@@ -4,10 +4,14 @@ import '../../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../../core/presentation/styles/styles.dart';
 
 class ExcuseSubmissionDialog extends StatelessWidget {
-  const ExcuseSubmissionDialog(
-      {required this.excuseReasonController, super.key});
+  const ExcuseSubmissionDialog({
+    required this.excuseReasonController,
+    required this.formKey,
+    super.key,
+  });
 
   final TextEditingController excuseReasonController;
+  final GlobalKey<FormState> formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +32,27 @@ class ExcuseSubmissionDialog extends StatelessWidget {
           ),
           Material(
             color: Colors.transparent,
-            child: TextFormField(
-              key: const ValueKey('excuse_reason'),
-              controller: excuseReasonController,
-              decoration: InputDecoration(
-                filled: false,
-                hintText: '${tr(context).typeYourReason}...',
+            child: Form(
+              key: formKey,
+              child: TextFormField(
+                key: const ValueKey('excuse_reason'),
+                controller: excuseReasonController,
+                decoration: InputDecoration(
+                  filled: false,
+                  hintText: '${tr(context).typeYourReason}...',
+                ),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return tr(context).requiredField;
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.newline,
+                minLines: 2,
+                maxLines: 8,
+                maxLength: 300,
+                autofocus: true,
               ),
-              textInputAction: TextInputAction.newline,
-              minLines: 2,
-              maxLines: 8,
-              maxLength: 300,
-              autofocus: true,
             ),
           ),
           const SizedBox(

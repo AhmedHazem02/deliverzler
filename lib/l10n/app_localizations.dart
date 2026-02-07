@@ -1459,6 +1459,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Actions disabled until admin reviews your request'**
   String get buttonsDisabledUntilReview;
+
+  /// No description provided for @pleaseGoOnlineToReceiveOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Please go online to receive orders'**
+  String get pleaseGoOnlineToReceiveOrders;
 }
 
 class _AppLocalizationsDelegate

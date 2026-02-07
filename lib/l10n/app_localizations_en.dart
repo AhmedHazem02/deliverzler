@@ -731,4 +731,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get buttonsDisabledUntilReview =>
       'Actions disabled until admin reviews your request';
+
+  @override
+  String get pleaseGoOnlineToReceiveOrders =>
+      'Please go online to receive orders';
 }

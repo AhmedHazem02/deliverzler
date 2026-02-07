@@ -237,5 +237,6 @@
   "mustDeliverOrder": "You must deliver this order",
   "refusalReason": "Reason",
   "pendingAdminReview": "Orders pending review",
-  "buttonsDisabledUntilReview": "Actions disabled until admin reviews your request"
+  "buttonsDisabledUntilReview": "Actions disabled until admin reviews your request",
+  "pleaseGoOnlineToReceiveOrders": "Please go online to receive orders"
 }

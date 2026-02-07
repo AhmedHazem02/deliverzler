@@ -72,6 +72,8 @@ abstract class OrderDialogs {
   static Future<String?> showExcuseSubmissionDialog(
       BuildContext context) async {
     TextEditingController? excuseReasonController;
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
     return Dialogs.showConfirmDialog(
       context,
       title: tr(context).submitExcuseQuestion,
@@ -80,12 +82,17 @@ abstract class OrderDialogs {
           excuseReasonController = useTextEditingController(text: '');
           return ExcuseSubmissionDialog(
             excuseReasonController: excuseReasonController!,
+            formKey: formKey,
           );
         },
       ),
       confirmTitle: tr(context).confirm,
-      confirmCallback: (ctx) => NavigationService.popDialog(ctx,
-          result: excuseReasonController!.text),
+      confirmCallback: (ctx) {
+        if (formKey.currentState!.validate()) {
+          NavigationService.popDialog(ctx,
+              result: excuseReasonController!.text);
+        }
+      },
     ).then((result) {
       return result as String?;
     });
