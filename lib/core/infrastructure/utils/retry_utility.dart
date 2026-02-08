@@ -19,7 +19,7 @@ class RetryUtility {
 
     for (int attempt = 0; attempt <= maxRetries; attempt++) {
       try {
-        debugPrint('🔄 محاولة #${attempt + 1}/${maxRetries + 1}');
+         
         return await operation();
       } catch (e) {
         lastException = e is Exception ? e : Exception(e.toString());

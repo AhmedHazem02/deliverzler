@@ -28,14 +28,6 @@ class TargetLocationGeoPoint extends _$TargetLocationGeoPoint {
         }
 
         // Single-store: use customer delivery address
-        print('🔍 [TargetLocation] Processing Order ID: ${order.id}');
-        print('🔍 [TargetLocation] Address present: ${order.address != null}');
-        print(
-            '🔍 [TargetLocation] GeoPoint present: ${order.address?.geoPoint != null}');
-        if (order.address?.geoPoint != null) {
-          print(
-              '🔍 [TargetLocation] Lat: ${order.address?.geoPoint?.latitude}, Lng: ${order.address?.geoPoint?.longitude}');
-        }
         return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
       },
       (placeDetails) => Some(placeDetails.geoPoint),
@@ -53,28 +45,21 @@ class TargetLocationGeoPoint extends _$TargetLocationGeoPoint {
     // If store data is still loading, return None to avoid flashing
     // directions to customer then switching to store.
     if (sortedStopsAsync.isLoading && !sortedStopsAsync.hasValue) {
-      print('🔍 [TargetLocation] Multi-store: Store data loading… waiting');
       return const None();
     }
 
     // Navigate to the nearest active store
     final currentStop = ref.watch(currentPickupStopProvider);
     if (currentStop != null && currentStop.storeGeoPoint != null) {
-      print(
-          '🔍 [TargetLocation] Multi-store: Navigating to store "${currentStop.stop.storeName}"');
       return Some(currentStop.storeGeoPoint!);
     }
 
     // All stores picked up → navigate to customer
     if (order.allStoresPickedUp) {
-      print(
-          '🔍 [TargetLocation] Multi-store: All stores picked up → navigating to customer');
       return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
     }
 
     // No store has a location → fallback to customer
-    print(
-        '🔍 [TargetLocation] Multi-store: No store location available → fallback to customer');
     return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
   }
 

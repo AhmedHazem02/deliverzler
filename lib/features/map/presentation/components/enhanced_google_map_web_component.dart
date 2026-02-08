@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:async';
 // ignore: deprecated_member_use
 import 'dart:html' as html;
 // ignore: deprecated_member_use
@@ -41,7 +40,6 @@ class _EnhancedGoogleMapWebComponentState
   final Map<String, js.JsObject> _polylines = {};
   final Map<String, html.ImageElement> _markerIcons = {};
 
-  Timer? _updateTimer;
   bool _isMapReady = false;
 
   @override
@@ -52,7 +50,6 @@ class _EnhancedGoogleMapWebComponentState
 
   @override
   void dispose() {
-    _updateTimer?.cancel();
     _clearAllOverlays();
     super.dispose();
   }
@@ -126,14 +123,9 @@ class _EnhancedGoogleMapWebComponentState
 
         // Initial overlay update
         _updateAllOverlays();
-
-        // Setup periodic updates for smooth animation
-        _startPeriodicUpdates();
-
-        debugPrint('Enhanced Google Map initialized successfully');
       }
     } catch (e) {
-      debugPrint('Error initializing enhanced map: $e');
+      // Map initialization failed
     }
   }
 
@@ -144,28 +136,16 @@ class _EnhancedGoogleMapWebComponentState
       final googleMaps = js.context['google']['maps'];
       final event = googleMaps['event'];
 
-      // Define callback functions
       void onZoomChanged() {
-        if (mounted && _map != null) {
-          final zoom = _map!.callMethod('getZoom');
-          debugPrint('Zoom changed to: $zoom');
-        }
+        // Zoom changed - can be used for zoom-dependent logic
       }
 
       void onCenterChanged() {
-        if (mounted && _map != null) {
-          // ignore: unused_local_variable
-          final center = _map!.callMethod('getCenter');
-          // Handle center change if needed
-        }
+        // Center changed - can be used for camera tracking
       }
 
       void onMapClick(dynamic clickEvent) {
-        final jsEvent = clickEvent as js.JsObject;
-        final latLng = jsEvent['latLng'];
-        final lat = latLng.callMethod('lat');
-        final lng = latLng.callMethod('lng');
-        debugPrint('Map clicked at: $lat, $lng');
+        // Map click handler
       }
 
       // Listen to zoom changes
@@ -189,17 +169,8 @@ class _EnhancedGoogleMapWebComponentState
         onMapClick,
       ]);
     } catch (e) {
-      debugPrint('Error setting up map event listeners: $e');
+      // Event listener setup failed
     }
-  }
-
-  void _startPeriodicUpdates() {
-    _updateTimer?.cancel();
-    _updateTimer = Timer.periodic(const Duration(milliseconds: 500), (_) {
-      if (mounted && _isMapReady) {
-        _updateAllOverlays();
-      }
-    });
   }
 
   void _updateAllOverlays() {
@@ -210,24 +181,15 @@ class _EnhancedGoogleMapWebComponentState
       final circles = ref.read(mapCirclesProvider);
       final polylines = ref.read(mapPolylinesProvider);
 
-      // Debug: log marker IDs every cycle
-      final ids = markers.map((m) => m.markerId.value).toList();
-      final storeCount = ids.where((id) => id.startsWith('store_')).length;
-      if (storeCount > 0 || ids.length != _markers.length) {
-        debugPrint(
-            '🌐 WebMap._updateAllOverlays: provider=${ids.length} markers $ids, jsMarkers=${_markers.length} ${_markers.keys.toList()}');
-      }
-
       _updateMarkers(markers);
       _updateCircles(circles);
       _updatePolylines(polylines);
     } catch (e) {
-      debugPrint('Error updating overlays: $e');
+      // Silently handle overlay update errors
     }
   }
 
   final Map<String, String> _dataUriCache = {};
-  final Map<String, int> _dataUriByteLengthCache = {};
 
   void _updateMarkers(Set<Marker> markers) {
     if (_map == null) return;
@@ -238,10 +200,7 @@ class _EnhancedGoogleMapWebComponentState
       if (!markerIds.contains(id)) {
         _markers[id]?.callMethod('setMap', [null]);
         _markers.remove(id);
-        // Clean up cache
         _dataUriCache.remove(id);
-        _dataUriByteLengthCache.remove(id);
-        debugPrint('🌐 WebMap._updateMarkers: REMOVED old marker "$id"');
       }
     });
 
@@ -292,38 +251,36 @@ class _EnhancedGoogleMapWebComponentState
     jsMarker.callMethod('setOptions', [jsOptions]);
   }
 
+  /// Content-based hash for byte arrays to use as cache key.
+  int _bytesHash(List<int> bytes) {
+    // Simple FNV-1a hash for fast content comparison
+    int hash = 0x811c9dc5;
+    for (final b in bytes) {
+      hash ^= b;
+      hash = (hash * 0x01000193) & 0xFFFFFFFF;
+    }
+    return hash;
+  }
+
+  final Map<String, int> _dataUriContentHash = {};
+
   dynamic _parseIcon(BitmapDescriptor icon, String markerId) {
     try {
       final json = icon.toJson() as List<dynamic>;
       final type = json[0] as String;
-      debugPrint(
-          '🌐 WebMap._parseIcon: markerId=$markerId, type=$type, jsonLen=${json.length}');
 
       switch (type) {
         case 'defaultMarker':
-          if (json.length > 1) {
-            final hue = json[1];
-            debugPrint(
-                '🌐 WebMap._parseIcon: defaultMarker with hue=$hue → returning null (will use default pin)');
-            return null;
-          }
-          debugPrint(
-              '🌐 WebMap._parseIcon: defaultMarker no hue → returning null');
           return null;
         case 'fromAssetImage':
           final path = json[1] as String;
-          debugPrint('🌐 WebMap._parseIcon: fromAssetImage path=$path');
           if (path.startsWith('assets/')) {
             return 'assets/$path';
           }
           return 'assets/$path';
-        case 'bytes': // BitmapDescriptor.bytes() — new API
-        case 'fromBytes': // BitmapDescriptor.fromBytes() — legacy API
+        case 'bytes':
+        case 'fromBytes':
           final rawBytes = json[1];
-          debugPrint(
-              '🌐 WebMap._parseIcon: $type rawBytes type=${rawBytes.runtimeType}, isList=${rawBytes is List}');
-          // BitmapDescriptor.bytes() serializes as ['bytes', {'byteData': Uint8List, ...}]
-          // BitmapDescriptor.fromBytes() serializes as ['fromBytes', Uint8List]
           List<int>? bytes;
           if (rawBytes is List) {
             bytes = rawBytes.cast<int>();
@@ -334,16 +291,13 @@ class _EnhancedGoogleMapWebComponentState
             }
           }
           if (bytes != null) {
-            debugPrint('🌐 WebMap._parseIcon: $type len=${bytes.length}');
-
-            // Check cache: Avoid heavy base64 encoding if bytes haven't changed
+            // Content-based cache check (hash, not just length)
+            final contentHash = _bytesHash(bytes);
             if (_dataUriCache.containsKey(markerId) &&
-                _dataUriByteLengthCache[markerId] == bytes.length) {
-              debugPrint('🌐 WebMap._parseIcon: $type CACHED for $markerId');
+                _dataUriContentHash[markerId] == contentHash) {
               return _dataUriCache[markerId];
             }
 
-            // Convert to Base64 Data URI — detect PNG vs SVG
             final base64String = base64Encode(bytes);
             final isPng = bytes.length > 4 &&
                 bytes[0] == 0x89 &&
@@ -354,19 +308,14 @@ class _EnhancedGoogleMapWebComponentState
             final dataUri = 'data:$mimeType;base64,$base64String';
 
             _dataUriCache[markerId] = dataUri;
-            _dataUriByteLengthCache[markerId] = bytes.length;
-            debugPrint(
-                '🌐 WebMap._parseIcon: $type → dataUri (${dataUri.length} chars)');
+            _dataUriContentHash[markerId] = contentHash;
             return dataUri;
           }
-          debugPrint('🌐 WebMap._parseIcon: $type rawBytes is NOT List → null');
           return null;
         default:
-          debugPrint('🌐 WebMap._parseIcon: UNKNOWN type=$type → null');
           return null;
       }
     } catch (e) {
-      debugPrint('🌐 WebMap._parseIcon ERROR: $e');
       return null;
     }
   }
@@ -375,9 +324,6 @@ class _EnhancedGoogleMapWebComponentState
     try {
       final googleMaps = js.context['google']['maps'];
       final icon = _parseIcon(marker.icon, marker.markerId.value);
-
-      debugPrint(
-          '🌐 WebMap._createMarker: id=${marker.markerId.value}, pos=${marker.position.latitude},${marker.position.longitude}, visible=${marker.visible}, zIndex=${marker.zIndex}, iconParsed=${icon != null}');
 
       final markerOptions = js.JsObject.jsify({
         'position': {
@@ -398,12 +344,8 @@ class _EnhancedGoogleMapWebComponentState
       final markerConstructor = googleMaps['Marker'] as js.JsFunction;
       final jsMarker = js.JsObject(markerConstructor, [markerOptions]);
 
-      debugPrint(
-          '🌐 WebMap._createMarker: ✅ JS marker created for "${marker.markerId.value}"');
-
       if (marker.onTap != null || marker.infoWindow.title != null) {
         void onMarkerClick() {
-          debugPrint('Marker clicked: ${marker.markerId.value}');
           marker.onTap?.call();
         }
 
@@ -416,7 +358,7 @@ class _EnhancedGoogleMapWebComponentState
 
       _markers[marker.markerId.value] = jsMarker;
     } catch (e) {
-      debugPrint('🌐 WebMap._createMarker ERROR: $e');
+      // Marker creation failed silently
     }
   }
 
@@ -508,10 +450,6 @@ class _EnhancedGoogleMapWebComponentState
         return {'lat': point.latitude, 'lng': point.longitude};
       }).toList();
 
-      debugPrint('Creating polyline with ${path.length} points');
-      debugPrint(
-          'Polyline color: ${_colorToHex(polyline.color)}, width: ${polyline.width}');
-
       final polylineOptions = js.JsObject.jsify({
         'path': path,
         'geodesic': polyline.geodesic,
@@ -527,10 +465,8 @@ class _EnhancedGoogleMapWebComponentState
       final polylineConstructor = googleMaps['Polyline'] as js.JsFunction;
       final jsPolyline = js.JsObject(polylineConstructor, [polylineOptions]);
       _polylines[polyline.polylineId.value] = jsPolyline;
-
-      debugPrint('Polyline created successfully: ${polyline.polylineId.value}');
     } catch (e) {
-      debugPrint('Error creating polyline: $e');
+      // Polyline creation failed
     }
   }
 
@@ -556,11 +492,14 @@ class _EnhancedGoogleMapWebComponentState
   }
 
   Future<List<dynamic>> _getDarkMapStyles() async {
-    // Load dark map style from assets or use default
     try {
       final darkStyle = await MapStyleHelper.getMapStyle(isDarkMode: true);
-      // Parse JSON string to List if needed
-      return []; // Return parsed styles
+      if (darkStyle != null && darkStyle.isNotEmpty) {
+        // Parse the JSON string into a List for Google Maps JS API
+        final parsed = json.decode(darkStyle);
+        if (parsed is List) return parsed;
+      }
+      return _getDefaultDarkMapStyles();
     } catch (e) {
       return _getDefaultDarkMapStyles();
     }
@@ -615,12 +554,6 @@ class _EnhancedGoogleMapWebComponentState
     // Listen to markers changes
     ref.listen(mapMarkersProvider, (previous, next) {
       if (_isMapReady && _map != null) {
-        final storeIds = next
-            .where((m) => m.markerId.value.startsWith('store_'))
-            .map((m) => m.markerId.value)
-            .toList();
-        debugPrint(
-            '🌐 WebMap.ref.listen: Markers updated: ${next.length} markers, stores=$storeIds');
         _updateMarkers(next);
       }
     });
@@ -628,7 +561,6 @@ class _EnhancedGoogleMapWebComponentState
     // Listen to circles changes
     ref.listen(mapCirclesProvider, (previous, next) {
       if (_isMapReady && _map != null) {
-        debugPrint('Circles updated: ${next.length} circles');
         _updateCircles(next);
       }
     });
@@ -636,7 +568,6 @@ class _EnhancedGoogleMapWebComponentState
     // Listen to polylines changes
     ref.listen(mapPolylinesProvider, (previous, next) {
       if (_isMapReady && _map != null) {
-        debugPrint('Polylines updated: ${next.length} polylines');
         _updatePolylines(next);
       }
     });
@@ -661,9 +592,8 @@ class _EnhancedGoogleMapWebComponentState
       _map!.callMethod('setOptions', [
         js.JsObject.jsify({'styles': styles}),
       ]);
-      debugPrint('Map style updated: ${isDark ? 'dark' : 'light'}');
     } catch (e) {
-      debugPrint('Error updating map style: $e');
+      // Map style update failed
     }
   }
 
@@ -680,7 +610,7 @@ class _EnhancedGoogleMapWebComponentState
       _map!.callMethod('panTo', [latLng]);
       _map!.callMethod('setZoom', [position.zoom.toInt()]);
     } catch (e) {
-      debugPrint('Error animating camera: $e');
+      // Camera animation failed
     }
   }
 
@@ -694,13 +624,11 @@ class _EnhancedGoogleMapWebComponentState
           'lng': next.target.longitude,
         });
         final contains = bounds.callMethod('contains', [latLng]);
-        // If the location is visible (contains == true), do NOT animate (return false).
-        // If not visible, animate (return true).
         return contains != true;
       }
     } catch (e) {
-      debugPrint('Error checking bounds: $e');
+      // Bounds check failed
     }
-    return true; // Default to animate
+    return true;
   }
 }

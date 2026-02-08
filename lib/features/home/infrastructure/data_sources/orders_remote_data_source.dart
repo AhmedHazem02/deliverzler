@@ -90,16 +90,7 @@ class OrdersRemoteDataSource {
           .limit(50),
     )
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {}
-
       final orders = OrderDto.parseListOfDocument(snapshot.docs);
-
-      // Log each order for debugging
-      for (var order in orders) {
-        debugPrint(
-            '   - Order ${order.id}: status=${order.deliveryStatus}, driver=${order.deliveryId}');
-      }
-
       orders.sort((a, b) => b.date.compareTo(a.date));
       return orders;
     }).transform(
@@ -216,7 +207,7 @@ class OrdersRemoteDataSource {
           return e is SocketException || e is TimeoutException;
         },
       );
-      debugPrint('✅ تم تحديث موقع الطلب: ${params.orderId}');
+      
     } catch (e) {
       debugPrint('❌ خطأ في تحديث موقع الطلب: $e');
       rethrow;

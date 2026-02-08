@@ -76,9 +76,7 @@ Stream<Position> locationStream(Ref ref) async* {
             currentPosition.latitude,
             currentPosition.longitude,
           );
-          debugPrint(
-              '📐 Calculated bearing: ${bearing.toStringAsFixed(1)}° (moved ${distance.toStringAsFixed(1)}m)');
-
+        
           // Create new Position with calculated heading
           currentPosition = Position(
             latitude: currentPosition.latitude,
@@ -97,8 +95,6 @@ Stream<Position> locationStream(Ref ref) async* {
         }
       }
       lastValidPosition = currentPosition;
-      debugPrint(
-          '🛰️ GPS: Speed=${currentPosition.speed.toStringAsFixed(1)} | Heading=${currentPosition.heading.toStringAsFixed(1)}');
       yield currentPosition;
     }
   }
@@ -195,8 +191,7 @@ Stream<Position> locationStream(Ref ref) async* {
       executedPos =
           _calculateProjectedPosition(executedPos, 1.0); // 1 second projection
 
-      debugPrint(
-          '👻 Ghost Point: ${executedPos.latitude}, ${executedPos.longitude} (Speed: $currentSpeed)');
+    
       yield executedPos;
       currentUiPosition =
           executedPos; // Update UI pos so we can slide FROM this ghost later

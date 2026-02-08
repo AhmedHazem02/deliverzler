@@ -1,5 +1,4 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter/foundation.dart';
 
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../infrastructure/data_sources/map_remote_data_source.dart';
@@ -52,7 +51,6 @@ class OptimizedMapLoadingNotifier
   /// تحديث حالة الـ Map
   void setMapReady(bool isReady) {
     state = state.copyWith(isMapReady: isReady);
-    debugPrint('📍 Map ready: $isReady');
   }
 
   /// تحديث حالة الـ Location
@@ -61,14 +59,11 @@ class OptimizedMapLoadingNotifier
       isLocationLoaded: true,
       currentLocation: location,
     );
-    debugPrint(
-        '📍 Location loaded: ${location.latitude}, ${location.longitude}');
   }
 
   /// تحديث حالة الـ Overlays
   void setOverlaysLoaded(bool isLoaded) {
     state = state.copyWith(isOverlaysLoaded: isLoaded);
-    debugPrint('📍 Overlays loaded: $isLoaded');
   }
 
   /// تعيين نمط الـ Map
@@ -76,16 +71,14 @@ class OptimizedMapLoadingNotifier
     try {
       final style = await MapStyleHelper.getMapStyle(isDarkMode: isDarkMode);
       state = state.copyWith(mapStyle: style);
-      debugPrint('✅ Map style loaded');
     } catch (e) {
-      debugPrint('❌ خطأ تحميل نمط الخريطة: $e');
+      // Map style loading failed — will use default
     }
   }
 
   /// إعادة تعيين الحالة
   void reset() {
     state = const OptimizedMapLoadingState();
-    debugPrint('🔄 Map loading state reset');
   }
 }
 
@@ -104,8 +97,7 @@ final lazyLoadMapOverlaysProvider = FutureProvider<void>((ref) async {
     await Future.delayed(const Duration(milliseconds: 500));
 
     mapLoading.setOverlaysLoaded(true);
-    debugPrint('✅ Overlays محملة');
   } catch (e) {
-    debugPrint('❌ خطأ في تحميل الـ Overlays: $e');
+    // Overlay loading failed
   }
 });

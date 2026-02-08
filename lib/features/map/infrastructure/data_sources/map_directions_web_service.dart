@@ -43,9 +43,7 @@ class MapDirectionsWebService {
     final completer = Completer<PlaceDirections>();
 
     try {
-      debugPrint(
-          '🌐 Requesting directions from (${origin.latitude}, ${origin.longitude}) to (${destination.latitude}, ${destination.longitude})');
-
+      
       final googleMaps = js.context['google']['maps'];
 
       final request = js.JsObject.jsify({
@@ -64,19 +62,18 @@ class MapDirectionsWebService {
       // Create callback - use Function type that JS interop accepts
       void handleResponse(dynamic response, dynamic status) {
         final statusStr = status.toString();
-        debugPrint('🌐 DirectionsService response status: $statusStr');
-
+        
         if (statusStr == 'OK') {
           try {
             final jsResponse = response as js.JsObject;
             final directions = _parseDirectionsResponse(jsResponse);
             completer.complete(directions);
           } catch (e) {
-            debugPrint('🌐 Error parsing directions: $e');
+             
             completer.completeError(e);
           }
         } else {
-          debugPrint('🌐 DirectionsService failed: $statusStr');
+           
           completer.completeError(
               Exception('Directions request failed: $statusStr'));
         }
@@ -114,13 +111,9 @@ class MapDirectionsWebService {
       final distanceValue = (distance['value'] as num).toInt();
       final durationText = duration['text'] as String;
 
-      debugPrint('🌐 Distance: $distanceValue meters, Duration: $durationText');
-
       // Get encoded polyline - the structure varies, so handle different cases
       final overviewPolylineRaw = route['overview_polyline'];
-      debugPrint(
-          '🌐 overview_polyline type: ${overviewPolylineRaw.runtimeType}');
-
+      
       String points;
       if (overviewPolylineRaw is String) {
         // Direct string (already encoded points)
@@ -138,12 +131,10 @@ class MapDirectionsWebService {
         points = overviewPolylineRaw.toString();
       }
 
-      debugPrint('🌐 Polyline points: $points');
-      debugPrint('🌐 Polyline points length: ${points.length}');
 
       // Decode polyline
       final polylinePoints = PolylinePoints.decodePolyline(points);
-      debugPrint('🌐 Decoded ${polylinePoints.length} points');
+      
 
       // Get bounds
       final bounds = route['bounds'] as js.JsObject;
@@ -155,7 +146,6 @@ class MapDirectionsWebService {
       final swLat = (southwest.callMethod('lat') as num).toDouble();
       final swLng = (southwest.callMethod('lng') as num).toDouble();
 
-      debugPrint('🌐 Bounds: NE($neLat, $neLng), SW($swLat, $swLng)');
 
       return PlaceDirections(
         bounds: LatLngBounds(

@@ -21,11 +21,15 @@ final storeProvider =
 
     // Address is now a simple string in the store map
     final address = (storeData['address'] as String?) ?? '';
+    // City: prefer store-level city, fall back to user-level city
+    final city =
+        (storeData['city'] as String?) ?? (data['city'] as String?) ?? '';
 
     return AppStore(
       id: doc.id,
       name: (storeData['name'] as String?) ?? '',
       address: address,
+      city: city,
       phone: (storeData['phone'] as String?) ?? '',
       category: (storeData['category'] as String?) ?? '',
       latitude: (storeData['latitude'] as num?)?.toDouble(),

@@ -56,7 +56,7 @@ Set<Polyline> build() {
 // (3m is approximately the length of a motorcycle, movements below this are likely GPS noise)
 if (currentPosition.heading == 0.0 && distance > 3.0) {
   final bearing = Geolocator.bearingBetween(...);
-  debugPrint('📐 Calculated bearing: ${bearing.toStringAsFixed(1)}° (moved ${distance.toStringAsFixed(1)}m)');
+  
   // ... تحديث الاتجاه
 }
 ```

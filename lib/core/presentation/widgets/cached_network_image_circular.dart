@@ -16,7 +16,7 @@ class CachedNetworkImageCircular extends ConsumerWidget {
   const CachedNetworkImageCircular({
     required this.imageUrl,
     required this.radius,
-    this.spareImageUrl = '',  // Use empty string, will fall back to local asset
+    this.spareImageUrl = '', // Use empty string, will fall back to local asset
     this.maxHeightDiskCache = 400,
     this.maxWidthDiskCache = 400,
     super.key,
@@ -36,10 +36,10 @@ class CachedNetworkImageCircular extends ConsumerWidget {
       errorListener: (error) {
         _reportImageError(ref, error);
       },
-      imageUrl: (imageUrl != null && imageUrl!.contains('http')) 
-          ? imageUrl! 
-          : (spareImageUrl.isNotEmpty && spareImageUrl.contains('http')) 
-              ? spareImageUrl 
+      imageUrl: (imageUrl != null && imageUrl!.contains('http'))
+          ? imageUrl!
+          : (spareImageUrl.isNotEmpty && spareImageUrl.contains('http'))
+              ? spareImageUrl
               : 'https://via.placeholder.com/150',
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: radius,
@@ -47,14 +47,14 @@ class CachedNetworkImageCircular extends ConsumerWidget {
       ),
       placeholder: (context, url) => CircleAvatar(
         radius: radius,
-        backgroundImage: const AssetImage(MyAssets.ASSETS_IMAGES_CORE_LOADING_GIF),
+        backgroundImage:
+            const AssetImage(MyAssets.ASSETS_IMAGES_CORE_LOADING_GIF),
       ),
       errorWidget: (context, url, error) => CircleAvatar(
         radius: radius,
-        backgroundImage: const AssetImage(MyAssets.ASSETS_IMAGES_CORE_NO_INTERNET_PNG),
+        backgroundImage:
+            const AssetImage(MyAssets.ASSETS_IMAGES_CORE_NO_INTERNET_PNG),
       ),
     );
   }
 }
-
-

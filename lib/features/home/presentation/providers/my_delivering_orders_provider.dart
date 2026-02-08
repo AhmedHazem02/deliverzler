@@ -18,9 +18,7 @@ List<AppOrder> myDeliveringOrders(Ref ref) {
             .where(
               (order) {
                 final match = order.deliveryId == userId && order.deliveryStatus == DeliveryStatus.onTheWay;
-                if (order.deliveryStatus == DeliveryStatus.onTheWay) {
-                   print('🔍 [MyDeliveringOrders] Found onTheWay order: ${order.id}, DeliveryId: ${order.deliveryId}, MyId: $userId, Match: $match');
-                }
+                
                 return match;
               },
             )

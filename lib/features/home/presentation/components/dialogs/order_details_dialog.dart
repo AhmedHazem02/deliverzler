@@ -20,11 +20,15 @@ class OrderDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isMobile = screenWidth < 600;
+
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minWidth: 320,
-        maxWidth: 500,
-        maxHeight: 700,
+      constraints: BoxConstraints(
+        minWidth: isMobile ? screenWidth * 0.85 : 320,
+        maxWidth: isMobile ? screenWidth * 0.92 : 500,
+        maxHeight: isMobile ? screenHeight * 0.85 : 700,
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -140,8 +144,8 @@ class OrderDetailsDialog extends StatelessWidget {
                               ? order.storeName!
                               : '#${order.storeId!.substring(0, order.storeId!.length > 8 ? 8 : order.storeId!.length)}';
                       final displayAddress =
-                          (store != null && store.address.isNotEmpty)
-                              ? store.address
+                          (store != null && store.fullAddress.isNotEmpty)
+                              ? store.fullAddress
                               : (order.storeAddress != null &&
                                       order.storeAddress!.isNotEmpty)
                                   ? order.storeAddress!
@@ -574,7 +578,7 @@ class OrderDetailsDialog extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Store header
+              // Store header with address
               Container(
                 width: double.infinity,
                 padding:
@@ -587,28 +591,77 @@ class OrderDetailsDialog extends StatelessWidget {
                     topRight: Radius.circular(12),
                   ),
                 ),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.store,
-                      size: 16,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    const SizedBox(width: 6),
-                    Expanded(
-                      child: Text(
-                        stop.storeName,
-                        style: TextStyles.f14(context).copyWith(
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.store,
+                          size: 16,
                           color: Theme.of(context).colorScheme.primary,
                         ),
-                      ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            stop.storeName,
+                            style: TextStyles.f14(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${stop.totalItemsCount} صنف',
+                          style: TextStyles.f12(context).copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      '${stop.totalItemsCount} صنف',
-                      style: TextStyles.f12(context).copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                    // Store address fetched from Firestore
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final storeAsync =
+                            ref.watch(storeProvider(stop.storeId));
+                        return storeAsync.when(
+                          data: (store) {
+                            final addr = store?.fullAddress ?? '';
+                            if (addr.isEmpty) return const SizedBox.shrink();
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on_outlined,
+                                    size: 13,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.7),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      addr,
+                                      style: TextStyles.f12(context).copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.7),
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          loading: () => const SizedBox.shrink(),
+                          error: (_, __) => const SizedBox.shrink(),
+                        );
+                      },
                     ),
                   ],
                 ),

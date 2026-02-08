@@ -3,8 +3,8 @@ part of '../../../main.dart';
 Future<ProviderContainer> _mainInitializer() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   _setupLogger();
-  await _initFirebase();
-  await _initSupabase();
+  // Initialize Firebase and Supabase in parallel (independent operations)
+  await Future.wait([_initFirebase(), _initSupabase()]);
 
   final container =
       ProviderContainer(observers: [ProviderLogger(), ProviderCrashlytics()]);
@@ -85,7 +85,8 @@ Future<void> _initSupabase() async {
     log('⚠️ SUPABASE_URL not found in environment, using fallback');
   }
   if (supabaseAnonKey.isEmpty) {
-    supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRlbmF6bGtkYW1yc2Vmd2tkeG1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTAzMDAsImV4cCI6MjA4NDkyNjMwMH0.InD1f8XTqNVzmwWPxkEx6-L3iru9WVJyszAXd9JUhV4';
+    supabaseAnonKey =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRlbmF6bGtkYW1yc2Vmd2tkeG1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTAzMDAsImV4cCI6MjA4NDkyNjMwMH0.InD1f8XTqNVzmwWPxkEx6-L3iru9WVJyszAXd9JUhV4';
     log('⚠️ SUPABASE_ANON_KEY not found in environment, using fallback');
   }
 

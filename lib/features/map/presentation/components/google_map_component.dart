@@ -27,27 +27,28 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
     with SingleTickerProviderStateMixin {
   late final sub =
       ref.listenManual(myLocationCameraPositionProvider, (prev, next) {
-        // Update target when location changes
-        _targetPosition = next.target;
-      });
-      
+    // Update target when location changes
+    _targetPosition = next.target;
+    _startDamping(); // Restart animation when target changes
+  });
+
   // Smooth Camera State
   late AnimationController _dampController;
   LatLng? _currentPosition;
   LatLng? _targetPosition;
   bool _isUserInteracting = false;
+  bool _isAnimating = false;
   Timer? _resumeTimer;
   GoogleMapController? _mapController;
 
   @override
   void initState() {
     super.initState();
-    // 60fps Loop for Smooth Damping
     _dampController = AnimationController(
       vsync: this,
-      duration: const Duration(hours: 1), // Infinite loop
+      duration: const Duration(hours: 1),
     )..addListener(_onTick);
-    _dampController.repeat();
+    // Don't start repeating immediately — only when target changes
   }
 
   @override
@@ -58,12 +59,31 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
     super.dispose();
   }
 
+  /// Start damping animation only when needed
+  void _startDamping() {
+    if (!_isAnimating) {
+      _isAnimating = true;
+      _dampController.repeat();
+    }
+  }
+
+  /// Stop damping animation when converged to save CPU
+  void _stopDamping() {
+    if (_isAnimating) {
+      _isAnimating = false;
+      _dampController.stop();
+    }
+  }
+
   void _onTick() {
     // 1. Check if we have a target place (Route Move) active
     final hasTarget = ref.read(currentPlaceDetailsProvider).isSome();
 
     // 2. If user interaction, map not ready, no position, OR showing route -> Skip Damping
-    if (_isUserInteracting || _mapController == null || _targetPosition == null || hasTarget) return;
+    if (_isUserInteracting ||
+        _mapController == null ||
+        _targetPosition == null ||
+        hasTarget) return;
 
     // Use current camera pos as start if not set
     _currentPosition ??= _targetPosition;
@@ -71,13 +91,16 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
     // Damp Logic: current = current + (target - current) * dampFactor
     // Factor 0.05 provides the "Heavy/Elastic" feel
     final dampFactor = 0.05;
-    final lat = _currentPosition!.latitude + (_targetPosition!.latitude - _currentPosition!.latitude) * dampFactor;
-    final lng = _currentPosition!.longitude + (_targetPosition!.longitude - _currentPosition!.longitude) * dampFactor;
-    
+    final lat = _currentPosition!.latitude +
+        (_targetPosition!.latitude - _currentPosition!.latitude) * dampFactor;
+    final lng = _currentPosition!.longitude +
+        (_targetPosition!.longitude - _currentPosition!.longitude) * dampFactor;
+
     // Check if we are close enough to stop updating (performance optimization)
-    if ((lat - _targetPosition!.latitude).abs() < 0.000001 && 
+    if ((lat - _targetPosition!.latitude).abs() < 0.000001 &&
         (lng - _targetPosition!.longitude).abs() < 0.000001) {
-       return; 
+      _stopDamping(); // Stop the 60fps loop when converged
+      return;
     }
 
     _currentPosition = LatLng(lat, lng);
@@ -114,8 +137,10 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
       child: GoogleMap(
         initialCameraPosition: sub.read(),
         // تحميل الـ Overlays فقط عند الحاجة (lazy loading)
-        markers: mapLoading.isOverlaysLoaded ? ref.watch(mapMarkersProvider) : {},
-        circles: mapLoading.isOverlaysLoaded ? ref.watch(mapCirclesProvider) : {},
+        markers:
+            mapLoading.isOverlaysLoaded ? ref.watch(mapMarkersProvider) : {},
+        circles:
+            mapLoading.isOverlaysLoaded ? ref.watch(mapCirclesProvider) : {},
         polylines:
             mapLoading.isOverlaysLoaded ? ref.watch(mapPolylinesProvider) : {},
         zoomControlsEnabled: false,
@@ -124,16 +149,17 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
           _mapController = controller;
           // إشارة بأن الـ Map جاهزة
           mapLoadingNotifier.setMapReady(true);
-  
+
           ref
               .read(currentMapControllerProvider.notifier)
               .update((_) => controller);
-  
+
           // تطبيق نمط الـ Map بشكل غير متزامن
           Future.microtask(() async {
             final isDark =
                 ref.read(currentAppThemeModeProvider) == AppThemeMode.dark;
-            final mapStyle = await MapStyleHelper.getMapStyle(isDarkMode: isDark);
+            final mapStyle =
+                await MapStyleHelper.getMapStyle(isDarkMode: isDark);
             await controller.setMapStyle(mapStyle);
           });
         },

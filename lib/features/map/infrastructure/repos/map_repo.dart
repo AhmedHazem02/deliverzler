@@ -52,42 +52,35 @@ class MapRepo {
     PlaceDirectionsQuery query, {
     CancelToken? cancelToken,
   }) async {
-    debugPrint('📍 MapRepo.getPlaceDirections called');
-    debugPrint(
-        '📍 Origin: ${query.origin.latitude}, ${query.origin.longitude}');
-    debugPrint(
-        '📍 Destination: ${query.destination.latitude}, ${query.destination.longitude}');
-
+    
     // Use JavaScript DirectionsService on web (REST API doesn't support CORS)
     if (kIsWeb) {
-      debugPrint('📍 Using Web DirectionsService (JavaScript API)');
+  
       try {
         final directions = await _webDirectionsService.getDirections(
           origin: LatLng(query.origin.latitude, query.origin.longitude),
           destination:
               LatLng(query.destination.latitude, query.destination.longitude),
         );
-        debugPrint('📍 ✅ Directions received from Web DirectionsService');
+        
         return directions;
       } catch (e, stack) {
-        debugPrint('📍 ❌ Web DirectionsService error: $e');
-        debugPrint('📍 Stack: $stack');
+        
         rethrow;
       }
     }
 
     // Use REST API for mobile platforms
-    debugPrint('📍 Using REST API for mobile');
+    
     try {
       final dto = PlaceDirectionsQueryDto.fromDomain(query);
-      debugPrint('📍 Calling remote data source...');
+     
       final directions = await remoteDataSource.getPlaceDirections(dto,
           cancelToken: cancelToken);
-      debugPrint('📍 ✅ Directions received from API');
+      
       return directions.toDomain();
     } catch (e, stack) {
-      debugPrint('📍 ❌ Error getting directions: $e');
-      debugPrint('📍 Stack: $stack');
+      
       rethrow;
     }
   }
