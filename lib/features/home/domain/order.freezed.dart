@@ -43,7 +43,12 @@ mixin _$AppOrder {
       throw _privateConstructorUsedError; // Admin comment when excuse is refused
   String? get adminComment =>
       throw _privateConstructorUsedError; // List of driver IDs who rejected/excused this order
-  List<String> get rejectedByDrivers => throw _privateConstructorUsedError;
+  List<String> get rejectedByDrivers =>
+      throw _privateConstructorUsedError; // Multi-store order fields
+  OrderType get orderType => throw _privateConstructorUsedError;
+  List<PickupStop> get pickupStops => throw _privateConstructorUsedError;
+  double? get driverCommission => throw _privateConstructorUsedError;
+  String? get driverName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppOrderCopyWith<AppOrder> get copyWith =>
@@ -80,7 +85,11 @@ abstract class $AppOrderCopyWith<$Res> {
       String? storeName,
       String? storeAddress,
       String? adminComment,
-      List<String> rejectedByDrivers});
+      List<String> rejectedByDrivers,
+      OrderType orderType,
+      List<PickupStop> pickupStops,
+      double? driverCommission,
+      String? driverName});
 
   $AddressCopyWith<$Res>? get address;
 }
@@ -123,6 +132,10 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
     Object? storeAddress = freezed,
     Object? adminComment = freezed,
     Object? rejectedByDrivers = null,
+    Object? orderType = null,
+    Object? pickupStops = null,
+    Object? driverCommission = freezed,
+    Object? driverName = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -225,6 +238,22 @@ class _$AppOrderCopyWithImpl<$Res, $Val extends AppOrder>
           ? _value.rejectedByDrivers
           : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      orderType: null == orderType
+          ? _value.orderType
+          : orderType // ignore: cast_nullable_to_non_nullable
+              as OrderType,
+      pickupStops: null == pickupStops
+          ? _value.pickupStops
+          : pickupStops // ignore: cast_nullable_to_non_nullable
+              as List<PickupStop>,
+      driverCommission: freezed == driverCommission
+          ? _value.driverCommission
+          : driverCommission // ignore: cast_nullable_to_non_nullable
+              as double?,
+      driverName: freezed == driverName
+          ? _value.driverName
+          : driverName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -274,7 +303,11 @@ abstract class _$$AppOrderImplCopyWith<$Res>
       String? storeName,
       String? storeAddress,
       String? adminComment,
-      List<String> rejectedByDrivers});
+      List<String> rejectedByDrivers,
+      OrderType orderType,
+      List<PickupStop> pickupStops,
+      double? driverCommission,
+      String? driverName});
 
   @override
   $AddressCopyWith<$Res>? get address;
@@ -316,6 +349,10 @@ class __$$AppOrderImplCopyWithImpl<$Res>
     Object? storeAddress = freezed,
     Object? adminComment = freezed,
     Object? rejectedByDrivers = null,
+    Object? orderType = null,
+    Object? pickupStops = null,
+    Object? driverCommission = freezed,
+    Object? driverName = freezed,
   }) {
     return _then(_$AppOrderImpl(
       id: null == id
@@ -418,6 +455,22 @@ class __$$AppOrderImplCopyWithImpl<$Res>
           ? _value._rejectedByDrivers
           : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      orderType: null == orderType
+          ? _value.orderType
+          : orderType // ignore: cast_nullable_to_non_nullable
+              as OrderType,
+      pickupStops: null == pickupStops
+          ? _value._pickupStops
+          : pickupStops // ignore: cast_nullable_to_non_nullable
+              as List<PickupStop>,
+      driverCommission: freezed == driverCommission
+          ? _value.driverCommission
+          : driverCommission // ignore: cast_nullable_to_non_nullable
+              as double?,
+      driverName: freezed == driverName
+          ? _value.driverName
+          : driverName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -450,9 +503,14 @@ class _$AppOrderImpl extends _AppOrder {
       this.storeName,
       this.storeAddress,
       this.adminComment,
-      final List<String> rejectedByDrivers = const []})
+      final List<String> rejectedByDrivers = const [],
+      this.orderType = OrderType.singleStore,
+      final List<PickupStop> pickupStops = const [],
+      this.driverCommission,
+      this.driverName})
       : _items = items,
         _rejectedByDrivers = rejectedByDrivers,
+        _pickupStops = pickupStops,
         super._();
 
   @override
@@ -527,9 +585,27 @@ class _$AppOrderImpl extends _AppOrder {
     return EqualUnmodifiableListView(_rejectedByDrivers);
   }
 
+// Multi-store order fields
+  @override
+  @JsonKey()
+  final OrderType orderType;
+  final List<PickupStop> _pickupStops;
+  @override
+  @JsonKey()
+  List<PickupStop> get pickupStops {
+    if (_pickupStops is EqualUnmodifiableListView) return _pickupStops;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pickupStops);
+  }
+
+  @override
+  final double? driverCommission;
+  @override
+  final String? driverName;
+
   @override
   String toString() {
-    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, storeName: $storeName, storeAddress: $storeAddress, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers)';
+    return 'AppOrder(id: $id, date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, address: $address, userId: $userId, userName: $userName, userImage: $userImage, userPhone: $userPhone, userNote: $userNote, employeeCancelNote: $employeeCancelNote, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, deliveryGeoPoint: $deliveryGeoPoint, deliveryHeading: $deliveryHeading, rejectionStatus: $rejectionStatus, items: $items, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, storeName: $storeName, storeAddress: $storeAddress, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, orderType: $orderType, pickupStops: $pickupStops, driverCommission: $driverCommission, driverName: $driverName)';
   }
 
   @JsonKey(ignore: true)
@@ -565,7 +641,11 @@ abstract class _AppOrder extends AppOrder {
       final String? storeName,
       final String? storeAddress,
       final String? adminComment,
-      final List<String> rejectedByDrivers}) = _$AppOrderImpl;
+      final List<String> rejectedByDrivers,
+      final OrderType orderType,
+      final List<PickupStop> pickupStops,
+      final double? driverCommission,
+      final String? driverName}) = _$AppOrderImpl;
   const _AppOrder._() : super._();
 
   @override
@@ -618,6 +698,14 @@ abstract class _AppOrder extends AppOrder {
   String? get adminComment;
   @override // List of driver IDs who rejected/excused this order
   List<String> get rejectedByDrivers;
+  @override // Multi-store order fields
+  OrderType get orderType;
+  @override
+  List<PickupStop> get pickupStops;
+  @override
+  double? get driverCommission;
+  @override
+  String? get driverName;
   @override
   @JsonKey(ignore: true)
   _$$AppOrderImplCopyWith<_$AppOrderImpl> get copyWith =>

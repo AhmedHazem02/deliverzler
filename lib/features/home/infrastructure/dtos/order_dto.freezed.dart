@@ -67,9 +67,19 @@ mixin _$OrderDto {
   String? get adminComment =>
       throw _privateConstructorUsedError; // List of driver IDs who rejected/excused this order
   @JsonKey(name: 'rejected_by_drivers')
-  List<String> get rejectedByDrivers => throw _privateConstructorUsedError;
+  List<String> get rejectedByDrivers =>
+      throw _privateConstructorUsedError; // Multi-store order fields
+  @JsonKey(name: 'order_type')
+  String? get orderType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'driver_commission')
+  double? get driverCommission => throw _privateConstructorUsedError;
+  @JsonKey(name: 'driver_name')
+  String? get driverName => throw _privateConstructorUsedError;
   @JsonKey(includeToJson: false)
-  String? get id => throw _privateConstructorUsedError;
+  String? get id =>
+      throw _privateConstructorUsedError; // Raw pickup_stops - parsed manually, not by json_serializable
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<PickupStop> get pickupStops => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $OrderDtoCopyWith<OrderDto> get copyWith =>
@@ -106,7 +116,12 @@ abstract class $OrderDtoCopyWith<$Res> {
       @JsonKey(name: 'store_id') String? storeId,
       String? adminComment,
       @JsonKey(name: 'rejected_by_drivers') List<String> rejectedByDrivers,
-      @JsonKey(includeToJson: false) String? id});
+      @JsonKey(name: 'order_type') String? orderType,
+      @JsonKey(name: 'driver_commission') double? driverCommission,
+      @JsonKey(name: 'driver_name') String? driverName,
+      @JsonKey(includeToJson: false) String? id,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<PickupStop> pickupStops});
 }
 
 /// @nodoc
@@ -145,7 +160,11 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? storeId = freezed,
     Object? adminComment = freezed,
     Object? rejectedByDrivers = null,
+    Object? orderType = freezed,
+    Object? driverCommission = freezed,
+    Object? driverName = freezed,
     Object? id = freezed,
+    Object? pickupStops = null,
   }) {
     return _then(_value.copyWith(
       date: null == date
@@ -240,10 +259,26 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.rejectedByDrivers
           : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      orderType: freezed == orderType
+          ? _value.orderType
+          : orderType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driverCommission: freezed == driverCommission
+          ? _value.driverCommission
+          : driverCommission // ignore: cast_nullable_to_non_nullable
+              as double?,
+      driverName: freezed == driverName
+          ? _value.driverName
+          : driverName // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      pickupStops: null == pickupStops
+          ? _value.pickupStops
+          : pickupStops // ignore: cast_nullable_to_non_nullable
+              as List<PickupStop>,
     ) as $Val);
   }
 }
@@ -281,7 +316,12 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
       @JsonKey(name: 'store_id') String? storeId,
       String? adminComment,
       @JsonKey(name: 'rejected_by_drivers') List<String> rejectedByDrivers,
-      @JsonKey(includeToJson: false) String? id});
+      @JsonKey(name: 'order_type') String? orderType,
+      @JsonKey(name: 'driver_commission') double? driverCommission,
+      @JsonKey(name: 'driver_name') String? driverName,
+      @JsonKey(includeToJson: false) String? id,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      List<PickupStop> pickupStops});
 }
 
 /// @nodoc
@@ -318,7 +358,11 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? storeId = freezed,
     Object? adminComment = freezed,
     Object? rejectedByDrivers = null,
+    Object? orderType = freezed,
+    Object? driverCommission = freezed,
+    Object? driverName = freezed,
     Object? id = freezed,
+    Object? pickupStops = null,
   }) {
     return _then(_$OrderDtoImpl(
       date: null == date
@@ -413,10 +457,26 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value._rejectedByDrivers
           : rejectedByDrivers // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      orderType: freezed == orderType
+          ? _value.orderType
+          : orderType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driverCommission: freezed == driverCommission
+          ? _value.driverCommission
+          : driverCommission // ignore: cast_nullable_to_non_nullable
+              as double?,
+      driverName: freezed == driverName
+          ? _value.driverName
+          : driverName // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      pickupStops: null == pickupStops
+          ? _value._pickupStops
+          : pickupStops // ignore: cast_nullable_to_non_nullable
+              as List<PickupStop>,
     ));
   }
 }
@@ -451,8 +511,14 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
       this.adminComment,
       @JsonKey(name: 'rejected_by_drivers')
       final List<String> rejectedByDrivers = const [],
-      @JsonKey(includeToJson: false) this.id})
+      @JsonKey(name: 'order_type') this.orderType,
+      @JsonKey(name: 'driver_commission') this.driverCommission,
+      @JsonKey(name: 'driver_name') this.driverName,
+      @JsonKey(includeToJson: false) this.id,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<PickupStop> pickupStops = const []})
       : _rejectedByDrivers = rejectedByDrivers,
+        _pickupStops = pickupStops,
         super._();
 
   factory _$OrderDtoImpl.fromJson(Map<String, dynamic> json) =>
@@ -543,13 +609,33 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
     return EqualUnmodifiableListView(_rejectedByDrivers);
   }
 
+// Multi-store order fields
+  @override
+  @JsonKey(name: 'order_type')
+  final String? orderType;
+  @override
+  @JsonKey(name: 'driver_commission')
+  final double? driverCommission;
+  @override
+  @JsonKey(name: 'driver_name')
+  final String? driverName;
   @override
   @JsonKey(includeToJson: false)
   final String? id;
+// Raw pickup_stops - parsed manually, not by json_serializable
+  final List<PickupStop> _pickupStops;
+// Raw pickup_stops - parsed manually, not by json_serializable
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<PickupStop> get pickupStops {
+    if (_pickupStops is EqualUnmodifiableListView) return _pickupStops;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_pickupStops);
+  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, userId: $userId, userName: $userName, userPhone: $userPhone, userImage: $userImage, userNote: $userNote, deliveryState: $deliveryState, deliveryCity: $deliveryCity, deliveryStreet: $deliveryStreet, deliveryLatitude: $deliveryLatitude, deliveryLongitude: $deliveryLongitude, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, employeeCancelNote: $employeeCancelNote, rejectionStatus: $rejectionStatus, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, id: $id)';
+    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, userId: $userId, userName: $userName, userPhone: $userPhone, userImage: $userImage, userNote: $userNote, deliveryState: $deliveryState, deliveryCity: $deliveryCity, deliveryStreet: $deliveryStreet, deliveryLatitude: $deliveryLatitude, deliveryLongitude: $deliveryLongitude, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, employeeCancelNote: $employeeCancelNote, rejectionStatus: $rejectionStatus, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, orderType: $orderType, driverCommission: $driverCommission, driverName: $driverName, id: $id, pickupStops: $pickupStops)';
   }
 
   @override
@@ -580,7 +666,11 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('storeId', storeId))
       ..add(DiagnosticsProperty('adminComment', adminComment))
       ..add(DiagnosticsProperty('rejectedByDrivers', rejectedByDrivers))
-      ..add(DiagnosticsProperty('id', id));
+      ..add(DiagnosticsProperty('orderType', orderType))
+      ..add(DiagnosticsProperty('driverCommission', driverCommission))
+      ..add(DiagnosticsProperty('driverName', driverName))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('pickupStops', pickupStops));
   }
 
   @override
@@ -630,7 +720,15 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
                 other.adminComment == adminComment) &&
             const DeepCollectionEquality()
                 .equals(other._rejectedByDrivers, _rejectedByDrivers) &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.orderType, orderType) ||
+                other.orderType == orderType) &&
+            (identical(other.driverCommission, driverCommission) ||
+                other.driverCommission == driverCommission) &&
+            (identical(other.driverName, driverName) ||
+                other.driverName == driverName) &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality()
+                .equals(other._pickupStops, _pickupStops));
   }
 
   @JsonKey(ignore: true)
@@ -660,7 +758,11 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
         storeId,
         adminComment,
         const DeepCollectionEquality().hash(_rejectedByDrivers),
-        id
+        orderType,
+        driverCommission,
+        driverName,
+        id,
+        const DeepCollectionEquality().hash(_pickupStops)
       ]);
 
   @JsonKey(ignore: true)
@@ -698,7 +800,12 @@ abstract class _OrderDto extends OrderDto {
       final String? adminComment,
       @JsonKey(name: 'rejected_by_drivers')
       final List<String> rejectedByDrivers,
-      @JsonKey(includeToJson: false) final String? id}) = _$OrderDtoImpl;
+      @JsonKey(name: 'order_type') final String? orderType,
+      @JsonKey(name: 'driver_commission') final double? driverCommission,
+      @JsonKey(name: 'driver_name') final String? driverName,
+      @JsonKey(includeToJson: false) final String? id,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final List<PickupStop> pickupStops}) = _$OrderDtoImpl;
   const _OrderDto._() : super._();
 
   factory _OrderDto.fromJson(Map<String, dynamic> json) =
@@ -764,9 +871,21 @@ abstract class _OrderDto extends OrderDto {
   @override // List of driver IDs who rejected/excused this order
   @JsonKey(name: 'rejected_by_drivers')
   List<String> get rejectedByDrivers;
+  @override // Multi-store order fields
+  @JsonKey(name: 'order_type')
+  String? get orderType;
+  @override
+  @JsonKey(name: 'driver_commission')
+  double? get driverCommission;
+  @override
+  @JsonKey(name: 'driver_name')
+  String? get driverName;
   @override
   @JsonKey(includeToJson: false)
   String? get id;
+  @override // Raw pickup_stops - parsed manually, not by json_serializable
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<PickupStop> get pickupStops;
   @override
   @JsonKey(ignore: true)
   _$$OrderDtoImplCopyWith<_$OrderDtoImpl> get copyWith =>

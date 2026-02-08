@@ -7,6 +7,7 @@ import '../../../../../core/presentation/styles/styles.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../domain/order.dart';
 import '../../../domain/order_item.dart';
+import '../../../domain/pickup_stop.dart';
 import '../../providers/order_items_provider.dart';
 import '../../providers/store_provider.dart';
 
@@ -98,19 +99,23 @@ class OrderDetailsDialog extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Order Items Section - Using FutureBuilder
-            Consumer(
-              builder: (context, ref, child) {
-                final orderItemsAsync = ref.watch(orderItemsProvider(order.id));
+            // Order Items Section
+            if (order.isMultiStore)
+              _buildMultiStoreItemsSection(context)
+            else
+              Consumer(
+                builder: (context, ref, child) {
+                  final orderItemsAsync =
+                      ref.watch(orderItemsProvider(order.id));
 
-                return orderItemsAsync.when(
-                  data: (items) => _buildOrderItemsSection(context, items),
-                  loading: () => _buildLoadingOrderItems(context),
-                  error: (error, stack) =>
-                      _buildErrorOrderItems(context, error),
-                );
-              },
-            ),
+                  return orderItemsAsync.when(
+                    data: (items) => _buildOrderItemsSection(context, items),
+                    loading: () => _buildLoadingOrderItems(context),
+                    error: (error, stack) =>
+                        _buildErrorOrderItems(context, error),
+                  );
+                },
+              ),
 
             const SizedBox(height: 20),
 
@@ -545,6 +550,186 @@ class OrderDetailsDialog extends StatelessWidget {
     );
   }
 
+  /// Builds the items section for multi-store orders, grouped by store.
+  Widget _buildMultiStoreItemsSection(BuildContext context) {
+    final stops = order.pickupStops;
+    if (stops.isEmpty) return _buildEmptyOrderItems(context);
+
+    // Flatten all items for total calculation
+    final allItems = stops.expand((stop) => stop.items).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildSectionHeader(
+          context,
+          icon: Icons.shopping_bag,
+          title: 'المنتجات المطلوبة',
+        ),
+        const SizedBox(height: 12),
+
+        // Group items by store
+        ...stops.map((stop) {
+          if (stop.items.isEmpty) return const SizedBox.shrink();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Store header
+              Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.08),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.store,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        stop.storeName,
+                        style: TextStyles.f14(context).copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '${stop.totalItemsCount} صنف',
+                      style: TextStyles.f12(context).copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Items for this store
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest
+                      .withOpacity(0.2),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  ),
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    ...stop.items.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final item = entry.value;
+                      return Column(
+                        children: [
+                          _buildOrderItem(context, item),
+                          if (index < stop.items.length - 1)
+                            Divider(
+                              height: 1,
+                              color: Theme.of(context)
+                                  .dividerColor
+                                  .withOpacity(0.3),
+                            ),
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+          );
+        }),
+
+        const SizedBox(height: 4),
+
+        // Totals Section
+        FutureBuilder<double>(
+          future: _fetchDeliveryFee(),
+          builder: (context, snapshot) {
+            final calculatedSubtotal = allItems.fold<double>(
+              0.0,
+              (sum, item) => sum + (item.price * item.quantity),
+            );
+            final displaySubtotal = calculatedSubtotal;
+            final deliveryFee = snapshot.data ?? 0.0;
+            final calculatedTotal = displaySubtotal + deliveryFee;
+
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.3),
+                    Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withOpacity(0.1),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                ),
+              ),
+              child: Column(
+                children: [
+                  _buildDetailRow(
+                    context,
+                    'المجموع الفرعي',
+                    '${displaySubtotal.toStringAsFixed(0)} ${tr(context).currency}',
+                    isBold: false,
+                  ),
+                  if (deliveryFee > 0) ...[
+                    const SizedBox(height: 8),
+                    _buildDetailRow(
+                      context,
+                      'رسوم التوصيل',
+                      '${deliveryFee.toStringAsFixed(0)} ${tr(context).currency}',
+                      isBold: false,
+                    ),
+                  ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Divider(
+                      color: Theme.of(context).dividerColor,
+                      thickness: 1,
+                    ),
+                  ),
+                  _buildDetailRow(
+                    context,
+                    'المجموع الكلي',
+                    '${calculatedTotal.toStringAsFixed(0)} ${tr(context).currency}',
+                    isBold: true,
+                    valueColor: Theme.of(context).colorScheme.primary,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildOrderItemsSection(BuildContext context, List<OrderItem> items) {
     if (items.isEmpty) {
       return _buildEmptyOrderItems(context);
@@ -868,6 +1053,29 @@ class OrderDetailsDialog extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (item.storeName != null && item.storeName!.isNotEmpty) ...[
+                  const SizedBox(height: 2),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.store,
+                        size: 12,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          item.storeName!,
+                          style: TextStyles.f12(context).copyWith(
+                            color: Theme.of(context).hintColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 6),
                 Row(
                   children: [

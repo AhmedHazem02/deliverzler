@@ -21,7 +21,7 @@ final selectedOrderProvider = AutoDisposeProvider<Option<AppOrder>>.internal(
 );
 
 typedef SelectedOrderRef = AutoDisposeProviderRef<Option<AppOrder>>;
-String _$selectedOrderIdHash() => r'20f7120a318e54ac3b20005628c4fc9f7998ff6c';
+String _$selectedOrderIdHash() => r'7eef49bbc7bf7d02e02e1ea5c8729e9c7d4e3e1d';
 
 /// See also [SelectedOrderId].
 @ProviderFor(SelectedOrderId)

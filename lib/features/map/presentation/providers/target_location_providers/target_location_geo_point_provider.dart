@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
+import '../../../../home/presentation/providers/multi_stop_navigation_provider.dart';
 import '../../../../home/presentation/providers/selected_order_provider.dart';
 import '../place_details_provider.dart';
 
@@ -15,26 +16,66 @@ class TargetLocationGeoPoint extends _$TargetLocationGeoPoint {
     final currentPlaceDetails = ref.watch(currentPlaceDetailsProvider);
 
     return currentPlaceDetails.match(
-      () => ref.watch(
-        selectedOrderProvider.select(
-          (order) => order.flatMap(
-            (o) {
-              print('🔍 [TargetLocation] Processing Order ID: ${o.id}');
-              print('🔍 [TargetLocation] Address present: ${o.address != null}');
-              print('🔍 [TargetLocation] GeoPoint present: ${o.address?.geoPoint != null}');
-              if (o.address?.geoPoint != null) {
-                  print('🔍 [TargetLocation] Lat: ${o.address?.geoPoint?.latitude}, Lng: ${o.address?.geoPoint?.longitude}');
-              } else {
-                  print('🔍 [TargetLocation] GeoPoint is NULL!');
-                  print('🔍 [TargetLocation] Fallback DeliveryGeoPoint: ${o.deliveryGeoPoint != null}');
-              }
-              return Option<GeoPoint>.fromNullable(o.address?.geoPoint);
-            },
-          ),
-        ),
-      ),
+      () {
+        // Watch the full order once to determine type
+        final order = ref.watch(selectedOrderProvider).toNullable();
+        if (order == null) return const None();
+
+        // For multi-store orders: target is current pickup stop's store location,
+        // or customer address if all stores are picked up.
+        if (order.isMultiStore) {
+          return _getMultiStoreTarget(order);
+        }
+
+        // Single-store: use customer delivery address
+        print('🔍 [TargetLocation] Processing Order ID: ${order.id}');
+        print('🔍 [TargetLocation] Address present: ${order.address != null}');
+        print(
+            '🔍 [TargetLocation] GeoPoint present: ${order.address?.geoPoint != null}');
+        if (order.address?.geoPoint != null) {
+          print(
+              '🔍 [TargetLocation] Lat: ${order.address?.geoPoint?.latitude}, Lng: ${order.address?.geoPoint?.longitude}');
+        }
+        return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
+      },
       (placeDetails) => Some(placeDetails.geoPoint),
     );
+  }
+
+  /// For multi-store orders: navigate to the nearest active store,
+  /// or customer address if all stores are picked up.
+  ///
+  /// Returns [None] while store data is still loading to avoid
+  /// premature direction fetching to the wrong target.
+  Option<GeoPoint> _getMultiStoreTarget(dynamic order) {
+    final sortedStopsAsync = ref.watch(sortedPickupStopsProvider);
+
+    // If store data is still loading, return None to avoid flashing
+    // directions to customer then switching to store.
+    if (sortedStopsAsync.isLoading && !sortedStopsAsync.hasValue) {
+      print('🔍 [TargetLocation] Multi-store: Store data loading… waiting');
+      return const None();
+    }
+
+    // Navigate to the nearest active store
+    final currentStop = ref.watch(currentPickupStopProvider);
+    if (currentStop != null && currentStop.storeGeoPoint != null) {
+      print(
+          '🔍 [TargetLocation] Multi-store: Navigating to store "${currentStop.stop.storeName}"');
+      return Some(currentStop.storeGeoPoint!);
+    }
+
+    // All stores picked up → navigate to customer
+    if (order.allStoresPickedUp) {
+      print(
+          '🔍 [TargetLocation] Multi-store: All stores picked up → navigating to customer');
+      return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
+    }
+
+    // No store has a location → fallback to customer
+    print(
+        '🔍 [TargetLocation] Multi-store: No store location available → fallback to customer');
+    return Option<GeoPoint>.fromNullable(order.address?.geoPoint);
   }
 
   void update(Option<GeoPoint> Function(Option<GeoPoint> state) fn) =>

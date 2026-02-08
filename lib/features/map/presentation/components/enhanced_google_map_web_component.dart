@@ -210,6 +210,14 @@ class _EnhancedGoogleMapWebComponentState
       final circles = ref.read(mapCirclesProvider);
       final polylines = ref.read(mapPolylinesProvider);
 
+      // Debug: log marker IDs every cycle
+      final ids = markers.map((m) => m.markerId.value).toList();
+      final storeCount = ids.where((id) => id.startsWith('store_')).length;
+      if (storeCount > 0 || ids.length != _markers.length) {
+        debugPrint(
+            '🌐 WebMap._updateAllOverlays: provider=${ids.length} markers $ids, jsMarkers=${_markers.length} ${_markers.keys.toList()}');
+      }
+
       _updateMarkers(markers);
       _updateCircles(circles);
       _updatePolylines(polylines);
@@ -233,6 +241,7 @@ class _EnhancedGoogleMapWebComponentState
         // Clean up cache
         _dataUriCache.remove(id);
         _dataUriByteLengthCache.remove(id);
+        debugPrint('🌐 WebMap._updateMarkers: REMOVED old marker "$id"');
       }
     });
 
@@ -245,6 +254,8 @@ class _EnhancedGoogleMapWebComponentState
         _updateMarkerData(marker, _markers[markerId]!);
       } else {
         // Create new marker
+        debugPrint(
+            '🌐 WebMap._updateMarkers: CREATING new marker "$markerId" at ${marker.position.latitude},${marker.position.longitude}');
         _createMarker(marker);
       }
     }
@@ -285,45 +296,77 @@ class _EnhancedGoogleMapWebComponentState
     try {
       final json = icon.toJson() as List<dynamic>;
       final type = json[0] as String;
+      debugPrint(
+          '🌐 WebMap._parseIcon: markerId=$markerId, type=$type, jsonLen=${json.length}');
 
       switch (type) {
         case 'defaultMarker':
           if (json.length > 1) {
-             return null; 
+            final hue = json[1];
+            debugPrint(
+                '🌐 WebMap._parseIcon: defaultMarker with hue=$hue → returning null (will use default pin)');
+            return null;
           }
+          debugPrint(
+              '🌐 WebMap._parseIcon: defaultMarker no hue → returning null');
           return null;
         case 'fromAssetImage':
           final path = json[1] as String;
+          debugPrint('🌐 WebMap._parseIcon: fromAssetImage path=$path');
           if (path.startsWith('assets/')) {
-             return 'assets/$path';
+            return 'assets/$path';
           }
           return 'assets/$path';
-        case 'fromBytes':
+        case 'bytes': // BitmapDescriptor.bytes() — new API
+        case 'fromBytes': // BitmapDescriptor.fromBytes() — legacy API
           final rawBytes = json[1];
+          debugPrint(
+              '🌐 WebMap._parseIcon: $type rawBytes type=${rawBytes.runtimeType}, isList=${rawBytes is List}');
+          // BitmapDescriptor.bytes() serializes as ['bytes', {'byteData': Uint8List, ...}]
+          // BitmapDescriptor.fromBytes() serializes as ['fromBytes', Uint8List]
+          List<int>? bytes;
           if (rawBytes is List) {
-             final bytes = rawBytes.cast<int>();
-             
-             // Check cache: Avoid heavy base64 encoding if bytes haven't changed
-             if (_dataUriCache.containsKey(markerId) && 
-                 _dataUriByteLengthCache[markerId] == bytes.length) {
-                // Ideally we check content hash, but length is a fast proxy for this frame-rate
-                return _dataUriCache[markerId];
-             }
-
-             // Convert to Base64 Data URI
-             final base64String = base64Encode(bytes);
-             final dataUri = 'data:image/png;base64,$base64String';
-             
-             _dataUriCache[markerId] = dataUri;
-             _dataUriByteLengthCache[markerId] = bytes.length;
-             return dataUri;
+            bytes = rawBytes.cast<int>();
+          } else if (rawBytes is Map) {
+            final byteData = rawBytes['byteData'];
+            if (byteData is List) {
+              bytes = byteData.cast<int>();
+            }
           }
+          if (bytes != null) {
+            debugPrint('🌐 WebMap._parseIcon: $type len=${bytes.length}');
+
+            // Check cache: Avoid heavy base64 encoding if bytes haven't changed
+            if (_dataUriCache.containsKey(markerId) &&
+                _dataUriByteLengthCache[markerId] == bytes.length) {
+              debugPrint('🌐 WebMap._parseIcon: $type CACHED for $markerId');
+              return _dataUriCache[markerId];
+            }
+
+            // Convert to Base64 Data URI — detect PNG vs SVG
+            final base64String = base64Encode(bytes);
+            final isPng = bytes.length > 4 &&
+                bytes[0] == 0x89 &&
+                bytes[1] == 0x50 &&
+                bytes[2] == 0x4E &&
+                bytes[3] == 0x47;
+            final mimeType = isPng ? 'image/png' : 'image/svg+xml';
+            final dataUri = 'data:$mimeType;base64,$base64String';
+
+            _dataUriCache[markerId] = dataUri;
+            _dataUriByteLengthCache[markerId] = bytes.length;
+            debugPrint(
+                '🌐 WebMap._parseIcon: $type → dataUri (${dataUri.length} chars)');
+            return dataUri;
+          }
+          debugPrint('🌐 WebMap._parseIcon: $type rawBytes is NOT List → null');
           return null;
         default:
+          debugPrint('🌐 WebMap._parseIcon: UNKNOWN type=$type → null');
           return null;
       }
     } catch (e) {
-      debugPrint('Error parsing icon: $e');
+      debugPrint('🌐 WebMap._parseIcon ERROR: $e');
       return null;
     }
   }
@@ -332,6 +375,9 @@ class _EnhancedGoogleMapWebComponentState
     try {
       final googleMaps = js.context['google']['maps'];
       final icon = _parseIcon(marker.icon, marker.markerId.value);
+
+      debugPrint(
+          '🌐 WebMap._createMarker: id=${marker.markerId.value}, pos=${marker.position.latitude},${marker.position.longitude}, visible=${marker.visible}, zIndex=${marker.zIndex}, iconParsed=${icon != null}');
 
       final markerOptions = js.JsObject.jsify({
         'position': {
@@ -352,6 +398,9 @@ class _EnhancedGoogleMapWebComponentState
       final markerConstructor = googleMaps['Marker'] as js.JsFunction;
       final jsMarker = js.JsObject(markerConstructor, [markerOptions]);
 
+      debugPrint(
+          '🌐 WebMap._createMarker: ✅ JS marker created for "${marker.markerId.value}"');
+
       if (marker.onTap != null || marker.infoWindow.title != null) {
         void onMarkerClick() {
           debugPrint('Marker clicked: ${marker.markerId.value}');
@@ -367,7 +416,7 @@ class _EnhancedGoogleMapWebComponentState
 
       _markers[marker.markerId.value] = jsMarker;
     } catch (e) {
-      debugPrint('Error creating marker: $e');
+      debugPrint('🌐 WebMap._createMarker ERROR: $e');
     }
   }
 
@@ -566,7 +615,12 @@ class _EnhancedGoogleMapWebComponentState
     // Listen to markers changes
     ref.listen(mapMarkersProvider, (previous, next) {
       if (_isMapReady && _map != null) {
-        debugPrint('Markers updated: ${next.length} markers');
+        final storeIds = next
+            .where((m) => m.markerId.value.startsWith('store_'))
+            .map((m) => m.markerId.value)
+            .toList();
+        debugPrint(
+            '🌐 WebMap.ref.listen: Markers updated: ${next.length} markers, stores=$storeIds');
         _updateMarkers(next);
       }
     });
@@ -591,7 +645,7 @@ class _EnhancedGoogleMapWebComponentState
     ref.listen(myLocationCameraPositionProvider, (previous, next) {
       if (mounted && _isMapReady && _map != null && previous != next) {
         if (_shouldAnimateCamera(next)) {
-           animateCamera(next);
+          animateCamera(next);
         }
       }
     });

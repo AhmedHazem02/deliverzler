@@ -7,7 +7,7 @@ part of 'update_profile_image_provider.dart';
 // **************************************************************************
 
 String _$updateProfileImageStateHash() =>
-    r'748e93c221c761f5584dd39ecaadbd9c06900175';
+    r'8aef2103c1e7856778a959edc089266ed21b9924';
 
 /// See also [UpdateProfileImageState].
 @ProviderFor(UpdateProfileImageState)

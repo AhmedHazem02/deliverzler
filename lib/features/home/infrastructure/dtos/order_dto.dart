@@ -4,8 +4,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../core/domain/json_converters/geo_point_converter.dart';
 import '../../domain/order.dart';
+import '../../domain/pickup_stop.dart';
 import '../../domain/value_objects.dart';
 import 'order_item_dto.dart';
+import 'pickup_stop_dto.dart';
 
 part 'order_dto.freezed.dart';
 part 'order_dto.g.dart';
@@ -93,7 +95,16 @@ class OrderDto with _$OrderDto {
     @JsonKey(name: 'rejected_by_drivers')
     @Default([])
     List<String> rejectedByDrivers,
+
+    // Multi-store order fields
+    @JsonKey(name: 'order_type') String? orderType,
+    @JsonKey(name: 'driver_commission') double? driverCommission,
+    @JsonKey(name: 'driver_name') String? driverName,
     @JsonKey(includeToJson: false) String? id,
+    // Raw pickup_stops - parsed manually, not by json_serializable
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default([])
+    List<PickupStop> pickupStops,
   }) = _OrderDto;
 
   factory OrderDto.fromDomain(AppOrder order) {
@@ -129,8 +140,17 @@ class OrderDto with _$OrderDto {
       _$OrderDtoFromJson(json);
 
   factory OrderDto.fromFirestore(DocumentSnapshot document) {
-    return OrderDto.fromJson(document.data()! as Map<String, dynamic>)
-        .copyWith(id: document.id);
+    final json = document.data()! as Map<String, dynamic>;
+    final dto = OrderDto.fromJson(json).copyWith(id: document.id);
+
+    // Parse pickup_stops manually (not handled by json_serializable)
+    final rawStops = json['pickup_stops'] as List<dynamic>?;
+    if (rawStops != null && rawStops.isNotEmpty) {
+      return dto.copyWith(
+        pickupStops: PickupStopDto.parseList(rawStops),
+      );
+    }
+    return dto;
   }
 
   static List<OrderDto> parseListOfDocument(
@@ -154,6 +174,8 @@ class OrderDto with _$OrderDto {
       );
     }
 
+    final parsedOrderType = OrderType.fromValue(orderType);
+
     return AppOrder(
       id: id ?? '',
       date: date,
@@ -173,7 +195,7 @@ class OrderDto with _$OrderDto {
           : null,
       deliveryHeading: null,
       rejectionStatus: rejectionStatus,
-      items: [], // Items will be loaded separately
+      items: [], // For single_store, loaded separately. For multi_store, from pickupStops.
       subTotal: subTotal,
       total: total,
       deliveryFee: deliveryFee ?? 0.0,
@@ -182,6 +204,11 @@ class OrderDto with _$OrderDto {
       storeAddress: null, // Will be loaded separately if needed
       adminComment: adminComment,
       rejectedByDrivers: rejectedByDrivers,
+      // Multi-store fields
+      orderType: parsedOrderType,
+      pickupStops: pickupStops,
+      driverCommission: driverCommission,
+      driverName: driverName,
     );
   }
 }

@@ -4,6 +4,8 @@ class AppStore {
   final String address;
   final String phone;
   final String category;
+  final double? latitude;
+  final double? longitude;
 
   AppStore({
     required this.id,
@@ -11,5 +13,10 @@ class AppStore {
     required this.address,
     this.phone = '',
     this.category = '',
+    this.latitude,
+    this.longitude,
   });
+
+  /// Whether this store has valid location coordinates.
+  bool get hasLocation => latitude != null && longitude != null;
 }

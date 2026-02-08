@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../core/domain/value_validators.dart';
 import '../../../core/presentation/utils/fp_framework.dart';
 import 'order_item.dart';
+import 'pickup_stop.dart';
 import 'value_objects.dart';
 
 part 'order.freezed.dart';
@@ -41,8 +42,48 @@ class AppOrder with _$AppOrder {
     String? adminComment,
     // List of driver IDs who rejected/excused this order
     @Default([]) List<String> rejectedByDrivers,
+    // Multi-store order fields
+    @Default(OrderType.singleStore) OrderType orderType,
+    @Default([]) List<PickupStop> pickupStops,
+    double? driverCommission,
+    String? driverName,
   }) = _AppOrder;
   const AppOrder._();
+
+  /// Whether this is a multi-store order with pickup stops.
+  bool get isMultiStore => orderType == OrderType.multiStore;
+
+  /// Returns the current active pickup stop (first non-picked-up, non-rejected).
+  PickupStop? get currentPickupStop {
+    if (!isMultiStore || pickupStops.isEmpty) return null;
+    try {
+      return pickupStops.firstWhere((stop) => stop.isActive);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Whether all non-rejected stores have been picked up.
+  bool get allStoresPickedUp {
+    if (!isMultiStore || pickupStops.isEmpty) return false;
+    return pickupStops
+        .where((stop) => !stop.isRejected)
+        .every((stop) => stop.isPickedUp);
+  }
+
+  /// Number of stores that have been picked up.
+  int get pickedUpStopsCount =>
+      pickupStops.where((stop) => stop.isPickedUp).length;
+
+  /// Number of active (non-rejected) stores.
+  int get activeStopsCount =>
+      pickupStops.where((stop) => !stop.isRejected).length;
+
+  /// All items across all pickup stops (flattened).
+  List<OrderItem> get allItems {
+    if (!isMultiStore || pickupStops.isEmpty) return items;
+    return pickupStops.expand((stop) => stop.items).toList();
+  }
 
   Option<String> get validatedUserPhone =>
       ValueValidators.isNumeric(userPhone) ? Some(userPhone) : none();

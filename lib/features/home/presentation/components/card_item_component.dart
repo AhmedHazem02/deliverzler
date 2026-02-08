@@ -9,6 +9,7 @@ import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../../core/presentation/widgets/toasts.dart';
 import '../../domain/order.dart';
 import '../../domain/orders_service.dart';
+import '../../domain/pickup_stop.dart';
 import '../../domain/update_delivery_status.dart';
 import '../../domain/value_objects.dart';
 import '../providers/selected_order_provider.dart';
@@ -208,6 +209,11 @@ class CardItemComponent extends ConsumerWidget {
             const SizedBox(
               height: Sizes.marginV8,
             ),
+            // Multi-store pickup stops section
+            if (order.isMultiStore) ...[
+              _MultiStoreStopsSection(order: order),
+              const SizedBox(height: Sizes.marginV8),
+            ],
             if (isRejectionPending)
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -367,6 +373,125 @@ class CardItemComponent extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Shows the list of pickup stops for a multi-store order (read-only).
+/// Status is managed by the backend/store, not by the driver.
+class _MultiStoreStopsSection extends StatelessWidget {
+  const _MultiStoreStopsSection({required this.order});
+
+  final AppOrder order;
+
+  @override
+  Widget build(BuildContext context) {
+    final stops = order.pickupStops;
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context)
+            .colorScheme
+            .surfaceContainerHighest
+            .withOpacity(0.3),
+        borderRadius: BorderRadius.circular(Sizes.cardR8),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            children: [
+              Icon(
+                Icons.store,
+                size: 18,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                'محلات الطلب (${stops.length})',
+                style: TextStyles.f14(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // Stops list
+          ...List.generate(stops.length, (index) {
+            final stop = stops[index];
+            return _PickupStopTile(stop: stop, index: index + 1);
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+/// A single pickup stop tile showing store name, item count, and subtotal (read-only).
+class _PickupStopTile extends StatelessWidget {
+  const _PickupStopTile({
+    required this.stop,
+    required this.index,
+  });
+
+  final PickupStop stop;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          // Index circle
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                '$index',
+                style: TextStyles.f12(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Store name and details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  stop.storeName,
+                  style: TextStyles.f14(context).copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  '${stop.items.isNotEmpty ? '${stop.totalItemsCount} صنف • ' : ''}${stop.subtotal.toStringAsFixed(0)} ج.م',
+                  style: TextStyles.f12(context).copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -13,5 +13,6 @@ class OrderItem with _$OrderItem {
     required double total,
     String? category,
     String? description,
+    String? storeName,
   }) = _OrderItem;
 }

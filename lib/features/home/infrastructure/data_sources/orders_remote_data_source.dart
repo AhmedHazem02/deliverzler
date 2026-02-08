@@ -90,8 +90,7 @@ class OrdersRemoteDataSource {
           .limit(50),
     )
         .map((snapshot) {
-      if (snapshot.docs.isEmpty) {
-      }
+      if (snapshot.docs.isEmpty) {}
 
       final orders = OrderDto.parseListOfDocument(snapshot.docs);
 

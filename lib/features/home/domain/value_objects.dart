@@ -49,3 +49,19 @@ enum RejectionStatus {
 
   final String jsonValue;
 }
+
+/// Type of order — single store or multi-store with pickup stops.
+@JsonEnum(valueField: 'jsonValue')
+enum OrderType {
+  singleStore('single_store'),
+  multiStore('multi_store');
+
+  const OrderType(this.jsonValue);
+
+  final String jsonValue;
+
+  static OrderType fromValue(String? value) {
+    if (value == 'multi_store') return OrderType.multiStore;
+    return OrderType.singleStore;
+  }
+}

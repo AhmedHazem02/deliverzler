@@ -24,6 +24,7 @@ mixin _$OrderItem {
   double get total => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  String? get storeName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $OrderItemCopyWith<OrderItem> get copyWith =>
@@ -43,7 +44,8 @@ abstract class $OrderItemCopyWith<$Res> {
       double price,
       double total,
       String? category,
-      String? description});
+      String? description,
+      String? storeName});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
     Object? total = null,
     Object? category = freezed,
     Object? description = freezed,
+    Object? storeName = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -101,6 +104,10 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      storeName: freezed == storeName
+          ? _value.storeName
+          : storeName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -121,7 +128,8 @@ abstract class _$$OrderItemImplCopyWith<$Res>
       double price,
       double total,
       String? category,
-      String? description});
+      String? description,
+      String? storeName});
 }
 
 /// @nodoc
@@ -143,6 +151,7 @@ class __$$OrderItemImplCopyWithImpl<$Res>
     Object? total = null,
     Object? category = freezed,
     Object? description = freezed,
+    Object? storeName = freezed,
   }) {
     return _then(_$OrderItemImpl(
       id: null == id
@@ -177,6 +186,10 @@ class __$$OrderItemImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      storeName: freezed == storeName
+          ? _value.storeName
+          : storeName // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -192,7 +205,8 @@ class _$OrderItemImpl implements _OrderItem {
       required this.price,
       required this.total,
       this.category,
-      this.description});
+      this.description,
+      this.storeName});
 
   @override
   final String id;
@@ -210,10 +224,12 @@ class _$OrderItemImpl implements _OrderItem {
   final String? category;
   @override
   final String? description;
+  @override
+  final String? storeName;
 
   @override
   String toString() {
-    return 'OrderItem(id: $id, name: $name, imageUrl: $imageUrl, quantity: $quantity, price: $price, total: $total, category: $category, description: $description)';
+    return 'OrderItem(id: $id, name: $name, imageUrl: $imageUrl, quantity: $quantity, price: $price, total: $total, category: $category, description: $description, storeName: $storeName)';
   }
 
   @override
@@ -232,12 +248,14 @@ class _$OrderItemImpl implements _OrderItem {
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.storeName, storeName) ||
+                other.storeName == storeName));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, name, imageUrl, quantity,
-      price, total, category, description);
+      price, total, category, description, storeName);
 
   @JsonKey(ignore: true)
   @override
@@ -255,7 +273,8 @@ abstract class _OrderItem implements OrderItem {
       required final double price,
       required final double total,
       final String? category,
-      final String? description}) = _$OrderItemImpl;
+      final String? description,
+      final String? storeName}) = _$OrderItemImpl;
 
   @override
   String get id;
@@ -273,6 +292,8 @@ abstract class _OrderItem implements OrderItem {
   String? get category;
   @override
   String? get description;
+  @override
+  String? get storeName;
   @override
   @JsonKey(ignore: true)
   _$$OrderItemImplCopyWith<_$OrderItemImpl> get copyWith =>

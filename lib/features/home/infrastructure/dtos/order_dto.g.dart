@@ -39,6 +39,9 @@ _$OrderDtoImpl _$$OrderDtoImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => e as String)
               .toList() ??
           const [],
+      orderType: json['order_type'] as String?,
+      driverCommission: (json['driver_commission'] as num?)?.toDouble(),
+      driverName: json['driver_name'] as String?,
       id: json['id'] as String?,
     );
 

@@ -24,7 +24,7 @@ class OrderItemDto with _$OrderItemDto {
   factory OrderItemDto.fromJson(Map<String, dynamic> json) =>
       _$OrderItemDtoFromJson(json);
 
-  OrderItem toDomain() {
+  OrderItem toDomain({String? storeName}) {
     return OrderItem(
       id: id,
       name: name,
@@ -34,6 +34,7 @@ class OrderItemDto with _$OrderItemDto {
       total: total,
       category: category,
       description: description,
+      storeName: storeName,
     );
   }
 }
