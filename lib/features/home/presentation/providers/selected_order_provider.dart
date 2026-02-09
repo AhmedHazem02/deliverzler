@@ -3,7 +3,6 @@
 import 'package:collection/collection.dart';
 
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
-import '../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/order.dart';
@@ -32,9 +31,11 @@ class SelectedOrderId extends _$SelectedOrderId {
     final upcomingOrdersAsync = ref.watch(upcomingOrdersProvider);
     final upcomingOrders = upcomingOrdersAsync.valueOrNull ?? [];
     final confirmedOrders = upcomingOrders
-        .where((order) =>
-            order.deliveryId == userId &&
-            order.deliveryStatus == DeliveryStatus.confirmed)
+        .where(
+          (order) =>
+              order.deliveryId == userId &&
+              order.deliveryStatus == DeliveryStatus.confirmed,
+        )
         .toList();
 
     if (confirmedOrders.isNotEmpty) {

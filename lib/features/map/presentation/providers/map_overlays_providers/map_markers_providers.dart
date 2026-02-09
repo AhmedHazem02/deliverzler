@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: deprecated_member_use
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import '../../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
-import '../../../../home/domain/store.dart';
 import '../../../../home/presentation/providers/multi_stop_navigation_provider.dart';
 import '../../../../home/presentation/providers/selected_order_provider.dart';
 import '../../../../home/presentation/providers/store_provider.dart';
@@ -24,7 +22,7 @@ Future<Set<Marker>> storeMarkers(Ref ref) async {
   final order = ref.watch(selectedOrderProvider).toNullable();
   if (order == null) return {};
 
-  final Set<Marker> markers = {};
+  final markers = <Marker>{};
 
   if (order.isMultiStore) {
     final sortedStopsAsync = ref.watch(sortedPickupStopsProvider);
@@ -33,7 +31,7 @@ Future<Set<Marker>> storeMarkers(Ref ref) async {
 
     final currentStop = ref.watch(currentPickupStopProvider);
 
-    for (int i = 0; i < sortedStops.length; i++) {
+    for (var i = 0; i < sortedStops.length; i++) {
       final stopData = sortedStops[i];
       final geoPoint = stopData.storeGeoPoint;
       if (geoPoint == null) continue;
@@ -46,18 +44,20 @@ Future<Set<Marker>> storeMarkers(Ref ref) async {
         isCurrentStop: isCurrent,
       );
 
-      markers.add(Marker(
-        markerId: MarkerId('store_${stopData.stop.storeId}'),
-        position: LatLng(geoPoint.latitude, geoPoint.longitude),
-        icon: icon,
-        zIndex: isCurrent ? 90 : 80,
-        infoWindow: InfoWindow(
-          title: '${stopData.stop.storeName} (#${i + 1})',
-          snippet: stopData.formattedDistance.isNotEmpty
-              ? stopData.formattedDistance
-              : null,
+      markers.add(
+        Marker(
+          markerId: MarkerId('store_${stopData.stop.storeId}'),
+          position: LatLng(geoPoint.latitude, geoPoint.longitude),
+          icon: icon,
+          zIndex: isCurrent ? 90 : 80,
+          infoWindow: InfoWindow(
+            title: '${stopData.stop.storeName} (#${i + 1})',
+            snippet: stopData.formattedDistance.isNotEmpty
+                ? stopData.formattedDistance
+                : null,
+          ),
         ),
-      ));
+      );
     }
   } else {
     final storeId = order.storeId;
@@ -69,15 +69,17 @@ Future<Set<Marker>> storeMarkers(Ref ref) async {
 
     final icon = await StoreMarkerHelper.createStoreMarkerIcon();
 
-    markers.add(Marker(
-      markerId: MarkerId('store_$storeId'),
-      position: LatLng(store.latitude!, store.longitude!),
-      icon: icon,
-      zIndex: 80,
-      infoWindow: InfoWindow(
-        title: store.name.isNotEmpty ? store.name : 'المتجر',
+    markers.add(
+      Marker(
+        markerId: MarkerId('store_$storeId'),
+        position: LatLng(store.latitude!, store.longitude!),
+        icon: icon,
+        zIndex: 80,
+        infoWindow: InfoWindow(
+          title: store.name.isNotEmpty ? store.name : 'المتجر',
+        ),
       ),
-    ));
+    );
   }
 
   return markers;
@@ -118,13 +120,13 @@ Future<Marker?> customerDeliveryMarker(Ref ref) async {
 /// a single `Set<Marker>`. Re-evaluates automatically when any source changes.
 @riverpod
 Set<Marker> mapMarkers(Ref ref) {
-  final Set<Marker> markers = {};
+  final markers = <Marker>{};
 
   // Watch My Location Marker (driver)
   final myMarkerOption = ref.watch(myLocationMarkerProvider);
   myMarkerOption.fold(
     () {},
-    (marker) => markers.add(marker),
+    markers.add,
   );
 
   // Watch Target Location Marker
@@ -139,9 +141,7 @@ Set<Marker> mapMarkers(Ref ref) {
 
   // Watch Store Markers (async)
   final storeAsync = ref.watch(storeMarkersProvider);
-  storeAsync.whenData((storeSet) {
-    markers.addAll(storeSet);
-  });
+  storeAsync.whenData(markers.addAll);
 
   return markers;
 }

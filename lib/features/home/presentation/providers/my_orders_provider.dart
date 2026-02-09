@@ -8,7 +8,6 @@ import '../../domain/order.dart';
 import '../../domain/value_objects.dart';
 import '../../infrastructure/repos/orders_repo.dart';
 
-
 part 'my_orders_provider.g.dart';
 
 /// Provider for orders assigned to the current delivery user
@@ -50,7 +49,6 @@ List<AppOrder> filteredMyOrders(Ref ref) {
               .where((o) => o.deliveryStatus == DeliveryStatus.delivered)
               .toList();
         case MyOrdersFilter.all:
-        default:
           return orders;
       }
     },

@@ -38,7 +38,8 @@ class CustomOutlinedButton extends StatelessWidget {
   final Gradient? gradient;
   final double elevation;
 
-  BorderRadius get _borderRadius => borderRadius ?? BorderRadius.circular(Sizes.buttonR24);
+  BorderRadius get _borderRadius =>
+      borderRadius ?? BorderRadius.circular(Sizes.buttonR24);
 
   Color? get _buttonColor => enableGradient ? Colors.transparent : buttonColor;
 

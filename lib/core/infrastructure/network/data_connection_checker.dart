@@ -55,7 +55,7 @@ class DataConnectionChecker {
   /// If at least one of the addresses is reachable
   /// we assume an internet connection is available and return `true`.
   /// `false` otherwise.
-  /// 
+  ///
   /// On web, always returns true as socket connections are not available.
   Future<bool> get hasConnection async {
     if (kIsWeb) {
@@ -63,7 +63,7 @@ class DataConnectionChecker {
       // Firebase and other services will handle their own connectivity
       return true;
     }
-    
+
     // Mobile/Desktop implementation would go here
     // For now, just return true to avoid breaking the app
     return true;
@@ -75,7 +75,9 @@ class DataConnectionChecker {
   /// [DataConnectionStatus.connected].
   /// [DataConnectionStatus.disconnected] otherwise.
   Future<DataConnectionStatus> get connectionStatus async {
-    return await hasConnection ? DataConnectionStatus.connected : DataConnectionStatus.disconnected;
+    return await hasConnection
+        ? DataConnectionStatus.connected
+        : DataConnectionStatus.disconnected;
   }
 
   /// The interval between periodic checks. Periodic checks are
@@ -118,7 +120,8 @@ class DataConnectionChecker {
   Timer? _timerHandle;
 
   // controller for the exposed 'onStatusChange' Stream
-  final StreamController<DataConnectionStatus> _statusController = StreamController.broadcast();
+  final StreamController<DataConnectionStatus> _statusController =
+      StreamController.broadcast();
 
   /// Subscribe to this stream to receive events whenever the
   /// [DataConnectionStatus] changes. When a listener is attached

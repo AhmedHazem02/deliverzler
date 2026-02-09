@@ -8,7 +8,8 @@ part 'update_delivery_status_provider.g.dart';
 @riverpod
 class UpdateDeliveryStatusController extends _$UpdateDeliveryStatusController {
   @override
-  FutureOr<UpdateDeliveryStatusState> build() => const UpdateDeliveryStatusState.idle();
+  FutureOr<UpdateDeliveryStatusState> build() =>
+      const UpdateDeliveryStatusState.idle();
 
   Future<void> updateStatus(UpdateDeliveryStatus params) async {
     state = const AsyncLoading();

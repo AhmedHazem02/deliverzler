@@ -20,12 +20,15 @@ class EditDriverProfileFormComponent extends HookConsumerWidget {
     final state = ref.watch(editDriverProfileProvider);
 
     // Load application data on first build
-    useEffect(() {
-      Future.microtask(() {
-        ref.read(editDriverProfileProvider.notifier).loadApplication();
-      });
-      return null;
-    }, []);
+    useEffect(
+      () {
+        Future.microtask(() {
+          ref.read(editDriverProfileProvider.notifier).loadApplication();
+        });
+        return null;
+      },
+      [],
+    );
 
     // Listen for success/error
     ref.listen(editDriverProfileProvider, (prev, next) {
@@ -91,7 +94,7 @@ class _EditForm extends HookConsumerWidget {
     // State for vehicle type
     final vehicleType = useState<VehicleType>(application.vehicleType);
 
-    void selectDate() async {
+    Future<void> selectDate() async {
       final picked = await showDatePicker(
         context: context,
         initialDate: licenseExpiryDate.value,
@@ -206,8 +209,7 @@ class _EditForm extends HookConsumerWidget {
                   ),
                   InkWell(
                     onTap: selectDate,
-                    borderRadius:
-                        BorderRadius.circular(Sizes.cardR12),
+                    borderRadius: BorderRadius.circular(Sizes.cardR12),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: Sizes.paddingH14,
@@ -217,8 +219,7 @@ class _EditForm extends HookConsumerWidget {
                         border: Border.all(
                           color: Theme.of(context).colorScheme.outline,
                         ),
-                        borderRadius:
-                            BorderRadius.circular(Sizes.cardR12),
+                        borderRadius: BorderRadius.circular(Sizes.cardR12),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -259,11 +260,10 @@ class _EditForm extends HookConsumerWidget {
                     ),
                   ),
                   DropdownButtonFormField<VehicleType>(
-                    value: vehicleType.value,
+                    initialValue: vehicleType.value,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(Sizes.cardR12),
+                        borderRadius: BorderRadius.circular(Sizes.cardR12),
                       ),
                     ),
                     items: VehicleType.values.map((type) {
@@ -360,7 +360,7 @@ class _SectionHeader extends StatelessWidget {
         ),
         const SizedBox(height: Sizes.marginV8),
         Divider(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
         ),
       ],
     );

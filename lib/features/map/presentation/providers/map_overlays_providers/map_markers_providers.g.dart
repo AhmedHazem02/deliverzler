@@ -6,7 +6,7 @@ part of 'map_markers_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$storeMarkersHash() => r'fd7f400f1ab3c50e041f3a42e54456959037a919';
+String _$storeMarkersHash() => r'49054c64e66c81aedf28c89b87fcf3163d8b01dc';
 
 /// Provides the store markers (custom icons) for the selected order.
 ///
@@ -26,12 +26,9 @@ final storeMarkersProvider = AutoDisposeFutureProvider<Set<Marker>>.internal(
 
 typedef StoreMarkersRef = AutoDisposeFutureProviderRef<Set<Marker>>;
 String _$customerDeliveryMarkerHash() =>
-    r'3dbcae5239e5655c415da8275b883eec9e9344bb';
+    r'3564589d6371686443de55b909226316533e2cc6';
 
 /// Provides the customer delivery address marker.
-///
-/// Always shows the delivery location from the order (delivery_latitude/longitude),
-/// independent of the navigation target.
 ///
 /// Copied from [customerDeliveryMarker].
 @ProviderFor(customerDeliveryMarker)
@@ -47,7 +44,7 @@ final customerDeliveryMarkerProvider =
 );
 
 typedef CustomerDeliveryMarkerRef = AutoDisposeFutureProviderRef<Marker?>;
-String _$mapMarkersHash() => r'a36052370120c21206cb1ad50144da426e24a113';
+String _$mapMarkersHash() => r'32df52ff20ea040b5abb02bb673c4c3c767cab11';
 
 /// Combined map markers provider.
 ///

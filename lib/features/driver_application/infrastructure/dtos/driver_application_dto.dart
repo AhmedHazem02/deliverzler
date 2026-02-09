@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/driver_application.dart';
@@ -20,9 +21,6 @@ class DriverApplicationDto with _$DriverApplicationDto {
 
     /// Application status string.
     required String status,
-
-    /// Type indicator for Admin Dashboard.
-    @Default('driver') String type,
 
     /// Driver's full name.
     required String name,
@@ -48,6 +46,12 @@ class DriverApplicationDto with _$DriverApplicationDto {
     /// Vehicle plate number.
     required String vehiclePlate,
 
+    /// Application submission date as timestamp.
+    required int createdAt,
+
+    /// Type indicator for Admin Dashboard.
+    @Default('driver') String type,
+
     /// Profile photo URL.
     String? photoUrl,
 
@@ -62,9 +66,6 @@ class DriverApplicationDto with _$DriverApplicationDto {
 
     /// Vehicle insurance document URL.
     String? vehicleInsuranceUrl,
-
-    /// Application submission date as timestamp.
-    required int createdAt,
 
     /// Date when application was reviewed.
     int? reviewedAt,
@@ -111,15 +112,16 @@ class DriverApplicationDto with _$DriverApplicationDto {
       if (value is int) return value;
       if (value is Timestamp) return value.millisecondsSinceEpoch;
       if (value is DateTime) return value.millisecondsSinceEpoch;
-      if (value is String)
+      if (value is String) {
         return DateTime.tryParse(value)?.millisecondsSinceEpoch;
+      }
       return null;
     }
 
     final rawStatus = data['status'] as String?;
-    print('🔍 [DriverApplicationDto] Reading Doc ID: ${doc.id}');
-    print('🔍 [DriverApplicationDto] Raw Status: "$rawStatus"');
-    
+    debugPrint('🔍 [DriverApplicationDto] Reading Doc ID: ${doc.id}');
+    debugPrint('🔍 [DriverApplicationDto] Raw Status: "$rawStatus"');
+
     return DriverApplicationDto(
       id: doc.id,
       userId: data['userId'] as String? ?? '',
@@ -152,7 +154,6 @@ class DriverApplicationDto with _$DriverApplicationDto {
       id: app.id,
       userId: app.userId,
       status: app.status.name,
-      type: 'driver',
       name: app.name,
       email: app.email,
       phone: app.phone,

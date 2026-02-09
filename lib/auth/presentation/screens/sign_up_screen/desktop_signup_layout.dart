@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/presentation/helpers/localization_helper.dart';
-import '../../../../core/presentation/styles/styles.dart';
-import '../../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../components/auth_settings_bar.dart';
 import '../../components/driver_signup_form_component.dart';
 
@@ -26,8 +24,7 @@ class DesktopSignupLayout extends StatelessWidget {
             left: 0,
             right: 0,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -39,7 +36,9 @@ class DesktopSignupLayout extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: Theme.of(context).primaryColor,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 12),
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
                     ),
                   ),
                   // Settings Bar
@@ -52,7 +51,7 @@ class DesktopSignupLayout extends StatelessWidget {
           // Centered Form
           Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 80.0),
+              padding: const EdgeInsets.symmetric(vertical: 80),
               child: Container(
                 width: 600, // Fixed width constraint
                 margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -62,7 +61,7 @@ class DesktopSignupLayout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 32,
                       offset: const Offset(0, 8),
                     ),

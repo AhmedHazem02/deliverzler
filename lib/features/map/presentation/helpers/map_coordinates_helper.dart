@@ -29,7 +29,8 @@ abstract class MapCoordinatesHelper {
       color: AppStaticColors.blue,
       points: polylinePoints!
           .map(
-            (polylinePoint) => LatLng(polylinePoint.latitude, polylinePoint.longitude),
+            (polylinePoint) =>
+                LatLng(polylinePoint.latitude, polylinePoint.longitude),
           )
           .toList(),
     );

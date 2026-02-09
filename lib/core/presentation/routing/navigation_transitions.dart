@@ -10,7 +10,8 @@ class FadeTransitionPage<T> extends CustomTransitionPage<T> {
   }) : super(
           key: pageKey,
           child: child,
-          transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
+          transitionsBuilder: (_, a, __, c) =>
+              FadeTransition(opacity: a, child: c),
           reverseTransitionDuration: const Duration(milliseconds: 300),
         );
 }

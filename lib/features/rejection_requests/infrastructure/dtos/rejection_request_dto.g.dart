@@ -14,8 +14,8 @@ _$RejectionRequestDtoImpl _$$RejectionRequestDtoImplFromJson(
       driverName: json['driverName'] as String,
       reason: json['reason'] as String,
       adminDecision: $enumDecode(_$AdminDecisionEnumMap, json['adminDecision']),
-      adminComment: json['adminComment'] as String?,
       createdAt: _timestampFromJson(json['createdAt']),
+      adminComment: json['adminComment'] as String?,
       updatedAt: _timestampFromJson(json['updatedAt']),
     );
 
@@ -27,8 +27,8 @@ Map<String, dynamic> _$$RejectionRequestDtoImplToJson(
       'driverName': instance.driverName,
       'reason': instance.reason,
       'adminDecision': _$AdminDecisionEnumMap[instance.adminDecision]!,
-      'adminComment': instance.adminComment,
       'createdAt': _timestampToJson(instance.createdAt),
+      'adminComment': instance.adminComment,
       'updatedAt': _timestampToJson(instance.updatedAt),
     };
 

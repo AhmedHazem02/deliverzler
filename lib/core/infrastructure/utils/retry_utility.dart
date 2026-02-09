@@ -14,12 +14,11 @@ class RetryUtility {
     assert(maxRetries > 0, 'maxRetries must be > 0');
     assert(backoffMultiplier >= 1, 'backoffMultiplier must be >= 1');
 
-    Duration delay = initialDelay;
+    var delay = initialDelay;
     late Exception lastException;
 
-    for (int attempt = 0; attempt <= maxRetries; attempt++) {
+    for (var attempt = 0; attempt <= maxRetries; attempt++) {
       try {
-         
         return await operation();
       } catch (e) {
         lastException = e is Exception ? e : Exception(e.toString());
@@ -35,7 +34,7 @@ class RetryUtility {
         }
 
         debugPrint('⏳ انتظار ${delay.inMilliseconds}ms...');
-        await Future.delayed(delay);
+        await Future<void>.delayed(delay);
 
         delay = Duration(
           milliseconds: (delay.inMilliseconds * backoffMultiplier).ceil(),

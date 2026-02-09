@@ -22,6 +22,5 @@ class SignInScreen extends ConsumerWidget {
       ),
     );
   }
+// ignore: eol_at_end_of_file
 }
-
-

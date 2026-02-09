@@ -25,9 +25,9 @@ mixin _$RejectionRequestDto {
   String get driverName => throw _privateConstructorUsedError;
   String get reason => throw _privateConstructorUsedError;
   AdminDecision get adminDecision => throw _privateConstructorUsedError;
-  String? get adminComment => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get adminComment => throw _privateConstructorUsedError;
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -51,9 +51,9 @@ abstract class $RejectionRequestDtoCopyWith<$Res> {
       String driverName,
       String reason,
       AdminDecision adminDecision,
-      String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       DateTime createdAt,
+      String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       DateTime? updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false) String? id});
@@ -77,8 +77,8 @@ class _$RejectionRequestDtoCopyWithImpl<$Res, $Val extends RejectionRequestDto>
     Object? driverName = null,
     Object? reason = null,
     Object? adminDecision = null,
-    Object? adminComment = freezed,
     Object? createdAt = null,
+    Object? adminComment = freezed,
     Object? updatedAt = freezed,
     Object? id = freezed,
   }) {
@@ -103,14 +103,14 @@ class _$RejectionRequestDtoCopyWithImpl<$Res, $Val extends RejectionRequestDto>
           ? _value.adminDecision
           : adminDecision // ignore: cast_nullable_to_non_nullable
               as AdminDecision,
-      adminComment: freezed == adminComment
-          ? _value.adminComment
-          : adminComment // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -137,9 +137,9 @@ abstract class _$$RejectionRequestDtoImplCopyWith<$Res>
       String driverName,
       String reason,
       AdminDecision adminDecision,
-      String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       DateTime createdAt,
+      String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       DateTime? updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false) String? id});
@@ -161,8 +161,8 @@ class __$$RejectionRequestDtoImplCopyWithImpl<$Res>
     Object? driverName = null,
     Object? reason = null,
     Object? adminDecision = null,
-    Object? adminComment = freezed,
     Object? createdAt = null,
+    Object? adminComment = freezed,
     Object? updatedAt = freezed,
     Object? id = freezed,
   }) {
@@ -187,14 +187,14 @@ class __$$RejectionRequestDtoImplCopyWithImpl<$Res>
           ? _value.adminDecision
           : adminDecision // ignore: cast_nullable_to_non_nullable
               as AdminDecision,
-      adminComment: freezed == adminComment
-          ? _value.adminComment
-          : adminComment // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -216,9 +216,9 @@ class _$RejectionRequestDtoImpl extends _RejectionRequestDto {
       required this.driverName,
       required this.reason,
       required this.adminDecision,
-      this.adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       required this.createdAt,
+      this.adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       this.updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false) this.id})
@@ -238,10 +238,10 @@ class _$RejectionRequestDtoImpl extends _RejectionRequestDto {
   @override
   final AdminDecision adminDecision;
   @override
-  final String? adminComment;
-  @override
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   final DateTime createdAt;
+  @override
+  final String? adminComment;
   @override
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   final DateTime? updatedAt;
@@ -251,7 +251,7 @@ class _$RejectionRequestDtoImpl extends _RejectionRequestDto {
 
   @override
   String toString() {
-    return 'RejectionRequestDto(orderId: $orderId, driverId: $driverId, driverName: $driverName, reason: $reason, adminDecision: $adminDecision, adminComment: $adminComment, createdAt: $createdAt, updatedAt: $updatedAt, id: $id)';
+    return 'RejectionRequestDto(orderId: $orderId, driverId: $driverId, driverName: $driverName, reason: $reason, adminDecision: $adminDecision, createdAt: $createdAt, adminComment: $adminComment, updatedAt: $updatedAt, id: $id)';
   }
 
   @override
@@ -267,10 +267,10 @@ class _$RejectionRequestDtoImpl extends _RejectionRequestDto {
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.adminDecision, adminDecision) ||
                 other.adminDecision == adminDecision) &&
-            (identical(other.adminComment, adminComment) ||
-                other.adminComment == adminComment) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.adminComment, adminComment) ||
+                other.adminComment == adminComment) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.id, id) || other.id == id));
@@ -279,7 +279,7 @@ class _$RejectionRequestDtoImpl extends _RejectionRequestDto {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, orderId, driverId, driverName,
-      reason, adminDecision, adminComment, createdAt, updatedAt, id);
+      reason, adminDecision, createdAt, adminComment, updatedAt, id);
 
   @JsonKey(ignore: true)
   @override
@@ -303,9 +303,9 @@ abstract class _RejectionRequestDto extends RejectionRequestDto {
       required final String driverName,
       required final String reason,
       required final AdminDecision adminDecision,
-      final String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       required final DateTime createdAt,
+      final String? adminComment,
       @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
       final DateTime? updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -326,10 +326,10 @@ abstract class _RejectionRequestDto extends RejectionRequestDto {
   @override
   AdminDecision get adminDecision;
   @override
-  String? get adminComment;
-  @override
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   DateTime get createdAt;
+  @override
+  String? get adminComment;
   @override
   @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
   DateTime? get updatedAt;

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../core_features/theme/presentation/utils/custom_colors.dart';
 import 'platform_base_widget.dart';
 
-class PlatformRefreshIndicator extends PlatformBaseWidget<RefreshIndicator, CustomScrollView> {
+class PlatformRefreshIndicator
+    extends PlatformBaseWidget<RefreshIndicator, CustomScrollView> {
   const PlatformRefreshIndicator({
     required this.onRefresh,
     required this.slivers,

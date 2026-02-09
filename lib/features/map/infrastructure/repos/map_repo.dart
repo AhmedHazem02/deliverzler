@@ -34,8 +34,10 @@ class MapRepo {
     String placeName, {
     CancelToken? cancelToken,
   }) async {
-    final autocomplete = await remoteDataSource.getPlaceAutocomplete(placeName,
-        cancelToken: cancelToken);
+    final autocomplete = await remoteDataSource.getPlaceAutocomplete(
+      placeName,
+      cancelToken: cancelToken,
+    );
     return autocomplete.map((item) => item.toDomain()).toList();
   }
 
@@ -43,8 +45,10 @@ class MapRepo {
     String placeId, {
     CancelToken? cancelToken,
   }) async {
-    final placeDetails = await remoteDataSource.getPlaceDetails(placeId,
-        cancelToken: cancelToken);
+    final placeDetails = await remoteDataSource.getPlaceDetails(
+      placeId,
+      cancelToken: cancelToken,
+    );
     return placeDetails.toDomain();
   }
 
@@ -52,37 +56,34 @@ class MapRepo {
     PlaceDirectionsQuery query, {
     CancelToken? cancelToken,
   }) async {
-    
     // Use JavaScript DirectionsService on web (REST API doesn't support CORS)
     if (kIsWeb) {
-  
       try {
         final directions = await _webDirectionsService.getDirections(
           origin: LatLng(query.origin.latitude, query.origin.longitude),
           destination:
               LatLng(query.destination.latitude, query.destination.longitude),
         );
-        
+
         return directions;
-      } catch (e, stack) {
-        
+      } catch (e) {
         rethrow;
       }
     }
 
     // Use REST API for mobile platforms
-    
+
     try {
       final dto = PlaceDirectionsQueryDto.fromDomain(query);
-     
-      final directions = await remoteDataSource.getPlaceDirections(dto,
-          cancelToken: cancelToken);
-      
+
+      final directions = await remoteDataSource.getPlaceDirections(
+        dto,
+        cancelToken: cancelToken,
+      );
+
       return directions.toDomain();
-    } catch (e, stack) {
-      
+    } catch (e) {
       rethrow;
     }
   }
 }
-

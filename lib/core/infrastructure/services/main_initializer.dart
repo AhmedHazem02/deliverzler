@@ -54,7 +54,8 @@ Future<void> _initFirebase() async {
   try {
     log('Firebase: Initializing...');
     await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     log('Firebase: Initialized successfully');
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -76,8 +77,8 @@ Future<void> _precacheAssets(BuildContext context) async {
 
 Future<void> _initSupabase() async {
   // Try to get from environment first
-  String supabaseUrl = const String.fromEnvironment('SUPABASE_URL');
-  String supabaseAnonKey = const String.fromEnvironment('SUPABASE_ANON_KEY');
+  var supabaseUrl = const String.fromEnvironment('SUPABASE_URL');
+  var supabaseAnonKey = const String.fromEnvironment('SUPABASE_ANON_KEY');
 
   // Fallback to hardcoded values for development if environment variables are missing
   if (supabaseUrl.isEmpty) {

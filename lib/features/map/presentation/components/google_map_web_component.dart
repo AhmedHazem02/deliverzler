@@ -1,11 +1,12 @@
 // ignore: deprecated_member_use
+// ignore_for_file: avoid_dynamic_calls, deprecated_member_use, avoid_web_libraries_in_flutter, duplicate_ignore
+
 import 'dart:html' as html;
 // ignore: deprecated_member_use
 import 'dart:js' as js;
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:ui_web' as ui_web;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'
     show Circle, Marker, Polyline;
@@ -257,7 +258,7 @@ class _GoogleMapWebComponentState extends ConsumerState<GoogleMapWebComponent> {
     try {
       final styles = isDark
           ? js.context.callMethod('eval', ['(${_getDarkMapStyle()})'])
-          : js.JsArray();
+          : js.JsArray<dynamic>();
       _map!.callMethod('setOptions', [
         js.JsObject.jsify({'styles': styles}),
       ]);

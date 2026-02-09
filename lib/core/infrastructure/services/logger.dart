@@ -2,7 +2,8 @@ import 'dart:developer' as dev;
 
 import 'package:logging/logging.dart';
 
-void Function(LogRecord)? loggerOnDataCallback({String prefix = '', LogColor? logColor}) {
+void Function(LogRecord)? loggerOnDataCallback(
+    {String prefix = '', LogColor? logColor}) {
   return (record) {
     final message = logColor?.colorize(record.message) ?? record.message;
     dev.log(
@@ -36,6 +37,7 @@ enum LogColor {
 
   String _multiLineColor(String msg) {
     final pattern = RegExp(r'(^.*$)', multiLine: true);
-    return msg.replaceAllMapped(pattern, (match) => '$_code${match.group(0)}$_resetCode');
+    return msg.replaceAllMapped(
+        pattern, (match) => '$_code${match.group(0)}$_resetCode');
   }
 }

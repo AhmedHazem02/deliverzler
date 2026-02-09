@@ -26,7 +26,7 @@ final routeHistoryRemoteDataSourceProvider =
 
 typedef RouteHistoryRemoteDataSourceRef
     = ProviderRef<RouteHistoryRemoteDataSource>;
-String _$saveRouteHistoryHash() => r'476b9aa1b2760e6a3813953499640a909b4889bd';
+String _$saveRouteHistoryHash() => r'f4de442689c40b3bb1623020c428f25d071db5c7';
 
 /// Saves route history points every 10-15 seconds
 /// This creates a track history for dispute resolution and performance analysis

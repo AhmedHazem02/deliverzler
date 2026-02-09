@@ -23,5 +23,3 @@ class RouteErrorScreen extends HookConsumerWidget {
     );
   }
 }
-
-

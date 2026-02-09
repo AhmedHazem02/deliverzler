@@ -38,13 +38,27 @@ class RejectionRequestDto with _$RejectionRequestDto {
     required String driverName,
     required String reason,
     required AdminDecision adminDecision,
-    String? adminComment,
     @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
     required DateTime createdAt,
+    String? adminComment,
     @JsonKey(fromJson: _timestampFromJson, toJson: _timestampToJson)
     DateTime? updatedAt,
     @JsonKey(includeFromJson: false, includeToJson: false) String? id,
   }) = _RejectionRequestDto;
+
+  factory RejectionRequestDto.fromDomain(RejectionRequest request) {
+    return RejectionRequestDto(
+      id: request.requestId,
+      orderId: request.orderId,
+      driverId: request.driverId,
+      driverName: request.driverName,
+      reason: request.reason,
+      adminDecision: request.adminDecision,
+      adminComment: request.adminComment,
+      createdAt: request.createdAt,
+      updatedAt: request.updatedAt,
+    );
+  }
 
   const RejectionRequestDto._();
 
@@ -62,20 +76,6 @@ class RejectionRequestDto with _$RejectionRequestDto {
   ) {
     return List<RejectionRequestDto>.from(
       documents.map(RejectionRequestDto.fromFirestore),
-    );
-  }
-
-  factory RejectionRequestDto.fromDomain(RejectionRequest request) {
-    return RejectionRequestDto(
-      id: request.requestId,
-      orderId: request.orderId,
-      driverId: request.driverId,
-      driverName: request.driverName,
-      reason: request.reason,
-      adminDecision: request.adminDecision,
-      adminComment: request.adminComment,
-      createdAt: request.createdAt,
-      updatedAt: request.updatedAt,
     );
   }
 

@@ -12,7 +12,9 @@ part 'update_delivery_geo_point_dto.g.dart';
 class UpdateDeliveryGeoPointDto with _$UpdateDeliveryGeoPointDto {
   const factory UpdateDeliveryGeoPointDto({
     @JsonKey(includeToJson: false) required String orderId,
-    @JsonKey(name: 'deliveryGeoPoint') @GeoPointConverter() required GeoPoint geoPoint,
+    @JsonKey(name: 'deliveryGeoPoint')
+    @GeoPointConverter()
+    required GeoPoint geoPoint,
     @JsonKey(name: 'deliveryHeading') required double heading,
   }) = _UpdateDeliveryGeoPointDto;
 

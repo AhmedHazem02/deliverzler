@@ -93,7 +93,8 @@ class FirebaseFirestoreFacade {
   }) async {
     return _futureErrorHandler(
       () async {
-        Query<Map<String, dynamic>> reference = firebaseFirestore.collection(path);
+        Query<Map<String, dynamic>> reference =
+            firebaseFirestore.collection(path);
         if (queryBuilder != null) {
           reference = queryBuilder(reference);
         }
@@ -136,7 +137,8 @@ class FirebaseFirestoreFacade {
   }) {
     return _streamErrorHandler(
       () {
-        Query<Map<String, dynamic>> reference = firebaseFirestore.collection(path);
+        Query<Map<String, dynamic>> reference =
+            firebaseFirestore.collection(path);
         if (queryBuilder != null) {
           reference = queryBuilder(reference);
         }
@@ -172,4 +174,3 @@ class FirebaseFirestoreFacade {
     });
   }
 }
-

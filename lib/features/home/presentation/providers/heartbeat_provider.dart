@@ -37,9 +37,7 @@ class Heartbeat extends _$Heartbeat {
     }
 
     // Cleanup on dispose
-    ref.onDispose(() {
-      _stopHeartbeat();
-    });
+    ref.onDispose(_stopHeartbeat);
   }
 
   void _startHeartbeat() {

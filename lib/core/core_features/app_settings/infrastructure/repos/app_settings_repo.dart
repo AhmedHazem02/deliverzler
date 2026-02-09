@@ -206,13 +206,15 @@ class AppSettingsRepo {
         'maxDeliveryRadius': dto.delivery.maxDeliveryRadius,
         'estimatedDeliveryTime': dto.delivery.estimatedDeliveryTime,
         'zones': dto.delivery.zones
-            .map((z) => {
-                  'id': z.id,
-                  'name': z.name,
-                  'nameAr': z.nameAr,
-                  'fee': z.fee,
-                  'isActive': z.isActive,
-                })
+            .map(
+              (z) => {
+                'id': z.id,
+                'name': z.name,
+                'nameAr': z.nameAr,
+                'fee': z.fee,
+                'isActive': z.isActive,
+              },
+            )
             .toList(),
       },
       'updatedAt': dto.updatedAt?.toIso8601String(),

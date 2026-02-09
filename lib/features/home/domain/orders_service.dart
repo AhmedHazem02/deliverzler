@@ -20,8 +20,8 @@ class OrdersService {
     required String? orderDeliveryId,
   }) {
     final canProceed = userId == orderDeliveryId;
-    final isLoading = ref.read(updateDeliveryStatusControllerProvider).isLoading;
+    final isLoading =
+        ref.read(updateDeliveryStatusControllerProvider).isLoading;
     return (canProceed: canProceed, isLoading: isLoading);
   }
 }
-

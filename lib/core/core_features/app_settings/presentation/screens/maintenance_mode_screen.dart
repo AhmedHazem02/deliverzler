@@ -21,14 +21,14 @@ class MaintenanceModeScreen extends ConsumerWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(context).colorScheme.primary.withOpacity(0.8),
+              Theme.of(context).colorScheme.primary.withValues(alpha: 0.8),
               Theme.of(context).colorScheme.primary,
             ],
           ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding: const EdgeInsets.all(32),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -37,7 +37,7 @@ class MaintenanceModeScreen extends ConsumerWidget {
                   width: 120,
                   height: 120,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -65,7 +65,7 @@ class MaintenanceModeScreen extends ConsumerWidget {
                   'نقوم حالياً بتحسين التطبيق\nسنعود قريباً!',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     height: 1.5,
                   ),
                   textAlign: TextAlign.center,

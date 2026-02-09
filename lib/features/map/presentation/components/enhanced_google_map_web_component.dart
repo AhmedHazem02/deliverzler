@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:convert';
 // ignore: deprecated_member_use
 import 'dart:html' as html;
@@ -8,7 +10,7 @@ import 'dart:ui_web' as ui_web;
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart'
-    show BitmapDescriptor, CameraPosition, Circle, LatLng, Marker, Polyline;
+    show BitmapDescriptor, CameraPosition, Circle, Marker, Polyline;
 
 import '../../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../../core/core_features/theme/presentation/utils/app_theme.dart';
@@ -84,7 +86,7 @@ class _EnhancedGoogleMapWebComponentState
       final isDark = ref.read(currentAppThemeModeProvider) == AppThemeMode.dark;
 
       // Get map styles from helper
-      final mapStyles = isDark ? await _getDarkMapStyles() : [];
+      final mapStyles = isDark ? await _getDarkMapStyles() : <String>[];
 
       // Create map using Google Maps JavaScript API
       final mapOptions = js.JsObject.jsify({
@@ -214,7 +216,8 @@ class _EnhancedGoogleMapWebComponentState
       } else {
         // Create new marker
         debugPrint(
-            '🌐 WebMap._updateMarkers: CREATING new marker "$markerId" at ${marker.position.latitude},${marker.position.longitude}');
+          '🌐 WebMap._updateMarkers: CREATING new marker "$markerId" at ${marker.position.latitude},${marker.position.longitude}',
+        );
         _createMarker(marker);
       }
     }
@@ -224,7 +227,7 @@ class _EnhancedGoogleMapWebComponentState
 
   void _updateMarkerData(Marker marker, js.JsObject jsMarker) {
     // Consolidated update (Atomic operation to prevent flickering)
-    final Map<String, dynamic> optionsToUpdate = {
+    final optionsToUpdate = <String, dynamic>{
       'position': {
         'lat': marker.position.latitude,
         'lng': marker.position.longitude,
@@ -254,7 +257,7 @@ class _EnhancedGoogleMapWebComponentState
   /// Content-based hash for byte arrays to use as cache key.
   int _bytesHash(List<int> bytes) {
     // Simple FNV-1a hash for fast content comparison
-    int hash = 0x811c9dc5;
+    var hash = 0x811c9dc5;
     for (final b in bytes) {
       hash ^= b;
       hash = (hash * 0x01000193) & 0xFFFFFFFF;
@@ -264,7 +267,7 @@ class _EnhancedGoogleMapWebComponentState
 
   final Map<String, int> _dataUriContentHash = {};
 
-  dynamic _parseIcon(BitmapDescriptor icon, String markerId) {
+  String? _parseIcon(BitmapDescriptor icon, String markerId) {
     try {
       final json = icon.toJson() as List<dynamic>;
       final type = json[0] as String;
@@ -334,6 +337,7 @@ class _EnhancedGoogleMapWebComponentState
         'title': marker.infoWindow.title ?? marker.markerId.value,
         'draggable': marker.draggable,
         'visible': marker.visible,
+        // ignore: deprecated_member_use
         'zIndex': marker.zIndex.toInt(),
         'optimized': true,
         'rotation': marker.rotation,
@@ -403,12 +407,13 @@ class _EnhancedGoogleMapWebComponentState
         },
         'radius': circle.radius,
         'fillColor': _colorToHex(circle.fillColor),
-        'fillOpacity': circle.fillColor.opacity,
+        'fillOpacity': circle.fillColor.a,
         'strokeColor': _colorToHex(circle.strokeColor),
-        'strokeOpacity': circle.strokeColor.opacity,
+        'strokeOpacity': circle.strokeColor.a,
         'strokeWeight': circle.strokeWidth,
         'map': _map,
         'visible': circle.visible,
+        // ignore: deprecated_member_use
         'zIndex': circle.zIndex,
       });
 
@@ -454,11 +459,11 @@ class _EnhancedGoogleMapWebComponentState
         'path': path,
         'geodesic': polyline.geodesic,
         'strokeColor': _colorToHex(polyline.color),
-        'strokeOpacity':
-            polyline.color.opacity > 0 ? polyline.color.opacity : 1.0,
+        'strokeOpacity': polyline.color.a > 0 ? polyline.color.a : 1.0,
         'strokeWeight': polyline.width > 0 ? polyline.width : 5,
         'map': _map,
         'visible': true,
+        // ignore: deprecated_member_use
         'zIndex': polyline.zIndex > 0 ? polyline.zIndex : 1,
       });
 
@@ -482,7 +487,10 @@ class _EnhancedGoogleMapWebComponentState
   }
 
   String _colorToHex(Color color) {
-    return '#${color.value.toRadixString(16).padLeft(8, '0').substring(2)}';
+    final r = (color.r * 255).round().toRadixString(16).padLeft(2, '0');
+    final g = (color.g * 255).round().toRadixString(16).padLeft(2, '0');
+    final b = (color.b * 255).round().toRadixString(16).padLeft(2, '0');
+    return '#$r$g$b';
   }
 
   int _getControlPosition(String position) {
@@ -494,7 +502,7 @@ class _EnhancedGoogleMapWebComponentState
   Future<List<dynamic>> _getDarkMapStyles() async {
     try {
       final darkStyle = await MapStyleHelper.getMapStyle(isDarkMode: true);
-      if (darkStyle != null && darkStyle.isNotEmpty) {
+      if (darkStyle.isNotEmpty) {
         // Parse the JSON string into a List for Google Maps JS API
         final parsed = json.decode(darkStyle);
         if (parsed is List) return parsed;
@@ -588,7 +596,7 @@ class _EnhancedGoogleMapWebComponentState
     if (_map == null) return;
 
     try {
-      final styles = isDark ? await _getDarkMapStyles() : [];
+      final styles = isDark ? await _getDarkMapStyles() : <dynamic>[];
       _map!.callMethod('setOptions', [
         js.JsObject.jsify({'styles': styles}),
       ]);

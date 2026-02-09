@@ -19,7 +19,10 @@ class SignOutState extends _$SignOutState {
     state = await AsyncValue.guard(() async {
       unawaited(ref.read(authRepoProvider).signOut().suppressError());
       unawaited(
-        ref.read(notificationServiceProvider).unsubscribeFromTopic('general').suppressError(),
+        ref
+            .read(notificationServiceProvider)
+            .unsubscribeFromTopic('general')
+            .suppressError(),
       );
 
       ref.read(authStateProvider.notifier).unAuthenticateUser();

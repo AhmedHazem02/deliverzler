@@ -41,7 +41,9 @@ class ProfileRemoteDataSource {
 
   /// Upload profile image from bytes (cross-platform)
   Future<String> uploadProfileImage(
-      Uint8List imageBytes, String filename) async {
+    Uint8List imageBytes,
+    String filename,
+  ) async {
     final uid = ref.read(currentUserProvider).id;
     final imageUrl = await firebaseStorage.uploadImage(
       //File name is always user's uid, to replace the file when updating it.

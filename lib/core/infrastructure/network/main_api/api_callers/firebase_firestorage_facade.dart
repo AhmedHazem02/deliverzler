@@ -32,11 +32,11 @@ class FirebaseStorageFacade {
     return await _errorHandler(
       () async {
         final uploadTask = firebaseStorage.ref().child(path).putData(
-          bytes,
-          SettableMetadata(
-            contentType: 'image/${filename?.split('.').last ?? 'png'}',
-          ),
-        );
+              bytes,
+              SettableMetadata(
+                contentType: 'image/${filename?.split('.').last ?? 'png'}',
+              ),
+            );
         final downloadURL = await (await uploadTask).ref.getDownloadURL();
         return downloadURL;
       },
@@ -74,4 +74,3 @@ class FirebaseStorageFacade {
     }
   }
 }
-

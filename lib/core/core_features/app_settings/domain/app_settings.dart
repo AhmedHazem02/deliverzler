@@ -15,6 +15,13 @@ class AppSettings {
     this.updatedAt,
   });
 
+  /// Creates default settings for offline fallback.
+  factory AppSettings.defaults() => AppSettings(
+        general: GeneralSettings.defaults(),
+        delivery: DeliverySettings.defaults(),
+        updatedAt: DateTime.now(),
+      );
+
   /// General app settings.
   final GeneralSettings general;
 
@@ -23,13 +30,6 @@ class AppSettings {
 
   /// Last update timestamp.
   final DateTime? updatedAt;
-
-  /// Creates default settings for offline fallback.
-  factory AppSettings.defaults() => AppSettings(
-        general: GeneralSettings.defaults(),
-        delivery: DeliverySettings.defaults(),
-        updatedAt: DateTime.now(),
-      );
 
   AppSettings copyWith({
     GeneralSettings? general,
@@ -70,6 +70,15 @@ class GeneralSettings {
     this.maintenanceMode = false,
   });
 
+  /// Creates default general settings.
+  factory GeneralSettings.defaults() => const GeneralSettings(
+        appName: 'Deliverzler',
+        appNameAr: 'ديليفرزلر',
+        currency: 'EGP',
+        currencySymbol: 'ج.م',
+        timezone: 'Africa/Cairo',
+      );
+
   /// App name in English.
   final String appName;
 
@@ -93,16 +102,6 @@ class GeneralSettings {
 
   /// Whether the app is in maintenance mode.
   final bool maintenanceMode;
-
-  /// Creates default general settings.
-  factory GeneralSettings.defaults() => const GeneralSettings(
-        appName: 'Deliverzler',
-        appNameAr: 'ديليفرزلر',
-        currency: 'EGP',
-        currencySymbol: 'ج.م',
-        timezone: 'Africa/Cairo',
-        maintenanceMode: false,
-      );
 
   GeneralSettings copyWith({
     String? appName,
@@ -160,11 +159,21 @@ class DeliverySettings {
     required this.baseDeliveryFee,
     required this.feePerKilometer,
     required this.minimumOrderAmount,
-    this.freeDeliveryThreshold,
     required this.maxDeliveryRadius,
     required this.estimatedDeliveryTime,
+    this.freeDeliveryThreshold,
     this.zones = const [],
   });
+
+  /// Creates default delivery settings.
+  factory DeliverySettings.defaults() => const DeliverySettings(
+        baseDeliveryFee: 15,
+        feePerKilometer: 3,
+        minimumOrderAmount: 30,
+        freeDeliveryThreshold: 150,
+        maxDeliveryRadius: 25,
+        estimatedDeliveryTime: 45,
+      );
 
   /// Base delivery fee in currency units.
   final double baseDeliveryFee;
@@ -186,17 +195,6 @@ class DeliverySettings {
 
   /// Delivery zones configuration.
   final List<DeliveryZone> zones;
-
-  /// Creates default delivery settings.
-  factory DeliverySettings.defaults() => const DeliverySettings(
-        baseDeliveryFee: 15.0,
-        feePerKilometer: 3.0,
-        minimumOrderAmount: 30.0,
-        freeDeliveryThreshold: 150.0,
-        maxDeliveryRadius: 25,
-        estimatedDeliveryTime: 45,
-        zones: [],
-      );
 
   /// Calculates delivery fee for a given distance.
   double calculateDeliveryFee(double distanceKm) {
@@ -262,8 +260,8 @@ class DeliveryZone {
   const DeliveryZone({
     required this.id,
     required this.name,
-    this.nameAr,
     required this.fee,
+    this.nameAr,
     this.isActive = true,
   });
 

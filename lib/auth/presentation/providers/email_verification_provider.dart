@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../core/presentation/utils/fp_framework.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/auth_failure.dart';
 import '../../infrastructure/repos/auth_repo.dart';
@@ -58,8 +57,9 @@ class EmailVerification extends _$EmailVerification {
   }
 
   Future<void> checkVerificationStatus({bool silent = false}) async {
-    if (state.isChecking && !silent)
+    if (state.isChecking && !silent) {
       return; // Prevent multiple simultaneous checks
+    }
 
     if (!silent) {
       state = state.copyWith(isChecking: true, errorMessage: null);
@@ -139,6 +139,12 @@ class EmailVerification extends _$EmailVerification {
       serverError: (message) => message ?? 'Server error',
       emailNotVerified: () => 'Email not verified',
       userDisabled: () => 'User account disabled',
+      invalidPhoneNumber: () => 'Invalid phone number',
+      invalidVerificationCode: () => 'Invalid verification code',
+      smsQuotaExceeded: () => 'SMS quota exceeded',
+      phoneVerificationFailed: (message) =>
+          message ?? 'Phone verification failed',
+      sessionExpired: () => 'Session expired',
     );
   }
 }

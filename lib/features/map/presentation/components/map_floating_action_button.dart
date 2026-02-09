@@ -32,5 +32,3 @@ class MapFloatingActionButton extends ConsumerWidget {
     );
   }
 }
-
-

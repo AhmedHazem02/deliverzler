@@ -26,22 +26,22 @@ class SignInScreenCompact extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
                   vertical: Sizes.screenPaddingV16,
                   horizontal: Sizes.screenPaddingH28,
                 ),
                 child: Column(
                   children: [
                     // Settings bar (Theme & Language)
-                    const AuthSettingsBar(),
-                    const Flexible(
+                    AuthSettingsBar(),
+                    Flexible(
                       child: LoginLogoComponent(),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: Sizes.marginV12,
                     ),
-                    const Flexible(
+                    Flexible(
                       flex: 2,
                       child: LoginContentComponent(),
                     ),

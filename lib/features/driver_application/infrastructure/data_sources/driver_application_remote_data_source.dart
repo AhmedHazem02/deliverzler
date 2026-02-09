@@ -1,4 +1,4 @@
-﻿import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -41,28 +41,32 @@ class DriverApplicationRemoteDataSource {
   Future<String> submitApplication(DriverApplicationDto applicationDto) async {
     debugPrint('🔥 [DriverAppRemote] submitApplication called');
     debugPrint('🔥 [DriverAppRemote] userId: ${applicationDto.userId}');
-    
+
     final applicationId = applicationDto.userId;
     final data = applicationDto.toFirestore();
-    
+
     debugPrint('🔥 [DriverAppRemote] applicationId: $applicationId');
-    debugPrint('🔥 [DriverAppRemote] Document path: ${applicationDocPath(applicationId)}');
+    debugPrint(
+      '🔥 [DriverAppRemote] Document path: ${applicationDocPath(applicationId)}',
+    );
     debugPrint('🔥 [DriverAppRemote] Data to save: $data');
-    
+
     try {
       await firebaseFirestore.setData(
         path: applicationDocPath(applicationId),
         data: data,
         merge: true,
       );
-      debugPrint('✅ [DriverAppRemote] Application saved to Firestore successfully!');
+      debugPrint(
+        '✅ [DriverAppRemote] Application saved to Firestore successfully!',
+      );
     } catch (e, stackTrace) {
       debugPrint('❌ [DriverAppRemote] Failed to save to Firestore!');
       debugPrint('❌ [DriverAppRemote] Error: $e');
       debugPrint('❌ [DriverAppRemote] Stack trace: $stackTrace');
       rethrow;
     }
-    
+
     return applicationId;
   }
 
@@ -79,10 +83,12 @@ class DriverApplicationRemoteDataSource {
       }
 
       return DriverApplicationDto.fromFirestore(
-          docSnapshot as DocumentSnapshot<Map<String, dynamic>>);
+        docSnapshot as DocumentSnapshot<Map<String, dynamic>>,
+      );
     } catch (e) {
       throw Exception(
-          'فشل تحميل طلب التقديم. تأكد من اتصالك بالإنترنت: ${e.toString()}');
+        'فشل تحميل طلب التقديم. تأكد من اتصالك بالإنترنت: $e',
+      );
     }
   }
 
@@ -112,10 +118,9 @@ class DriverApplicationRemoteDataSource {
       if (!docSnapshot.exists || docSnapshot.data() == null) {
         return null;
       }
-      final dto = DriverApplicationDto.fromFirestore(
-          docSnapshot as DocumentSnapshot<Map<String, dynamic>>);
+      final dto = DriverApplicationDto.fromFirestore(docSnapshot);
       return dto.toDomain();
-    }).handleError((error, stackTrace) {
+    }).handleError((Object error, StackTrace stackTrace) {
       // Log the error for debugging
       print('Error watching application: $error');
       // Return null instead of throwing to allow graceful handling

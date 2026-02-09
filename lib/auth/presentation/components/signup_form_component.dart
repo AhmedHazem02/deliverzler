@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 import '../../../core/presentation/helpers/localization_helper.dart';
 import '../../../core/presentation/styles/styles.dart';
 import '../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../presentation/providers/sign_up_provider.dart';
-import '../../../core/infrastructure/error/app_exception.dart';
 import '../../../core/presentation/extensions/app_error_extension.dart';
 import '../../domain/sign_in_with_email.dart';
 
@@ -120,5 +118,3 @@ class SignupFormComponent extends HookConsumerWidget {
     );
   }
 }
-
-

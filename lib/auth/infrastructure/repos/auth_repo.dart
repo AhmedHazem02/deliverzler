@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuthException;
+import 'package:firebase_auth/firebase_auth.dart'
+    show FirebaseAuthException, PhoneAuthCredential;
 import 'package:flutter/foundation.dart';
 
 import '../../../core/infrastructure/error/app_exception.dart';
@@ -150,6 +151,152 @@ class AuthRepo {
       return left(AuthFailure.serverError(e.message));
     } catch (e) {
       return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Check if user is verified via either email OR phone.
+  Future<Either<AuthFailure, bool>> checkUserVerified() async {
+    try {
+      final isVerified = await remoteDataSource.checkUserVerified();
+      return right(isVerified);
+    } on ServerException catch (e) {
+      if (e.type == ServerExceptionType.unauthorized) {
+        return left(const AuthFailure.userNotFound());
+      }
+      if (e.type == ServerExceptionType.noInternet) {
+        return left(const AuthFailure.networkError());
+      }
+      return left(AuthFailure.serverError(e.message));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Check if the phone number is verified (linked).
+  Future<Either<AuthFailure, bool>> checkPhoneVerified() async {
+    try {
+      final isVerified = await remoteDataSource.checkPhoneVerified();
+      return right(isVerified);
+    } on ServerException catch (e) {
+      if (e.type == ServerExceptionType.unauthorized) {
+        return left(const AuthFailure.userNotFound());
+      }
+      if (e.type == ServerExceptionType.noInternet) {
+        return left(const AuthFailure.networkError());
+      }
+      return left(AuthFailure.serverError(e.message));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Start phone number verification (sends OTP SMS).
+  Future<Either<AuthFailure, Unit>> sendPhoneVerification({
+    required String phoneNumber,
+    required void Function(String verificationId, int? resendToken) codeSent,
+    required void Function(String verificationId) codeAutoRetrievalTimeout,
+    required void Function(PhoneAuthCredential credential)
+        verificationCompleted,
+    required void Function(FirebaseAuthException error) verificationFailed,
+    int? forceResendingToken,
+  }) async {
+    try {
+      await remoteDataSource.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        forceResendingToken: forceResendingToken,
+      );
+      return right(unit);
+    } on ServerException catch (e) {
+      if (e.type == ServerExceptionType.noInternet) {
+        return left(const AuthFailure.networkError());
+      }
+      return left(AuthFailure.serverError(e.message));
+    } on FirebaseAuthException catch (e) {
+      return left(_mapFirebasePhoneAuthException(e));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Verify the OTP code and link phone to the current user.
+  Future<Either<AuthFailure, Unit>> verifyOtpAndLinkPhone({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    try {
+      await remoteDataSource.verifyOtpAndLinkPhone(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      return right(unit);
+    } on ServerException catch (e) {
+      if (e.type == ServerExceptionType.unauthorized) {
+        return left(const AuthFailure.userNotFound());
+      }
+      return left(AuthFailure.serverError(e.message));
+    } on FirebaseAuthException catch (e) {
+      return left(_mapFirebasePhoneAuthException(e));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Link a phone credential (for auto-verification on Android).
+  Future<Either<AuthFailure, Unit>> linkPhoneCredential(
+      PhoneAuthCredential credential) async {
+    try {
+      await remoteDataSource.linkPhoneCredential(credential);
+      return right(unit);
+    } on ServerException catch (e) {
+      return left(AuthFailure.serverError(e.message));
+    } on FirebaseAuthException catch (e) {
+      return left(_mapFirebasePhoneAuthException(e));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Save the user's chosen verification method to Firestore.
+  Future<Either<AuthFailure, Unit>> setVerificationMethod({
+    required String uid,
+    required String method,
+  }) async {
+    try {
+      await remoteDataSource.setVerificationMethod(uid: uid, method: method);
+      return right(unit);
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Get the verification method chosen by the user.
+  Future<String?> getVerificationMethod(String uid) async {
+    return remoteDataSource.getVerificationMethod(uid);
+  }
+
+  AuthFailure _mapFirebasePhoneAuthException(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'invalid-phone-number':
+        return const AuthFailure.invalidPhoneNumber();
+      case 'invalid-verification-code':
+        return const AuthFailure.invalidVerificationCode();
+      case 'quota-exceeded':
+        return const AuthFailure.smsQuotaExceeded();
+      case 'session-expired':
+        return const AuthFailure.sessionExpired();
+      case 'too-many-requests':
+        return const AuthFailure.tooManyRequests();
+      case 'network-request-failed':
+        return const AuthFailure.networkError();
+      case 'credential-already-in-use':
+        return AuthFailure.phoneVerificationFailed(
+            'This phone number is already linked to another account');
+      default:
+        return AuthFailure.phoneVerificationFailed(e.message);
     }
   }
 

@@ -18,10 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$OrderItem {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get storeName => throw _privateConstructorUsedError;
@@ -39,10 +39,10 @@ abstract class $OrderItemCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
-      String? imageUrl,
       int quantity,
       double price,
       double total,
+      String? imageUrl,
       String? category,
       String? description,
       String? storeName});
@@ -63,10 +63,10 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? imageUrl = freezed,
     Object? quantity = null,
     Object? price = null,
     Object? total = null,
+    Object? imageUrl = freezed,
     Object? category = freezed,
     Object? description = freezed,
     Object? storeName = freezed,
@@ -80,10 +80,6 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -96,6 +92,10 @@ class _$OrderItemCopyWithImpl<$Res, $Val extends OrderItem>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -123,10 +123,10 @@ abstract class _$$OrderItemImplCopyWith<$Res>
   $Res call(
       {String id,
       String name,
-      String? imageUrl,
       int quantity,
       double price,
       double total,
+      String? imageUrl,
       String? category,
       String? description,
       String? storeName});
@@ -145,10 +145,10 @@ class __$$OrderItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? imageUrl = freezed,
     Object? quantity = null,
     Object? price = null,
     Object? total = null,
+    Object? imageUrl = freezed,
     Object? category = freezed,
     Object? description = freezed,
     Object? storeName = freezed,
@@ -162,10 +162,6 @@ class __$$OrderItemImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      imageUrl: freezed == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -178,6 +174,10 @@ class __$$OrderItemImplCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      imageUrl: freezed == imageUrl
+          ? _value.imageUrl
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -200,10 +200,10 @@ class _$OrderItemImpl implements _OrderItem {
   const _$OrderItemImpl(
       {required this.id,
       required this.name,
-      this.imageUrl,
       required this.quantity,
       required this.price,
       required this.total,
+      this.imageUrl,
       this.category,
       this.description,
       this.storeName});
@@ -213,13 +213,13 @@ class _$OrderItemImpl implements _OrderItem {
   @override
   final String name;
   @override
-  final String? imageUrl;
-  @override
   final int quantity;
   @override
   final double price;
   @override
   final double total;
+  @override
+  final String? imageUrl;
   @override
   final String? category;
   @override
@@ -229,7 +229,7 @@ class _$OrderItemImpl implements _OrderItem {
 
   @override
   String toString() {
-    return 'OrderItem(id: $id, name: $name, imageUrl: $imageUrl, quantity: $quantity, price: $price, total: $total, category: $category, description: $description, storeName: $storeName)';
+    return 'OrderItem(id: $id, name: $name, quantity: $quantity, price: $price, total: $total, imageUrl: $imageUrl, category: $category, description: $description, storeName: $storeName)';
   }
 
   @override
@@ -239,12 +239,12 @@ class _$OrderItemImpl implements _OrderItem {
             other is _$OrderItemImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.total, total) || other.total == total) &&
+            (identical(other.imageUrl, imageUrl) ||
+                other.imageUrl == imageUrl) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.description, description) ||
@@ -254,8 +254,8 @@ class _$OrderItemImpl implements _OrderItem {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, imageUrl, quantity,
-      price, total, category, description, storeName);
+  int get hashCode => Object.hash(runtimeType, id, name, quantity, price, total,
+      imageUrl, category, description, storeName);
 
   @JsonKey(ignore: true)
   @override
@@ -268,10 +268,10 @@ abstract class _OrderItem implements OrderItem {
   const factory _OrderItem(
       {required final String id,
       required final String name,
-      final String? imageUrl,
       required final int quantity,
       required final double price,
       required final double total,
+      final String? imageUrl,
       final String? category,
       final String? description,
       final String? storeName}) = _$OrderItemImpl;
@@ -281,13 +281,13 @@ abstract class _OrderItem implements OrderItem {
   @override
   String get name;
   @override
-  String? get imageUrl;
-  @override
   int get quantity;
   @override
   double get price;
   @override
   double get total;
+  @override
+  String? get imageUrl;
   @override
   String? get category;
   @override

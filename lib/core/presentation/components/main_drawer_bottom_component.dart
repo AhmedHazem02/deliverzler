@@ -38,5 +38,3 @@ class MainDrawerBottomComponent extends ConsumerWidget {
     );
   }
 }
-
-

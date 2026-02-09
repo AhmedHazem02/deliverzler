@@ -1,17 +1,12 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/presentation/utils/riverpod_framework.dart';
-import '../../infrastructure/data_sources/map_remote_data_source.dart';
 import '../helpers/map_style_helper.dart';
 
 /// حالة تحميل الـ Map المحسّنة
 class OptimizedMapLoadingState {
-  final bool isMapReady;
-  final bool isLocationLoaded;
-  final bool isOverlaysLoaded;
-  final Position? currentLocation;
-  final String? mapStyle;
-
   const OptimizedMapLoadingState({
     this.isMapReady = false,
     this.isLocationLoaded = false,
@@ -19,6 +14,11 @@ class OptimizedMapLoadingState {
     this.currentLocation,
     this.mapStyle,
   });
+  final bool isMapReady;
+  final bool isLocationLoaded;
+  final bool isOverlaysLoaded;
+  final Position? currentLocation;
+  final String? mapStyle;
 
   OptimizedMapLoadingState copyWith({
     bool? isMapReady,
@@ -94,7 +94,7 @@ final lazyLoadMapOverlaysProvider = FutureProvider<void>((ref) async {
 
   try {
     // تأخير بسيط للسماح للـ Map بالظهور أولاً
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     mapLoading.setOverlaysLoaded(true);
   } catch (e) {

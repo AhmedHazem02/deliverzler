@@ -17,8 +17,8 @@ class RejectionRequest with _$RejectionRequest {
     required String driverName,
     required String reason,
     required AdminDecision adminDecision,
-    String? adminComment,
     required DateTime createdAt,
+    String? adminComment,
     DateTime? updatedAt,
   }) = _RejectionRequest;
 

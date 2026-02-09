@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'dart:async';
 import 'dart:html' as html;
 
@@ -49,7 +51,7 @@ class WebLocationService {
       var completed = false;
 
       // Set timeout
-      Timer(Duration(seconds: _locationTimeout), () {
+      Timer(const Duration(seconds: _locationTimeout), () {
         if (!completed) {
           completed = true;
           completer.complete(null);
@@ -62,7 +64,7 @@ class WebLocationService {
         if (!completed) {
           completed = true;
           // Handle LegacyJavaScriptObject by casting to html.Geoposition
-          final html.Geoposition? geoPosition = position as html.Geoposition?;
+          final geoPosition = position as html.Geoposition?;
           if (geoPosition != null) {
             completer.complete(_convertToPosition(geoPosition));
           } else {
@@ -114,7 +116,7 @@ class WebLocationService {
         (dynamic position) {
           try {
             // Handle LegacyJavaScriptObject by casting to html.Geoposition
-            final html.Geoposition? geoPosition = position as html.Geoposition?;
+            final geoPosition = position as html.Geoposition?;
 
             if (geoPosition != null) {
               // Convert the position to Dart Position object
@@ -129,7 +131,8 @@ class WebLocationService {
           } catch (e) {
             if (kDebugMode) {
               debugPrint(
-                  '[WebLocationService] Error processing position update: $e');
+                '[WebLocationService] Error processing position update: $e',
+              );
             }
           }
         },
@@ -198,9 +201,9 @@ class WebLocationService {
         altitude: (coords.altitude as num?)?.toDouble() ?? 0.0,
         heading: (coords.heading as num?)?.toDouble() ?? 0.0,
         speed: (coords.speed as num?)?.toDouble() ?? 0.0,
-        speedAccuracy: 0.0,
-        altitudeAccuracy: 0.0,
-        headingAccuracy: 0.0,
+        speedAccuracy: 0,
+        altitudeAccuracy: 0,
+        headingAccuracy: 0,
       );
     } catch (e) {
       if (kDebugMode) debugPrint('Error converting position: $e');
@@ -230,8 +233,4 @@ class WebLocationService {
     _locationStreamController?.close();
     _locationStreamController = null;
   }
-}
-
-extension on int {
-  Duration get seconds => Duration(seconds: this);
 }

@@ -3,11 +3,9 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../auth/presentation/providers/check_auth_provider.dart';
 import '../../core_features/locale/presentation/providers/app_locale_provider.dart';
 import '../../core_features/theme/presentation/providers/app_theme_provider.dart';
-import '../../infrastructure/error/app_exception.dart';
 import '../../infrastructure/network/network_info.dart';
 import '../../infrastructure/notification/notification_service.dart';
 import '../extensions/future_extensions.dart';
@@ -41,8 +39,7 @@ Future<void> splashServicesWarmup(Ref ref) async {
     try {
       dev.log('splashServicesWarmup: Checking auth...');
       // Increased timeout for web to handle Firebase persistence loading
-      final timeout =
-          kIsWeb ? const Duration(seconds: 20) : const Duration(seconds: 15);
+      const timeout = kIsWeb ? Duration(seconds: 20) : Duration(seconds: 15);
       await ref.read(checkAuthProvider.future).timeout(timeout);
       dev.log('splashServicesWarmup: Auth check complete');
     } catch (e, st) {

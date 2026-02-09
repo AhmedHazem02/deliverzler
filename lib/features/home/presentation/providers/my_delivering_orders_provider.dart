@@ -13,20 +13,18 @@ List<AppOrder> myDeliveringOrders(Ref ref) {
     upcomingOrdersProvider.select(
       (orders) {
         final allOrders = orders.valueOrNull ?? [];
-        
-        final filtered = allOrders
-            .where(
-              (order) {
-                final match = order.deliveryId == userId && order.deliveryStatus == DeliveryStatus.onTheWay;
-                
-                return match;
-              },
-            )
-            .toList();
+
+        final filtered = allOrders.where(
+          (order) {
+            final match = order.deliveryId == userId &&
+                order.deliveryStatus == DeliveryStatus.onTheWay;
+
+            return match;
+          },
+        ).toList();
         return filtered;
       },
     ),
   );
-  return orders ?? [];
+  return orders;
 }
-

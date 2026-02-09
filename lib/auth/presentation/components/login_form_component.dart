@@ -8,7 +8,6 @@ import '../../../core/presentation/widgets/custom_elevated_button.dart';
 import '../../../core/presentation/widgets/platform_widgets/platform_icons.dart';
 import '../../domain/sign_in_with_email.dart';
 import '../providers/sign_in_provider.dart';
-import '../../../core/infrastructure/error/app_exception.dart';
 import '../../../core/presentation/extensions/app_error_extension.dart';
 
 class LoginFormComponent extends HookConsumerWidget {
@@ -130,7 +129,7 @@ class LoginFormComponent extends HookConsumerWidget {
               onPressed: () => const ForgotPasswordRoute().go(context),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
-                minimumSize: const Size(0, 0),
+                minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               child: Text(

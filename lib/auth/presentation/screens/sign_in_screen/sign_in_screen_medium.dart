@@ -26,16 +26,16 @@ class SignInScreenMedium extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
                   vertical: Sizes.screenPaddingV16,
                   horizontal: Sizes.screenPaddingH28,
                 ),
                 child: Column(
                   children: [
                     // Settings bar (Theme & Language)
-                    const AuthSettingsBar(),
-                    const Expanded(
+                    AuthSettingsBar(),
+                    Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

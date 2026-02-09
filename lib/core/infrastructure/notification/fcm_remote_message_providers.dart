@@ -53,4 +53,3 @@ Stream<RemoteMessage> onMessage(Ref ref) {
 Stream<RemoteMessage> onMessageOpenedApp(Ref ref) {
   return FirebaseMessaging.onMessageOpenedApp;
 }
-

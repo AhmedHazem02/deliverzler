@@ -28,7 +28,8 @@ class HomeShellAppBar extends StatelessWidget {
         centerTitle: true,
         title: Text(
           tr(context).appName,
-          style: TextStyles.f20(context).copyWith(color: Theme.of(context).colorScheme.primary),
+          style: TextStyles.f20(context)
+              .copyWith(color: Theme.of(context).colorScheme.primary),
         ),
       );
     }

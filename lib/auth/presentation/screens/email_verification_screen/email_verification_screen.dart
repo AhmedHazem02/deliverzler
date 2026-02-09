@@ -11,7 +11,7 @@ import '../../components/auth_settings_bar.dart';
 import '../../providers/email_verification_provider.dart';
 
 class EmailVerificationScreen extends StatefulHookConsumerWidget {
-  const EmailVerificationScreen({super.key, required this.email});
+  const EmailVerificationScreen({required this.email, super.key});
 
   final String email;
 
@@ -79,17 +79,21 @@ class _EmailVerificationScreenState
     });
 
     // Auto-update for cooldown timer
-    useEffect(() {
-      if (notifier.secondsRemaining > 0) {
-        final timer = Stream.periodic(const Duration(seconds: 1)).listen((_) {
-          if (notifier.secondsRemaining <= 0) {
-            ref.invalidate(emailVerificationProvider(widget.email));
-          }
-        });
-        return timer.cancel;
-      }
-      return null;
-    }, [verificationState.lastResendTime]);
+    useEffect(
+      () {
+        if (notifier.secondsRemaining > 0) {
+          final timer =
+              Stream<int>.periodic(const Duration(seconds: 1)).listen((_) {
+            if (notifier.secondsRemaining <= 0) {
+              ref.invalidate(emailVerificationProvider(widget.email));
+            }
+          });
+          return timer.cancel;
+        }
+        return null;
+      },
+      [verificationState.lastResendTime],
+    );
 
     return FullScreenScaffold(
       body: SafeArea(
@@ -142,9 +146,9 @@ class _EmailVerificationScreenState
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                  border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
                 ),
                 child: Column(
                   children: [
@@ -181,13 +185,14 @@ class _EmailVerificationScreenState
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.orange.withOpacity(0.1),
+                  color: Colors.orange.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                  border:
+                      Border.all(color: Colors.orange.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.warning_amber, color: Colors.orange),
+                    const Icon(Icons.warning_amber, color: Colors.orange),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -223,7 +228,7 @@ class _EmailVerificationScreenState
                 enableGradient: true,
                 onPressed: verificationState.isChecking
                     ? null
-                    : () => notifier.checkVerificationStatus(),
+                    : notifier.checkVerificationStatus,
                 child: verificationState.isChecking
                     ? const SizedBox(
                         height: 20,
@@ -244,7 +249,7 @@ class _EmailVerificationScreenState
               // Resend button
               OutlinedButton(
                 onPressed: notifier.canResend
-                    ? () => notifier.resendVerificationEmail()
+                    ? notifier.resendVerificationEmail
                     : null,
                 child: notifier.secondsRemaining > 0
                     ? Text(

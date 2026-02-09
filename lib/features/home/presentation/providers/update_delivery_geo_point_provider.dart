@@ -13,7 +13,9 @@ part 'update_delivery_geo_point_provider.g.dart';
 
 /// Provider for debouncing location updates for API calls (2 seconds)
 final debouncedLocationStreamProvider = StreamProvider<Position>((ref) {
-  return ref.watch(locationStreamProvider.stream).debounceTime(const Duration(seconds: 2));
+  return ref
+      .watch(locationStreamProvider.stream)
+      .debounceTime(const Duration(seconds: 2));
 });
 
 @riverpod
@@ -47,4 +49,3 @@ Future<void> updateDeliveryGeoPoint(
 ) async {
   await ref.watch(ordersRepoProvider).updateDeliveryGeoPoint(deliveryGeoPoint);
 }
-

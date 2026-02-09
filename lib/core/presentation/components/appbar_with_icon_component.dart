@@ -29,7 +29,8 @@ class AppBarWithIconComponent extends StatelessWidget {
         ),
         Text(
           title,
-          style: TextStyles.f20(context).copyWith(fontWeight: FontStyles.fontWeightSemiBold),
+          style: TextStyles.f20(context)
+              .copyWith(fontWeight: FontStyles.fontWeightSemiBold),
         ),
       ],
     );

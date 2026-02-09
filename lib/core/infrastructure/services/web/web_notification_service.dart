@@ -89,7 +89,8 @@ class WebNotificationService {
       if (registration != null) {
         if (kDebugMode) {
           debugPrint(
-              'Service Worker registered with scope: ${registration.scope}');
+            'Service Worker registered with scope: ${registration.scope}',
+          );
         }
       }
     } catch (e) {
@@ -147,7 +148,8 @@ class WebNotificationService {
     // This is a placeholder for the client-side logic
     if (kDebugMode) {
       debugPrint(
-          'Web FCM topic subscription requires server-side implementation');
+        'Web FCM topic subscription requires server-side implementation',
+      );
       debugPrint('Topic: $topic');
     }
   }
@@ -157,7 +159,8 @@ class WebNotificationService {
     // Web FCM topic unsubscription requires backend implementation
     if (kDebugMode) {
       debugPrint(
-          'Web FCM topic unsubscription requires server-side implementation');
+        'Web FCM topic unsubscription requires server-side implementation',
+      );
       debugPrint('Topic: $topic');
     }
   }

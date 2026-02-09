@@ -61,7 +61,7 @@ class ExcuseSubmissionDialog extends StatelessWidget {
           Text(
             tr(context).excuseSubmissionNote,
             style: TextStyles.f12(context).copyWith(
-              color: Theme.of(context).colorScheme.error.withOpacity(0.7),
+              color: Theme.of(context).colorScheme.error.withValues(alpha: 0.7),
             ),
             textAlign: TextAlign.start,
           ),

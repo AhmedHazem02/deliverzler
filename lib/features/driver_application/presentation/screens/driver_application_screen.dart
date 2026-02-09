@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,7 +12,7 @@ import '../../domain/driver_application.dart';
 import '../providers/driver_application_provider.dart';
 
 class DriverApplicationScreen extends HookConsumerWidget {
-  const DriverApplicationScreen({super.key, required this.userId});
+  const DriverApplicationScreen({required this.userId, super.key});
 
   final String userId;
 
@@ -33,42 +32,45 @@ class DriverApplicationScreen extends HookConsumerWidget {
     final formState = ref.watch(driverApplicationFormProvider);
 
     // Initial load of existing data if any
-    useEffect(() {
-      Future.microtask(() async {
-        final application =
-            await ref.read(driverApplicationProvider(userId).future);
-        if (application != null) {
-          final notifier = ref.read(driverApplicationFormProvider.notifier);
+    useEffect(
+      () {
+        Future.microtask(() async {
+          final application =
+              await ref.read(driverApplicationProvider(userId).future);
+          if (application != null) {
+            final notifier = ref.read(driverApplicationFormProvider.notifier);
 
-          notifier.updateName(application.name);
-          nameController.text = application.name;
+            notifier.updateName(application.name);
+            nameController.text = application.name;
 
-          notifier.updateEmail(application.email);
-          emailController.text = application.email;
+            notifier.updateEmail(application.email);
+            emailController.text = application.email;
 
-          notifier.updatePhone(application.phone);
-          phoneController.text = application.phone;
+            notifier.updatePhone(application.phone);
+            phoneController.text = application.phone;
 
-          notifier.updateIdNumber(application.idNumber);
-          idNumberController.text = application.idNumber;
+            notifier.updateIdNumber(application.idNumber);
+            idNumberController.text = application.idNumber;
 
-          notifier.updateLicenseNumber(application.licenseNumber);
-          licenseNumberController.text = application.licenseNumber;
+            notifier.updateLicenseNumber(application.licenseNumber);
+            licenseNumberController.text = application.licenseNumber;
 
-          notifier.updateLicenseExpiryDate(application.licenseExpiryDate);
-          notifier.updateVehicleType(application.vehicleType);
+            notifier.updateLicenseExpiryDate(application.licenseExpiryDate);
+            notifier.updateVehicleType(application.vehicleType);
 
-          notifier.updateVehiclePlate(application.vehiclePlate);
-          vehiclePlateController.text = application.vehiclePlate;
+            notifier.updateVehiclePlate(application.vehiclePlate);
+            vehiclePlateController.text = application.vehiclePlate;
 
-          if (application.notes != null) {
-            notifier.updateNotes(application.notes!);
-            notesController.text = application.notes!;
+            if (application.notes != null) {
+              notifier.updateNotes(application.notes!);
+              notesController.text = application.notes!;
+            }
           }
-        }
-      });
-      return null;
-    }, const []);
+        });
+        return null;
+      },
+      const [],
+    );
 
     return FullScreenScaffold(
       body: SafeArea(
@@ -107,8 +109,12 @@ class DriverApplicationScreen extends HookConsumerWidget {
                     if (formState.error != null)
                       Container(
                         margin: const EdgeInsets.only(bottom: Sizes.marginV16),
-                        padding: const EdgeInsets.fromLTRB(Sizes.marginH16,
-                            Sizes.marginV12, Sizes.marginH8, Sizes.marginV12),
+                        padding: const EdgeInsets.fromLTRB(
+                          Sizes.marginH16,
+                          Sizes.marginV12,
+                          Sizes.marginH8,
+                          Sizes.marginV12,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.red.shade50,
                           borderRadius: BorderRadius.circular(8),
@@ -116,8 +122,10 @@ class DriverApplicationScreen extends HookConsumerWidget {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.error_outline,
-                                color: Colors.red.shade700),
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red.shade700,
+                            ),
                             const SizedBox(width: Sizes.marginH12),
                             Expanded(
                               child: Text(
@@ -135,7 +143,8 @@ class DriverApplicationScreen extends HookConsumerWidget {
                               onPressed: () {
                                 ref
                                     .read(
-                                        driverApplicationFormProvider.notifier)
+                                      driverApplicationFormProvider.notifier,
+                                    )
                                     .clearError();
                               },
                             ),
@@ -185,8 +194,9 @@ class DriverApplicationScreen extends HookConsumerWidget {
                       ),
                       keyboardType: TextInputType.phone,
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return tr(context).requiredField;
+                        }
                         if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(v)) {
                           return tr(context).enterValidEgyptianPhone;
                         }
@@ -206,10 +216,12 @@ class DriverApplicationScreen extends HookConsumerWidget {
                       ),
                       keyboardType: TextInputType.number,
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return tr(context).requiredField;
-                        if (v.length != 14)
+                        }
+                        if (v.length != 14) {
                           return tr(context).idNumberLengthError;
+                        }
                         return null;
                       },
                       onChanged: ref
@@ -224,7 +236,7 @@ class DriverApplicationScreen extends HookConsumerWidget {
                     _SectionTitle(title: tr(context).vehicleInfo),
                     const SizedBox(height: Sizes.marginV12),
                     DropdownButtonFormField<VehicleType>(
-                      value: formState.vehicleType,
+                      initialValue: formState.vehicleType,
                       decoration: InputDecoration(
                         labelText: tr(context).vehicleType,
                         prefixIcon: const Icon(Icons.directions_car),
@@ -243,7 +255,8 @@ class DriverApplicationScreen extends HookConsumerWidget {
                               if (value != null) {
                                 ref
                                     .read(
-                                        driverApplicationFormProvider.notifier)
+                                      driverApplicationFormProvider.notifier,
+                                    )
                                     .updateVehicleType(value);
                               }
                             },
@@ -279,10 +292,12 @@ class DriverApplicationScreen extends HookConsumerWidget {
                       ),
                       keyboardType: TextInputType.number,
                       validator: (v) {
-                        if (v == null || v.isEmpty)
+                        if (v == null || v.isEmpty) {
                           return tr(context).requiredField;
-                        if (v.length != 14)
+                        }
+                        if (v.length != 14) {
                           return tr(context).licenseNumberLengthError;
+                        }
                         return null;
                       },
                       onChanged: ref
@@ -381,14 +396,14 @@ class DriverApplicationScreen extends HookConsumerWidget {
                                     formState.license == null ||
                                     formState.vehicleRegistration == null ||
                                     formState.vehicleInsurance == null) {
-                                  showDialog(
+                                  showDialog<void>(
                                     context: context,
                                     builder: (context) => Dialog(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16)),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
+                                        padding: const EdgeInsets.all(20),
                                         child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
@@ -400,9 +415,9 @@ class DriverApplicationScreen extends HookConsumerWidget {
                                                 Text(
                                                   tr(context).attention,
                                                   style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                                 IconButton(
                                                   icon: const Icon(Icons.close),
@@ -413,9 +428,10 @@ class DriverApplicationScreen extends HookConsumerWidget {
                                             ),
                                             const SizedBox(height: 10),
                                             const Icon(
-                                                Icons.warning_amber_rounded,
-                                                size: 50,
-                                                color: Colors.orange),
+                                              Icons.warning_amber_rounded,
+                                              size: 50,
+                                              color: Colors.orange,
+                                            ),
                                             const SizedBox(height: 16),
                                             Text(
                                               tr(context)
@@ -434,7 +450,8 @@ class DriverApplicationScreen extends HookConsumerWidget {
                                 }
                                 final applicationId = await ref
                                     .read(
-                                        driverApplicationFormProvider.notifier)
+                                      driverApplicationFormProvider.notifier,
+                                    )
                                     .submitApplication(userId);
 
                                 if (applicationId != null && context.mounted) {
@@ -551,7 +568,7 @@ class _DocumentUploadField extends StatelessWidget {
   });
 
   final String label;
-  final file; // Can be File or XFile
+  final Object? file; // Can be File or XFile
   final void Function(dynamic) onPick;
   final bool enabled;
 
@@ -580,11 +597,7 @@ class _DocumentUploadField extends StatelessWidget {
                   const SizedBox(width: Sizes.marginH8),
                   Expanded(
                     child: Text(
-                      file != null
-                          ? (file.name.isNotEmpty
-                              ? file.name
-                              : file.path.split('/').last)
-                          : label,
+                      file != null ? (_getFileName(file!)) : label,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: file != null ? null : Colors.grey,
@@ -618,5 +631,23 @@ class _DocumentUploadField extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getFileName(Object file) {
+    // Try to access name and path properties dynamically
+    try {
+      final dynamic dynamicFile = file;
+      final name = dynamicFile.name as String?;
+      if (name != null && name.isNotEmpty) {
+        return name;
+      }
+      final path = dynamicFile.path as String?;
+      if (path != null) {
+        return path.split('/').last;
+      }
+    } catch (_) {
+      // Fallback
+    }
+    return 'Unknown file';
   }
 }

@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../core/domain/json_converters/geo_point_converter.dart';
 import '../../domain/order.dart';
 import '../../domain/pickup_stop.dart';
 import '../../domain/value_objects.dart';
-import 'order_item_dto.dart';
 import 'pickup_stop_dto.dart';
 
 part 'order_dto.freezed.dart';
@@ -14,7 +12,7 @@ part 'order_dto.g.dart';
 
 // Helper function to trim status field (fixes "upcoming " with trailing space)
 // Also handles legacy data where actual status is in 'deliveryStatus' field
-Object? _readStatusValue(Map json, String key) {
+Object? _readStatusValue(Map<dynamic, dynamic> json, String key) {
   final value = json[key];
   if (value is String) {
     final trimmed = value.trim();
@@ -23,7 +21,8 @@ Object? _readStatusValue(Map json, String key) {
       final deliveryStatus = json['deliveryStatus'];
       if (deliveryStatus is String && deliveryStatus.trim() != 'upcoming') {
         debugPrint(
-            '🔄 [OrderDto] Fallback: status="$trimmed" → using deliveryStatus="$deliveryStatus"');
+          '🔄 [OrderDto] Fallback: status="$trimmed" → using deliveryStatus="$deliveryStatus"',
+        );
         return deliveryStatus.trim();
       }
     }
@@ -33,7 +32,7 @@ Object? _readStatusValue(Map json, String key) {
 }
 
 // Helper function to convert created_at to milliseconds
-int _readDateValue(Map json, String key) {
+int _readDateValue(Map<dynamic, dynamic> json, String key) {
   final value = json['created_at'];
   if (value is String) {
     return DateTime.parse(value).millisecondsSinceEpoch;
@@ -51,14 +50,17 @@ class OrderDto with _$OrderDto {
     // Date field mapping
     @JsonKey(name: 'created_at', readValue: _readDateValue) required int date,
 
-    // Pickup option (default to delivery)
-    @Default(PickupOption.delivery) PickupOption pickupOption,
-    @Default('cash') String paymentMethod,
-
     // Customer fields mapping
     @JsonKey(name: 'customer_id') required String userId,
     @JsonKey(name: 'customer_name') required String userName,
-    @JsonKey(name: 'customer_phone') required String userPhone,
+    @JsonKey(name: 'customer_phone')
+    required String
+        userPhone, // Status field (with trim to handle trailing spaces)
+    @JsonKey(name: 'status', readValue: _readStatusValue)
+    required DeliveryStatus deliveryStatus,
+    required double total, // Pickup option (default to delivery)
+    @Default(PickupOption.delivery) PickupOption pickupOption,
+    @Default('cash') String paymentMethod,
     @Default('') String userImage,
     @Default('') String userNote,
 
@@ -71,10 +73,6 @@ class OrderDto with _$OrderDto {
     @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
     @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
 
-    // Status field (with trim to handle trailing spaces)
-    @JsonKey(name: 'status', readValue: _readStatusValue)
-    required DeliveryStatus deliveryStatus,
-
     // Driver assignment
     @JsonKey(name: 'driver_id') String? deliveryId,
     String? employeeCancelNote,
@@ -82,7 +80,6 @@ class OrderDto with _$OrderDto {
 
     // Price fields
     @Default(0.0) double subTotal,
-    required double total,
     @JsonKey(name: 'delivery_price') double? deliveryFee,
 
     // Store information
@@ -200,8 +197,6 @@ class OrderDto with _$OrderDto {
       total: total,
       deliveryFee: deliveryFee ?? 0.0,
       storeId: storeId,
-      storeName: null, // Will be loaded separately if needed
-      storeAddress: null, // Will be loaded separately if needed
       adminComment: adminComment,
       rejectedByDrivers: rejectedByDrivers,
       // Multi-store fields

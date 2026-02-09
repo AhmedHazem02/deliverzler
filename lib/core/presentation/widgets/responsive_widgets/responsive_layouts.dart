@@ -18,7 +18,8 @@ enum WindowSizeClass {
     // Use width rather than shortestSide when on Web/Desktop.
     // Because when window's height is adjusted but the width is still wide,
     // it should still be considered expanded instead of medium/compact.
-    final deviceWidth = PlatformHelper.isDesktopDeviceOrWeb ? size.width : size.shortestSide;
+    final deviceWidth =
+        PlatformHelper.isDesktopDeviceOrWeb ? size.width : size.shortestSide;
 
     if (deviceWidth >= WindowSizeClass.expanded.breakpoint) {
       return WindowSizeClass.expanded;

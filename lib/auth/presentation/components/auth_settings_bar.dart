@@ -30,7 +30,7 @@ class AuthSettingsBar extends ConsumerWidget {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -66,7 +66,9 @@ class AuthSettingsBar extends ConsumerWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          isDark ? tr(context).darkTheme : tr(context).lightTheme,
+                          isDark
+                              ? tr(context).darkTheme
+                              : tr(context).lightTheme,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -77,7 +79,7 @@ class AuthSettingsBar extends ConsumerWidget {
               Container(
                 width: 1,
                 height: 24,
-                color: Colors.grey.withOpacity(0.3),
+                color: Colors.grey.withValues(alpha: 0.3),
               ),
               // Language button
               Material(

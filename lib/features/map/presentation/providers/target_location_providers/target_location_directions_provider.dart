@@ -18,7 +18,7 @@ Option<PlaceDirections> targetLocationDirections(
     skipError: true,
     skipLoadingOnReload: true,
     skipLoadingOnRefresh: true,
-    data: (data) => Some(data),
+    data: Some.new,
     orElse: () => const None(),
   );
 }

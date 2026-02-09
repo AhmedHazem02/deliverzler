@@ -6,7 +6,7 @@ part of 'edit_driver_profile_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$editDriverProfileHash() => r'18c9d117606800b82393ad2c29c4218fc89d5bf7';
+String _$editDriverProfileHash() => r'a2b5acbb966f68280d9d4c90239a16e96c217871';
 
 /// Provider to manage editing driver profile
 ///

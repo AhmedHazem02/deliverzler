@@ -29,4 +29,3 @@ FutureOr<Option<WebDeviceInfo>> webDeviceInfo(
   final webDeviceInfoService = WebDeviceInfoService();
   return await webDeviceInfoService.getDeviceInfo().then(Some.new);
 }
-

@@ -37,7 +37,8 @@ enum ApplicationStatus {
 
   /// Whether this status is still pending decision.
   bool get isPending =>
-      this == ApplicationStatus.pending || this == ApplicationStatus.underReview;
+      this == ApplicationStatus.pending ||
+      this == ApplicationStatus.underReview;
 
   /// Creates from string value.
   static ApplicationStatus fromString(String? value) {
@@ -110,6 +111,9 @@ class DriverApplication with _$DriverApplication {
     /// Vehicle plate number.
     required String vehiclePlate,
 
+    /// Application submission date.
+    required DateTime createdAt,
+
     /// Profile photo URL.
     String? photoUrl,
 
@@ -124,9 +128,6 @@ class DriverApplication with _$DriverApplication {
 
     /// Vehicle insurance document URL.
     String? vehicleInsuranceUrl,
-
-    /// Application submission date.
-    required DateTime createdAt,
 
     /// Date when application was reviewed.
     DateTime? reviewedAt,
@@ -175,7 +176,5 @@ class DriverApplication with _$DriverApplication {
       licenseUrl != null;
 
   /// Whether documents are uploaded.
-  bool get hasDocuments =>
-      idDocumentUrl != null &&
-      licenseUrl != null;
+  bool get hasDocuments => idDocumentUrl != null && licenseUrl != null;
 }

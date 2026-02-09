@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../../core/infrastructure/services/location_service.dart';
@@ -62,7 +61,8 @@ Stream<Position> locationStream(Ref ref) async* {
         // Outlier Check: > 100m jump in < 1 second is impossible for a car
         if (distance > 100) {
           debugPrint(
-              '⚠️ Ignored Outlier Jump: ${distance.toStringAsFixed(1)}m');
+            '⚠️ Ignored Outlier Jump: ${distance.toStringAsFixed(1)}m',
+          );
           continue;
         }
 
@@ -76,7 +76,7 @@ Stream<Position> locationStream(Ref ref) async* {
             currentPosition.latitude,
             currentPosition.longitude,
           );
-        
+
           // Create new Position with calculated heading
           currentPosition = Position(
             latitude: currentPosition.latitude,
@@ -118,9 +118,9 @@ Stream<Position> locationStream(Ref ref) async* {
       if (dist > 5) {
         // OPTIMIZATION: Dynamic steps based on distance
         // 5m -> 1 step, 20m -> 3 steps. max 5 steps.
-        final int steps = (dist / 5).ceil().clamp(1, 5);
+        final steps = (dist / 5).ceil().clamp(1, 5);
 
-        for (int i = 1; i <= steps; i++) {
+        for (var i = 1; i <= steps; i++) {
           final t = i / steps;
 
           if (t >= 1.0) break;
@@ -129,7 +129,9 @@ Stream<Position> locationStream(Ref ref) async* {
           yield lerpPos;
 
           // Wait for the animation frame (300ms / steps)
-          await Future.delayed(Duration(milliseconds: (300 / steps).round()));
+          await Future<void>.delayed(
+            Duration(milliseconds: (300 / steps).round()),
+          );
         }
       }
     }
@@ -151,11 +153,11 @@ Stream<Position> locationStream(Ref ref) async* {
     if (realPos.speed < 1.5) return;
 
     // Wait 2 seconds before assuming signal loss
-    await Future.delayed(const Duration(seconds: 2));
+    await Future<void>.delayed(const Duration(seconds: 2));
 
     var executedPos = realPos;
     var currentSpeed = realPos.speed;
-    int ghostCount = 0;
+    var ghostCount = 0;
 
     // Start generating Ghost Points (Max 10 seconds)
     // CRITICAL: Reduced from 30s to 10s - in 30 seconds, motorcycle can travel 300m,
@@ -189,14 +191,13 @@ Stream<Position> locationStream(Ref ref) async* {
 
       // Calculate next point assuming constant heading but DECAYING speed
       executedPos =
-          _calculateProjectedPosition(executedPos, 1.0); // 1 second projection
+          _calculateProjectedPosition(executedPos, 1); // 1 second projection
 
-    
       yield executedPos;
       currentUiPosition =
           executedPos; // Update UI pos so we can slide FROM this ghost later
 
-      await Future.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(const Duration(seconds: 1));
     }
   });
 }
@@ -236,12 +237,16 @@ Position _calculateProjectedPosition(Position start, double timeSeconds) {
   final lon1 = start.longitude * math.pi / 180;
   final brng = start.heading * math.pi / 180;
 
-  final lat2 = math.asin(math.sin(lat1) * math.cos(distMeters / R) +
-      math.cos(lat1) * math.sin(distMeters / R) * math.cos(brng));
+  final lat2 = math.asin(
+    math.sin(lat1) * math.cos(distMeters / R) +
+        math.cos(lat1) * math.sin(distMeters / R) * math.cos(brng),
+  );
 
   final lon2 = lon1 +
-      math.atan2(math.sin(brng) * math.sin(distMeters / R) * math.cos(lat1),
-          math.cos(distMeters / R) - math.sin(lat1) * math.sin(lat2));
+      math.atan2(
+        math.sin(brng) * math.sin(distMeters / R) * math.cos(lat1),
+        math.cos(distMeters / R) - math.sin(lat1) * math.sin(lat2),
+      );
 
   return Position(
     latitude: lat2 * 180 / math.pi,

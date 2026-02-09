@@ -14,10 +14,6 @@ class AppSettingsDto {
     this.updatedAt,
   });
 
-  final GeneralSettingsDto general;
-  final DeliverySettingsDto delivery;
-  final DateTime? updatedAt;
-
   /// Creates DTO from Firebase JSON.
   factory AppSettingsDto.fromJson(Map<String, dynamic> json) {
     return AppSettingsDto(
@@ -30,6 +26,10 @@ class AppSettingsDto {
       updatedAt: _parseTimestamp(json['updatedAt']),
     );
   }
+
+  final GeneralSettingsDto general;
+  final DeliverySettingsDto delivery;
+  final DateTime? updatedAt;
 
   /// Converts to domain entity.
   AppSettings toDomain() => AppSettings(
@@ -66,15 +66,6 @@ class GeneralSettingsDto {
     this.maintenanceMode = false,
   });
 
-  final String appName;
-  final String appNameAr;
-  final String currency;
-  final String currencySymbol;
-  final String timezone;
-  final String? supportEmail;
-  final String? supportPhone;
-  final bool maintenanceMode;
-
   /// Creates DTO from Firebase JSON with defaults.
   factory GeneralSettingsDto.fromJson(Map<String, dynamic> json) {
     return GeneralSettingsDto(
@@ -88,6 +79,15 @@ class GeneralSettingsDto {
       maintenanceMode: json['maintenanceMode'] as bool? ?? false,
     );
   }
+
+  final String appName;
+  final String appNameAr;
+  final String currency;
+  final String currencySymbol;
+  final String timezone;
+  final String? supportEmail;
+  final String? supportPhone;
+  final bool maintenanceMode;
 
   /// Converts to domain entity.
   GeneralSettings toDomain() => GeneralSettings(
@@ -114,14 +114,6 @@ class DeliverySettingsDto {
     this.zones = const [],
   });
 
-  final double baseDeliveryFee;
-  final double feePerKilometer;
-  final double minimumOrderAmount;
-  final double? freeDeliveryThreshold;
-  final int maxDeliveryRadius;
-  final int estimatedDeliveryTime;
-  final List<DeliveryZoneDto> zones;
-
   /// Creates DTO from Firebase JSON with defaults.
   factory DeliverySettingsDto.fromJson(Map<String, dynamic> json) {
     return DeliverySettingsDto(
@@ -140,6 +132,14 @@ class DeliverySettingsDto {
     );
   }
 
+  final double baseDeliveryFee;
+  final double feePerKilometer;
+  final double minimumOrderAmount;
+  final double? freeDeliveryThreshold;
+  final int maxDeliveryRadius;
+  final int estimatedDeliveryTime;
+  final List<DeliveryZoneDto> zones;
+
   /// Converts to domain entity.
   DeliverySettings toDomain() => DeliverySettings(
         baseDeliveryFee: baseDeliveryFee,
@@ -157,16 +157,10 @@ class DeliveryZoneDto {
   const DeliveryZoneDto({
     required this.id,
     required this.name,
-    this.nameAr,
     required this.fee,
+    this.nameAr,
     this.isActive = true,
   });
-
-  final String id;
-  final String name;
-  final String? nameAr;
-  final double fee;
-  final bool isActive;
 
   /// Creates DTO from Firebase JSON.
   factory DeliveryZoneDto.fromJson(Map<String, dynamic> json) {
@@ -178,6 +172,12 @@ class DeliveryZoneDto {
       isActive: json['isActive'] as bool? ?? true,
     );
   }
+
+  final String id;
+  final String name;
+  final String? nameAr;
+  final double fee;
+  final bool isActive;
 
   /// Converts to domain entity.
   DeliveryZone toDomain() => DeliveryZone(

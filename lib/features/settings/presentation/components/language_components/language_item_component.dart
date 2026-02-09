@@ -22,7 +22,9 @@ class LanguageItemComponent extends ConsumerWidget {
       material: (_) {
         return InkWell(
           onTap: () {
-            ref.read(appLocaleControllerProvider.notifier).changeLocale(appLocale);
+            ref
+                .read(appLocaleControllerProvider.notifier)
+                .changeLocale(appLocale);
           },
           child: _SharedItemComponent(appLocale),
         );
@@ -30,7 +32,9 @@ class LanguageItemComponent extends ConsumerWidget {
       cupertino: (_) {
         return GestureDetector(
           onTap: () {
-            ref.read(appLocaleControllerProvider.notifier).changeLocale(appLocale);
+            ref
+                .read(appLocaleControllerProvider.notifier)
+                .changeLocale(appLocale);
           },
           child: _SharedItemComponent(appLocale),
         );
@@ -52,10 +56,10 @@ class _SharedItemComponent extends StatelessWidget {
         horizontal: Sizes.paddingH20,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.9),
+        color: Theme.of(context).primaryColor.withValues(alpha: 0.9),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).focusColor.withOpacity(0.1),
+            color: Theme.of(context).focusColor.withValues(alpha: 0.1),
             blurRadius: 5,
             offset: const Offset(0, 2),
           ),
@@ -75,7 +79,10 @@ class _SharedItemComponent extends StatelessWidget {
                   final currentLocale = ref.watch(currentAppLocaleProvider);
                   return (currentLocale.code == appLocale.code)
                       ? CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withValues(alpha: 0.8),
                           radius: Sizes.icon16,
                           child: Icon(
                             AppPlatformIcons.platformIcons(context).checkMark,
@@ -104,5 +111,3 @@ class _SharedItemComponent extends StatelessWidget {
     );
   }
 }
-
-

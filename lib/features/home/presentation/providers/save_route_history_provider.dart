@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/infrastructure/network/main_api/api_callers/firebase_firestore_facade.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
+import '../../domain/order.dart';
 import '../../domain/route_point.dart';
 import '../../infrastructure/data_sources/route_history_remote_data_source.dart';
 import 'location_stream_provider.dart';
@@ -78,7 +80,7 @@ class SaveRouteHistory extends _$SaveRouteHistory {
   }
 
   Future<void> _savePointForAllOrders(
-    List myDeliveryOrders,
+    List<AppOrder> myDeliveryOrders,
     Position position,
   ) async {
     final routePoint = RoutePoint(
@@ -96,7 +98,7 @@ class SaveRouteHistory extends _$SaveRouteHistory {
     for (final order in myDeliveryOrders) {
       futures.add(
         dataSource.addRoutePoint(
-          orderId: order.id.toString(),
+          orderId: order.id,
           routePoint: routePoint,
         ),
       );
@@ -105,10 +107,10 @@ class SaveRouteHistory extends _$SaveRouteHistory {
     // Save all in parallel, but catch errors to prevent blocking location updates
     await Future.wait(
       futures,
-      eagerError: false,
-    ).catchError((error) {
+    ).catchError((Object error) {
       // Log error but don't throw - route history is not critical for delivery
-      print('⚠️ Failed to save route history: $error');
+      debugPrint('⚠️ Failed to save route history: $error');
+      return <void>[];
     });
   }
 }

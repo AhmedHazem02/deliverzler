@@ -305,6 +305,63 @@ class AppLocalizationsAr extends AppLocalizations {
       'هذا البريد مسجل بالفعل. يرجى تسجيل الدخول.';
 
   @override
+  String get chooseVerificationMethod => 'تأكيد هويتك';
+
+  @override
+  String get chooseVerificationMethodDesc => 'اختر طريقة التحقق من حسابك';
+
+  @override
+  String get verifyByEmail => 'التحقق بالبريد الإلكتروني';
+
+  @override
+  String get verifyByEmailDesc => 'سنرسل رابط التحقق إلى بريدك الإلكتروني';
+
+  @override
+  String get verifyByPhone => 'التحقق برقم الهاتف';
+
+  @override
+  String get verifyByPhoneDesc => 'سنرسل رمز تحقق إلى رقم هاتفك';
+
+  @override
+  String get phoneNumberRequired => 'رقم الهاتف مطلوب للتحقق بالهاتف';
+
+  @override
+  String get verifyYourPhone => 'تحقق من رقم هاتفك';
+
+  @override
+  String get otpSentTo => 'لقد أرسلنا رمز التحقق إلى';
+
+  @override
+  String get enterOtpCode => 'أدخل الرمز المكون من 6 أرقام المرسل إلى هاتفك';
+
+  @override
+  String get sendingOtp => 'جارٍ إرسال رمز التحقق...';
+
+  @override
+  String get autoVerifying => 'جارٍ التحقق تلقائياً...';
+
+  @override
+  String get phoneVerifiedSuccessfully => 'تم التحقق من رقم الهاتف بنجاح!';
+
+  @override
+  String get resendOtp => 'إعادة إرسال الرمز';
+
+  @override
+  String get didNotReceiveOtp => 'لم تستلم الرمز؟';
+
+  @override
+  String get checkPhoneNumber => 'تأكد من صحة رقم هاتفك وحاول مرة أخرى';
+
+  @override
+  String get invalidOtpCode => 'رمز التحقق غير صحيح';
+
+  @override
+  String get otpExpired => 'انتهت صلاحية رمز التحقق. يرجى طلب رمز جديد.';
+
+  @override
+  String get phoneAlreadyLinked => 'رقم الهاتف مرتبط بحساب آخر بالفعل';
+
+  @override
   String get english => 'الإنجليزية';
 
   @override

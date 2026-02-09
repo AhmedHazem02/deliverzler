@@ -10,7 +10,9 @@ class ErrorInterceptor extends Interceptor {
   //This is needed if your api use statusCode 200 for business errors.
   @override
   void onResponse(
-      Response<dynamic> response, ResponseInterceptorHandler handler) {
+    Response<dynamic> response,
+    ResponseInterceptorHandler handler,
+  ) {
     debugPrint('📥 ErrorInterceptor.onResponse: ${response.statusCode}');
     debugPrint('📥 Response data: ${response.data}');
     final data = response.data as Map<dynamic, dynamic>;
@@ -32,7 +34,9 @@ class ErrorInterceptor extends Interceptor {
 
   @override
   Future<void> onError(
-      DioException err, ErrorInterceptorHandler handler) async {
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     debugPrint('📥 ❌ ErrorInterceptor.onError: ${err.message}');
     debugPrint('📥 ❌ Error type: ${err.type}');
     debugPrint('📥 ❌ Response: ${err.response?.data}');

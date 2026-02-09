@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/core_features/theme/presentation/utils/custom_colors.dart';
 import '../../../../../core/presentation/helpers/localization_helper.dart';
 import '../../../../../core/presentation/screens/nested_screen_scaffold.dart';
 import '../../../../../core/presentation/styles/styles.dart';
@@ -50,7 +49,6 @@ class HomeScreenCompact extends HookConsumerWidget {
               border: Border(
                 bottom: BorderSide(
                   color: Theme.of(context).dividerColor,
-                  width: 1,
                 ),
               ),
             ),
@@ -69,11 +67,12 @@ class HomeScreenCompact extends HookConsumerWidget {
                   loading: () => const SizedBox(
                     width: 80,
                     child: Center(
-                        child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )),
+                      child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
                   ),
                   error: (_, __) => const SizedBox.shrink(),
                   data: (isOnline) => Container(
@@ -81,12 +80,11 @@ class HomeScreenCompact extends HookConsumerWidget {
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: isOnline
-                          ? Colors.green.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.1),
+                          ? Colors.green.withValues(alpha: 0.1)
+                          : Colors.grey.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: isOnline ? Colors.green : Colors.grey,
-                        width: 1,
                       ),
                     ),
                     child: Row(
@@ -120,7 +118,7 @@ class HomeScreenCompact extends HookConsumerWidget {
                                   .read(driverAvailabilityProvider.notifier)
                                   .toggleAvailability();
                             },
-                            activeColor: Colors.green,
+                            activeThumbColor: Colors.green,
                             materialTapTargetSize:
                                 MaterialTapTargetSize.shrinkWrap,
                           ),
@@ -142,7 +140,8 @@ class HomeScreenCompact extends HookConsumerWidget {
                   horizontal: Sizes.screenPaddingH28,
                   vertical: Sizes.paddingV12, // Increased padding
                 ),
-                color: Colors.red.withOpacity(0.9), // Slightly transparent red
+                color: Colors.red
+                    .withValues(alpha: 0.9), // Slightly transparent red
                 child: Row(
                   children: [
                     const Icon(
@@ -157,7 +156,8 @@ class HomeScreenCompact extends HookConsumerWidget {
                         children: [
                           Text(
                             tr(context).youAreCurrentlyOffline,
-                            style: TextStyles.f16(context).copyWith( // Larger font
+                            style: TextStyles.f16(context).copyWith(
+                              // Larger font
                               color: Colors.white,
                               fontWeight: FontStyles.fontWeightBold,
                             ),
@@ -166,7 +166,7 @@ class HomeScreenCompact extends HookConsumerWidget {
                           Text(
                             tr(context).pleaseGoOnlineToReceiveOrders,
                             style: TextStyles.f12(context).copyWith(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                             ),
                           ),
                         ],
@@ -191,7 +191,10 @@ class HomeScreenCompact extends HookConsumerWidget {
                   horizontal: Sizes.screenPaddingH28,
                   vertical: Sizes.paddingV8,
                 ),
-                color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                color: Theme.of(context)
+                    .colorScheme
+                    .secondary
+                    .withValues(alpha: 0.1),
                 child: Row(
                   children: [
                     Icon(
@@ -218,7 +221,8 @@ class HomeScreenCompact extends HookConsumerWidget {
               skipLoadingOnReload: true,
               skipLoadingOnRefresh: !locationAsync.hasError,
               loading: () => TitledLoadingIndicator(
-                  message: tr(context).determine_location),
+                message: tr(context).determine_location,
+              ),
               error: (error, st) => RetryAgainComponent(
                 description: (error as LocationError).getErrorText(context),
                 onPressed: () {

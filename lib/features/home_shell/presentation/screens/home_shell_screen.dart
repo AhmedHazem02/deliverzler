@@ -14,7 +14,7 @@ import '../../../../core/presentation/widgets/platform_widgets/platform_appbar.d
 import '../components/home_shell_bottom_nav_bar.dart';
 import '../components/home_shell_appbar.dart';
 import '../utils/tab_item.dart';
-import 'package:deliverzler/features/profile/presentation/providers/update_user_location_provider.dart';
+import '../../../profile/presentation/providers/update_user_location_provider.dart';
 
 /// Builds the "shell" for the home by building a Scaffold with a persistent
 /// BottomNavigationBar or similar, where [navigationShell] is placed in the body of the Scaffold.
@@ -52,7 +52,9 @@ class HomeShellScreen extends HookConsumerWidget {
       (previous, next) {
         if (next is Some<NotificationPayload>) {
           final notification = next.value;
-          if (notification.routeLocation case final location?) context.go(location);
+          if (notification.routeLocation case final location?) {
+            context.go(location);
+          }
         }
       },
     );
@@ -92,7 +94,7 @@ class HomeShellScreen extends HookConsumerWidget {
           currentTab: TabItem.values[navigationShell.currentIndex],
           onSelectTab: onSelectTab,
         ),
-        // TODO(Ahmed): Migrate to AdaptiveLayout HomeShell when the bottomNavigation displacement
+
         // bug is fixed: https://github.com/flutter/flutter/issues/131734
         /* body: AdaptiveLayout(
           body: SlotLayout(
@@ -138,5 +140,3 @@ class HomeShellScreen extends HookConsumerWidget {
     );
   }
 }
-
-

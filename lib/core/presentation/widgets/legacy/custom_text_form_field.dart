@@ -84,7 +84,8 @@ class CustomTextFormField extends StatelessWidget {
                 color: Theme.of(context).hintColor,
               ),
               prefixIcon: materialPrefix,
-              prefixIconColor: Theme.of(context).inputDecorationTheme.prefixIconColor,
+              prefixIconColor:
+                  Theme.of(context).inputDecorationTheme.prefixIconColor,
               prefixIconConstraints: const BoxConstraints(),
               suffixIcon: suffix != null
                   ? Padding(
@@ -94,7 +95,8 @@ class CustomTextFormField extends StatelessWidget {
                       child: suffix,
                     )
                   : null,
-              suffixIconColor: Theme.of(context).inputDecorationTheme.suffixIconColor,
+              suffixIconColor:
+                  Theme.of(context).inputDecorationTheme.suffixIconColor,
               suffixIconConstraints: const BoxConstraints(),
               errorStyle: TextStyle(
                 color: Theme.of(context).inputDecorationTheme.errorStyle?.color,
@@ -103,10 +105,13 @@ class CustomTextFormField extends StatelessWidget {
               ),
               errorMaxLines: errorMaxLines,
               border: Theme.of(context).inputDecorationTheme.border,
-              enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-              focusedBorder: Theme.of(context).inputDecorationTheme.focusedBorder,
+              enabledBorder:
+                  Theme.of(context).inputDecorationTheme.enabledBorder,
+              focusedBorder:
+                  Theme.of(context).inputDecorationTheme.focusedBorder,
               errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-              focusedErrorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+              focusedErrorBorder:
+                  Theme.of(context).inputDecorationTheme.errorBorder,
             ),
           ),
           cupertinoData: CupertinoFormRowData(

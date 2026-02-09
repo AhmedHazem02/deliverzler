@@ -20,7 +20,8 @@ class FullScreenPlatformScaffold extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTheme = ref.watch(currentAppThemeModeProvider);
-    final supportsEdgeToEdge = ref.watch(androidDeviceInfoProvider).supportsEdgeToEdge;
+    final supportsEdgeToEdge =
+        ref.watch(androidDeviceInfoProvider).supportsEdgeToEdge;
 
     return PlatformScaffold(
       hasStatusBarSpace: false,
@@ -35,5 +36,3 @@ class FullScreenPlatformScaffold extends ConsumerWidget {
     );
   }
 }
-
-

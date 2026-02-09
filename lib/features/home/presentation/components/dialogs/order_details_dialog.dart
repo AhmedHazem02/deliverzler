@@ -7,7 +7,6 @@ import '../../../../../core/presentation/styles/styles.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../domain/order.dart';
 import '../../../domain/order_item.dart';
-import '../../../domain/pickup_stop.dart';
 import '../../providers/order_items_provider.dart';
 import '../../providers/store_provider.dart';
 
@@ -42,7 +41,10 @@ class OrderDetailsDialog extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Theme.of(context).colorScheme.primary,
-                    Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                    Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.7),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -67,7 +69,7 @@ class OrderDetailsDialog extends StatelessWidget {
                             color: Theme.of(context)
                                 .colorScheme
                                 .onPrimary
-                                .withOpacity(0.9),
+                                .withValues(alpha: 0.9),
                           ),
                         ),
                         Text(
@@ -86,7 +88,7 @@ class OrderDetailsDialog extends StatelessWidget {
                       color: Theme.of(context)
                           .colorScheme
                           .onPrimary
-                          .withOpacity(0.2),
+                          .withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
@@ -159,11 +161,12 @@ class OrderDetailsDialog extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .surfaceContainerHighest
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .dividerColor
+                                .withValues(alpha: 0.5),
                           ),
                         ),
                         child: Column(
@@ -177,7 +180,7 @@ class OrderDetailsDialog extends StatelessWidget {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.1),
+                                        .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Icon(
@@ -278,11 +281,12 @@ class OrderDetailsDialog extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .surfaceContainerHighest
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .dividerColor
+                                .withValues(alpha: 0.5),
                           ),
                         ),
                         child: Row(
@@ -293,7 +297,7 @@ class OrderDetailsDialog extends StatelessWidget {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.1),
+                                    .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
@@ -351,11 +355,12 @@ class OrderDetailsDialog extends StatelessWidget {
                           color: Theme.of(context)
                               .colorScheme
                               .surfaceContainerHighest
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color:
-                                Theme.of(context).dividerColor.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .dividerColor
+                                .withValues(alpha: 0.5),
                           ),
                         ),
                         child: Row(
@@ -366,7 +371,7 @@ class OrderDetailsDialog extends StatelessWidget {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.1),
+                                    .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
@@ -428,10 +433,10 @@ class OrderDetailsDialog extends StatelessWidget {
                 color: Theme.of(context)
                     .colorScheme
                     .surfaceContainerHighest
-                    .withOpacity(0.3),
+                    .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Theme.of(context).dividerColor.withOpacity(0.5),
+                  color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
                 ),
               ),
               child: Column(
@@ -461,7 +466,7 @@ class OrderDetailsDialog extends StatelessWidget {
                       label: tr(context).mobileNumber,
                       value: order.address!.mobile,
                     ),
-                  ]
+                  ],
                 ],
               ),
             ),
@@ -483,10 +488,11 @@ class OrderDetailsDialog extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .surfaceContainerHighest
-                      .withOpacity(0.3),
+                      .withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Theme.of(context).dividerColor.withOpacity(0.5),
+                    color:
+                        Theme.of(context).dividerColor.withValues(alpha: 0.5),
                   ),
                 ),
                 child: Text(
@@ -501,8 +507,11 @@ class OrderDetailsDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context,
-      {required IconData icon, required String title}) {
+  Widget _buildSectionHeader(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+  }) {
     return Row(
       children: [
         Icon(
@@ -521,8 +530,12 @@ class OrderDetailsDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(BuildContext context,
-      {required IconData icon, required String label, required String value}) {
+  Widget _buildInfoRow(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -584,8 +597,10 @@ class OrderDetailsDialog extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).colorScheme.primary.withOpacity(0.08),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.08),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(12),
                     topRight: Radius.circular(12),
@@ -638,7 +653,7 @@ class OrderDetailsDialog extends StatelessWidget {
                                     color: Theme.of(context)
                                         .colorScheme
                                         .primary
-                                        .withOpacity(0.7),
+                                        .withValues(alpha: 0.7),
                                   ),
                                   const SizedBox(width: 4),
                                   Expanded(
@@ -648,7 +663,7 @@ class OrderDetailsDialog extends StatelessWidget {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .primary
-                                            .withOpacity(0.7),
+                                            .withValues(alpha: 0.7),
                                       ),
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
@@ -672,13 +687,14 @@ class OrderDetailsDialog extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .surfaceContainerHighest
-                      .withOpacity(0.2),
+                      .withValues(alpha: 0.2),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(12),
                     bottomRight: Radius.circular(12),
                   ),
                   border: Border.all(
-                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    color:
+                        Theme.of(context).dividerColor.withValues(alpha: 0.3),
                   ),
                 ),
                 child: Column(
@@ -694,7 +710,7 @@ class OrderDetailsDialog extends StatelessWidget {
                               height: 1,
                               color: Theme.of(context)
                                   .dividerColor
-                                  .withOpacity(0.3),
+                                  .withValues(alpha: 0.3),
                             ),
                         ],
                       );
@@ -714,7 +730,7 @@ class OrderDetailsDialog extends StatelessWidget {
           future: _fetchDeliveryFee(),
           builder: (context, snapshot) {
             final calculatedSubtotal = allItems.fold<double>(
-              0.0,
+              0,
               (sum, item) => sum + (item.price * item.quantity),
             );
             final displaySubtotal = calculatedSubtotal;
@@ -729,18 +745,21 @@ class OrderDetailsDialog extends StatelessWidget {
                     Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                     Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -749,7 +768,6 @@ class OrderDetailsDialog extends StatelessWidget {
                     context,
                     'المجموع الفرعي',
                     '${displaySubtotal.toStringAsFixed(0)} ${tr(context).currency}',
-                    isBold: false,
                   ),
                   if (deliveryFee > 0) ...[
                     const SizedBox(height: 8),
@@ -757,11 +775,10 @@ class OrderDetailsDialog extends StatelessWidget {
                       context,
                       'رسوم التوصيل',
                       '${deliveryFee.toStringAsFixed(0)} ${tr(context).currency}',
-                      isBold: false,
                     ),
                   ],
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Divider(
                       color: Theme.of(context).dividerColor,
                       thickness: 1,
@@ -804,10 +821,10 @@ class OrderDetailsDialog extends StatelessWidget {
             color: Theme.of(context)
                 .colorScheme
                 .surfaceContainerHighest
-                .withOpacity(0.2),
+                .withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.3),
+              color: Theme.of(context).dividerColor.withValues(alpha: 0.3),
             ),
           ),
           child: Column(
@@ -821,7 +838,9 @@ class OrderDetailsDialog extends StatelessWidget {
                     if (index < items.length - 1)
                       Divider(
                         height: 1,
-                        color: Theme.of(context).dividerColor.withOpacity(0.3),
+                        color: Theme.of(context)
+                            .dividerColor
+                            .withValues(alpha: 0.3),
                       ),
                   ],
                 );
@@ -838,7 +857,7 @@ class OrderDetailsDialog extends StatelessWidget {
           builder: (context, snapshot) {
             // Calculate actual subtotal from items: price * quantity for each item
             final calculatedSubtotal = items.fold<double>(
-              0.0,
+              0,
               (sum, item) => sum + (item.price * item.quantity),
             );
 
@@ -856,18 +875,21 @@ class OrderDetailsDialog extends StatelessWidget {
                     Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.3),
+                        .withValues(alpha: 0.3),
                     Theme.of(context)
                         .colorScheme
                         .primaryContainer
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withValues(alpha: 0.2),
                 ),
               ),
               child: Column(
@@ -876,7 +898,6 @@ class OrderDetailsDialog extends StatelessWidget {
                     context,
                     'المجموع الفرعي',
                     '${displaySubtotal.toStringAsFixed(0)} ${tr(context).currency}',
-                    isBold: false,
                   ),
                   if (deliveryFee > 0) ...[
                     const SizedBox(height: 8),
@@ -884,11 +905,10 @@ class OrderDetailsDialog extends StatelessWidget {
                       context,
                       'رسوم التوصيل',
                       '${deliveryFee.toStringAsFixed(0)} ${tr(context).currency}',
-                      isBold: false,
                     ),
                   ],
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Divider(
                       color: Theme.of(context).dividerColor,
                       thickness: 1,
@@ -1141,7 +1161,7 @@ class OrderDetailsDialog extends StatelessWidget {
                         color: Theme.of(context)
                             .colorScheme
                             .primary
-                            .withOpacity(0.1),
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Row(
@@ -1194,11 +1214,12 @@ class OrderDetailsDialog extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+              color:
+                  Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              '${(item.price * item.quantity).toStringAsFixed(0)}',
+              (item.price * item.quantity).toStringAsFixed(0),
               style: TextStyles.f14(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.primary,

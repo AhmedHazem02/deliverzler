@@ -15,14 +15,12 @@ Future<List<OrderItem>> orderItems(Ref ref, String orderId) async {
   }
 
   final repo = ref.watch(orderItemsRepoProvider);
-  
+
   try {
-    
     final items = await repo.getOrderItems(orderId);
-    
+
     return items;
-  } catch (e, stackTrace) {
-  
+  } catch (e) {
     // Return empty list instead of rethrowing to avoid Flutter web diagnostics issues
     return [];
   }
@@ -36,6 +34,6 @@ Stream<List<OrderItem>> orderItemsStream(Ref ref, String orderId) {
   }
 
   final repo = ref.watch(orderItemsRepoProvider);
-  
+
   return repo.streamOrderItems(orderId);
 }

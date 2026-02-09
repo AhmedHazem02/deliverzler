@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/order.dart';
 import '../../domain/update_delivery_geopoint.dart';

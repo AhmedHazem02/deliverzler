@@ -9,7 +9,8 @@ class ApiKeyInterceptor extends QueuedInterceptor {
     final apiKey = GoogleMapApiConfig.googleMapAPIKey;
     debugPrint('🔑 ApiKeyInterceptor: Adding API key to request');
     debugPrint(
-        '🔑 API Key: ${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 4)}');
+      '🔑 API Key: ${apiKey.substring(0, 10)}...${apiKey.substring(apiKey.length - 4)}',
+    );
     debugPrint('🔑 Full URL: ${options.uri}');
     options.queryParameters[GoogleMapApiConfig.googleMapAPIParamKey] = apiKey;
     debugPrint('🔑 Final URL with key: ${options.uri}');

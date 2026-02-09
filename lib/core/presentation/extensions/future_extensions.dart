@@ -1,7 +1,8 @@
 import 'dart:async' as dart_async;
 
 extension FutureErrorX<T> on Future<T> {
-  Future<void> suppressError({bool Function(Object e)? shouldSuppressError}) async {
+  Future<void> suppressError(
+      {bool Function(Object e)? shouldSuppressError}) async {
     try {
       await this;
     } catch (e) {
@@ -16,10 +17,13 @@ extension FutureIterableErrorX<R, T extends Iterable<R>> on Future<T> {
     try {
       return await this;
     } catch (e) {
-      if (e is ParallelWaitError<Iterable<Object?>, List<dart_async.AsyncError?>>) {
-        final errorsWithStackTrace =
-            e.errors.map((e) => '\nError: ${e?.error}\nStackTrace: ${e?.stackTrace}').toList();
-        throw Error.throwWithStackTrace(errorsWithStackTrace.toString(), StackTrace.current);
+      if (e is ParallelWaitError<Iterable<Object?>,
+          List<dart_async.AsyncError?>>) {
+        final errorsWithStackTrace = e.errors
+            .map((e) => '\nError: ${e?.error}\nStackTrace: ${e?.stackTrace}')
+            .toList();
+        throw Error.throwWithStackTrace(
+            errorsWithStackTrace.toString(), StackTrace.current);
       }
       rethrow;
     }
@@ -29,9 +33,11 @@ extension FutureIterableErrorX<R, T extends Iterable<R>> on Future<T> {
     try {
       return await this;
     } catch (e) {
-      if (e is ParallelWaitError<Iterable<Object?>, List<dart_async.AsyncError?>>) {
+      if (e is ParallelWaitError<Iterable<Object?>,
+          List<dart_async.AsyncError?>>) {
         final error = e.errors.firstWhere((e) => e != null);
-        throw Error.throwWithStackTrace(error.toString(), error?.stackTrace ?? StackTrace.current);
+        throw Error.throwWithStackTrace(
+            error.toString(), error?.stackTrace ?? StackTrace.current);
       }
       rethrow;
     }

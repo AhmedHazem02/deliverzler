@@ -7,10 +7,10 @@ class OrderItem with _$OrderItem {
   const factory OrderItem({
     required String id,
     required String name,
-    String? imageUrl,
     required int quantity,
     required double price,
     required double total,
+    String? imageUrl,
     String? category,
     String? description,
     String? storeName,

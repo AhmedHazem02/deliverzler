@@ -13,7 +13,8 @@ import 'map_search_menu_component.dart';
 class MapFloatingSearchBar extends HookConsumerWidget {
   const MapFloatingSearchBar({super.key});
 
-  TextStyle _searchBarTextStyle(BuildContext context) => TextStyles.f16(context).copyWith(
+  TextStyle _searchBarTextStyle(BuildContext context) =>
+      TextStyles.f16(context).copyWith(
         color: Theme.of(context).textTheme.titleMedium!.color,
       );
 
@@ -25,7 +26,8 @@ class MapFloatingSearchBar extends HookConsumerWidget {
       controller: searchBarController,
       automaticallyImplyDrawerHamburger: false,
       height: 60,
-      margins: const EdgeInsets.fromLTRB(Sizes.marginH16, 44, Sizes.marginH16, 0),
+      margins:
+          const EdgeInsets.fromLTRB(Sizes.marginH16, 44, Sizes.marginH16, 0),
       padding: const EdgeInsets.symmetric(horizontal: Sizes.paddingH4),
       borderRadius: BorderRadius.circular(Sizes.mapSearchBarRadius),
       hint: tr(context).searchForAPlace,
@@ -38,9 +40,13 @@ class MapFloatingSearchBar extends HookConsumerWidget {
       debounceDelay: const Duration(milliseconds: 300),
       onQueryChanged: (query) {
         if (query.isNotEmpty) {
-          ref.read(placeAutocompleteQueryProvider.notifier).update((_) => Some(query));
+          ref
+              .read(placeAutocompleteQueryProvider.notifier)
+              .update((_) => Some(query));
         } else {
-          ref.read(placeAutocompleteQueryProvider.notifier).update((_) => const None());
+          ref
+              .read(placeAutocompleteQueryProvider.notifier)
+              .update((_) => const None());
         }
       },
       actions: [
@@ -63,5 +69,3 @@ class MapFloatingSearchBar extends HookConsumerWidget {
     );
   }
 }
-
-

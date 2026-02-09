@@ -5,8 +5,10 @@ import '../../../../presentation/helpers/localization_helper.dart';
 import '../../../../presentation/styles/styles.dart';
 
 enum AppLocale {
-  english('en', MyAssets.ASSETS_ICONS_LANGUAGES_ICONS_ENGLISH_PNG, FontStyles.familyPoppins),
-  arabic('ar', MyAssets.ASSETS_ICONS_LANGUAGES_ICONS_ARABIC_PNG, FontStyles.familyTajawal);
+  english('en', MyAssets.ASSETS_ICONS_LANGUAGES_ICONS_ENGLISH_PNG,
+      FontStyles.familyPoppins),
+  arabic('ar', MyAssets.ASSETS_ICONS_LANGUAGES_ICONS_ARABIC_PNG,
+      FontStyles.familyTajawal);
 
   const AppLocale(this.code, this.flag, this.fontFamily);
 

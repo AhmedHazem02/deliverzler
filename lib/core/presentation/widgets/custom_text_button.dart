@@ -37,7 +37,8 @@ class CustomTextButton extends StatelessWidget {
   final Gradient? gradient;
   final double elevation;
 
-  BorderRadius get _borderRadius => borderRadius ?? BorderRadius.circular(Sizes.buttonR4);
+  BorderRadius get _borderRadius =>
+      borderRadius ?? BorderRadius.circular(Sizes.buttonR4);
 
   Color? get _buttonColor => enableGradient ? Colors.transparent : buttonColor;
 

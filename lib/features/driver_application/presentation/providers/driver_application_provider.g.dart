@@ -600,7 +600,7 @@ class _ApplicationStatusProviderElement
 }
 
 String _$driverApplicationFormHash() =>
-    r'debdce0a69188efc3c7f25856615545154f8bd1c';
+    r'c34f5489d74e0c0751205f86842ed85997471290';
 
 /// Notifier for the application form
 ///

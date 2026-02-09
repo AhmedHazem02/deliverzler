@@ -307,6 +307,70 @@ class AppLocalizationsEn extends AppLocalizations {
       'This email is already registered. Please sign in.';
 
   @override
+  String get chooseVerificationMethod => 'Verify Your Identity';
+
+  @override
+  String get chooseVerificationMethodDesc =>
+      'Choose how you\'d like to verify your account';
+
+  @override
+  String get verifyByEmail => 'Verify by Email';
+
+  @override
+  String get verifyByEmailDesc =>
+      'We\'ll send a verification link to your email';
+
+  @override
+  String get verifyByPhone => 'Verify by Phone';
+
+  @override
+  String get verifyByPhoneDesc =>
+      'We\'ll send an OTP code to your phone number';
+
+  @override
+  String get phoneNumberRequired =>
+      'Phone number is required for phone verification';
+
+  @override
+  String get verifyYourPhone => 'Verify Your Phone';
+
+  @override
+  String get otpSentTo => 'We\'ve sent a verification code to';
+
+  @override
+  String get enterOtpCode => 'Enter the 6-digit code sent to your phone';
+
+  @override
+  String get sendingOtp => 'Sending verification code...';
+
+  @override
+  String get autoVerifying => 'Auto-verifying...';
+
+  @override
+  String get phoneVerifiedSuccessfully => 'Phone verified successfully!';
+
+  @override
+  String get resendOtp => 'Resend Code';
+
+  @override
+  String get didNotReceiveOtp => 'Didn\'t receive the code?';
+
+  @override
+  String get checkPhoneNumber =>
+      'Make sure your phone number is correct and try again';
+
+  @override
+  String get invalidOtpCode => 'Invalid verification code';
+
+  @override
+  String get otpExpired =>
+      'Verification code expired. Please request a new one.';
+
+  @override
+  String get phoneAlreadyLinked =>
+      'This phone number is already linked to another account';
+
+  @override
   String get english => 'English';
 
   @override

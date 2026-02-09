@@ -11,4 +11,3 @@ Future<PickedImageData> pickProfileImage(
 ) async {
   return ref.watch(profileServiceProvider).pickProfileImage(pickSource);
 }
-

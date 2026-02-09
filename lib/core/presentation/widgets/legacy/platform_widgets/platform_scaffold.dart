@@ -36,7 +36,8 @@ class PlatformScaffold extends PlatformBaseWidget<Scaffold, Widget> {
       body: body,
       floatingActionButton: materialData?.floatingActionButton,
       drawer: materialData?.drawer,
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       extendBodyBehindAppBar: materialData?.extendBodyBehindAppBar ?? false,
     );
   }
@@ -53,7 +54,8 @@ class PlatformScaffold extends PlatformBaseWidget<Scaffold, Widget> {
                   statusBarColor: Colors.transparent,
                 )
               : null,
-      backgroundColor: backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor:
+          backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: body,
     );
   }

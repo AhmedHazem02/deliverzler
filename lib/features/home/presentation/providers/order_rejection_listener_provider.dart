@@ -4,11 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../auth/domain/user.dart';
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../../core/infrastructure/notification/notification_service.dart';
-import '../../../../core/presentation/widgets/toasts.dart';
-import '../../../../core/presentation/helpers/localization_helper.dart';
 import '../../domain/value_objects.dart';
 
 part 'order_rejection_listener_provider.g.dart';
@@ -40,14 +37,17 @@ class OrderRejectionListener extends _$OrderRejectionListener {
       _subscription = FirebaseFirestore.instance
           .collection('orders')
           .where('driver_id', isEqualTo: user.id)
-          .where('rejectionStatus', whereIn: [
-            RejectionStatus.adminApproved.jsonValue,
-            RejectionStatus.adminRefused.jsonValue,
-          ])
+          .where(
+            'rejectionStatus',
+            whereIn: [
+              RejectionStatus.adminApproved.jsonValue,
+              RejectionStatus.adminRefused.jsonValue,
+            ],
+          )
           .snapshots()
           .listen(
-            (snapshot) => _handleOrderUpdates(snapshot),
-            onError: (error) {
+            _handleOrderUpdates,
+            onError: (Object error) {
               debugPrint('Order rejection listener error: $error');
             },
           );
@@ -91,10 +91,8 @@ class OrderRejectionListener extends _$OrderRejectionListener {
     switch (rejectionStatus) {
       case RejectionStatus.adminApproved:
         _showApprovedNotification(orderId);
-        break;
       case RejectionStatus.adminRefused:
         _showRefusedNotification(orderId, adminComment);
-        break;
       default:
         break;
     }

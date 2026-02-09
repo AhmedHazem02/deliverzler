@@ -22,17 +22,20 @@ OrderDto _$OrderDtoFromJson(Map<String, dynamic> json) {
 mixin _$OrderDto {
 // Date field mapping
   @JsonKey(name: 'created_at', readValue: _readDateValue)
-  int get date =>
-      throw _privateConstructorUsedError; // Pickup option (default to delivery)
-  PickupOption get pickupOption => throw _privateConstructorUsedError;
-  String get paymentMethod =>
-      throw _privateConstructorUsedError; // Customer fields mapping
+  int get date => throw _privateConstructorUsedError; // Customer fields mapping
   @JsonKey(name: 'customer_id')
   String get userId => throw _privateConstructorUsedError;
   @JsonKey(name: 'customer_name')
   String get userName => throw _privateConstructorUsedError;
   @JsonKey(name: 'customer_phone')
-  String get userPhone => throw _privateConstructorUsedError;
+  String get userPhone =>
+      throw _privateConstructorUsedError; // Status field (with trim to handle trailing spaces)
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  DeliveryStatus get deliveryStatus => throw _privateConstructorUsedError;
+  double get total =>
+      throw _privateConstructorUsedError; // Pickup option (default to delivery)
+  PickupOption get pickupOption => throw _privateConstructorUsedError;
+  String get paymentMethod => throw _privateConstructorUsedError;
   String get userImage => throw _privateConstructorUsedError;
   String get userNote =>
       throw _privateConstructorUsedError; // Address fields (flat structure in DB)
@@ -47,9 +50,6 @@ mixin _$OrderDto {
   double? get deliveryLatitude => throw _privateConstructorUsedError;
   @JsonKey(name: 'delivery_longitude')
   double? get deliveryLongitude =>
-      throw _privateConstructorUsedError; // Status field (with trim to handle trailing spaces)
-  @JsonKey(name: 'status', readValue: _readStatusValue)
-  DeliveryStatus get deliveryStatus =>
       throw _privateConstructorUsedError; // Driver assignment
   @JsonKey(name: 'driver_id')
   String? get deliveryId => throw _privateConstructorUsedError;
@@ -57,7 +57,6 @@ mixin _$OrderDto {
   RejectionStatus get rejectionStatus =>
       throw _privateConstructorUsedError; // Price fields
   double get subTotal => throw _privateConstructorUsedError;
-  double get total => throw _privateConstructorUsedError;
   @JsonKey(name: 'delivery_price')
   double? get deliveryFee =>
       throw _privateConstructorUsedError; // Store information
@@ -93,11 +92,14 @@ abstract class $OrderDtoCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'created_at', readValue: _readDateValue) int date,
-      PickupOption pickupOption,
-      String paymentMethod,
       @JsonKey(name: 'customer_id') String userId,
       @JsonKey(name: 'customer_name') String userName,
       @JsonKey(name: 'customer_phone') String userPhone,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
+      DeliveryStatus deliveryStatus,
+      double total,
+      PickupOption pickupOption,
+      String paymentMethod,
       String userImage,
       String userNote,
       @JsonKey(name: 'delivery_state') String? deliveryState,
@@ -105,13 +107,10 @@ abstract class $OrderDtoCopyWith<$Res> {
       @JsonKey(name: 'delivery_address') String? deliveryStreet,
       @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
       @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
-      @JsonKey(name: 'status', readValue: _readStatusValue)
-      DeliveryStatus deliveryStatus,
       @JsonKey(name: 'driver_id') String? deliveryId,
       String? employeeCancelNote,
       RejectionStatus rejectionStatus,
       double subTotal,
-      double total,
       @JsonKey(name: 'delivery_price') double? deliveryFee,
       @JsonKey(name: 'store_id') String? storeId,
       String? adminComment,
@@ -138,11 +137,13 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
   @override
   $Res call({
     Object? date = null,
-    Object? pickupOption = null,
-    Object? paymentMethod = null,
     Object? userId = null,
     Object? userName = null,
     Object? userPhone = null,
+    Object? deliveryStatus = null,
+    Object? total = null,
+    Object? pickupOption = null,
+    Object? paymentMethod = null,
     Object? userImage = null,
     Object? userNote = null,
     Object? deliveryState = freezed,
@@ -150,12 +151,10 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
     Object? deliveryStreet = freezed,
     Object? deliveryLatitude = freezed,
     Object? deliveryLongitude = freezed,
-    Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? employeeCancelNote = freezed,
     Object? rejectionStatus = null,
     Object? subTotal = null,
-    Object? total = null,
     Object? deliveryFee = freezed,
     Object? storeId = freezed,
     Object? adminComment = freezed,
@@ -171,14 +170,6 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as int,
-      pickupOption: null == pickupOption
-          ? _value.pickupOption
-          : pickupOption // ignore: cast_nullable_to_non_nullable
-              as PickupOption,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -190,6 +181,22 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
       userPhone: null == userPhone
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryStatus: null == deliveryStatus
+          ? _value.deliveryStatus
+          : deliveryStatus // ignore: cast_nullable_to_non_nullable
+              as DeliveryStatus,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as double,
+      pickupOption: null == pickupOption
+          ? _value.pickupOption
+          : pickupOption // ignore: cast_nullable_to_non_nullable
+              as PickupOption,
+      paymentMethod: null == paymentMethod
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
       userImage: null == userImage
           ? _value.userImage
@@ -219,10 +226,6 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
           ? _value.deliveryLongitude
           : deliveryLongitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      deliveryStatus: null == deliveryStatus
-          ? _value.deliveryStatus
-          : deliveryStatus // ignore: cast_nullable_to_non_nullable
-              as DeliveryStatus,
       deliveryId: freezed == deliveryId
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
@@ -238,10 +241,6 @@ class _$OrderDtoCopyWithImpl<$Res, $Val extends OrderDto>
       subTotal: null == subTotal
           ? _value.subTotal
           : subTotal // ignore: cast_nullable_to_non_nullable
-              as double,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
               as double,
       deliveryFee: freezed == deliveryFee
           ? _value.deliveryFee
@@ -293,11 +292,14 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'created_at', readValue: _readDateValue) int date,
-      PickupOption pickupOption,
-      String paymentMethod,
       @JsonKey(name: 'customer_id') String userId,
       @JsonKey(name: 'customer_name') String userName,
       @JsonKey(name: 'customer_phone') String userPhone,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
+      DeliveryStatus deliveryStatus,
+      double total,
+      PickupOption pickupOption,
+      String paymentMethod,
       String userImage,
       String userNote,
       @JsonKey(name: 'delivery_state') String? deliveryState,
@@ -305,13 +307,10 @@ abstract class _$$OrderDtoImplCopyWith<$Res>
       @JsonKey(name: 'delivery_address') String? deliveryStreet,
       @JsonKey(name: 'delivery_latitude') double? deliveryLatitude,
       @JsonKey(name: 'delivery_longitude') double? deliveryLongitude,
-      @JsonKey(name: 'status', readValue: _readStatusValue)
-      DeliveryStatus deliveryStatus,
       @JsonKey(name: 'driver_id') String? deliveryId,
       String? employeeCancelNote,
       RejectionStatus rejectionStatus,
       double subTotal,
-      double total,
       @JsonKey(name: 'delivery_price') double? deliveryFee,
       @JsonKey(name: 'store_id') String? storeId,
       String? adminComment,
@@ -336,11 +335,13 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? date = null,
-    Object? pickupOption = null,
-    Object? paymentMethod = null,
     Object? userId = null,
     Object? userName = null,
     Object? userPhone = null,
+    Object? deliveryStatus = null,
+    Object? total = null,
+    Object? pickupOption = null,
+    Object? paymentMethod = null,
     Object? userImage = null,
     Object? userNote = null,
     Object? deliveryState = freezed,
@@ -348,12 +349,10 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
     Object? deliveryStreet = freezed,
     Object? deliveryLatitude = freezed,
     Object? deliveryLongitude = freezed,
-    Object? deliveryStatus = null,
     Object? deliveryId = freezed,
     Object? employeeCancelNote = freezed,
     Object? rejectionStatus = null,
     Object? subTotal = null,
-    Object? total = null,
     Object? deliveryFee = freezed,
     Object? storeId = freezed,
     Object? adminComment = freezed,
@@ -369,14 +368,6 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as int,
-      pickupOption: null == pickupOption
-          ? _value.pickupOption
-          : pickupOption // ignore: cast_nullable_to_non_nullable
-              as PickupOption,
-      paymentMethod: null == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as String,
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -388,6 +379,22 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
       userPhone: null == userPhone
           ? _value.userPhone
           : userPhone // ignore: cast_nullable_to_non_nullable
+              as String,
+      deliveryStatus: null == deliveryStatus
+          ? _value.deliveryStatus
+          : deliveryStatus // ignore: cast_nullable_to_non_nullable
+              as DeliveryStatus,
+      total: null == total
+          ? _value.total
+          : total // ignore: cast_nullable_to_non_nullable
+              as double,
+      pickupOption: null == pickupOption
+          ? _value.pickupOption
+          : pickupOption // ignore: cast_nullable_to_non_nullable
+              as PickupOption,
+      paymentMethod: null == paymentMethod
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
       userImage: null == userImage
           ? _value.userImage
@@ -417,10 +424,6 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
           ? _value.deliveryLongitude
           : deliveryLongitude // ignore: cast_nullable_to_non_nullable
               as double?,
-      deliveryStatus: null == deliveryStatus
-          ? _value.deliveryStatus
-          : deliveryStatus // ignore: cast_nullable_to_non_nullable
-              as DeliveryStatus,
       deliveryId: freezed == deliveryId
           ? _value.deliveryId
           : deliveryId // ignore: cast_nullable_to_non_nullable
@@ -436,10 +439,6 @@ class __$$OrderDtoImplCopyWithImpl<$Res>
       subTotal: null == subTotal
           ? _value.subTotal
           : subTotal // ignore: cast_nullable_to_non_nullable
-              as double,
-      total: null == total
-          ? _value.total
-          : total // ignore: cast_nullable_to_non_nullable
               as double,
       deliveryFee: freezed == deliveryFee
           ? _value.deliveryFee
@@ -487,11 +486,14 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   const _$OrderDtoImpl(
       {@JsonKey(name: 'created_at', readValue: _readDateValue)
       required this.date,
-      this.pickupOption = PickupOption.delivery,
-      this.paymentMethod = 'cash',
       @JsonKey(name: 'customer_id') required this.userId,
       @JsonKey(name: 'customer_name') required this.userName,
       @JsonKey(name: 'customer_phone') required this.userPhone,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
+      required this.deliveryStatus,
+      required this.total,
+      this.pickupOption = PickupOption.delivery,
+      this.paymentMethod = 'cash',
       this.userImage = '',
       this.userNote = '',
       @JsonKey(name: 'delivery_state') this.deliveryState,
@@ -499,13 +501,10 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
       @JsonKey(name: 'delivery_address') this.deliveryStreet,
       @JsonKey(name: 'delivery_latitude') this.deliveryLatitude,
       @JsonKey(name: 'delivery_longitude') this.deliveryLongitude,
-      @JsonKey(name: 'status', readValue: _readStatusValue)
-      required this.deliveryStatus,
       @JsonKey(name: 'driver_id') this.deliveryId,
       this.employeeCancelNote,
       this.rejectionStatus = RejectionStatus.none,
       this.subTotal = 0.0,
-      required this.total,
       @JsonKey(name: 'delivery_price') this.deliveryFee,
       @JsonKey(name: 'store_id') this.storeId,
       this.adminComment,
@@ -528,13 +527,6 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   @override
   @JsonKey(name: 'created_at', readValue: _readDateValue)
   final int date;
-// Pickup option (default to delivery)
-  @override
-  @JsonKey()
-  final PickupOption pickupOption;
-  @override
-  @JsonKey()
-  final String paymentMethod;
 // Customer fields mapping
   @override
   @JsonKey(name: 'customer_id')
@@ -545,6 +537,19 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   @override
   @JsonKey(name: 'customer_phone')
   final String userPhone;
+// Status field (with trim to handle trailing spaces)
+  @override
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  final DeliveryStatus deliveryStatus;
+  @override
+  final double total;
+// Pickup option (default to delivery)
+  @override
+  @JsonKey()
+  final PickupOption pickupOption;
+  @override
+  @JsonKey()
+  final String paymentMethod;
   @override
   @JsonKey()
   final String userImage;
@@ -568,10 +573,6 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   @override
   @JsonKey(name: 'delivery_longitude')
   final double? deliveryLongitude;
-// Status field (with trim to handle trailing spaces)
-  @override
-  @JsonKey(name: 'status', readValue: _readStatusValue)
-  final DeliveryStatus deliveryStatus;
 // Driver assignment
   @override
   @JsonKey(name: 'driver_id')
@@ -585,8 +586,6 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   @override
   @JsonKey()
   final double subTotal;
-  @override
-  final double total;
   @override
   @JsonKey(name: 'delivery_price')
   final double? deliveryFee;
@@ -635,7 +634,7 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'OrderDto(date: $date, pickupOption: $pickupOption, paymentMethod: $paymentMethod, userId: $userId, userName: $userName, userPhone: $userPhone, userImage: $userImage, userNote: $userNote, deliveryState: $deliveryState, deliveryCity: $deliveryCity, deliveryStreet: $deliveryStreet, deliveryLatitude: $deliveryLatitude, deliveryLongitude: $deliveryLongitude, deliveryStatus: $deliveryStatus, deliveryId: $deliveryId, employeeCancelNote: $employeeCancelNote, rejectionStatus: $rejectionStatus, subTotal: $subTotal, total: $total, deliveryFee: $deliveryFee, storeId: $storeId, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, orderType: $orderType, driverCommission: $driverCommission, driverName: $driverName, id: $id, pickupStops: $pickupStops)';
+    return 'OrderDto(date: $date, userId: $userId, userName: $userName, userPhone: $userPhone, deliveryStatus: $deliveryStatus, total: $total, pickupOption: $pickupOption, paymentMethod: $paymentMethod, userImage: $userImage, userNote: $userNote, deliveryState: $deliveryState, deliveryCity: $deliveryCity, deliveryStreet: $deliveryStreet, deliveryLatitude: $deliveryLatitude, deliveryLongitude: $deliveryLongitude, deliveryId: $deliveryId, employeeCancelNote: $employeeCancelNote, rejectionStatus: $rejectionStatus, subTotal: $subTotal, deliveryFee: $deliveryFee, storeId: $storeId, adminComment: $adminComment, rejectedByDrivers: $rejectedByDrivers, orderType: $orderType, driverCommission: $driverCommission, driverName: $driverName, id: $id, pickupStops: $pickupStops)';
   }
 
   @override
@@ -644,11 +643,13 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'OrderDto'))
       ..add(DiagnosticsProperty('date', date))
-      ..add(DiagnosticsProperty('pickupOption', pickupOption))
-      ..add(DiagnosticsProperty('paymentMethod', paymentMethod))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('userName', userName))
       ..add(DiagnosticsProperty('userPhone', userPhone))
+      ..add(DiagnosticsProperty('deliveryStatus', deliveryStatus))
+      ..add(DiagnosticsProperty('total', total))
+      ..add(DiagnosticsProperty('pickupOption', pickupOption))
+      ..add(DiagnosticsProperty('paymentMethod', paymentMethod))
       ..add(DiagnosticsProperty('userImage', userImage))
       ..add(DiagnosticsProperty('userNote', userNote))
       ..add(DiagnosticsProperty('deliveryState', deliveryState))
@@ -656,12 +657,10 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('deliveryStreet', deliveryStreet))
       ..add(DiagnosticsProperty('deliveryLatitude', deliveryLatitude))
       ..add(DiagnosticsProperty('deliveryLongitude', deliveryLongitude))
-      ..add(DiagnosticsProperty('deliveryStatus', deliveryStatus))
       ..add(DiagnosticsProperty('deliveryId', deliveryId))
       ..add(DiagnosticsProperty('employeeCancelNote', employeeCancelNote))
       ..add(DiagnosticsProperty('rejectionStatus', rejectionStatus))
       ..add(DiagnosticsProperty('subTotal', subTotal))
-      ..add(DiagnosticsProperty('total', total))
       ..add(DiagnosticsProperty('deliveryFee', deliveryFee))
       ..add(DiagnosticsProperty('storeId', storeId))
       ..add(DiagnosticsProperty('adminComment', adminComment))
@@ -679,15 +678,18 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$OrderDtoImpl &&
             (identical(other.date, date) || other.date == date) &&
-            (identical(other.pickupOption, pickupOption) ||
-                other.pickupOption == pickupOption) &&
-            (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod) &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.userPhone, userPhone) ||
                 other.userPhone == userPhone) &&
+            (identical(other.deliveryStatus, deliveryStatus) ||
+                other.deliveryStatus == deliveryStatus) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.pickupOption, pickupOption) ||
+                other.pickupOption == pickupOption) &&
+            (identical(other.paymentMethod, paymentMethod) ||
+                other.paymentMethod == paymentMethod) &&
             (identical(other.userImage, userImage) ||
                 other.userImage == userImage) &&
             (identical(other.userNote, userNote) ||
@@ -702,8 +704,6 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
                 other.deliveryLatitude == deliveryLatitude) &&
             (identical(other.deliveryLongitude, deliveryLongitude) ||
                 other.deliveryLongitude == deliveryLongitude) &&
-            (identical(other.deliveryStatus, deliveryStatus) ||
-                other.deliveryStatus == deliveryStatus) &&
             (identical(other.deliveryId, deliveryId) ||
                 other.deliveryId == deliveryId) &&
             (identical(other.employeeCancelNote, employeeCancelNote) ||
@@ -712,7 +712,6 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
                 other.rejectionStatus == rejectionStatus) &&
             (identical(other.subTotal, subTotal) ||
                 other.subTotal == subTotal) &&
-            (identical(other.total, total) || other.total == total) &&
             (identical(other.deliveryFee, deliveryFee) ||
                 other.deliveryFee == deliveryFee) &&
             (identical(other.storeId, storeId) || other.storeId == storeId) &&
@@ -736,11 +735,13 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
   int get hashCode => Object.hashAll([
         runtimeType,
         date,
-        pickupOption,
-        paymentMethod,
         userId,
         userName,
         userPhone,
+        deliveryStatus,
+        total,
+        pickupOption,
+        paymentMethod,
         userImage,
         userNote,
         deliveryState,
@@ -748,12 +749,10 @@ class _$OrderDtoImpl extends _OrderDto with DiagnosticableTreeMixin {
         deliveryStreet,
         deliveryLatitude,
         deliveryLongitude,
-        deliveryStatus,
         deliveryId,
         employeeCancelNote,
         rejectionStatus,
         subTotal,
-        total,
         deliveryFee,
         storeId,
         adminComment,
@@ -776,11 +775,14 @@ abstract class _OrderDto extends OrderDto {
   const factory _OrderDto(
       {@JsonKey(name: 'created_at', readValue: _readDateValue)
       required final int date,
-      final PickupOption pickupOption,
-      final String paymentMethod,
       @JsonKey(name: 'customer_id') required final String userId,
       @JsonKey(name: 'customer_name') required final String userName,
       @JsonKey(name: 'customer_phone') required final String userPhone,
+      @JsonKey(name: 'status', readValue: _readStatusValue)
+      required final DeliveryStatus deliveryStatus,
+      required final double total,
+      final PickupOption pickupOption,
+      final String paymentMethod,
       final String userImage,
       final String userNote,
       @JsonKey(name: 'delivery_state') final String? deliveryState,
@@ -788,13 +790,10 @@ abstract class _OrderDto extends OrderDto {
       @JsonKey(name: 'delivery_address') final String? deliveryStreet,
       @JsonKey(name: 'delivery_latitude') final double? deliveryLatitude,
       @JsonKey(name: 'delivery_longitude') final double? deliveryLongitude,
-      @JsonKey(name: 'status', readValue: _readStatusValue)
-      required final DeliveryStatus deliveryStatus,
       @JsonKey(name: 'driver_id') final String? deliveryId,
       final String? employeeCancelNote,
       final RejectionStatus rejectionStatus,
       final double subTotal,
-      required final double total,
       @JsonKey(name: 'delivery_price') final double? deliveryFee,
       @JsonKey(name: 'store_id') final String? storeId,
       final String? adminComment,
@@ -814,10 +813,6 @@ abstract class _OrderDto extends OrderDto {
   @override // Date field mapping
   @JsonKey(name: 'created_at', readValue: _readDateValue)
   int get date;
-  @override // Pickup option (default to delivery)
-  PickupOption get pickupOption;
-  @override
-  String get paymentMethod;
   @override // Customer fields mapping
   @JsonKey(name: 'customer_id')
   String get userId;
@@ -827,6 +822,15 @@ abstract class _OrderDto extends OrderDto {
   @override
   @JsonKey(name: 'customer_phone')
   String get userPhone;
+  @override // Status field (with trim to handle trailing spaces)
+  @JsonKey(name: 'status', readValue: _readStatusValue)
+  DeliveryStatus get deliveryStatus;
+  @override
+  double get total;
+  @override // Pickup option (default to delivery)
+  PickupOption get pickupOption;
+  @override
+  String get paymentMethod;
   @override
   String get userImage;
   @override
@@ -846,9 +850,6 @@ abstract class _OrderDto extends OrderDto {
   @override
   @JsonKey(name: 'delivery_longitude')
   double? get deliveryLongitude;
-  @override // Status field (with trim to handle trailing spaces)
-  @JsonKey(name: 'status', readValue: _readStatusValue)
-  DeliveryStatus get deliveryStatus;
   @override // Driver assignment
   @JsonKey(name: 'driver_id')
   String? get deliveryId;
@@ -858,8 +859,6 @@ abstract class _OrderDto extends OrderDto {
   RejectionStatus get rejectionStatus;
   @override // Price fields
   double get subTotal;
-  @override
-  double get total;
   @override
   @JsonKey(name: 'delivery_price')
   double? get deliveryFee;

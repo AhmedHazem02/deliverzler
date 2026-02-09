@@ -24,10 +24,9 @@ class PendingOperation with _$PendingOperation {
 
 /// مدير المزامنة غير المتصلة
 class OfflineSyncManager {
+  OfflineSyncManager(this._prefs);
   static const String _storageKey = 'pending_operations';
   final SharedPreferences _prefs;
-
-  OfflineSyncManager(this._prefs);
 
   /// حفظ عملية معلقة
   Future<void> savePendingOperation(PendingOperation operation) async {
@@ -51,7 +50,8 @@ class OfflineSyncManager {
       final decoded = jsonDecode(json) as List<dynamic>;
       return decoded
           .map(
-              (item) => PendingOperation.fromJson(item as Map<String, dynamic>))
+            (item) => PendingOperation.fromJson(item as Map<String, dynamic>),
+          )
           .toList();
     } catch (e) {
       debugPrint('❌ خطأ في قراءة العمليات المعلقة: $e');

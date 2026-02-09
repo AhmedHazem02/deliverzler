@@ -17,6 +17,6 @@ class LocaleRepo {
 
   String getAppLocale() => localDataSource.getAppLocale();
 
-  Future<void> cacheAppLocale(String languageCode) => localDataSource.cacheAppLocale(languageCode);
+  Future<void> cacheAppLocale(String languageCode) =>
+      localDataSource.cacheAppLocale(languageCode);
 }
-

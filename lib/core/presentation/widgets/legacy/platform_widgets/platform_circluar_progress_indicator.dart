@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../platform_widgets/platform_base_widget.dart';
 
-class PlatformCircularProgressIndicator
-    extends PlatformBaseWidget<CircularProgressIndicator, CupertinoActivityIndicator> {
+class PlatformCircularProgressIndicator extends PlatformBaseWidget<
+    CircularProgressIndicator, CupertinoActivityIndicator> {
   const PlatformCircularProgressIndicator({
     super.key,
     this.widgetKey,

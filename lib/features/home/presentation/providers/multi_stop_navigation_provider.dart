@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../../core/presentation/utils/riverpod_framework.dart';
-import '../../domain/order.dart';
 import '../../domain/pickup_stop.dart';
 import '../../domain/store.dart';
 import '../providers/store_provider.dart';
@@ -32,12 +31,14 @@ final sortedPickupStopsProvider =
 
   final result = <PickupStopWithDistance>[];
 
-  for (int i = 0; i < order.pickupStops.length; i++) {
+  for (var i = 0; i < order.pickupStops.length; i++) {
     final stop = order.pickupStops[i];
     final store = stores[stop.storeId];
     double? distance;
 
-    if (driverLat != null && driverLng != null && store?.hasLocation == true) {
+    if (driverLat != null &&
+        driverLng != null &&
+        (store?.hasLocation ?? false)) {
       distance = _haversineDistance(
         driverLat,
         driverLng,
@@ -46,12 +47,14 @@ final sortedPickupStopsProvider =
       );
     }
 
-    result.add(PickupStopWithDistance(
-      stop: stop,
-      originalIndex: i,
-      store: store,
-      distanceKm: distance,
-    ));
+    result.add(
+      PickupStopWithDistance(
+        stop: stop,
+        originalIndex: i,
+        store: store,
+        distanceKm: distance,
+      ),
+    );
   }
 
   // Sort: picked_up first (completed), then active sorted by distance (nearest first),
@@ -87,21 +90,20 @@ final currentPickupStopProvider =
 
 /// Data class pairing a [PickupStop] with its store data and distance from driver.
 class PickupStopWithDistance {
-  final PickupStop stop;
-  final int originalIndex;
-  final AppStore? store;
-  final double? distanceKm;
-
   const PickupStopWithDistance({
     required this.stop,
     required this.originalIndex,
     this.store,
     this.distanceKm,
   });
+  final PickupStop stop;
+  final int originalIndex;
+  final AppStore? store;
+  final double? distanceKm;
 
   /// The GeoPoint for this stop's store location.
   GeoPoint? get storeGeoPoint {
-    if (store?.hasLocation == true) {
+    if (store?.hasLocation ?? false) {
       return GeoPoint(store!.latitude!, store!.longitude!);
     }
     return null;

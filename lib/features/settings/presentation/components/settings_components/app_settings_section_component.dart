@@ -32,11 +32,14 @@ class AppSettingsSectionComponent extends ConsumerWidget {
             child: Switch.adaptive(
               value: currentTheme == AppThemeMode.light,
               onChanged: (value) {
-                final changeTheme = value ? AppThemeMode.light : AppThemeMode.dark;
-                ref.read(appThemeControllerProvider.notifier).changeTheme(changeTheme);
+                final changeTheme =
+                    value ? AppThemeMode.light : AppThemeMode.dark;
+                ref
+                    .read(appThemeControllerProvider.notifier)
+                    .changeTheme(changeTheme);
               },
-              thumbColor: WidgetStatePropertyAll(customColors(context).whiteColor),
-              activeColor: AppStaticColors.lightOrange,
+              thumbColor:
+                  WidgetStatePropertyAll(customColors(context).whiteColor),
               activeTrackColor: AppStaticColors.lightOrange,
             ),
           ),
@@ -51,5 +54,3 @@ class AppSettingsSectionComponent extends ConsumerWidget {
     );
   }
 }
-
-

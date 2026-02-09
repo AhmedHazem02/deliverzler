@@ -6,7 +6,7 @@ part of 'email_verification_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$emailVerificationHash() => r'5237d4ef8b8cc18222e4139a4d62e776aef20078';
+String _$emailVerificationHash() => r'56bb5671bc5e52109f85682c5fc59441480444ed';
 
 /// Copied from Dart SDK
 class _SystemHash {

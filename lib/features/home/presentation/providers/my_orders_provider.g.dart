@@ -23,7 +23,7 @@ final myOrdersProvider = AutoDisposeStreamProvider<List<AppOrder>>.internal(
 );
 
 typedef MyOrdersRef = AutoDisposeStreamProviderRef<List<AppOrder>>;
-String _$filteredMyOrdersHash() => r'3125d247b31a0f95ebfd9571193df1f7d4f8f7b4';
+String _$filteredMyOrdersHash() => r'f1409ca3193916286d7a43111d4df1e911337e7c';
 
 /// Filtered my orders based on the selected filter with persistence
 ///

@@ -24,7 +24,9 @@ class MainDrawerUserInfoComponent extends ConsumerWidget {
           height: Sizes.marginV6,
         ),
         Text(
-          userModel.name!.isEmpty ? 'User${userModel.id.substring(0, 6)}' : userModel.name!,
+          userModel.name!.isEmpty
+              ? 'User${userModel.id.substring(0, 6)}'
+              : userModel.name!,
           style: TextStyles.f18(context).copyWith(
             color: Theme.of(context).colorScheme.primary,
           ),
@@ -46,5 +48,3 @@ class MainDrawerUserInfoComponent extends ConsumerWidget {
     );
   }
 }
-
-

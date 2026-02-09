@@ -22,8 +22,8 @@ mixin _$RejectionRequest {
   String get driverName => throw _privateConstructorUsedError;
   String get reason => throw _privateConstructorUsedError;
   AdminDecision get adminDecision => throw _privateConstructorUsedError;
-  String? get adminComment => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String? get adminComment => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -44,8 +44,8 @@ abstract class $RejectionRequestCopyWith<$Res> {
       String driverName,
       String reason,
       AdminDecision adminDecision,
-      String? adminComment,
       DateTime createdAt,
+      String? adminComment,
       DateTime? updatedAt});
 }
 
@@ -68,8 +68,8 @@ class _$RejectionRequestCopyWithImpl<$Res, $Val extends RejectionRequest>
     Object? driverName = null,
     Object? reason = null,
     Object? adminDecision = null,
-    Object? adminComment = freezed,
     Object? createdAt = null,
+    Object? adminComment = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -97,14 +97,14 @@ class _$RejectionRequestCopyWithImpl<$Res, $Val extends RejectionRequest>
           ? _value.adminDecision
           : adminDecision // ignore: cast_nullable_to_non_nullable
               as AdminDecision,
-      adminComment: freezed == adminComment
-          ? _value.adminComment
-          : adminComment // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -128,8 +128,8 @@ abstract class _$$RejectionRequestImplCopyWith<$Res>
       String driverName,
       String reason,
       AdminDecision adminDecision,
-      String? adminComment,
       DateTime createdAt,
+      String? adminComment,
       DateTime? updatedAt});
 }
 
@@ -150,8 +150,8 @@ class __$$RejectionRequestImplCopyWithImpl<$Res>
     Object? driverName = null,
     Object? reason = null,
     Object? adminDecision = null,
-    Object? adminComment = freezed,
     Object? createdAt = null,
+    Object? adminComment = freezed,
     Object? updatedAt = freezed,
   }) {
     return _then(_$RejectionRequestImpl(
@@ -179,14 +179,14 @@ class __$$RejectionRequestImplCopyWithImpl<$Res>
           ? _value.adminDecision
           : adminDecision // ignore: cast_nullable_to_non_nullable
               as AdminDecision,
-      adminComment: freezed == adminComment
-          ? _value.adminComment
-          : adminComment // ignore: cast_nullable_to_non_nullable
-              as String?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      adminComment: freezed == adminComment
+          ? _value.adminComment
+          : adminComment // ignore: cast_nullable_to_non_nullable
+              as String?,
       updatedAt: freezed == updatedAt
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -205,8 +205,8 @@ class _$RejectionRequestImpl extends _RejectionRequest {
       required this.driverName,
       required this.reason,
       required this.adminDecision,
-      this.adminComment,
       required this.createdAt,
+      this.adminComment,
       this.updatedAt})
       : super._();
 
@@ -223,15 +223,15 @@ class _$RejectionRequestImpl extends _RejectionRequest {
   @override
   final AdminDecision adminDecision;
   @override
-  final String? adminComment;
-  @override
   final DateTime createdAt;
+  @override
+  final String? adminComment;
   @override
   final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'RejectionRequest(requestId: $requestId, orderId: $orderId, driverId: $driverId, driverName: $driverName, reason: $reason, adminDecision: $adminDecision, adminComment: $adminComment, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'RejectionRequest(requestId: $requestId, orderId: $orderId, driverId: $driverId, driverName: $driverName, reason: $reason, adminDecision: $adminDecision, createdAt: $createdAt, adminComment: $adminComment, updatedAt: $updatedAt)';
   }
 
   @override
@@ -249,17 +249,17 @@ class _$RejectionRequestImpl extends _RejectionRequest {
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.adminDecision, adminDecision) ||
                 other.adminDecision == adminDecision) &&
-            (identical(other.adminComment, adminComment) ||
-                other.adminComment == adminComment) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
+            (identical(other.adminComment, adminComment) ||
+                other.adminComment == adminComment) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, requestId, orderId, driverId,
-      driverName, reason, adminDecision, adminComment, createdAt, updatedAt);
+      driverName, reason, adminDecision, createdAt, adminComment, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -277,8 +277,8 @@ abstract class _RejectionRequest extends RejectionRequest {
       required final String driverName,
       required final String reason,
       required final AdminDecision adminDecision,
-      final String? adminComment,
       required final DateTime createdAt,
+      final String? adminComment,
       final DateTime? updatedAt}) = _$RejectionRequestImpl;
   const _RejectionRequest._() : super._();
 
@@ -295,9 +295,9 @@ abstract class _RejectionRequest extends RejectionRequest {
   @override
   AdminDecision get adminDecision;
   @override
-  String? get adminComment;
-  @override
   DateTime get createdAt;
+  @override
+  String? get adminComment;
   @override
   DateTime? get updatedAt;
   @override

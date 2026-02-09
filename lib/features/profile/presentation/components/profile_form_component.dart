@@ -69,7 +69,9 @@ class ProfileFormComponent extends HookConsumerWidget {
           ),
           CustomElevatedButton(
             enableGradient: true,
-            onPressed: ref.isLoading(profileDetailsStateProvider) ? null : updateProfile,
+            onPressed: ref.isLoading(profileDetailsStateProvider)
+                ? null
+                : updateProfile,
             child: Text(
               tr(context).confirm,
               style: TextStyles.coloredElevatedButton(context),
@@ -80,5 +82,3 @@ class ProfileFormComponent extends HookConsumerWidget {
     );
   }
 }
-
-

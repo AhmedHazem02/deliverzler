@@ -19,22 +19,28 @@ extension AppErrorExtension on Object {
 extension _ServerErrorExtension on ServerException {
   String serverErrorMessage(BuildContext context) {
     return switch (type) {
-      ServerExceptionType.general => message, //Business logic error message from the backend
+      ServerExceptionType.general =>
+        message, //Business logic error message from the backend
       ServerExceptionType.unauthorized => tr(context).unauthorizedError,
       ServerExceptionType.forbidden => tr(context).forbiddenError,
       ServerExceptionType.notFound => tr(context).notFoundError,
       ServerExceptionType.conflict => tr(context).conflictError,
       ServerExceptionType.internal => tr(context).internalError,
-      ServerExceptionType.serviceUnavailable => tr(context).serviceUnavailableError,
+      ServerExceptionType.serviceUnavailable =>
+        tr(context).serviceUnavailableError,
       ServerExceptionType.timeOut => tr(context).timeoutError,
       ServerExceptionType.noInternet => tr(context).noInternetError,
       ServerExceptionType.authInvalidEmail => tr(context).authInvalidEmailError,
-      ServerExceptionType.authWrongPassword => tr(context).authWrongPasswordError,
+      ServerExceptionType.authWrongPassword =>
+        tr(context).authWrongPasswordError,
       ServerExceptionType.authUserNotFound => tr(context).authUserNotFoundError,
       ServerExceptionType.authUserDisabled => tr(context).authUserDisabledError,
-      ServerExceptionType.authEmailAlreadyInUse => tr(context).authEmailAlreadyInUseError,
-      ServerExceptionType.authTooManyRequests => tr(context).tooManyRequestsError,
-      ServerExceptionType.authWeakPassword => tr(context).passwordMustBeAtLeast6Characters,
+      ServerExceptionType.authEmailAlreadyInUse =>
+        tr(context).authEmailAlreadyInUseError,
+      ServerExceptionType.authTooManyRequests =>
+        tr(context).tooManyRequestsError,
+      ServerExceptionType.authWeakPassword =>
+        tr(context).passwordMustBeAtLeast6Characters,
       ServerExceptionType.unknown => tr(context).unknownError,
     };
   }

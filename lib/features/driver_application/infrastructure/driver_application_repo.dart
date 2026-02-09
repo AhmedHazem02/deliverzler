@@ -53,14 +53,16 @@ class DriverApplicationRepo {
     XFile? vehicleInsuranceWeb,
     String? notes,
   }) async {
-    debugPrint('🟢 [DriverAppRepo] ========== START SUBMIT APPLICATION ==========');
+    debugPrint(
+        '🟢 [DriverAppRepo] ========== START SUBMIT APPLICATION ==========');
     debugPrint('🟢 [DriverAppRepo] User ID: $userId');
     debugPrint('🟢 [DriverAppRepo] Name: $name');
     debugPrint('🟢 [DriverAppRepo] Email: $email');
     debugPrint('🟢 [DriverAppRepo] Phone: $phone');
-    
+
     // Check for existing application to update instead of creating new one
-    debugPrint('🟢 [DriverAppRepo] Step 1: Checking for existing application...');
+    debugPrint(
+        '🟢 [DriverAppRepo] Step 1: Checking for existing application...');
     final existingApp = await getApplicationByUserId(userId);
     debugPrint('🟢 [DriverAppRepo] Existing app found: ${existingApp != null}');
 
@@ -88,13 +90,13 @@ class DriverApplicationRepo {
         vehicleInsuranceWeb: vehicleInsuranceWeb,
         notes: notes,
       );
-      
+
       // Explicitly set status to pending for resubmission
       await remoteDataSource.updateApplication(
         applicationId: existingApp.id,
         data: {'status': ApplicationStatus.pending.name},
       );
-      
+
       return existingApp.id;
     }
 
@@ -112,7 +114,8 @@ class DriverApplicationRepo {
           file: photo,
           webFile: photoWeb,
         );
-        debugPrint('✅ [DriverAppRepo] Photo uploaded: ${documentUrls['photo']}');
+        debugPrint(
+            '✅ [DriverAppRepo] Photo uploaded: ${documentUrls['photo']}');
       } catch (e) {
         debugPrint('❌ [DriverAppRepo] Photo upload FAILED: $e');
         rethrow;
@@ -129,7 +132,8 @@ class DriverApplicationRepo {
           file: idDocument,
           webFile: idDocumentWeb,
         );
-        debugPrint('✅ [DriverAppRepo] ID document uploaded: ${documentUrls['idDocument']}');
+        debugPrint(
+            '✅ [DriverAppRepo] ID document uploaded: ${documentUrls['idDocument']}');
       } catch (e) {
         debugPrint('❌ [DriverAppRepo] ID document upload FAILED: $e');
         rethrow;
@@ -146,16 +150,13 @@ class DriverApplicationRepo {
           file: license,
           webFile: licenseWeb,
         );
-       
       } catch (e) {
-       
         rethrow;
       }
     }
 
     // Vehicle Registration
     if (vehicleRegistration != null || vehicleRegistrationWeb != null) {
-      
       try {
         documentUrls['vehicleRegistration'] =
             await remoteDataSource.uploadDocument(
@@ -164,34 +165,28 @@ class DriverApplicationRepo {
           file: vehicleRegistration,
           webFile: vehicleRegistrationWeb,
         );
-       
       } catch (e) {
-       
         rethrow;
       }
     }
 
     // Vehicle Insurance
     if (vehicleInsurance != null || vehicleInsuranceWeb != null) {
-
       try {
-        documentUrls['vehicleInsurance'] = await remoteDataSource.uploadDocument(
+        documentUrls['vehicleInsurance'] =
+            await remoteDataSource.uploadDocument(
           userId: userId,
           documentType: 'vehicleInsurance',
           file: vehicleInsurance,
           webFile: vehicleInsuranceWeb,
         );
-       
       } catch (e) {
-       
         rethrow;
       }
     }
 
-          
-
     // Create the application
-    
+
     final application = DriverApplication(
       id: '', // Will be set by Firestore
       userId: userId,
@@ -213,14 +208,12 @@ class DriverApplicationRepo {
       notes: notes,
     );
 
-    
     final dto = DriverApplicationDto.fromDomain(application);
     try {
       final applicationId = await remoteDataSource.submitApplication(dto);
-      
+
       return applicationId;
     } catch (e) {
-      
       rethrow;
     }
   }

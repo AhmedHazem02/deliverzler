@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/infrastructure/error/app_exception.dart';
@@ -32,25 +31,23 @@ class OrderItemsRemoteDataSource {
   /// Get all items for a specific order
   Future<List<OrderItemDto>> getOrderItems(String orderId) async {
     if (orderId.isEmpty) {
-      throw ServerException(
+      throw const ServerException(
         type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
     }
 
     try {
-      
-      
       final snapshot = await firebaseFirestore.getCollectionData(
         path: orderItemsCollectionPath,
         queryBuilder: (query) => query.where('order_id', isEqualTo: orderId),
       );
 
       final items = snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data()! as Map<String, dynamic>;
         // Add document ID to the data
         data['id'] = doc.id;
-        
+
         return OrderItemDto.fromJson(data);
       }).toList();
 
@@ -68,7 +65,7 @@ class OrderItemsRemoteDataSource {
     if (orderId.isEmpty) {
       return Stream.value([]);
     }
-    
+
     return firebaseFirestore
         .collectionStream(
       path: orderItemsCollectionPath,
@@ -76,11 +73,11 @@ class OrderItemsRemoteDataSource {
     )
         .map((snapshot) {
       final items = snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
+        final data = doc.data()! as Map<String, dynamic>;
         data['id'] = doc.id;
         return OrderItemDto.fromJson(data);
       }).toList();
-      
+
       return items;
     }).handleError((error, stackTrace) {
       return <OrderItemDto>[];

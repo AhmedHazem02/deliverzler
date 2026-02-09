@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,7 +67,7 @@ class ApplicationStatusGate extends ConsumerWidget {
     DriverApplication? application,
   ) {
     if (application == null) {
- // No application - go to application form
+      // No application - go to application form
       context.go(DriverApplicationRoute(userId: userId).location);
       return;
     }
@@ -76,15 +75,15 @@ class ApplicationStatusGate extends ConsumerWidget {
     // Check completeness first - if status is pending but data is missing,
     // it's a new registration that needs to fill the form
     if (application.status.isPending && !application.isComplete) {
-       context.go(DriverApplicationRoute(userId: userId).location);
-       return;
+      context.go(DriverApplicationRoute(userId: userId).location);
+      return;
     }
 
     switch (application.status) {
       case ApplicationStatus.approved:
         // Approved - only go to home if we are currently at the status gate or login related routes
         final location = GoRouterState.of(context).matchedLocation;
-        
+
         final isStatusRoute = location == const SplashRoute().location ||
             location == const SignInRoute().location ||
             location == const SignUpRoute().location ||
@@ -94,8 +93,7 @@ class ApplicationStatusGate extends ConsumerWidget {
 
         if (isStatusRoute) {
           context.go(const HomeRoute().location);
-        } else {
-        }
+        } else {}
       case ApplicationStatus.pending:
       case ApplicationStatus.underReview:
         // Waiting for approval - show pending screen
@@ -124,85 +122,6 @@ class _LoadingView extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({
-    required this.error,
-    required this.onRetry,
-    required this.onContinue,
-  });
-
-  final String error;
-  final VoidCallback onRetry;
-  final VoidCallback onContinue;
-
-  @override
-  Widget build(BuildContext context) {
-    return FullScreenScaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.orange,
-                size: 64,
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'حدث خطأ أثناء التحقق من حالة الحساب',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'تفاصيل الخطأ: $error',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: onRetry,
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('إعادة المحاولة'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  OutlinedButton(
-                    onPressed: onContinue,
-                    child: const Text('المتابعة'),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
       ),
     );

@@ -20,7 +20,7 @@ class SignUpState extends _$SignUpState {
   }) async {
     debugPrint('🔵 [SignUp Provider] Starting signup process...');
     debugPrint('🔵 [SignUp Provider] Email: $email, Name: $name');
-    
+
     state = const AsyncLoading();
 
     try {
@@ -33,21 +33,21 @@ class SignUpState extends _$SignUpState {
         password: password,
         name: name,
       );
-      debugPrint('✅ [SignUp Provider] Step 1 SUCCESS: User created with ID: ${user.id}');
+      debugPrint(
+          '✅ [SignUp Provider] Step 1 SUCCESS: User created with ID: ${user.id}');
 
-      // Send email verification immediately
-      debugPrint('🔵 [SignUp Provider] Step 2: Sending email verification...');
-      await authRepo.sendEmailVerification();
-      debugPrint('✅ [SignUp Provider] Step 2 SUCCESS: Verification email sent');
+      // NOTE: We no longer send email verification automatically here.
+      // The user will choose their verification method (email or phone)
+      // on the VerificationMethodScreen after signup.
 
-      debugPrint('🔵 [SignUp Provider] Step 3: Getting full user data...');
+      debugPrint('🔵 [SignUp Provider] Step 2: Getting full user data...');
       final fullUser = await authRepo.getUserData(user.id);
-      debugPrint('✅ [SignUp Provider] Step 3 SUCCESS: Got user data');
+      debugPrint('✅ [SignUp Provider] Step 2 SUCCESS: Got user data');
 
       // Note: We don't authenticate the user here because:
-      // 1. Email needs to be verified first
+      // 1. Identity needs to be verified first (email or phone)
       // 2. Account needs admin approval
-      // User will be redirected to email verification screen
+      // User will be redirected to verification method selection screen
 
       debugPrint('✅ [SignUp Provider] ALL STEPS COMPLETED!');
       state = AsyncData(Some(fullUser));
@@ -58,7 +58,7 @@ class SignUpState extends _$SignUpState {
       } else {
         debugPrint('❌ [SignUp Provider] CAUGHT ERROR: $e');
         debugPrint('❌ [SignUp Provider] Stack: $st');
-        
+
         // Convert error to safe string to avoid JS interop TypeErrors
         final errString = e.toString();
         state = AsyncError(errString, st);

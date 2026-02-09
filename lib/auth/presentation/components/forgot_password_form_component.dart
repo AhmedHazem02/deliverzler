@@ -24,18 +24,22 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
     final notifier = ref.watch(forgotPasswordProvider.notifier);
 
     // Auto-update timer
-    useEffect(() {
-      if (notifier.secondsRemaining > 0) {
-        final timer = Stream.periodic(const Duration(seconds: 1)).listen((_) {
-          // Force rebuild every second while cooldown is active
-          if (notifier.secondsRemaining <= 0) {
-            ref.invalidate(forgotPasswordProvider);
-          }
-        });
-        return timer.cancel;
-      }
-      return null;
-    }, [forgotPasswordState.lastSentTime]);
+    useEffect(
+      () {
+        if (notifier.secondsRemaining > 0) {
+          final timer =
+              Stream<int>.periodic(const Duration(seconds: 1)).listen((_) {
+            // Force rebuild every second while cooldown is active
+            if (notifier.secondsRemaining <= 0) {
+              ref.invalidate(forgotPasswordProvider);
+            }
+          });
+          return timer.cancel;
+        }
+        return null;
+      },
+      [forgotPasswordState.lastSentTime],
+    );
 
     Future<void> sendResetEmail() async {
       errorMessage.value = null;
@@ -66,6 +70,16 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
                   errorMessage.value = tr(context).emailVerificationRequired,
               userDisabled: () =>
                   errorMessage.value = tr(context).authUserDisabledError,
+              invalidPhoneNumber: () =>
+                  errorMessage.value = tr(context).unknownError,
+              invalidVerificationCode: () =>
+                  errorMessage.value = tr(context).unknownError,
+              smsQuotaExceeded: () =>
+                  errorMessage.value = tr(context).unknownError,
+              phoneVerificationFailed: (message) =>
+                  errorMessage.value = message ?? tr(context).unknownError,
+              sessionExpired: () =>
+                  errorMessage.value = tr(context).unknownError,
             );
           },
           (_) {
@@ -85,7 +99,7 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: Colors.green.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.green),
               ),
@@ -94,7 +108,8 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.check_circle, color: Colors.green, size: 24),
+                      const Icon(Icons.check_circle,
+                          color: Colors.green, size: 24),
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -124,13 +139,13 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.red.withOpacity(0.1),
+                color: Colors.red.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.red),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.error_outline, color: Colors.red, size: 24),
+                  const Icon(Icons.error_outline, color: Colors.red, size: 24),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(

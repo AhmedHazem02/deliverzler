@@ -23,11 +23,14 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
   );
 
   if (PlatformHelper.isMaterialApp) {
-    final horizontalActionPadding = materialDialogData.actionsPadding.horizontal / 2;
+    final horizontalActionPadding =
+        materialDialogData.actionsPadding.horizontal / 2;
     final reformedActionsPadding = EdgeInsets.symmetric(
       horizontal: horizontalActionPadding,
     ).copyWith(
-      top: title == null && content == null ? materialDialogData.actionsPadding.vertical / 2 : 0,
+      top: title == null && content == null
+          ? materialDialogData.actionsPadding.vertical / 2
+          : 0,
       bottom: materialDialogData.actionsPadding.vertical / 2,
     );
     return showGeneralDialog<T>(
@@ -45,7 +48,8 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
               builder: (context, constraints) {
                 // This prioritizes insetPadding over preferred maxWidth.
                 // It's A workaround until https://github.com/flutter/flutter/issues/44570 is fixed.
-                final hInsetPadding = materialDialogData.insetPadding.horizontal;
+                final hInsetPadding =
+                    materialDialogData.insetPadding.horizontal;
                 final maxWidth = min(
                   constraints.maxWidth - hInsetPadding,
                   materialDialogData.maxWidth + hInsetPadding,
@@ -54,12 +58,14 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: maxWidth),
                     child: Material(
-                      color: materialDialogData.backgroundColor ?? Theme.of(context).dialogBackgroundColor,
+                      color: materialDialogData.backgroundColor ??
+                          (DialogTheme.of(context).backgroundColor ??
+                              Theme.of(context).colorScheme.surface),
                       shape: materialDialogData.shape ??
                           const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
                           ),
-                      elevation: 24.0,
+                      elevation: 24,
                       type: MaterialType.card,
                       clipBehavior: Clip.antiAlias,
                       child: SingleChildScrollView(
@@ -71,7 +77,9 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
                               Padding(
                                 padding: titlePadding,
                                 child: DefaultTextStyle(
-                                  style: Theme.of(context).dialogTheme.titleTextStyle ??
+                                  style: Theme.of(context)
+                                          .dialogTheme
+                                          .titleTextStyle ??
                                       Theme.of(context).textTheme.titleLarge!,
                                   textAlign: TextAlign.center,
                                   child: title,
@@ -81,7 +89,9 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
                               Padding(
                                 padding: reformedContentPadding,
                                 child: DefaultTextStyle(
-                                  style: Theme.of(context).dialogTheme.contentTextStyle ??
+                                  style: Theme.of(context)
+                                          .dialogTheme
+                                          .contentTextStyle ??
                                       Theme.of(context).textTheme.bodyMedium!,
                                   child: content(context),
                                 ),
@@ -91,9 +101,11 @@ Future<T?> showPlatformAlertDialog<T extends Object?>({
                                 padding: reformedActionsPadding,
                                 child: Wrap(
                                   alignment: WrapAlignment.center,
-                                  spacing: 8.0,
-                                  runSpacing: 8.0,
-                                  children: materialDialogData.actions!.call(context) ?? [],
+                                  spacing: 8,
+                                  runSpacing: 8,
+                                  children: materialDialogData.actions!
+                                          .call(context) ??
+                                      [],
                                 ),
                               ),
                           ],

@@ -55,12 +55,14 @@ class _FullScreenScaffoldState extends ConsumerState<FullScreenScaffold> {
   Widget build(BuildContext context) {
     final currentTheme = ref.watch(currentAppThemeModeProvider);
     return Scaffold(
-      appBar:
-          widget.hasStatusBarSpace ? StatusBarSpacer(statusBarColor: widget.statusBarColor) : null,
+      appBar: widget.hasStatusBarSpace
+          ? StatusBarSpacer(statusBarColor: widget.statusBarColor)
+          : null,
       body: AnnotatedRegion(
         value: getFullScreenOverlayStyle(
           context,
-          darkOverlays: widget.darkOverlays ?? currentTheme == AppThemeMode.light,
+          darkOverlays:
+              widget.darkOverlays ?? currentTheme == AppThemeMode.light,
           supportsEdgeToEdge: supportsEdgeToEdge,
         ),
         child: widget.body,

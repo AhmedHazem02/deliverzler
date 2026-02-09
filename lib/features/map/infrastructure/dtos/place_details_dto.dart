@@ -10,11 +10,13 @@ part 'place_details_dto.g.dart';
 @Freezed(toJson: false)
 class PlaceDetailsDto with _$PlaceDetailsDto {
   const factory PlaceDetailsDto({
-    @JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint) required GeoPoint geoPoint,
+    @JsonKey(name: 'geometry', fromJson: _fromJsonGeoPoint)
+    required GeoPoint geoPoint,
   }) = _PlaceDetailsDto;
   const PlaceDetailsDto._();
 
-  factory PlaceDetailsDto.fromJson(Map<String, dynamic> json) => _$PlaceDetailsDtoFromJson(json);
+  factory PlaceDetailsDto.fromJson(Map<String, dynamic> json) =>
+      _$PlaceDetailsDtoFromJson(json);
 
   factory PlaceDetailsDto.fromDomain(PlaceDetails placeDetails) {
     return PlaceDetailsDto(

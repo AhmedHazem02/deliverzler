@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages, implementation_imports, unnecessary_import
 
-import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_android/src/types/foreground_settings.dart';
 import 'package:location/location.dart' as loc;
@@ -28,7 +29,7 @@ class LocationService {
   LocationService({this.webLocationService});
 
   final WebLocationService? webLocationService;
-  
+
   Future<bool> isLocationServiceEnabled() async {
     return Geolocator.isLocationServiceEnabled();
   }
@@ -91,11 +92,11 @@ class LocationService {
             distanceFilter ?? AppLocationSettings.locationChangeDistance,
       );
     }
-    
+
     // Try to detect platform for native apps
     try {
       final platform = defaultTargetPlatform;
-      
+
       if (platform == TargetPlatform.android) {
         return AndroidSettings(
           accuracy: LocationAccuracy.high,
@@ -113,7 +114,8 @@ class LocationService {
             enableWakeLock: true,
           ),
         );
-      } else if (platform == TargetPlatform.iOS || platform == TargetPlatform.macOS) {
+      } else if (platform == TargetPlatform.iOS ||
+          platform == TargetPlatform.macOS) {
         return AppleSettings(
           accuracy: LocationAccuracy.high,
           distanceFilter:
@@ -127,7 +129,7 @@ class LocationService {
     } catch (e) {
       // Platform detection failed, use generic settings
     }
-    
+
     // Fallback for unsupported platforms
     return LocationSettings(
       accuracy: LocationAccuracy.high,

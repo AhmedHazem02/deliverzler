@@ -42,7 +42,9 @@ class MapConfirmButtonComponent extends ConsumerWidget {
                     deliveryStatus: DeliveryStatus.delivered,
                     deliveryId: ref.read(currentUserProvider).id,
                   );
-                  ref.read(mapConfirmOrderStatusProvider.notifier).confirmOrder(params);
+                  ref
+                      .read(mapConfirmOrderStatusProvider.notifier)
+                      .confirmOrder(params);
                 },
               );
             }
@@ -65,12 +67,11 @@ class MapConfirmButtonComponent extends ConsumerWidget {
               onPressed: confirmOrder,
               child: Text(
                 tr(context).confirm,
-                style: TextStyles.coloredElevatedButton(context).copyWith(fontSize: Sizes.font18),
+                style: TextStyles.coloredElevatedButton(context)
+                    .copyWith(fontSize: Sizes.font18),
               ),
             ),
           )
         : const SizedBox();
   }
 }
-
-

@@ -32,7 +32,8 @@ abstract class FontStyles {
 }
 
 abstract class Borders {
-  static OutlineInputBorder inputDecorationBorder(Color borderColor, [double borderWidth = 0.8]) =>
+  static OutlineInputBorder inputDecorationBorder(Color borderColor,
+          [double borderWidth = 0.8]) =>
       OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(12)),
         borderSide: BorderSide(color: borderColor, width: borderWidth),
@@ -40,5 +41,6 @@ abstract class Borders {
 }
 
 abstract class Insets {
-  static const inputDecorationContentPadding = EdgeInsets.symmetric(vertical: 14, horizontal: 14);
+  static const inputDecorationContentPadding =
+      EdgeInsets.symmetric(vertical: 14, horizontal: 14);
 }

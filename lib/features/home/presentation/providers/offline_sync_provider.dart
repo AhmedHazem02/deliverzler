@@ -37,7 +37,8 @@ final processPendingOperationsProvider = FutureProvider<void>((ref) async {
     for (final operation in operations) {
       if (operation.retryCount > 3) {
         debugPrint(
-            '⏹️ إيقاف العملية ${operation.id} - تم تجاوز الحد الأقصى للمحاولات');
+          '⏹️ إيقاف العملية ${operation.id} - تم تجاوز الحد الأقصى للمحاولات',
+        );
         await syncManager.removePendingOperation(operation.id);
       }
     }

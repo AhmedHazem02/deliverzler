@@ -31,7 +31,8 @@ class CardUserDetailsComponent extends StatelessWidget {
                 order.userName.isEmpty
                     ? tr(context).user + order.userId.substring(0, 6)
                     : order.userName,
-                style: TextStyles.f14(context).copyWith(fontWeight: FontStyles.fontWeightBold),
+                style: TextStyles.f14(context)
+                    .copyWith(fontWeight: FontStyles.fontWeightBold),
                 overflow: TextOverflow.ellipsis,
               ),
               Text(

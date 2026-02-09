@@ -95,8 +95,8 @@ class DeliveryAvailabilityBadge extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             color: isAvailable
-                ? (availableColor ?? Colors.green).withOpacity(0.1)
-                : (unavailableColor ?? Colors.red).withOpacity(0.1),
+                ? (availableColor ?? Colors.green).withValues(alpha: 0.1)
+                : (unavailableColor ?? Colors.red).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isAvailable

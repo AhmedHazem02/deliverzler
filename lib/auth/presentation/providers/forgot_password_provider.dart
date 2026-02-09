@@ -43,7 +43,7 @@ class ForgotPassword extends _$ForgotPassword {
         await ref.read(authRepoProvider).sendPasswordResetEmail(email);
 
     return result.fold(
-      (failure) => left(failure),
+      left,
       (_) {
         state = ForgotPasswordState(
           lastSentTime: DateTime.now(),

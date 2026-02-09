@@ -17,7 +17,8 @@ part 'google_map_dio_providers.g.dart';
 @Riverpod(keepAlive: true)
 Dio googleMapDio(Ref ref) {
   final logger = Logger('Dio')..level = Level.FINEST;
-  final sub = logger.onRecord.listen(loggerOnDataCallback(logColor: LogColor.cyan));
+  final sub =
+      logger.onRecord.listen(loggerOnDataCallback(logColor: LogColor.cyan));
   ref.onDispose(sub.cancel);
 
   return Dio()
@@ -35,4 +36,3 @@ Dio googleMapDio(Ref ref) {
       LogInterceptor(logPrint: logger.finest),
     ]);
 }
-

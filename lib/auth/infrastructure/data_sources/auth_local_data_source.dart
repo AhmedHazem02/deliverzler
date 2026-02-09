@@ -19,7 +19,8 @@ class AuthLocalDataSource {
   AuthLocalDataSource(this.ref);
 
   final Ref ref;
-  SharedPreferencesFacade get sharedPreferences => ref.read(sharedPreferencesFacadeProvider);
+  SharedPreferencesFacade get sharedPreferences =>
+      ref.read(sharedPreferencesFacadeProvider);
 
   static const String userDataKey = 'user_data';
 
@@ -34,7 +35,8 @@ class AuthLocalDataSource {
   UserDto getUserData() {
     final jsonString = sharedPreferences.restoreData<String>(userDataKey);
     if (jsonString != null) {
-      final userDto = UserDto.fromJson(json.decode(jsonString) as Map<String, dynamic>);
+      final userDto =
+          UserDto.fromJson(json.decode(jsonString) as Map<String, dynamic>);
       return userDto;
     } else {
       throw const CacheException(
@@ -46,9 +48,13 @@ class AuthLocalDataSource {
 
   Future<void> clearUserData() async {
     await sharedPreferences.clearAll();
-    await ref.read(appLocaleControllerProvider.notifier).reCacheLocale().suppressError();
-    await ref.read(appThemeControllerProvider.notifier).reCacheTheme().suppressError();
+    await ref
+        .read(appLocaleControllerProvider.notifier)
+        .reCacheLocale()
+        .suppressError();
+    await ref
+        .read(appThemeControllerProvider.notifier)
+        .reCacheTheme()
+        .suppressError();
   }
 }
-
-

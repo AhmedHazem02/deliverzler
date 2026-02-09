@@ -20,4 +20,3 @@ CameraPosition targetLocationCameraPosition(
     zoom: defaultMapZoom,
   );
 }
-

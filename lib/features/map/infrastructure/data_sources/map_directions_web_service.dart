@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'dart:async';
 // ignore: deprecated_member_use
 import 'dart:js' as js;
@@ -12,10 +14,10 @@ import '../../domain/place_directions.dart';
 /// Web-specific DirectionsService using Google Maps JavaScript API
 /// This is required because the REST API doesn't support CORS for web browsers
 class MapDirectionsWebService {
-  static final MapDirectionsWebService _instance =
-      MapDirectionsWebService._internal();
   factory MapDirectionsWebService() => _instance;
   MapDirectionsWebService._internal();
+  static final MapDirectionsWebService _instance =
+      MapDirectionsWebService._internal();
 
   js.JsObject? _directionsService;
 
@@ -43,7 +45,6 @@ class MapDirectionsWebService {
     final completer = Completer<PlaceDirections>();
 
     try {
-      
       final googleMaps = js.context['google']['maps'];
 
       final request = js.JsObject.jsify({
@@ -62,20 +63,19 @@ class MapDirectionsWebService {
       // Create callback - use Function type that JS interop accepts
       void handleResponse(dynamic response, dynamic status) {
         final statusStr = status.toString();
-        
+
         if (statusStr == 'OK') {
           try {
             final jsResponse = response as js.JsObject;
             final directions = _parseDirectionsResponse(jsResponse);
             completer.complete(directions);
           } catch (e) {
-             
             completer.completeError(e);
           }
         } else {
-           
           completer.completeError(
-              Exception('Directions request failed: $statusStr'));
+            Exception('Directions request failed: $statusStr'),
+          );
         }
       }
 
@@ -92,13 +92,13 @@ class MapDirectionsWebService {
     try {
       // Get the first route - use js.JsArray for proper array access
       final routesArray = response['routes'] as js.JsArray;
-      if (routesArray.length == 0) {
+      if (routesArray.isEmpty) {
         throw Exception('No routes found');
       }
 
       final route = routesArray[0] as js.JsObject;
       final legsArray = route['legs'] as js.JsArray;
-      if (legsArray.length == 0) {
+      if (legsArray.isEmpty) {
         throw Exception('No legs found');
       }
 
@@ -113,7 +113,7 @@ class MapDirectionsWebService {
 
       // Get encoded polyline - the structure varies, so handle different cases
       final overviewPolylineRaw = route['overview_polyline'];
-      
+
       String points;
       if (overviewPolylineRaw is String) {
         // Direct string (already encoded points)
@@ -131,10 +131,8 @@ class MapDirectionsWebService {
         points = overviewPolylineRaw.toString();
       }
 
-
       // Decode polyline
       final polylinePoints = PolylinePoints.decodePolyline(points);
-      
 
       // Get bounds
       final bounds = route['bounds'] as js.JsObject;
@@ -145,7 +143,6 @@ class MapDirectionsWebService {
       final neLng = (northeast.callMethod('lng') as num).toDouble();
       final swLat = (southwest.callMethod('lat') as num).toDouble();
       final swLng = (southwest.callMethod('lng') as num).toDouble();
-
 
       return PlaceDirections(
         bounds: LatLngBounds(

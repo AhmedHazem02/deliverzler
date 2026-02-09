@@ -45,7 +45,8 @@ abstract class TextStyles {
         fontSize: Sizes.font12,
       );
 
-  static TextStyle titleMedium(Color color) => TextStyle(color: color, fontSize: Sizes.font14);
+  static TextStyle titleMedium(Color color) =>
+      TextStyle(color: color, fontSize: Sizes.font14);
 
   static TextStyle inputDecorationHint(Color color) =>
       TextStyle(color: color, fontSize: Sizes.font12);
@@ -53,9 +54,11 @@ abstract class TextStyles {
   static TextStyle inputDecorationError(Color color) =>
       TextStyle(color: color, fontSize: Sizes.font12);
 
-  static TextStyle navigationLabel(Color color) => TextStyle(color: color, fontSize: Sizes.font12);
+  static TextStyle navigationLabel(Color color) =>
+      TextStyle(color: color, fontSize: Sizes.font12);
 
-  static TextStyle coloredElevatedButton(BuildContext context) => f16(context).copyWith(
+  static TextStyle coloredElevatedButton(BuildContext context) =>
+      f16(context).copyWith(
         color: const Color(0xffffffff),
         fontWeight: FontStyles.fontWeightSemiBold,
       );
@@ -66,7 +69,9 @@ abstract class TextStyles {
         fontWeight: FontStyles.fontWeightBold,
       );
 
-  static TextStyle dialogContent(Color color) => TextStyle(color: color, fontSize: Sizes.font16);
+  static TextStyle dialogContent(Color color) =>
+      TextStyle(color: color, fontSize: Sizes.font16);
 
-  static TextStyle cupertinoDialogAction(BuildContext context) => f16SemiBold(context);
+  static TextStyle cupertinoDialogAction(BuildContext context) =>
+      f16SemiBold(context);
 }

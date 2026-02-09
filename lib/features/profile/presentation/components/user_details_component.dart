@@ -17,7 +17,8 @@ class UserDetailsComponent extends ConsumerWidget {
       children: [
         Text(
           user.name ?? 'User${user.id.substring(0, 6)}',
-          style: TextStyles.f18(context).copyWith(fontWeight: FontStyles.fontWeightBold),
+          style: TextStyles.f18(context)
+              .copyWith(fontWeight: FontStyles.fontWeightBold),
           textAlign: TextAlign.center,
         ),
         const SizedBox(
@@ -31,5 +32,3 @@ class UserDetailsComponent extends ConsumerWidget {
     );
   }
 }
-
-

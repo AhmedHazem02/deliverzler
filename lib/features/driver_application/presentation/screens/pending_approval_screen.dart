@@ -12,7 +12,7 @@ import '../../domain/driver_application.dart';
 import '../providers/driver_application_provider.dart';
 
 class PendingApprovalScreen extends ConsumerWidget {
-  const PendingApprovalScreen({super.key, required this.userId});
+  const PendingApprovalScreen({required this.userId, super.key});
 
   final String userId;
 
@@ -38,7 +38,7 @@ class PendingApprovalScreen extends ConsumerWidget {
               }
               // If approved, show a success message and button to go home (in case auto-redirect didn't happen yet)
               if (application.status == ApplicationStatus.approved) {
-                 return _buildApprovedView(context, ref);
+                return _buildApprovedView(context, ref);
               }
               return _buildStatusView(context, ref, application);
             },
@@ -63,23 +63,23 @@ class PendingApprovalScreen extends ConsumerWidget {
           const Icon(Icons.check_circle, size: 80, color: Colors.green),
           const SizedBox(height: Sizes.marginV24),
           Text(
-             tr(context).applicationApproved,
-             style: Theme.of(context).textTheme.headlineSmall,
-             textAlign: TextAlign.center,
+            tr(context).applicationApproved,
+            style: Theme.of(context).textTheme.headlineSmall,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: Sizes.marginV16),
           Text(
-             tr(context).applicationApprovedMessage,
-             textAlign: TextAlign.center,
-             style: const TextStyle(color: Colors.grey),
+            tr(context).applicationApprovedMessage,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.grey),
           ),
-           const SizedBox(height: Sizes.marginV32),
-           CustomElevatedButton(
+          const SizedBox(height: Sizes.marginV32),
+          CustomElevatedButton(
             onPressed: () {
               context.go(const HomeRoute().location);
             },
             child: Text(tr(context).continue2),
-           ),
+          ),
         ],
       ),
     );
@@ -112,7 +112,7 @@ class PendingApprovalScreen extends ConsumerWidget {
           const SizedBox(height: Sizes.marginV32),
           CustomElevatedButton(
             onPressed: () {
-               context.go(DriverApplicationRoute(userId: userId).location);
+              context.go(DriverApplicationRoute(userId: userId).location);
             },
             child: Text(tr(context).submitApplication),
           ),
@@ -181,7 +181,7 @@ class PendingApprovalScreen extends ConsumerWidget {
             if (application.status == ApplicationStatus.rejected)
               CustomElevatedButton(
                 onPressed: () {
-                   context.go(DriverApplicationRoute(userId: userId).location);
+                  context.go(DriverApplicationRoute(userId: userId).location);
                 },
                 child: Text(tr(context).resubmitApplication),
               ),

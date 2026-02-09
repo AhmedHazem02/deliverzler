@@ -1,4 +1,3 @@
-import '../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/place_autocomplete.dart';
@@ -31,7 +30,8 @@ class SelectedPlaceAutocomplete extends _$SelectedPlaceAutocomplete {
   Option<PlaceAutocomplete> build() => const None();
 
   void update(
-      Option<PlaceAutocomplete> Function(Option<PlaceAutocomplete> state) fn) {
+    Option<PlaceAutocomplete> Function(Option<PlaceAutocomplete> state) fn,
+  ) {
     state = fn(state);
   }
 }

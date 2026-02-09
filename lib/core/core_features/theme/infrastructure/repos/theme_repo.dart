@@ -20,4 +20,3 @@ class ThemeRepo {
   Future<void> cacheAppThemeMode(String themeString) =>
       localDataSource.cacheAppThemeMode(themeString);
 }
-

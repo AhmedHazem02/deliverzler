@@ -5,7 +5,8 @@ class MainScrollBehavior extends ScrollBehavior {
   // TODO(Ahmed): remove this when migrating to Material3 and the new StretchOverscrollIndicator:
   // https://github.com/flutter/flutter/issues/82906
   @override
-  Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
     return child;
   }
 

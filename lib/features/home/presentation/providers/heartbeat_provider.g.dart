@@ -6,7 +6,7 @@ part of 'heartbeat_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$heartbeatHash() => r'000f5713caeab8eb0324a63f56d3770db3d5351f';
+String _$heartbeatHash() => r'2055d71e0bdb58671a407c5c681bcb257d7cccec';
 
 /// Provider that sends periodic heartbeat to update driver's lastActiveAt.
 ///

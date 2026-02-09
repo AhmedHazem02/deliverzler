@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../../core/core_features/theme/presentation/utils/app_theme.dart';
-import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../helpers/map_style_helper.dart';
 import '../providers/map_controller_provider.dart';
@@ -83,14 +82,16 @@ class _GoogleMapComponentState extends ConsumerState<GoogleMapComponent>
     if (_isUserInteracting ||
         _mapController == null ||
         _targetPosition == null ||
-        hasTarget) return;
+        hasTarget) {
+      return;
+    }
 
     // Use current camera pos as start if not set
     _currentPosition ??= _targetPosition;
 
     // Damp Logic: current = current + (target - current) * dampFactor
     // Factor 0.05 provides the "Heavy/Elastic" feel
-    final dampFactor = 0.05;
+    const dampFactor = 0.05;
     final lat = _currentPosition!.latitude +
         (_targetPosition!.latitude - _currentPosition!.latitude) * dampFactor;
     final lng = _currentPosition!.longitude +

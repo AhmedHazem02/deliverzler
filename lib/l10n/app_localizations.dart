@@ -650,6 +650,120 @@ abstract class AppLocalizations {
   /// **'This email is already registered. Please sign in.'**
   String get authEmailAlreadyInUseError;
 
+  /// No description provided for @chooseVerificationMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Identity'**
+  String get chooseVerificationMethod;
+
+  /// No description provided for @chooseVerificationMethodDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you\'d like to verify your account'**
+  String get chooseVerificationMethodDesc;
+
+  /// No description provided for @verifyByEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify by Email'**
+  String get verifyByEmail;
+
+  /// No description provided for @verifyByEmailDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send a verification link to your email'**
+  String get verifyByEmailDesc;
+
+  /// No description provided for @verifyByPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify by Phone'**
+  String get verifyByPhone;
+
+  /// No description provided for @verifyByPhoneDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send an OTP code to your phone number'**
+  String get verifyByPhoneDesc;
+
+  /// No description provided for @phoneNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required for phone verification'**
+  String get phoneNumberRequired;
+
+  /// No description provided for @verifyYourPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Phone'**
+  String get verifyYourPhone;
+
+  /// No description provided for @otpSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a verification code to'**
+  String get otpSentTo;
+
+  /// No description provided for @enterOtpCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to your phone'**
+  String get enterOtpCode;
+
+  /// No description provided for @sendingOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending verification code...'**
+  String get sendingOtp;
+
+  /// No description provided for @autoVerifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-verifying...'**
+  String get autoVerifying;
+
+  /// No description provided for @phoneVerifiedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone verified successfully!'**
+  String get phoneVerifiedSuccessfully;
+
+  /// No description provided for @resendOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get resendOtp;
+
+  /// No description provided for @didNotReceiveOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get didNotReceiveOtp;
+
+  /// No description provided for @checkPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure your phone number is correct and try again'**
+  String get checkPhoneNumber;
+
+  /// No description provided for @invalidOtpCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code'**
+  String get invalidOtpCode;
+
+  /// No description provided for @otpExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code expired. Please request a new one.'**
+  String get otpExpired;
+
+  /// No description provided for @phoneAlreadyLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number is already linked to another account'**
+  String get phoneAlreadyLinked;
+
   /// No description provided for @english.
   ///
   /// In en, this message translates to:

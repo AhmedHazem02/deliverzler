@@ -24,7 +24,8 @@ enum TabItem {
     return switch (this) {
       TabItem.home => AppPlatformIcons.platformIcons(context).home,
       TabItem.myOrders => Icons.list_alt,
-      TabItem.profile => AppPlatformIcons.platformIcons(context).accountCircleSolid,
+      TabItem.profile =>
+        AppPlatformIcons.platformIcons(context).accountCircleSolid,
       TabItem.settings => AppPlatformIcons.platformIcons(context).settingsSolid,
     };
   }

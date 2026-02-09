@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart'
+    show FirebaseAuthException, PhoneAuthCredential;
 import 'package:flutter/foundation.dart';
 
 import '../../../core/infrastructure/error/app_exception.dart';
@@ -90,7 +92,7 @@ class AuthRemoteDataSource {
     const maxRetries = 3;
     const timeoutPerAttempt = Duration(seconds: 6);
 
-    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+    for (var attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         // debugPrint('🔐 [AuthRemote] Attempt $attempt/$maxRetries');
         final user = await firebaseAuth.authStateChanges.firstWhere((user) {
@@ -110,7 +112,7 @@ class AuthRemoteDataSource {
           );
         }
         // Wait a bit before retrying
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future<void>.delayed(const Duration(milliseconds: 500));
       }
     }
 
@@ -155,5 +157,64 @@ class AuthRemoteDataSource {
 
   Future<bool> checkEmailVerified() async {
     return firebaseAuth.isEmailVerified();
+  }
+
+  Future<bool> checkPhoneVerified() async {
+    return firebaseAuth.isPhoneVerified();
+  }
+
+  Future<bool> checkUserVerified() async {
+    return firebaseAuth.isUserVerified();
+  }
+
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required void Function(String verificationId, int? resendToken) codeSent,
+    required void Function(String verificationId) codeAutoRetrievalTimeout,
+    required void Function(PhoneAuthCredential credential)
+        verificationCompleted,
+    required void Function(FirebaseAuthException error) verificationFailed,
+    int? forceResendingToken,
+  }) async {
+    return firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      forceResendingToken: forceResendingToken,
+    );
+  }
+
+  Future<void> verifyOtpAndLinkPhone({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    return firebaseAuth.verifyOtpAndLinkPhone(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+  }
+
+  Future<void> linkPhoneCredential(PhoneAuthCredential credential) async {
+    return firebaseAuth.linkPhoneCredential(credential);
+  }
+
+  /// Save the user's chosen verification method to Firestore.
+  Future<void> setVerificationMethod({
+    required String uid,
+    required String method,
+  }) async {
+    return firebaseFirestore.updateData(
+      path: userDocPath(uid),
+      data: {'verificationMethod': method},
+    );
+  }
+
+  /// Get the verification method chosen by the user.
+  Future<String?> getVerificationMethod(String uid) async {
+    final response = await firebaseFirestore.getData(path: userDocPath(uid));
+    final data = response.data() as Map<String, dynamic>?;
+    return data?['verificationMethod'] as String?;
   }
 }

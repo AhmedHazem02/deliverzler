@@ -46,7 +46,9 @@ class PlaceAutocompleteDto with _$PlaceAutocompleteDto {
 }
 
 String _readMainText(Map<dynamic, dynamic> json, String key) =>
-    (json['structured_formatting'] as Map<String, dynamic>)['main_text'] as String;
+    (json['structured_formatting'] as Map<String, dynamic>)['main_text']
+        as String;
 
 String _readSecondaryText(Map<dynamic, dynamic> json, String key) =>
-    (json['structured_formatting'] as Map<String, dynamic>)['secondary_text'] as String;
+    (json['structured_formatting'] as Map<String, dynamic>)['secondary_text']
+        as String;

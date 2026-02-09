@@ -99,11 +99,11 @@ class StoreMarkerHelper {
           'width="$totalW" height="66" viewBox="0 0 $totalW 66">');
 
     // ── Defs ──
-    sb.write('<defs>'
-        '<linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">'
-        '<stop offset="0%" stop-color="$secondary"/>'
-        '<stop offset="100%" stop-color="$primary"/>'
-        '</linearGradient>'
+    sb.write('<defs> '
+        '<linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"> '
+        '<stop offset="0%" stop-color="$secondary"/> '
+        '<stop offset="100%" stop-color="$primary"/> '
+        '</linearGradient> '
         '</defs>');
 
     // ── Glow rings (current stop) ──

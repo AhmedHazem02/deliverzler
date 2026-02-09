@@ -17,9 +17,9 @@ Future<User> checkAuth(Ref ref) async {
 
     final uid = await ref.watch(authRepoProvider).getUserAuthUid();
 
-    // CRITICAL: Check email verification status from server
+    // CRITICAL: Check if user is verified via either email OR phone
     final verificationResult =
-        await ref.watch(authRepoProvider).checkEmailVerified();
+        await ref.watch(authRepoProvider).checkUserVerified();
 
     final isVerified = verificationResult.fold(
       (failure) => false,
@@ -27,17 +27,31 @@ Future<User> checkAuth(Ref ref) async {
     );
 
     if (!isVerified) {
-      // Get user data to retrieve email
+      // Get user data to retrieve email and phone
       User user;
       try {
         user = await ref.watch(authRepoProvider).getUserData(uid);
       } catch (e) {
-        // If user data doesn't exist, we can't verify email - sign out
+        // If user data doesn't exist, we can't verify - sign out
         await ref.watch(authRepoProvider).signOut();
         rethrow;
       }
+
+      // Check if user has previously chosen a verification method
+      String? chosenMethod;
+      try {
+        chosenMethod =
+            await ref.watch(authRepoProvider).getVerificationMethod(uid);
+      } catch (_) {
+        // Ignore — chosenMethod stays null
+      }
+
       // Don't authenticate, throw exception to redirect to verification
-      throw EmailNotVerifiedException(email: user.email);
+      throw NotVerifiedException(
+        email: user.email,
+        phone: user.phone,
+        chosenMethod: chosenMethod,
+      );
     }
 
     User user;
@@ -51,7 +65,7 @@ Future<User> checkAuth(Ref ref) async {
       rethrow;
     }
 
-    // Authenticate user after email verification confirmed
+    // Authenticate user after verification confirmed
     sub.read().authenticateUser(user);
 
     return user;

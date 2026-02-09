@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 import '../../platform_widgets/platform_base_widget.dart';
 
-class PlatformTextFormField extends PlatformBaseWidget<TextFormField, CupertinoFormRow> {
+class PlatformTextFormField
+    extends PlatformBaseWidget<TextFormField, CupertinoFormRow> {
   const PlatformTextFormField({
     super.key,
     this.widgetKey,

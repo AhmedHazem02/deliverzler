@@ -14,7 +14,8 @@ Circle myLocationCircle(Ref ref) {
     myLocationCameraPositionProvider.select((camera) => camera.target),
   );
   final myLocationAccuracy = ref.watch(
-    locationStreamProvider.select((position) => position.whenData((v) => v).value?.accuracy),
+    locationStreamProvider
+        .select((position) => position.whenData((v) => v).value?.accuracy),
   );
 
   return MapStyleHelper.getMyLocationCircle(
@@ -22,4 +23,3 @@ Circle myLocationCircle(Ref ref) {
     radius: myLocationAccuracy ?? defaultCircleRadius,
   );
 }
-

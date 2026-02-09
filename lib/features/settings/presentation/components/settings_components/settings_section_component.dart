@@ -28,7 +28,7 @@ class SettingsSectionComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(Sizes.dialogR6),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).hintColor.withOpacity(0.15),
+            color: Theme.of(context).hintColor.withValues(alpha: 0.15),
             offset: const Offset(0, 3),
             blurRadius: 10,
           ),

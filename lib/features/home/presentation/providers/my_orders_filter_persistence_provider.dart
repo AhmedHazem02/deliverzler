@@ -4,15 +4,14 @@ import 'package:flutter/foundation.dart';
 
 /// حالة الفلتر
 class MyOrdersFilterState {
-  final String selectedFilter; // 'all', 'onTheWay', 'delivered'
-  final bool isLoading;
-  final String? error;
-
   const MyOrdersFilterState({
     required this.selectedFilter,
     this.isLoading = false,
     this.error,
   });
+  final String selectedFilter; // 'all', 'onTheWay', 'delivered'
+  final bool isLoading;
+  final String? error;
 
   MyOrdersFilterState copyWith({
     String? selectedFilter,
@@ -61,7 +60,7 @@ class MyOrdersFilterNotifier extends StateNotifier<MyOrdersFilterState> {
   /// تعديل الفلتر وحفظه
   Future<void> setFilter(String filter) async {
     try {
-      state = state.copyWith(isLoading: true, error: null);
+      state = state.copyWith(isLoading: true);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_filterStorageKey, filter);

@@ -7,7 +7,7 @@ part of 'splash_providers.dart';
 // **************************************************************************
 
 String _$splashServicesWarmupHash() =>
-    r'e4ca84e38afc339d3da75f487f5459d5d4ca1923';
+    r'27ccd74df07721bc310184ec27daa61eb3e7b35f';
 
 /// See also [splashServicesWarmup].
 @ProviderFor(splashServicesWarmup)

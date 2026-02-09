@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import '../../../error/app_exception.dart';
 
@@ -25,7 +24,7 @@ extension FirebaseErrorExtension on Object {
         code: 408,
       );
     }
-    
+
     // Try to extract error code from the exception string (for web JS interop errors)
     final errorString = exception.toString().toLowerCase();
     if (errorString.contains('invalid-email')) {
@@ -34,7 +33,8 @@ extension FirebaseErrorExtension on Object {
         message: 'Please enter a valid email address',
       );
     }
-    if (errorString.contains('wrong-password') || errorString.contains('invalid-credential')) {
+    if (errorString.contains('wrong-password') ||
+        errorString.contains('invalid-credential')) {
       return const ServerException(
         type: ServerExceptionType.authWrongPassword,
         message: 'Invalid email or password',
@@ -64,13 +64,14 @@ extension FirebaseErrorExtension on Object {
         message: 'Too many attempts. Please try again later.',
       );
     }
-    if (errorString.contains('network-request-failed') || errorString.contains('network')) {
+    if (errorString.contains('network-request-failed') ||
+        errorString.contains('network')) {
       return const ServerException(
         type: ServerExceptionType.general,
         message: 'Network error. Please check your connection.',
       );
     }
-    
+
     return ServerException(
       type: ServerExceptionType.unknown,
       message: exception.toString(),
@@ -82,7 +83,7 @@ extension _FirebaseAuthErrorExtension on FirebaseAuthException {
   // TODO(Ahmed): Handle all auth exception cases and add unit tests
   ServerException firebaseAuthToServerException() {
     final cleanCode = code.replaceFirst('auth/', '');
-    
+
     return switch (cleanCode) {
       'invalid-email' => ServerException(
           type: ServerExceptionType.authInvalidEmail,
@@ -130,7 +131,7 @@ extension _FirebaseExceptionExtension on FirebaseException {
     // Firebase Web uses 'code' property similar to FirebaseAuthException
     // Some versions might return 'auth/code', others just 'code'
     final cleanCode = code.replaceFirst('auth/', '');
-    
+
     return switch (cleanCode) {
       'invalid-email' => ServerException(
           type: ServerExceptionType.authInvalidEmail,
@@ -168,15 +169,17 @@ extension _FirebaseExceptionExtension on FirebaseException {
           type: ServerExceptionType.general,
           message: 'Network error. Please check your connection.',
         ),
-      _ => _fallbackMessageCheck(message ?? 'An error occurred. Please try again.', exception: this),
+      _ => _fallbackMessageCheck(
+          message ?? 'An error occurred. Please try again.',
+          exception: this),
     };
   }
 }
 
 ServerException _fallbackMessageCheck(String message, {Object? exception}) {
   final lowerMessage = message.toLowerCase();
-  
-  if (lowerMessage.contains('incorrect, malformed or has expired') || 
+
+  if (lowerMessage.contains('incorrect, malformed or has expired') ||
       lowerMessage.contains('supplied auth credential') ||
       lowerMessage.contains('invalid login credentials')) {
     return const ServerException(
@@ -184,7 +187,7 @@ ServerException _fallbackMessageCheck(String message, {Object? exception}) {
       message: 'Invalid email or password',
     );
   }
-  
+
   if (lowerMessage.contains('network') || lowerMessage.contains('connection')) {
     return const ServerException(
       type: ServerExceptionType.general,

@@ -33,7 +33,7 @@ class MyApp extends HookConsumerWidget {
         final warmupState = ref.watch(splashServicesWarmupProvider);
         if (warmupState.isLoading ||
             (!warmupState.hasValue && !warmupState.hasError)) {
-          final splash = SplashScreen();
+          const splash = SplashScreen();
           return splash;
         }
 
@@ -48,13 +48,14 @@ class MyApp extends HookConsumerWidget {
       title: 'Deliverzler',
       debugShowCheckedModeBanner: false,
       color: Theme.of(context).colorScheme.primary,
-      theme: themeMode.getThemeData(locale.fontFamily,
-          supportsEdgeToEdge: supportsEdgeToEdge,),
+      theme: themeMode.getThemeData(
+        locale.fontFamily,
+        supportsEdgeToEdge: supportsEdgeToEdge,
+      ),
       locale: Locale(locale.code),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
     );
   }
+// ignore: eol_at_end_of_file
 }
-
-

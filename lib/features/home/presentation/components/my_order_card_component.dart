@@ -44,7 +44,9 @@ class MyOrderCardComponent extends ConsumerWidget {
 
       switch (authority) {
         case (canProceed: true, isLoading: false):
-          ref.read(selectedOrderIdProvider.notifier).update((_) => Some(order.id));
+          ref
+              .read(selectedOrderIdProvider.notifier)
+              .update((_) => Some(order.id));
           const MapRoute().go(context);
         case (canProceed: false, isLoading: false):
           OrderDialogs.showCanNotProceedDialog(context);
@@ -68,7 +70,9 @@ class MyOrderCardComponent extends ConsumerWidget {
                   orderId: order.id,
                   deliveryStatus: DeliveryStatus.delivered,
                 );
-                ref.read(updateDeliveryStatusControllerProvider.notifier).updateStatus(params);
+                ref
+                    .read(updateDeliveryStatusControllerProvider.notifier)
+                    .updateStatus(params);
               }
             },
           );
@@ -92,7 +96,9 @@ class MyOrderCardComponent extends ConsumerWidget {
                   deliveryStatus: DeliveryStatus.canceled,
                   employeeCancelNote: cancelNote,
                 );
-                ref.read(updateDeliveryStatusControllerProvider.notifier).updateStatus(params);
+                ref
+                    .read(updateDeliveryStatusControllerProvider.notifier)
+                    .updateStatus(params);
               }
             },
           );
@@ -199,5 +205,3 @@ class MyOrderCardComponent extends ConsumerWidget {
     );
   }
 }
-
-

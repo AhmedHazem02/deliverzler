@@ -63,9 +63,13 @@ LatLngBounds _fromJsonBounds(Map<String, dynamic> json) {
   final northeastBounds = json['northeast'] as Map<String, dynamic>;
   return LatLngBounds(
     southwest: LatLng(
-        southwestBounds['lat'] as double, southwestBounds['lng'] as double),
+      southwestBounds['lat'] as double,
+      southwestBounds['lng'] as double,
+    ),
     northeast: LatLng(
-        northeastBounds['lat'] as double, northeastBounds['lng'] as double),
+      northeastBounds['lat'] as double,
+      northeastBounds['lng'] as double,
+    ),
   );
 }
 

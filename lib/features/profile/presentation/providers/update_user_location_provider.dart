@@ -26,10 +26,10 @@ Future<void> updateUserLocationState(
   // CRITICAL FIX: Throttle updates to prevent infinite loop
   // Only update if:
   // 1. Never updated before, OR
-  // 2. Position changed by > 50m, OR  
+  // 2. Position changed by > 50m, OR
   // 3. 30 seconds have passed since last update
   final now = DateTime.now();
-  
+
   if (_lastUpdatedPosition != null && _lastUpdateTime != null) {
     final distance = Geolocator.distanceBetween(
       _lastUpdatedPosition!.latitude,
@@ -37,9 +37,9 @@ Future<void> updateUserLocationState(
       position.latitude,
       position.longitude,
     );
-    
+
     final timeSinceLastUpdate = now.difference(_lastUpdateTime!);
-    
+
     // Skip update if position hasn't changed significantly and time threshold not met
     if (distance < 50 && timeSinceLastUpdate.inSeconds < 30) {
       return;
@@ -51,7 +51,7 @@ Future<void> updateUserLocationState(
         latitude: position.latitude,
         longitude: position.longitude,
       );
-  
+
   // Track this update
   _lastUpdatedPosition = position;
   _lastUpdateTime = now;

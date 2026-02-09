@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -195,8 +195,9 @@ class NotificationResponseEvent extends _$NotificationResponseEvent {
   Option<NotificationResponse> build() => const None();
 
   void update(
-          Option<NotificationResponse> Function(
-                  Option<NotificationResponse> state)
-              fn) =>
+    Option<NotificationResponse> Function(
+      Option<NotificationResponse> state,
+    ) fn,
+  ) =>
       state = fn(state);
 }

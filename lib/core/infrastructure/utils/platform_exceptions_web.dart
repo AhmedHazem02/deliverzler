@@ -1,15 +1,14 @@
 class SocketException implements Exception {
-  final String message;
-  final OSError? osError;
-  final InternetAddress? address;
-  final int? port;
-
   const SocketException(
     this.message, {
     this.osError,
     this.address,
     this.port,
   });
+  final String message;
+  final OSError? osError;
+  final InternetAddress? address;
+  final int? port;
 
   @override
   String toString() {
@@ -29,23 +28,25 @@ class SocketException implements Exception {
 
 // Dummy classes to support SocketException signature
 class OSError {
+  const OSError([this.message = '', this.errorCode = 0]);
   final String message;
   final int errorCode;
-  const OSError([this.message = "", this.errorCode = 0]);
   @override
-  String toString() => "OSError: $message, errorCode: $errorCode";
+  String toString() => 'OSError: $message, errorCode: $errorCode';
 }
 
 class InternetAddress {
+  const InternetAddress(this.address, {this.type = InternetAddressType.any});
   final String address;
   final InternetAddressType type;
-  const InternetAddress(this.address, {this.type = InternetAddressType.any});
 }
 
-class InternetAddressType {
-  final int _value;
+enum InternetAddressType {
+  IPv4._(0),
+  IPv6._(1),
+  any._(2);
+
   const InternetAddressType._(this._value);
-  static const InternetAddressType IPv4 = InternetAddressType._(0);
-  static const InternetAddressType IPv6 = InternetAddressType._(1);
-  static const InternetAddressType any = InternetAddressType._(2);
+  // ignore: unused_field
+  final int _value;
 }

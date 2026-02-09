@@ -27,7 +27,8 @@ class SignInState extends _$SignInState {
       debugPrint('🔐 [SignIn] Step 1: Signing in with email...');
       final userFromCredential = await authRepo.signInWithEmail(params);
       debugPrint(
-          '🔐 [SignIn] Step 1 SUCCESS: User ID = ${userFromCredential.id}');
+        '🔐 [SignIn] Step 1 SUCCESS: User ID = ${userFromCredential.id}',
+      );
 
       debugPrint('🔐 [SignIn] Step 2: Getting user data...');
       User user;
@@ -36,12 +37,14 @@ class SignInState extends _$SignInState {
         debugPrint('🔐 [SignIn] Step 2 SUCCESS: User name = ${user.name}');
       } catch (e) {
         debugPrint(
-            '⚠️ [SignIn] Step 2 FAILED: User data not found. Creating user data...');
+          '⚠️ [SignIn] Step 2 FAILED: User data not found. Creating user data...',
+        );
         // If user data doesn't exist in Firestore, create it
         await authRepo.setUserData(userFromCredential);
         user = userFromCredential;
         debugPrint(
-            '✅ [SignIn] Step 2 RECOVERED: User data created successfully');
+          '✅ [SignIn] Step 2 RECOVERED: User data created successfully',
+        );
       }
 
       debugPrint('🔐 [SignIn] Step 3: Subscribing to notifications...');

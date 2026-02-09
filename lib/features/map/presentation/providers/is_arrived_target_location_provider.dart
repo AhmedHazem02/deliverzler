@@ -17,4 +17,3 @@ bool isArrivedTargetLocation(Ref ref) {
     ),
   );
 }
-

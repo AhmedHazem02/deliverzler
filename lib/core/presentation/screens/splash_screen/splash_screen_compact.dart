@@ -45,7 +45,8 @@ class SplashScreenCompact extends StatelessWidget {
                       child: FractionallySizedBox(
                         widthFactor: 0.64,
                         child: Lottie.asset(
-                          MyAssets.ASSETS_IMAGES_CORE_CUSTOM_SPLASH_ANIMATION_JSON,
+                          MyAssets
+                              .ASSETS_IMAGES_CORE_CUSTOM_SPLASH_ANIMATION_JSON,
                         ),
                       ),
                     ),

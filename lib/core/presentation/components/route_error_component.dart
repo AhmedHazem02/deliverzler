@@ -15,7 +15,8 @@ class RouteErrorComponent extends StatelessWidget {
       children: <Widget>[
         Text(
           tr(context).screenNotFound,
-          style: TextStyles.f20(context).copyWith(fontWeight: FontStyles.fontWeightSemiBold),
+          style: TextStyles.f20(context)
+              .copyWith(fontWeight: FontStyles.fontWeightSemiBold),
           textAlign: TextAlign.center,
         ),
         const SizedBox(

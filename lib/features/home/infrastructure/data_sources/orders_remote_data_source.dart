@@ -77,8 +77,10 @@ class OrdersRemoteDataSource {
         .collectionStream(
       path: ordersCollectionPath,
       queryBuilder: (query) => query
-          .where('driver_id',
-              isEqualTo: deliveryId) // Changed from 'deliveryId'
+          .where(
+            'driver_id',
+            isEqualTo: deliveryId,
+          ) // Changed from 'deliveryId'
           .where(
             'status', // Changed from 'deliveryStatus'
             whereIn: [
@@ -107,7 +109,7 @@ class OrdersRemoteDataSource {
 
   Future<OrderDto> getOrder(String orderId) async {
     if (orderId.isEmpty) {
-      throw ServerException(
+      throw const ServerException(
         type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
@@ -135,7 +137,7 @@ class OrdersRemoteDataSource {
 
   Future<void> updateDeliveryStatus(UpdateDeliveryStatusDto params) async {
     if (params.orderId.isEmpty) {
-      throw ServerException(
+      throw const ServerException(
         type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
@@ -147,7 +149,6 @@ class OrdersRemoteDataSource {
           path: orderDocPath(params.orderId),
           data: params.toJson(),
         ),
-        maxRetries: 3,
         retryIf: (e) {
           if (e is FirebaseException) {
             return NetworkRetryStrategy.shouldRetry(e);
@@ -160,7 +161,8 @@ class OrdersRemoteDataSource {
       if (params.deliveryStatus == DeliveryStatus.delivered &&
           params.deliveryId != null) {
         debugPrint(
-            '🔄 Updating totalDeliveries for driver: ${params.deliveryId}');
+          '🔄 Updating totalDeliveries for driver: ${params.deliveryId}',
+        );
         await firebaseFirestore.updateData(
           path: 'drivers/${params.deliveryId}',
           data: {
@@ -178,7 +180,7 @@ class OrdersRemoteDataSource {
 
   Future<void> updateDeliveryGeoPoint(UpdateDeliveryGeoPointDto params) async {
     if (params.orderId.isEmpty) {
-      throw ServerException(
+      throw const ServerException(
         type: ServerExceptionType.conflict,
         message: 'Order ID cannot be empty',
       );
@@ -199,7 +201,6 @@ class OrdersRemoteDataSource {
           path: orderDocPath(params.orderId),
           data: params.toJson(),
         ),
-        maxRetries: 3,
         retryIf: (e) {
           if (e is FirebaseException) {
             return NetworkRetryStrategy.shouldRetry(e);
@@ -207,7 +208,6 @@ class OrdersRemoteDataSource {
           return e is SocketException || e is TimeoutException;
         },
       );
-      
     } catch (e) {
       debugPrint('❌ خطأ في تحديث موقع الطلب: $e');
       rethrow;

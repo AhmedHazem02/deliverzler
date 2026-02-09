@@ -47,7 +47,9 @@ class PlatformTabScaffold
 
   @override
   CupertinoTabScaffold createCupertinoWidget(
-      BuildContext context, WidgetRef ref) {
+    BuildContext context,
+    WidgetRef ref,
+  ) {
     return CupertinoTabScaffold(
       key: widgetKey,
       tabBuilder: cupertinoData.cupertinoTabBuilder,

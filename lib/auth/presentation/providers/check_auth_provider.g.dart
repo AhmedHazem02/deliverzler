@@ -6,7 +6,7 @@ part of 'check_auth_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkAuthHash() => r'd2c4c9a5d3c8aa469349213eaeede2bfa644d1fd';
+String _$checkAuthHash() => r'67f1c9bc7df9a861b79b3f2c044e709ea311eab2';
 
 /// See also [checkAuth].
 @ProviderFor(checkAuth)

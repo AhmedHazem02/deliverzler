@@ -29,9 +29,7 @@ class SubmitExcuseController extends _$SubmitExcuseController {
         driverName: user.name ?? 'Driver',
         reason: reason,
         adminDecision: AdminDecision.pending,
-        adminComment: null,
         createdAt: DateTime.now(),
-        updatedAt: null,
       );
 
       // Submit to Firestore

@@ -29,12 +29,11 @@ final updateDeliveryStatusOptimisticProvider = StateNotifierProvider.autoDispose
 /// معالج التحديث المتفائل
 class UpdateDeliveryStatusNotifier
     extends StateNotifier<UpdateDeliveryStatusState> {
+  UpdateDeliveryStatusNotifier(this.orderId, this.ref)
+      : super(const UpdateDeliveryStatusState());
   final String orderId;
   final Ref ref;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  UpdateDeliveryStatusNotifier(this.orderId, this.ref)
-      : super(const UpdateDeliveryStatusState());
 
   /// تحديث الحالة بطريقة متفائلة
   Future<void> updateStatusOptimistic({
@@ -59,14 +58,13 @@ class UpdateDeliveryStatusNotifier
 
       // إضافة الموقع إذا كان صحيحاً
       if (GeoPointValidator.isValidGeoPoint(location)) {
-        updateData['location'] = location as Object;
+        updateData['location'] = location! as Object;
       }
 
       // 3️⃣ محاولة التحديث مع إعادة محاولة ذكية
       await RetryUtility.retry(
         operation: () =>
             _firestore.collection('orders').doc(orderId).update(updateData),
-        maxRetries: 3,
         retryIf: (e) {
           // إعادة محاولة فقط للأخطاء المتعلقة بالشبكة
           final isFirebaseError = e is FirebaseException;
@@ -87,7 +85,7 @@ class UpdateDeliveryStatusNotifier
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'فشل تحديث الحالة: ${e.toString()}',
+        error: 'فشل تحديث الحالة: $e',
         isOptimistic: false,
       );
     }

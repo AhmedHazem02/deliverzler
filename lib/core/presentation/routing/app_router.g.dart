@@ -13,6 +13,8 @@ List<RouteBase> get $appRoutes => [
       $signUpRoute,
       $forgotPasswordRoute,
       $emailVerificationRoute,
+      $phoneVerificationRoute,
+      $verificationMethodRoute,
       $homeShellRouteData,
       $applicationStatusGateRoute,
       $driverApplicationRoute,
@@ -144,6 +146,58 @@ extension $EmailVerificationRouteExtension on EmailVerificationRoute {
 
   String get location => GoRouteData.$location(
         '/verify-email/${Uri.encodeComponent(email)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $phoneVerificationRoute => GoRouteData.$route(
+      path: '/verify-phone/:phone',
+      factory: $PhoneVerificationRouteExtension._fromState,
+    );
+
+extension $PhoneVerificationRouteExtension on PhoneVerificationRoute {
+  static PhoneVerificationRoute _fromState(GoRouterState state) =>
+      PhoneVerificationRoute(
+        phone: state.pathParameters['phone']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/verify-phone/${Uri.encodeComponent(phone)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $verificationMethodRoute => GoRouteData.$route(
+      path: '/choose-verification/:email/:phone/:uid',
+      factory: $VerificationMethodRouteExtension._fromState,
+    );
+
+extension $VerificationMethodRouteExtension on VerificationMethodRoute {
+  static VerificationMethodRoute _fromState(GoRouterState state) =>
+      VerificationMethodRoute(
+        email: state.pathParameters['email']!,
+        phone: state.pathParameters['phone']!,
+        uid: state.pathParameters['uid']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/choose-verification/${Uri.encodeComponent(email)}/${Uri.encodeComponent(phone)}/${Uri.encodeComponent(uid)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -395,7 +449,7 @@ extension $PendingApprovalRouteExtension on PendingApprovalRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'8c9b3236eb2fa30a1055c1d00790492e9516333b';
+String _$goRouterHash() => r'cccfb92e26c33084865bd49527f833f1f3bbc590';
 
 /// See also [goRouter].
 @ProviderFor(goRouter)

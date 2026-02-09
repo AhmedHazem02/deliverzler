@@ -13,7 +13,7 @@ Stream<List<AppOrder>> upcomingOrders(Ref ref) {
   try {
     final user = ref.watch(currentUserProvider);
     final userId = user.id;
-    
+
     final ordersStream =
         ref.watch(ordersRepoProvider).getUpcomingOrders(userId);
     return ordersStream.map((orders) {
@@ -26,9 +26,8 @@ Stream<List<AppOrder>> upcomingOrders(Ref ref) {
       return previous.lock == next.lock;
     });
   } catch (e, st) {
-      debugPrint('❌ Error in upcomingOrders provider: $e');
-      debugPrint('Stack: $st');
+    debugPrint('❌ Error in upcomingOrders provider: $e');
+    debugPrint('Stack: $st');
     rethrow;
   }
 }
-

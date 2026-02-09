@@ -6,16 +6,6 @@ import '../../domain/pickup_stop.dart';
 /// Maps the raw Firestore map structure into domain [PickupStop] objects.
 /// Each pickup stop contains a store's items within a multi-store order.
 class PickupStopDto {
-  final String storeId;
-  final String storeName;
-  final double subtotal;
-  final String status;
-  final List<Map<String, dynamic>> itemsRaw;
-  final String? confirmedAt;
-  final String? pickedUpAt;
-  final String? rejectedAt;
-  final String? rejectionReason;
-
   PickupStopDto({
     required this.storeId,
     required this.storeName,
@@ -42,6 +32,15 @@ class PickupStopDto {
       rejectionReason: json['rejection_reason'] as String?,
     );
   }
+  final String storeId;
+  final String storeName;
+  final double subtotal;
+  final String status;
+  final List<Map<String, dynamic>> itemsRaw;
+  final String? confirmedAt;
+  final String? pickedUpAt;
+  final String? rejectedAt;
+  final String? rejectionReason;
 
   /// Safely parses the items list from Firestore data.
   static List<Map<String, dynamic>> _parseItemsList(dynamic items) {
@@ -109,13 +108,15 @@ class PickupStopDto {
       'rejected_at': stop.rejectedAt?.toIso8601String(),
       'rejection_reason': stop.rejectionReason,
       'items': stop.items
-          .map((item) => {
-                'product_id': item.id,
-                'name': item.name,
-                'image_url': item.imageUrl,
-                'price': item.price,
-                'quantity': item.quantity,
-              })
+          .map(
+            (item) => {
+              'product_id': item.id,
+              'name': item.name,
+              'image_url': item.imageUrl,
+              'price': item.price,
+              'quantity': item.quantity,
+            },
+          )
           .toList(),
     };
   }

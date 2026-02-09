@@ -2,7 +2,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/core_features/theme/presentation/providers/current_app_theme_provider.dart';
 import '../../../../core/core_features/theme/presentation/utils/app_theme.dart';
-import '../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/place_directions.dart';

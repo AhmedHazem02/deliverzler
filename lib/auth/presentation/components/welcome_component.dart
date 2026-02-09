@@ -38,7 +38,8 @@ class WelcomeComponent extends StatelessWidget {
         ),
         Text(
           tr(context).signInToYourAccount,
-          style: TextStyles.f16SemiBold(context).copyWith(color: customColors(context).greyColor),
+          style: TextStyles.f16SemiBold(context)
+              .copyWith(color: customColors(context).greyColor),
         ),
       ],
     );

@@ -18,7 +18,9 @@ extension GoRouterStateX on GoRouterState {
     if (routeLocation.startsWith('/login') ||
         routeLocation.startsWith('/signup') ||
         routeLocation.startsWith('/forgot-password') ||
-        routeLocation.startsWith('/verify-email')) {
+        routeLocation.startsWith('/verify-email') ||
+        routeLocation.startsWith('/verify-phone') ||
+        routeLocation.startsWith('/choose-verification')) {
       return const [RouteAuthority.unauthenticated];
     }
 

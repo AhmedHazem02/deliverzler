@@ -6,7 +6,7 @@ part 'current_app_locale_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 AppLocale currentAppLocale(Ref ref) {
-  final locale = ref.watch(appLocaleControllerProvider.select((data) => data.valueOrNull));
+  final locale =
+      ref.watch(appLocaleControllerProvider.select((data) => data.valueOrNull));
   return locale ?? AppLocale.english;
 }
-

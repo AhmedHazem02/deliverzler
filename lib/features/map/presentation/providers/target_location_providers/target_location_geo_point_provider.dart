@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../../../../core/presentation/providers/provider_utils.dart';
 import '../../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../../core/presentation/utils/riverpod_framework.dart';
+import '../../../../home/domain/order.dart';
 import '../../../../home/presentation/providers/multi_stop_navigation_provider.dart';
 import '../../../../home/presentation/providers/selected_order_provider.dart';
 import '../place_details_provider.dart';
@@ -39,7 +38,7 @@ class TargetLocationGeoPoint extends _$TargetLocationGeoPoint {
   ///
   /// Returns [None] while store data is still loading to avoid
   /// premature direction fetching to the wrong target.
-  Option<GeoPoint> _getMultiStoreTarget(dynamic order) {
+  Option<GeoPoint> _getMultiStoreTarget(AppOrder order) {
     final sortedStopsAsync = ref.watch(sortedPickupStopsProvider);
 
     // If store data is still loading, return None to avoid flashing

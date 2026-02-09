@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../../../core/infrastructure/error/app_exception.dart';
 import '../../../core/presentation/extensions/app_error_extension.dart';
 import '../../../core/presentation/helpers/localization_helper.dart';
 import '../../../core/presentation/routing/app_router.dart';
@@ -121,8 +119,12 @@ class DriverSignupFormComponent extends HookConsumerWidget {
                   description: tr(context).verificationEmailSent,
                 );
 
-                // Navigate to email verification screen
-                EmailVerificationRoute(email: emailController.text).go(context);
+                // Navigate to verification method selection screen
+                VerificationMethodRoute(
+                  email: emailController.text,
+                  phone: phoneController.text,
+                  uid: user.id,
+                ).go(context);
               } catch (e) {
                 // Check if widget is still mounted before updating state
                 if (!context.mounted) return;
@@ -166,7 +168,7 @@ class DriverSignupFormComponent extends HookConsumerWidget {
       final isFormValid = formKey.currentState!.validate();
 
       // Additional checks for non-form-field inputs
-      bool isAdditionalValid = true;
+      var isAdditionalValid = true;
       if (currentStep.value == 3) {
         // License step (now index 3)
         if (licenseExpiryDate.value == null) {
@@ -176,10 +178,12 @@ class DriverSignupFormComponent extends HookConsumerWidget {
           // Show toast/snackbar since we can't easily set form field error here for the date picker
           // Or we rely on the submit check.
           // But let's add a check here to prevent proceeding.
-          Toasts.showTitledToast(context,
-              title: tr(context).attention,
-              description:
-                  'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
+          Toasts.showTitledToast(
+            context,
+            title: tr(context).attention,
+            description:
+                'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم',
+          );
           isAdditionalValid = false;
         }
       }
@@ -191,13 +195,13 @@ class DriverSignupFormComponent extends HookConsumerWidget {
       if (!formKey.currentState!.validate()) return;
 
       if (!validateDocuments()) {
-        showDialog(
+        showDialog<void>(
           context: context,
           builder: (context) => Dialog(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -207,7 +211,9 @@ class DriverSignupFormComponent extends HookConsumerWidget {
                       Text(
                         tr(context).attention,
                         style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       IconButton(
                         icon: const Icon(Icons.close),
@@ -216,8 +222,11 @@ class DriverSignupFormComponent extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Icon(Icons.warning_amber_rounded,
-                      size: 50, color: Colors.orange),
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    size: 50,
+                    color: Colors.orange,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     tr(context).uploadAllRequiredImages,
@@ -512,7 +521,8 @@ class _StepIndicator extends StatelessWidget {
               child: Container(
                 height: 4,
                 margin: EdgeInsetsDirectional.only(
-                    end: index < totalSteps - 1 ? 4 : 0),
+                  end: index < totalSteps - 1 ? 4 : 0,
+                ),
                 decoration: BoxDecoration(
                   color: isActive
                       ? Theme.of(context).primaryColor
@@ -538,11 +548,11 @@ class _StepIndicator extends StatelessWidget {
 
 class _AccountStep extends HookWidget {
   const _AccountStep({
-    super.key,
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
     required this.isSubmitting,
+    super.key,
   });
 
   final TextEditingController emailController;
@@ -601,7 +611,8 @@ class _AccountStep extends HookWidget {
                     : Icons.visibility_off,
               ),
               onPressed: () {
-                isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+                isConfirmPasswordVisible.value =
+                    !isConfirmPasswordVisible.value;
               },
             ),
           ),
@@ -621,11 +632,11 @@ class _AccountStep extends HookWidget {
 
 class _PersonalInfoStep extends StatelessWidget {
   const _PersonalInfoStep({
-    super.key,
     required this.nameController,
     required this.phoneController,
     required this.idNumberController,
     required this.isSubmitting,
+    super.key,
   });
 
   final TextEditingController nameController;
@@ -686,10 +697,10 @@ class _PersonalInfoStep extends StatelessWidget {
 
 class _LicenseStep extends StatelessWidget {
   const _LicenseStep({
-    super.key,
     required this.licenseNumberController,
     required this.licenseExpiryDate,
     required this.isSubmitting,
+    super.key,
   });
 
   final TextEditingController licenseNumberController;
@@ -753,10 +764,10 @@ class _LicenseStep extends StatelessWidget {
 
 class _VehicleStep extends StatelessWidget {
   const _VehicleStep({
-    super.key,
     required this.vehicleType,
     required this.vehiclePlateController,
     required this.isSubmitting,
+    super.key,
   });
 
   final ValueNotifier<VehicleType> vehicleType;
@@ -768,7 +779,7 @@ class _VehicleStep extends StatelessWidget {
     return Column(
       children: [
         DropdownButtonFormField<VehicleType>(
-          value: vehicleType.value,
+          initialValue: vehicleType.value,
           decoration: InputDecoration(
             labelText: tr(context).vehicleType,
             prefixIcon: const Icon(Icons.directions_car),
@@ -818,7 +829,6 @@ class _VehicleStep extends StatelessWidget {
 
 class _DocumentsStep extends StatelessWidget {
   const _DocumentsStep({
-    super.key,
     required this.photoFile,
     required this.idDocumentFile,
     required this.licenseDocumentFile,
@@ -831,6 +841,7 @@ class _DocumentsStep extends StatelessWidget {
     required this.vehicleInsuranceXFile,
     required this.notesController,
     required this.isSubmitting,
+    super.key,
   });
 
   final ValueNotifier<dynamic> photoFile;
@@ -933,7 +944,7 @@ class _DocumentUploadField extends StatelessWidget {
   bool get hasFile => file != null || xFile != null;
   String get fileName {
     if (xFile != null) return xFile!.name;
-    if (file != null) return file!.path.split('/').last;
+    if (file != null) return (file!.path as String).split('/').last;
     return '';
   }
 

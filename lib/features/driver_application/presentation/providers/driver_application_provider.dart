@@ -1,4 +1,4 @@
-﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
+// ignore_for_file: functional_ref
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../domain/driver_application.dart';
 import '../../infrastructure/driver_application_repo.dart';
@@ -74,7 +74,7 @@ class DriverApplicationFormState {
   final DateTime? licenseExpiryDate;
   final VehicleType vehicleType;
   final String vehiclePlate;
-  final dynamic photo;  // Can be File or XFile
+  final dynamic photo; // Can be File or XFile
   final dynamic idDocument;
   final dynamic license;
   final dynamic vehicleRegistration;
@@ -199,12 +199,15 @@ class DriverApplicationForm extends _$DriverApplicationForm {
       return null;
     }
 
-    if (state.licenseExpiryDate!.isBefore(DateTime.now().add(const Duration(days: 30)))) {
-      state = state.copyWith(error: 'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
+    if (state.licenseExpiryDate!
+        .isBefore(DateTime.now().add(const Duration(days: 30)))) {
+      state = state.copyWith(
+          error:
+              'يجب أن تكون صلاحية الرخصة سارية لمدة شهر على الأقل من تاريخ اليوم');
       return null;
     }
 
-    state = state.copyWith(isSubmitting: true, error: null);
+    state = state.copyWith(isSubmitting: true);
 
     try {
       final repo = ref.read(driverApplicationRepoProvider);
@@ -231,7 +234,7 @@ class DriverApplicationForm extends _$DriverApplicationForm {
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
-        error: 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø·Ù„Ø¨: ${e.toString()}',
+        error: 'Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªÙ‚Ø¯ÙŠÙ… Ø§Ù„Ø·Ù„Ø¨: $e',
       );
       return null;
     }
@@ -242,7 +245,6 @@ class DriverApplicationForm extends _$DriverApplicationForm {
   }
 
   void clearError() {
-    state = state.copyWith(error: null);
+    state = state.copyWith();
   }
 }
-

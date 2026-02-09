@@ -70,9 +70,10 @@ abstract class OrderDialogs {
   }
 
   static Future<String?> showExcuseSubmissionDialog(
-      BuildContext context) async {
+    BuildContext context,
+  ) async {
     TextEditingController? excuseReasonController;
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     return Dialogs.showConfirmDialog(
       context,
@@ -89,8 +90,10 @@ abstract class OrderDialogs {
       confirmTitle: tr(context).confirm,
       confirmCallback: (ctx) {
         if (formKey.currentState!.validate()) {
-          NavigationService.popDialog(ctx,
-              result: excuseReasonController!.text);
+          NavigationService.popDialog(
+            ctx,
+            result: excuseReasonController!.text,
+          );
         }
       },
     ).then((result) {

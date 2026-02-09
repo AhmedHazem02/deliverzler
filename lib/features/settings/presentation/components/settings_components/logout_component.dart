@@ -49,7 +49,7 @@ class _SharedItemComponent extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).hintColor.withOpacity(0.15),
+            color: Theme.of(context).hintColor.withValues(alpha: 0.15),
             offset: const Offset(0, 3),
             blurRadius: 10,
           ),
@@ -77,5 +77,3 @@ class _SharedItemComponent extends StatelessWidget {
     );
   }
 }
-
-

@@ -64,12 +64,15 @@ class MapScreenCompact extends HookConsumerWidget {
     );
 
     // تحميل Overlays بشكل كسول بعد ظهور الـ Map
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.invalidate(lazyLoadMapOverlaysProvider);
-      });
-      return null;
-    }, const []);
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref.invalidate(lazyLoadMapOverlaysProvider);
+        });
+        return null;
+      },
+      const [],
+    );
 
     return NestedScreenScaffold(
       body: locationAsync.when(

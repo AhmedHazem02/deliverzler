@@ -49,7 +49,8 @@ class MapRemoteDataSource {
       cancelToken: cancelToken,
     );
     return PlaceAutocompleteDto.parseListOfMap(
-        response.data!['predictions'] as List<dynamic>);
+      response.data!['predictions'] as List<dynamic>,
+    );
   }
 
   Future<PlaceDetailsDto> getPlaceDetails(
@@ -68,7 +69,8 @@ class MapRemoteDataSource {
       cancelToken: cancelToken,
     );
     return PlaceDetailsDto.fromJson(
-        response.data!['result'] as Map<String, dynamic>);
+      response.data!['result'] as Map<String, dynamic>,
+    );
   }
 
   Future<PlaceDirectionsDto> getPlaceDirections(
@@ -86,14 +88,17 @@ class MapRemoteDataSource {
       debugPrint('🌐 API Response status: ${response.statusCode}');
       debugPrint('🌐 API Response data keys: ${response.data?.keys}');
       debugPrint(
-          '🌐 Routes count: ${(response.data?['routes'] as List?)?.length ?? 0}');
+        '🌐 Routes count: ${(response.data?['routes'] as List?)?.length ?? 0}',
+      );
       if ((response.data?['routes'] as List?)?.isEmpty ?? true) {
         debugPrint(
-            '🌐 ❌ No routes in response! Full response: ${response.data}');
+          '🌐 ❌ No routes in response! Full response: ${response.data}',
+        );
       }
       // ignore: avoid_dynamic_calls
       return PlaceDirectionsDto.fromJson(
-          response.data!['routes'][0] as Map<String, dynamic>);
+        response.data!['routes'][0] as Map<String, dynamic>,
+      );
     } catch (e, stack) {
       debugPrint('🌐 ❌ API Error: $e');
       debugPrint('🌐 Stack: $stack');
@@ -101,4 +106,3 @@ class MapRemoteDataSource {
     }
   }
 }
-

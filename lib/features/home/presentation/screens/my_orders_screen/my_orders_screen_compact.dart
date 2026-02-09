@@ -18,5 +18,3 @@ class MyOrdersScreenCompact extends HookConsumerWidget {
     );
   }
 }
-
-

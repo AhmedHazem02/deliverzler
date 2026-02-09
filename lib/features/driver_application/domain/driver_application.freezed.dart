@@ -49,6 +49,9 @@ mixin _$DriverApplication {
   /// Vehicle plate number.
   String get vehiclePlate => throw _privateConstructorUsedError;
 
+  /// Application submission date.
+  DateTime get createdAt => throw _privateConstructorUsedError;
+
   /// Profile photo URL.
   String? get photoUrl => throw _privateConstructorUsedError;
 
@@ -63,9 +66,6 @@ mixin _$DriverApplication {
 
   /// Vehicle insurance document URL.
   String? get vehicleInsuranceUrl => throw _privateConstructorUsedError;
-
-  /// Application submission date.
-  DateTime get createdAt => throw _privateConstructorUsedError;
 
   /// Date when application was reviewed.
   DateTime? get reviewedAt => throw _privateConstructorUsedError;
@@ -102,12 +102,12 @@ abstract class $DriverApplicationCopyWith<$Res> {
       DateTime licenseExpiryDate,
       VehicleType vehicleType,
       String vehiclePlate,
+      DateTime createdAt,
       String? photoUrl,
       String? idDocumentUrl,
       String? licenseUrl,
       String? vehicleRegistrationUrl,
       String? vehicleInsuranceUrl,
-      DateTime createdAt,
       DateTime? reviewedAt,
       String? reviewedBy,
       String? rejectionReason,
@@ -138,12 +138,12 @@ class _$DriverApplicationCopyWithImpl<$Res, $Val extends DriverApplication>
     Object? licenseExpiryDate = null,
     Object? vehicleType = null,
     Object? vehiclePlate = null,
+    Object? createdAt = null,
     Object? photoUrl = freezed,
     Object? idDocumentUrl = freezed,
     Object? licenseUrl = freezed,
     Object? vehicleRegistrationUrl = freezed,
     Object? vehicleInsuranceUrl = freezed,
-    Object? createdAt = null,
     Object? reviewedAt = freezed,
     Object? reviewedBy = freezed,
     Object? rejectionReason = freezed,
@@ -194,6 +194,10 @@ class _$DriverApplicationCopyWithImpl<$Res, $Val extends DriverApplication>
           ? _value.vehiclePlate
           : vehiclePlate // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
@@ -214,10 +218,6 @@ class _$DriverApplicationCopyWithImpl<$Res, $Val extends DriverApplication>
           ? _value.vehicleInsuranceUrl
           : vehicleInsuranceUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       reviewedAt: freezed == reviewedAt
           ? _value.reviewedAt
           : reviewedAt // ignore: cast_nullable_to_non_nullable
@@ -258,12 +258,12 @@ abstract class _$$DriverApplicationImplCopyWith<$Res>
       DateTime licenseExpiryDate,
       VehicleType vehicleType,
       String vehiclePlate,
+      DateTime createdAt,
       String? photoUrl,
       String? idDocumentUrl,
       String? licenseUrl,
       String? vehicleRegistrationUrl,
       String? vehicleInsuranceUrl,
-      DateTime createdAt,
       DateTime? reviewedAt,
       String? reviewedBy,
       String? rejectionReason,
@@ -292,12 +292,12 @@ class __$$DriverApplicationImplCopyWithImpl<$Res>
     Object? licenseExpiryDate = null,
     Object? vehicleType = null,
     Object? vehiclePlate = null,
+    Object? createdAt = null,
     Object? photoUrl = freezed,
     Object? idDocumentUrl = freezed,
     Object? licenseUrl = freezed,
     Object? vehicleRegistrationUrl = freezed,
     Object? vehicleInsuranceUrl = freezed,
-    Object? createdAt = null,
     Object? reviewedAt = freezed,
     Object? reviewedBy = freezed,
     Object? rejectionReason = freezed,
@@ -348,6 +348,10 @@ class __$$DriverApplicationImplCopyWithImpl<$Res>
           ? _value.vehiclePlate
           : vehiclePlate // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       photoUrl: freezed == photoUrl
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
@@ -368,10 +372,6 @@ class __$$DriverApplicationImplCopyWithImpl<$Res>
           ? _value.vehicleInsuranceUrl
           : vehicleInsuranceUrl // ignore: cast_nullable_to_non_nullable
               as String?,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       reviewedAt: freezed == reviewedAt
           ? _value.reviewedAt
           : reviewedAt // ignore: cast_nullable_to_non_nullable
@@ -407,12 +407,12 @@ class _$DriverApplicationImpl extends _DriverApplication {
       required this.licenseExpiryDate,
       required this.vehicleType,
       required this.vehiclePlate,
+      required this.createdAt,
       this.photoUrl,
       this.idDocumentUrl,
       this.licenseUrl,
       this.vehicleRegistrationUrl,
       this.vehicleInsuranceUrl,
-      required this.createdAt,
       this.reviewedAt,
       this.reviewedBy,
       this.rejectionReason,
@@ -463,6 +463,10 @@ class _$DriverApplicationImpl extends _DriverApplication {
   @override
   final String vehiclePlate;
 
+  /// Application submission date.
+  @override
+  final DateTime createdAt;
+
   /// Profile photo URL.
   @override
   final String? photoUrl;
@@ -483,10 +487,6 @@ class _$DriverApplicationImpl extends _DriverApplication {
   @override
   final String? vehicleInsuranceUrl;
 
-  /// Application submission date.
-  @override
-  final DateTime createdAt;
-
   /// Date when application was reviewed.
   @override
   final DateTime? reviewedAt;
@@ -505,7 +505,7 @@ class _$DriverApplicationImpl extends _DriverApplication {
 
   @override
   String toString() {
-    return 'DriverApplication(id: $id, userId: $userId, status: $status, name: $name, email: $email, phone: $phone, idNumber: $idNumber, licenseNumber: $licenseNumber, licenseExpiryDate: $licenseExpiryDate, vehicleType: $vehicleType, vehiclePlate: $vehiclePlate, photoUrl: $photoUrl, idDocumentUrl: $idDocumentUrl, licenseUrl: $licenseUrl, vehicleRegistrationUrl: $vehicleRegistrationUrl, vehicleInsuranceUrl: $vehicleInsuranceUrl, createdAt: $createdAt, reviewedAt: $reviewedAt, reviewedBy: $reviewedBy, rejectionReason: $rejectionReason, notes: $notes)';
+    return 'DriverApplication(id: $id, userId: $userId, status: $status, name: $name, email: $email, phone: $phone, idNumber: $idNumber, licenseNumber: $licenseNumber, licenseExpiryDate: $licenseExpiryDate, vehicleType: $vehicleType, vehiclePlate: $vehiclePlate, createdAt: $createdAt, photoUrl: $photoUrl, idDocumentUrl: $idDocumentUrl, licenseUrl: $licenseUrl, vehicleRegistrationUrl: $vehicleRegistrationUrl, vehicleInsuranceUrl: $vehicleInsuranceUrl, reviewedAt: $reviewedAt, reviewedBy: $reviewedBy, rejectionReason: $rejectionReason, notes: $notes)';
   }
 
   @override
@@ -529,6 +529,8 @@ class _$DriverApplicationImpl extends _DriverApplication {
                 other.vehicleType == vehicleType) &&
             (identical(other.vehiclePlate, vehiclePlate) ||
                 other.vehiclePlate == vehiclePlate) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl) &&
             (identical(other.idDocumentUrl, idDocumentUrl) ||
@@ -539,8 +541,6 @@ class _$DriverApplicationImpl extends _DriverApplication {
                 other.vehicleRegistrationUrl == vehicleRegistrationUrl) &&
             (identical(other.vehicleInsuranceUrl, vehicleInsuranceUrl) ||
                 other.vehicleInsuranceUrl == vehicleInsuranceUrl) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
             (identical(other.reviewedAt, reviewedAt) ||
                 other.reviewedAt == reviewedAt) &&
             (identical(other.reviewedBy, reviewedBy) ||
@@ -564,12 +564,12 @@ class _$DriverApplicationImpl extends _DriverApplication {
         licenseExpiryDate,
         vehicleType,
         vehiclePlate,
+        createdAt,
         photoUrl,
         idDocumentUrl,
         licenseUrl,
         vehicleRegistrationUrl,
         vehicleInsuranceUrl,
-        createdAt,
         reviewedAt,
         reviewedBy,
         rejectionReason,
@@ -597,12 +597,12 @@ abstract class _DriverApplication extends DriverApplication {
       required final DateTime licenseExpiryDate,
       required final VehicleType vehicleType,
       required final String vehiclePlate,
+      required final DateTime createdAt,
       final String? photoUrl,
       final String? idDocumentUrl,
       final String? licenseUrl,
       final String? vehicleRegistrationUrl,
       final String? vehicleInsuranceUrl,
-      required final DateTime createdAt,
       final DateTime? reviewedAt,
       final String? reviewedBy,
       final String? rejectionReason,
@@ -655,6 +655,10 @@ abstract class _DriverApplication extends DriverApplication {
   String get vehiclePlate;
   @override
 
+  /// Application submission date.
+  DateTime get createdAt;
+  @override
+
   /// Profile photo URL.
   String? get photoUrl;
   @override
@@ -673,10 +677,6 @@ abstract class _DriverApplication extends DriverApplication {
 
   /// Vehicle insurance document URL.
   String? get vehicleInsuranceUrl;
-  @override
-
-  /// Application submission date.
-  DateTime get createdAt;
   @override
 
   /// Date when application was reviewed.

@@ -1,7 +1,6 @@
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../auth/presentation/providers/auth_state_provider.dart';
-import '../../../../core/presentation/utils/fp_framework.dart';
 import '../../../../core/presentation/utils/riverpod_framework.dart';
 import '../../../driver_application/domain/driver_application.dart';
 import '../../../driver_application/infrastructure/driver_application_repo.dart';
@@ -51,7 +50,7 @@ class EditDriverProfile extends _$EditDriverProfile {
 
   /// Load the current application data
   Future<void> loadApplication() async {
-    state = state.copyWith(isLoading: true, error: null);
+    state = state.copyWith(isLoading: true);
 
     try {
       final user = ref.read(currentUserProvider);
@@ -65,7 +64,7 @@ class EditDriverProfile extends _$EditDriverProfile {
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        error: 'فشل تحميل البيانات: ${e.toString()}',
+        error: 'فشل تحميل البيانات: $e',
       );
     }
   }
@@ -98,8 +97,7 @@ class EditDriverProfile extends _$EditDriverProfile {
       return;
     }
 
-    state =
-        state.copyWith(isSaving: true, error: null, savedSuccessfully: false);
+    state = state.copyWith(isSaving: true, savedSuccessfully: false);
 
     try {
       final user = ref.read(currentUserProvider);
@@ -131,16 +129,20 @@ class EditDriverProfile extends _$EditDriverProfile {
       );
 
       // Also update user profile (name & phone) in users collection
-      await profileRepo.updateProfileData(ProfileDetails(
-        name: name,
-        phone: phone,
-      ));
+      await profileRepo.updateProfileData(
+        ProfileDetails(
+          name: name,
+          phone: phone,
+        ),
+      );
 
       // Update local auth state
-      ref.read(authStateProvider.notifier).updateUser(ProfileDetails(
-            name: name,
-            phone: phone,
-          ));
+      ref.read(authStateProvider.notifier).updateUser(
+            ProfileDetails(
+              name: name,
+              phone: phone,
+            ),
+          );
 
       // Reload application data
       final updatedApplication = await repo.getApplicationByUserId(user.id);
@@ -153,7 +155,7 @@ class EditDriverProfile extends _$EditDriverProfile {
     } catch (e) {
       state = state.copyWith(
         isSaving: false,
-        error: 'فشل حفظ البيانات: ${e.toString()}',
+        error: 'فشل حفظ البيانات: $e',
       );
     }
   }

@@ -10,4 +10,3 @@ part 'session_token_provider.g.dart';
 //https://developers.google.com/maps/documentation/places/web-service/session-tokens
 @Riverpod(keepAlive: true)
 String sessionToken(Ref ref) => const Uuid().v4();
-

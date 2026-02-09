@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -9,8 +8,10 @@ import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../auth/presentation/providers/check_auth_provider.dart';
 import '../../../auth/presentation/screens/email_verification_screen/email_verification_screen.dart';
 import '../../../auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
+import '../../../auth/presentation/screens/phone_verification_screen/phone_verification_screen.dart';
 import '../../../auth/presentation/screens/sign_in_screen/sign_in_screen.dart';
 import '../../../auth/presentation/screens/sign_up_screen/sign_up_screen.dart';
+import '../../../auth/presentation/screens/verification_method_screen/verification_method_screen.dart';
 import '../../../features/home/presentation/screens/home_screen/home_screen.dart';
 import '../../../features/home/presentation/screens/my_orders_screen/my_orders_screen.dart';
 import '../../../features/home_shell/presentation/screens/home_shell_screen.dart';
@@ -77,17 +78,49 @@ GoRouter goRouter(Ref ref) {
       final warmupState = ref.read(splashServicesWarmupProvider);
       final authState = ref.read(authStateProvider);
 
-      // Check for EmailNotVerifiedException
+      // Check for EmailNotVerifiedException or NotVerifiedException
       final checkAuthState = ref.read(checkAuthProvider);
-      if (checkAuthState.hasError &&
-          checkAuthState.error is EmailNotVerifiedException) {
-        final exception = checkAuthState.error as EmailNotVerifiedException;
-        final email = exception.email ?? '';
-        // Redirect to verification screen if we have an email
-        if (email.isNotEmpty &&
-            state.matchedLocation !=
+      if (checkAuthState.hasError) {
+        final error = checkAuthState.error;
+        if (error is NotVerifiedException) {
+          final email = error.email ?? '';
+          final phone = error.phone ?? '';
+          final method = error.chosenMethod;
+
+          if (method == 'email' && email.isNotEmpty) {
+            // User previously chose email verification
+            if (state.matchedLocation !=
                 EmailVerificationRoute(email: email).location) {
-          return EmailVerificationRoute(email: email).location;
+              return EmailVerificationRoute(email: email).location;
+            }
+          } else if (method == 'phone' && phone.isNotEmpty) {
+            // User previously chose phone verification
+            if (state.matchedLocation !=
+                PhoneVerificationRoute(phone: phone).location) {
+              return PhoneVerificationRoute(phone: phone).location;
+            }
+          } else {
+            // No method chosen yet — show the method selection screen
+            // Use a fallback uid from the auth state
+            final uid = checkAuthState.valueOrNull?.id ?? '';
+            if (uid.isNotEmpty &&
+                state.matchedLocation !=
+                    VerificationMethodRoute(
+                            email: email, phone: phone, uid: uid)
+                        .location) {
+              return VerificationMethodRoute(
+                      email: email, phone: phone, uid: uid)
+                  .location;
+            }
+          }
+        } else if (error is EmailNotVerifiedException) {
+          // Legacy fallback
+          final email = error.email ?? '';
+          if (email.isNotEmpty &&
+              state.matchedLocation !=
+                  EmailVerificationRoute(email: email).location) {
+            return EmailVerificationRoute(email: email).location;
+          }
         }
       }
 

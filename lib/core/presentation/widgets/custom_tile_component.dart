@@ -49,7 +49,8 @@ class CustomTileComponent extends StatelessWidget {
                 ? Icon(
                     leadingIcon,
                     size: Sizes.icon16,
-                    color: leadingIconColor ?? customColors(context).font16Color,
+                    color:
+                        leadingIconColor ?? customColors(context).font16Color,
                   )
                 : null),
         trailing: customTrailing ??

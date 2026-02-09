@@ -13,4 +13,12 @@ class AuthFailure with _$AuthFailure {
   const factory AuthFailure.serverError([String? message]) = _ServerError;
   const factory AuthFailure.emailNotVerified() = _EmailNotVerified;
   const factory AuthFailure.userDisabled() = _UserDisabled;
+  // Phone auth failures
+  const factory AuthFailure.invalidPhoneNumber() = _InvalidPhoneNumber;
+  const factory AuthFailure.invalidVerificationCode() =
+      _InvalidVerificationCode;
+  const factory AuthFailure.smsQuotaExceeded() = _SmsQuotaExceeded;
+  const factory AuthFailure.phoneVerificationFailed([String? message]) =
+      _PhoneVerificationFailed;
+  const factory AuthFailure.sessionExpired() = _SessionExpired;
 }

@@ -48,7 +48,8 @@ abstract class Dialogs {
         textAlign: TextAlign.center,
       );
 
-  static Future<T?> showLoadingDialog<T extends Object?>(BuildContext context) async {
+  static Future<T?> showLoadingDialog<T extends Object?>(
+      BuildContext context) async {
     return showPlatformAlertDialog(
       context: context,
       barrierDismissible: false,
@@ -67,7 +68,8 @@ abstract class Dialogs {
           ),
           Text(
             tr(context).loading,
-            style: TextStyles.f18(context).copyWith(fontWeight: FontStyles.fontWeightMedium),
+            style: TextStyles.f18(context)
+                .copyWith(fontWeight: FontStyles.fontWeightMedium),
           ),
         ],
       ),
@@ -84,7 +86,8 @@ abstract class Dialogs {
     Widget? title,
     Widget Function(BuildContext context)? content,
     List<Widget>? Function(BuildContext context)? materialActions,
-    List<CupertinoDialogAction> Function(BuildContext context)? cupertinoActions,
+    List<CupertinoDialogAction> Function(BuildContext context)?
+        cupertinoActions,
   }) async {
     return showPlatformAlertDialog(
       context: context,
@@ -168,7 +171,8 @@ abstract class Dialogs {
     return showCustomDialog(
       context,
       title: _titleText(context, title),
-      content: (ctx) => content?.call(ctx) ?? _contentText(context, description!),
+      content: (ctx) =>
+          content?.call(ctx) ?? _contentText(context, description!),
       materialActions: (ctx) => [
         CustomElevatedButton(
           constraints: const BoxConstraints(minWidth: 120, maxWidth: 120),

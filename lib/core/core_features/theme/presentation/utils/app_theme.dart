@@ -11,8 +11,10 @@ enum AppThemeMode {
 
   const AppThemeMode();
 
-  ThemeData getThemeData(String fontFamily,
-      {required bool supportsEdgeToEdge,}) {
+  ThemeData getThemeData(
+    String fontFamily, {
+    required bool supportsEdgeToEdge,
+  }) {
     return AppTheme(themeMode: this, supportsEdgeToEdge: supportsEdgeToEdge)
         .getThemeData(fontFamily);
   }
@@ -154,7 +156,9 @@ class AppTheme {
     enabledBorder:
         Borders.inputDecorationBorder(_appColors.textFieldEnabledBorderColor),
     focusedBorder: Borders.inputDecorationBorder(
-        _appColors.textFieldFocusedBorderColor, 1.2,),
+      _appColors.textFieldFocusedBorderColor,
+      1.2,
+    ),
     errorBorder:
         Borders.inputDecorationBorder(_appColors.textFieldErrorBorderColor),
     focusedErrorBorder:

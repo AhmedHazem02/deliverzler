@@ -44,7 +44,9 @@ class ImagePickerFacade {
     return _errorHandler(
       () async {
         final pickedFile = await imagePicker.pickImage(
-          source: pickSource == PickSource.camera ? ImageSource.camera : ImageSource.gallery,
+          source: pickSource == PickSource.camera
+              ? ImageSource.camera
+              : ImageSource.gallery,
           maxHeight: maxHeight,
           maxWidth: maxWidth,
         );
@@ -74,4 +76,3 @@ class ImagePickerFacade {
     }
   }
 }
-

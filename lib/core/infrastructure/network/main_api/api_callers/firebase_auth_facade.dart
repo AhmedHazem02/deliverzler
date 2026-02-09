@@ -18,12 +18,14 @@ FirebaseAuthFacade firebaseAuthFacade(Ref ref) {
       firebaseAuth: firebaseAuthInstance,
     );
   } catch (e, st) {
-    debugPrint('❌ [FirebaseAuthFacade] Failed to get FirebaseAuth.instance: $e');
+    debugPrint(
+        '❌ [FirebaseAuthFacade] Failed to get FirebaseAuth.instance: $e');
     debugPrint('❌ [FirebaseAuthFacade] Stack: $st');
     // Provide a clearer ServerException so callers don't receive JS interop TypeErrors
     throw const ServerException(
       type: ServerExceptionType.unknown,
-      message: 'Firebase is not initialized. Check firebase_options and dart-define configs.',
+      message:
+          'Firebase is not initialized. Check firebase_options and dart-define configs.',
     );
   }
 }
@@ -57,19 +59,21 @@ class FirebaseAuthFacade {
   }) async {
     // Direct call to avoid JS Interop casting issues in _errorHandler for now
     try {
-      debugPrint('🟣 [FirebaseAuthFacade] createUserWithEmailAndPassword called');
+      debugPrint(
+          '🟣 [FirebaseAuthFacade] createUserWithEmailAndPassword called');
       debugPrint('🟣 [FirebaseAuthFacade] Email: $email');
-      
+
       final result = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
+
       debugPrint('✅ [FirebaseAuthFacade] SUCCESS: User created');
       debugPrint('✅ [FirebaseAuthFacade] UID: ${result.user?.uid}');
       return result;
     } catch (e, stackTrace) {
-      debugPrint('❌ [FirebaseAuthFacade] ERROR in createUserWithEmailAndPassword!');
+      debugPrint(
+          '❌ [FirebaseAuthFacade] ERROR in createUserWithEmailAndPassword!');
       debugPrint('❌ [FirebaseAuthFacade] Error Type: ${e.runtimeType}');
       debugPrint('❌ [FirebaseAuthFacade] Error: $e');
       debugPrint('❌ [FirebaseAuthFacade] Stack: $stackTrace');
@@ -114,8 +118,9 @@ class FirebaseAuthFacade {
       debugPrint('🟣 [FirebaseAuthFacade] sendEmailVerification called');
       final currentUser = firebaseAuth.currentUser;
       debugPrint('🟣 [FirebaseAuthFacade] currentUser: ${currentUser?.uid}');
-      debugPrint('🟣 [FirebaseAuthFacade] emailVerified: ${currentUser?.emailVerified}');
-      
+      debugPrint(
+          '🟣 [FirebaseAuthFacade] emailVerified: ${currentUser?.emailVerified}');
+
       if (currentUser != null && !currentUser.emailVerified) {
         debugPrint('🟣 [FirebaseAuthFacade] Sending verification email...');
         await currentUser.sendEmailVerification();
@@ -173,6 +178,116 @@ class FirebaseAuthFacade {
         }
       },
     );
+  }
+
+  /// Returns true if the current Firebase user has a linked phone number.
+  Future<bool> isPhoneVerified() async {
+    return _errorHandler(() async {
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await currentUser.reload();
+        final refreshedUser = firebaseAuth.currentUser;
+        // A non-null phoneNumber means the phone provider is linked
+        return refreshedUser?.phoneNumber != null &&
+            refreshedUser!.phoneNumber!.isNotEmpty;
+      } else {
+        throw const ServerException(
+          type: ServerExceptionType.unauthorized,
+          message: 'No user signed in',
+        );
+      }
+    });
+  }
+
+  /// Returns true if the user is verified via either email or phone.
+  Future<bool> isUserVerified() async {
+    return _errorHandler(() async {
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await currentUser.reload();
+        final refreshedUser = firebaseAuth.currentUser;
+        if (refreshedUser == null) {
+          throw const ServerException(
+            type: ServerExceptionType.unauthorized,
+            message: 'No user signed in',
+          );
+        }
+        final emailVerified = refreshedUser.emailVerified;
+        final phoneLinked = refreshedUser.phoneNumber != null &&
+            refreshedUser.phoneNumber!.isNotEmpty;
+        return emailVerified || phoneLinked;
+      } else {
+        throw const ServerException(
+          type: ServerExceptionType.unauthorized,
+          message: 'No user signed in',
+        );
+      }
+    });
+  }
+
+  /// Start phone number verification. This sends an SMS OTP to [phoneNumber].
+  ///
+  /// On mobile: Firebase auto-retrieves the SMS or asks the user to type the OTP.
+  /// On web: reCAPTCHA is shown automatically by Firebase.
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required void Function(String verificationId, int? resendToken) codeSent,
+    required void Function(String verificationId) codeAutoRetrievalTimeout,
+    required void Function(PhoneAuthCredential credential)
+        verificationCompleted,
+    required void Function(FirebaseAuthException error) verificationFailed,
+    int? forceResendingToken,
+  }) async {
+    debugPrint('🟣 [FirebaseAuthFacade] verifyPhoneNumber: $phoneNumber');
+
+    // On web in debug mode, disable reCAPTCHA verification to allow testing
+    // with Firebase test phone numbers. In production, reCAPTCHA is required.
+    if (kIsWeb && kDebugMode) {
+      firebaseAuth.setSettings(appVerificationDisabledForTesting: true);
+      debugPrint(
+          '🟡 [FirebaseAuthFacade] reCAPTCHA disabled for testing (web debug)');
+    }
+
+    await firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      forceResendingToken: forceResendingToken,
+      timeout: const Duration(seconds: 60),
+    );
+  }
+
+  /// Link a phone credential to the currently signed-in user.
+  /// This is used after the user enters the OTP code.
+  Future<void> linkPhoneCredential(PhoneAuthCredential credential) async {
+    return _errorHandler(() async {
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await currentUser.linkWithCredential(credential);
+        debugPrint('✅ [FirebaseAuthFacade] Phone credential linked');
+      } else {
+        throw const ServerException(
+          type: ServerExceptionType.unauthorized,
+          message: 'No user signed in',
+        );
+      }
+    });
+  }
+
+  /// Create a [PhoneAuthCredential] from verificationId + smsCode,
+  /// then link it to the current user.
+  Future<void> verifyOtpAndLinkPhone({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    debugPrint('🟣 [FirebaseAuthFacade] verifyOtpAndLinkPhone');
+    final credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    await linkPhoneCredential(credential);
   }
 
   Future<T> _errorHandler<T>(Future<T> Function() body) async {

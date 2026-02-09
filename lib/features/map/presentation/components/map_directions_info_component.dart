@@ -10,10 +10,12 @@ import '../providers/target_location_providers/target_location_directions_provid
 class MapDirectionsInfoComponent extends ConsumerWidget {
   const MapDirectionsInfoComponent({super.key});
 
-  static final BorderRadius _mapDirectionsInfoRadius = BorderRadius.circular(20);
+  static final BorderRadius _mapDirectionsInfoRadius =
+      BorderRadius.circular(20);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final targetLocationDirections = ref.watch(targetLocationDirectionsProvider);
+    final targetLocationDirections =
+        ref.watch(targetLocationDirectionsProvider);
 
     return targetLocationDirections.fold(
       () => const SizedBox(),
@@ -44,5 +46,3 @@ class MapDirectionsInfoComponent extends ConsumerWidget {
     );
   }
 }
-
-

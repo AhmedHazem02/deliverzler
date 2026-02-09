@@ -21,5 +21,3 @@ class NoInternetScreen extends HookConsumerWidget {
     );
   }
 }
-
-

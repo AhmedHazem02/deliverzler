@@ -12,11 +12,12 @@ class _FloatingSearchBarController extends Hook<FloatingSearchBarController> {
   const _FloatingSearchBarController();
 
   @override
-  _FloatingSearchBarControllerState createState() => _FloatingSearchBarControllerState();
+  _FloatingSearchBarControllerState createState() =>
+      _FloatingSearchBarControllerState();
 }
 
-class _FloatingSearchBarControllerState
-    extends HookState<FloatingSearchBarController, _FloatingSearchBarController> {
+class _FloatingSearchBarControllerState extends HookState<
+    FloatingSearchBarController, _FloatingSearchBarController> {
   final _controller = FloatingSearchBarController();
 
   @override

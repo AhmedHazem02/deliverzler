@@ -42,7 +42,9 @@ class PlatformElevatedButton
         onPressed: onPressed,
         padding: cupertinoData?.padding,
         borderRadius: cupertinoData?.borderRadius,
-        minSize: cupertinoData?.minSize ?? 44.0,
+        minimumSize: cupertinoData?.minSize != null
+            ? Size.square(cupertinoData!.minSize!)
+            : const Size.square(44.0),
         child: child,
       ),
     );

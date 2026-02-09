@@ -63,11 +63,6 @@ class UserDto with _$UserDto {
       name: user.displayName?.split(' ').first ?? '',
       phone: user.phoneNumber ?? '',
       image: user.photoURL ?? '',
-      isOnline: false,
-      lastActiveAt: null,
-      rejectionsCounter: 0,
-      currentOrdersCount: 0,
-      status: null, // Will be set later in registerWithEmail
     );
   }
 

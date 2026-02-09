@@ -86,7 +86,8 @@ abstract class Toasts {
             connectionStatus == ConnectionStatus.disconnected
                 ? tr(context).youAreCurrentlyOffline
                 : tr(context).youAreBackOnline,
-            style: TextStyles.f16SemiBold(context).copyWith(color: AppStaticColors.lightBlack),
+            style: TextStyles.f16SemiBold(context)
+                .copyWith(color: AppStaticColors.lightBlack),
           ),
         ],
       ),
