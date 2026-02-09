@@ -33,7 +33,15 @@ FirebaseAuthFacade firebaseAuthFacade(Ref ref) {
 class FirebaseAuthFacade {
   FirebaseAuthFacade({
     required this.firebaseAuth,
-  });
+  }) {
+    // Disable reCAPTCHA for web debug mode immediately on construction
+    // so it takes effect before any phone verification attempt.
+    if (kIsWeb && kDebugMode) {
+      firebaseAuth.setSettings(appVerificationDisabledForTesting: true);
+      debugPrint(
+          '🟡 [FirebaseAuthFacade] reCAPTCHA disabled for testing (web debug)');
+    }
+  }
 
   final FirebaseAuth firebaseAuth;
 
@@ -239,14 +247,6 @@ class FirebaseAuthFacade {
     int? forceResendingToken,
   }) async {
     debugPrint('🟣 [FirebaseAuthFacade] verifyPhoneNumber: $phoneNumber');
-
-    // On web in debug mode, disable reCAPTCHA verification to allow testing
-    // with Firebase test phone numbers. In production, reCAPTCHA is required.
-    if (kIsWeb && kDebugMode) {
-      firebaseAuth.setSettings(appVerificationDisabledForTesting: true);
-      debugPrint(
-          '🟡 [FirebaseAuthFacade] reCAPTCHA disabled for testing (web debug)');
-    }
 
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,

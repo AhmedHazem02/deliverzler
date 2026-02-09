@@ -23,14 +23,12 @@ class PhoneVerificationScreen extends StatefulHookConsumerWidget {
 
 class _PhoneVerificationScreenState
     extends ConsumerState<PhoneVerificationScreen> {
-  final List<TextEditingController> _otpControllers =
-      List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
+  final TextEditingController _otpController = TextEditingController();
+  final FocusNode _otpFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    // Send OTP immediately on screen load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(phoneVerificationProvider(widget.phone).notifier).sendOtp();
     });
@@ -38,16 +36,10 @@ class _PhoneVerificationScreenState
 
   @override
   void dispose() {
-    for (final c in _otpControllers) {
-      c.dispose();
-    }
-    for (final f in _focusNodes) {
-      f.dispose();
-    }
+    _otpController.dispose();
+    _otpFocusNode.dispose();
     super.dispose();
   }
-
-  String get _otpCode => _otpControllers.map((c) => c.text).join();
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +47,8 @@ class _PhoneVerificationScreenState
         ref.watch(phoneVerificationProvider(widget.phone));
     final notifier =
         ref.watch(phoneVerificationProvider(widget.phone).notifier);
+    final primaryColor = Theme.of(context).colorScheme.primary;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Listen for verification success
     ref.listen(phoneVerificationProvider(widget.phone), (previous, next) {
@@ -71,7 +65,6 @@ class _PhoneVerificationScreenState
         });
       }
 
-      // Show error toast
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
         Toasts.showTitledToast(
@@ -130,12 +123,27 @@ class _PhoneVerificationScreenState
               const SizedBox(height: 40),
 
               // Icon
-              Icon(
-                Icons.phone_android_outlined,
-                size: 100,
-                color: Theme.of(context).colorScheme.primary,
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      primaryColor.withValues(alpha: 0.15),
+                      primaryColor.withValues(alpha: 0.05),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Icon(
+                  Icons.phone_android_outlined,
+                  size: 50,
+                  color: primaryColor,
+                ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
               // Title
               Text(
@@ -145,68 +153,88 @@ class _PhoneVerificationScreenState
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
 
-              // OTP sent message
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: Colors.green.withValues(alpha: 0.3)),
-                ),
-                child: Column(
+              // Subtitle with phone number
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        height: 1.5,
+                      ),
                   children: [
-                    if (verificationState.isSendingOtp) ...[
-                      const CircularProgressIndicator(strokeWidth: 2),
-                      const SizedBox(height: 8),
-                      Text(
-                        tr(context).sendingOtp,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
+                    TextSpan(text: '${tr(context).otpSentTo}\n'),
+                    TextSpan(
+                      text: widget.phone,
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
-                    ] else ...[
-                      Text(
-                        tr(context).otpSentTo,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        widget.phone,
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        tr(context).enterOtpCode,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                    ),
                   ],
                 ),
               ),
               const SizedBox(height: 32),
 
+              // Loading state
+              if (verificationState.isSendingOtp) ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: primaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        tr(context).sendingOtp,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color:
+                                  isDark ? Colors.grey[400] : Colors.grey[600],
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
               // Auto-verifying indicator
               if (verificationState.autoVerifying) ...[
-                const Center(child: CircularProgressIndicator()),
-                const SizedBox(height: 12),
-                Text(
-                  tr(context).autoVerifying,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.green,
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: Colors.green,
+                        ),
                       ),
-                  textAlign: TextAlign.center,
+                      const SizedBox(height: 12),
+                      Text(
+                        tr(context).autoVerifying,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Colors.green,
+                              fontWeight: FontWeight.w500,
+                            ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 24),
               ],
@@ -218,28 +246,33 @@ class _PhoneVerificationScreenState
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border:
-                        Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                    color: Colors.red.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
                     children: [
                       const Icon(Icons.error_outline,
-                          color: Colors.red, size: 40),
+                          color: Colors.red, size: 36),
                       const SizedBox(height: 8),
                       Text(
                         verificationState.errorMessage!,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Colors.red,
+                              color: Colors.red[700],
                             ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton.icon(
                         onPressed: () => notifier.sendOtp(),
-                        icon: const Icon(Icons.refresh),
+                        icon: const Icon(Icons.refresh, size: 18),
                         label: Text(tr(context).resendOtp),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -247,69 +280,69 @@ class _PhoneVerificationScreenState
                 const SizedBox(height: 24),
               ],
 
-              // OTP input fields — always visible when not auto-verifying
+              // OTP input — single invisible field + visual digit boxes
               if (!verificationState.autoVerifying &&
                   !verificationState.isSendingOtp) ...[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: List.generate(6, (index) {
-                    return SizedBox(
-                      width: 45,
-                      height: 55,
-                      child: TextField(
-                        controller: _otpControllers[index],
-                        focusNode: _focusNodes[index],
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        maxLength: 1,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          counterText: '',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2,
-                            ),
-                          ),
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        onChanged: (value) {
-                          if (value.isNotEmpty && index < 5) {
-                            _focusNodes[index + 1].requestFocus();
-                          }
-                          if (value.isEmpty && index > 0) {
-                            _focusNodes[index - 1].requestFocus();
-                          }
-                          // Rebuild so the Verify button enables/disables
-                          setState(() {});
-                          // Auto-submit when all 6 digits entered
-                          if (_otpCode.length == 6 &&
-                              verificationState.verificationId != null) {
-                            notifier.verifyOtp(_otpCode);
-                          }
-                        },
+                Text(
+                  tr(context).enterOtpCode,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        fontWeight: FontWeight.w500,
                       ),
-                    );
-                  }),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+
+                TextField(
+                  controller: _otpController,
+                  focusNode: _otpFocusNode,
+                  keyboardType: TextInputType.number,
+                  maxLength: 6,
+                  autofocus: true,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 12,
+                      ),
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: '000000',
+                    hintStyle: TextStyle(
+                      color: isDark ? Colors.grey[700] : Colors.grey[300],
+                      letterSpacing: 12,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: primaryColor, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  onChanged: (value) {
+                    setState(() {});
+                    if (value.length == 6 &&
+                        verificationState.verificationId != null) {
+                      notifier.verifyOtp(value);
+                    }
+                  },
                 ),
                 const SizedBox(height: 32),
 
                 // Verify button
                 CustomElevatedButton(
                   enableGradient: true,
-                  onPressed:
-                      verificationState.isVerifying || _otpCode.length != 6
-                          ? null
-                          : () => notifier.verifyOtp(_otpCode),
+                  onPressed: verificationState.isVerifying ||
+                          _otpController.text.length != 6
+                      ? null
+                      : () => notifier.verifyOtp(_otpController.text),
                   child: verificationState.isVerifying
                       ? const SizedBox(
                           height: 20,
@@ -328,33 +361,37 @@ class _PhoneVerificationScreenState
                 const SizedBox(height: Sizes.marginV16),
               ],
 
-              // Resend button
-              OutlinedButton(
-                onPressed: notifier.canResend ? notifier.resendOtp : null,
-                child: notifier.secondsRemaining > 0
-                    ? Text(
-                        '${tr(context).resendIn} ${notifier.secondsRemaining} ${tr(context).seconds}',
-                      )
-                    : Text(tr(context).resendOtp),
+              // Resend section
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    tr(context).didNotReceiveOtp,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: isDark ? Colors.grey[500] : Colors.grey[600],
+                        ),
+                  ),
+                  const SizedBox(width: 4),
+                  GestureDetector(
+                    onTap: notifier.canResend ? notifier.resendOtp : null,
+                    child: Text(
+                      notifier.secondsRemaining > 0
+                          ? '${tr(context).resendIn} ${notifier.secondsRemaining}s'
+                          : tr(context).resendOtp,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: notifier.canResend
+                                ? primaryColor
+                                : isDark
+                                    ? Colors.grey[600]
+                                    : Colors.grey[400],
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: Sizes.marginV24),
-
-              // Help text
-              Text(
-                tr(context).didNotReceiveOtp,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                tr(context).checkPhoneNumber,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[500],
-                    ),
-                textAlign: TextAlign.center,
-              ),
             ],
           ),
         ),
