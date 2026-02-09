@@ -17,7 +17,8 @@ class ValueValidators {
   }
 
   static FormFieldValidator<String?> validateLoginPassword(
-      BuildContext context,) {
+    BuildContext context,
+  ) {
     return (value) {
       if (value!.isEmpty) {
         return tr(context).thisFieldIsEmpty;
@@ -30,7 +31,8 @@ class ValueValidators {
   }
 
   static FormFieldValidator<String?> validateMobileNumber(
-      BuildContext context,) {
+    BuildContext context,
+  ) {
     const patternMobileNumber = r'^(?:[+0]9)?[0-9|٩|٠|١|٢|٣|٤|٥|٦|٧|٨]{10,15}$';
     return (value) {
       value = value?.trim();
@@ -231,7 +233,7 @@ class ValueValidators {
   }*/
 
   static FormFieldValidator<String?> validateVehiclePlate(
-      BuildContext context, {
+    BuildContext context, {
     required bool isMotorcycle,
   }) {
     return (value) {
@@ -239,11 +241,11 @@ class ValueValidators {
         return tr(context).thisFieldIsEmpty;
       }
 
-      // Motorcycle: 1-5 digits + 3 Arabic letters
-      // Car: 3-4 digits + 2-3 Arabic letters
+      // Motorcycle: 1-5 digits + 3 Arabic letters (with optional spaces between letters)
+      // Car: 2-4 digits + 2-3 Arabic letters (with optional spaces between letters)
       final pattern = isMotorcycle
-          ? r'^\d{1,5}\s*[\u0621-\u064A]{3}$'
-          : r'^\d{3,4}\s*[\u0621-\u064A]{2,3}$';
+          ? r'^\d{1,5}\s*[\u0621-\u064A](\s*[\u0621-\u064A]){2}$'
+          : r'^\d{2,4}\s*[\u0621-\u064A](\s*[\u0621-\u064A]){1,2}$';
 
       if (!checkPattern(pattern: pattern, value: value)) {
         return tr(context).pleaseEnterValidVehiclePlate;
