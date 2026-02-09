@@ -799,4 +799,47 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pleaseGoOnlineToReceiveOrders =>
       'Please go online to receive orders';
+
+  @override
+  String get chooseResetMethod =>
+      'Choose how you\'d like to reset your password';
+
+  @override
+  String get resetByEmail => 'Reset by Email';
+
+  @override
+  String get resetByEmailDesc =>
+      'We\'ll send a password reset link to your email';
+
+  @override
+  String get resetByPhone => 'Reset by Phone';
+
+  @override
+  String get resetByPhoneDesc =>
+      'Verify your phone number and set a new password';
+
+  @override
+  String get sendOtpCode => 'Send Verification Code';
+
+  @override
+  String get enterPhoneToReset =>
+      'Enter the phone number linked to your account';
+
+  @override
+  String get setNewPassword => 'Set New Password';
+
+  @override
+  String get enterNewPasswordDesc => 'Enter your new password below';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get updatePassword => 'Update Password';
+
+  @override
+  String get passwordUpdatedSuccessfully => 'Password Updated Successfully!';
+
+  @override
+  String get youCanNowSignIn => 'You can now sign in with your new password';
 }

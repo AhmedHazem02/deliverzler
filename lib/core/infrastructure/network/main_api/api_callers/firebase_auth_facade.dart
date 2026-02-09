@@ -290,6 +290,34 @@ class FirebaseAuthFacade {
     await linkPhoneCredential(credential);
   }
 
+  /// Sign in using a phone credential (for forgot password via phone).
+  Future<UserCredential> signInWithPhoneCredential(
+      PhoneAuthCredential credential) async {
+    return _errorHandler(() async {
+      debugPrint('🟣 [FirebaseAuthFacade] signInWithPhoneCredential');
+      final result = await firebaseAuth.signInWithCredential(credential);
+      debugPrint(
+          '✅ [FirebaseAuthFacade] Phone sign-in success: ${result.user?.uid}');
+      return result;
+    });
+  }
+
+  /// Update password for the currently signed-in user.
+  Future<void> updatePassword(String newPassword) async {
+    return _errorHandler(() async {
+      final currentUser = firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await currentUser.updatePassword(newPassword);
+        debugPrint('✅ [FirebaseAuthFacade] Password updated successfully');
+      } else {
+        throw const ServerException(
+          type: ServerExceptionType.unauthorized,
+          message: 'No user signed in',
+        );
+      }
+    });
+  }
+
   Future<T> _errorHandler<T>(Future<T> Function() body) async {
     try {
       return await body();

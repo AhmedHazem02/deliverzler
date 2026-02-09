@@ -28,7 +28,7 @@ class ForgotPasswordFormComponent extends HookConsumerWidget {
       () {
         if (notifier.secondsRemaining > 0) {
           final timer =
-              Stream<int>.periodic(const Duration(seconds: 1)).listen((_) {
+              Stream<int>.periodic(const Duration(seconds: 1), (i) => i).listen((_) {
             // Force rebuild every second while cooldown is active
             if (notifier.secondsRemaining <= 0) {
               ref.invalidate(forgotPasswordProvider);

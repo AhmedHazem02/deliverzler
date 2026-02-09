@@ -260,6 +260,44 @@ class AuthRepo {
     }
   }
 
+  /// Verify OTP and sign in with phone credential (for forgot password flow).
+  Future<Either<AuthFailure, Unit>> verifyOtpAndSignIn({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    try {
+      await remoteDataSource.verifyOtpAndSignIn(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      return right(unit);
+    } on ServerException catch (e) {
+      return left(AuthFailure.serverError(e.message));
+    } on FirebaseAuthException catch (e) {
+      return left(_mapFirebasePhoneAuthException(e));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
+  /// Update the current user's password.
+  Future<Either<AuthFailure, Unit>> updatePassword(
+      String newPassword) async {
+    try {
+      await remoteDataSource.updatePassword(newPassword);
+      return right(unit);
+    } on ServerException catch (e) {
+      if (e.type == ServerExceptionType.unauthorized) {
+        return left(const AuthFailure.userNotFound());
+      }
+      return left(AuthFailure.serverError(e.message));
+    } on FirebaseAuthException catch (e) {
+      return left(_mapFirebaseAuthException(e));
+    } catch (e) {
+      return left(AuthFailure.serverError(e.toString()));
+    }
+  }
+
   /// Save the user's chosen verification method to Firestore.
   Future<Either<AuthFailure, Unit>> setVerificationMethod({
     required String uid,

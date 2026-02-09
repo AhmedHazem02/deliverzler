@@ -1,3 +1,4 @@
+// ignore_for_file: functional_ref
 /// App Settings Providers.
 ///
 /// Provides reactive access to app settings throughout the application

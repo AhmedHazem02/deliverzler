@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart'
-    show FirebaseAuthException, PhoneAuthCredential;
+    show FirebaseAuthException, PhoneAuthCredential, PhoneAuthProvider;
 import 'package:flutter/foundation.dart';
 
 import '../../../core/infrastructure/error/app_exception.dart';
@@ -198,6 +198,29 @@ class AuthRemoteDataSource {
 
   Future<void> linkPhoneCredential(PhoneAuthCredential credential) async {
     return firebaseAuth.linkPhoneCredential(credential);
+  }
+
+  /// Sign in with a phone credential (for forgot password via phone flow).
+  Future<void> signInWithPhoneCredential(
+      PhoneAuthCredential credential) async {
+    await firebaseAuth.signInWithPhoneCredential(credential);
+  }
+
+  /// Create PhoneAuthCredential and sign in with it.
+  Future<void> verifyOtpAndSignIn({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    final credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    await firebaseAuth.signInWithPhoneCredential(credential);
+  }
+
+  /// Update the current user's password.
+  Future<void> updatePassword(String newPassword) async {
+    return firebaseAuth.updatePassword(newPassword);
   }
 
   /// Save the user's chosen verification method to Firestore.

@@ -8,6 +8,8 @@ import '../../../auth/presentation/providers/auth_state_provider.dart';
 import '../../../auth/presentation/providers/check_auth_provider.dart';
 import '../../../auth/presentation/screens/email_verification_screen/email_verification_screen.dart';
 import '../../../auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
+import '../../../auth/presentation/screens/forgot_password_method_screen/forgot_password_method_screen.dart';
+import '../../../auth/presentation/screens/forgot_password_phone_screen/forgot_password_phone_screen.dart';
 import '../../../auth/presentation/screens/phone_verification_screen/phone_verification_screen.dart';
 import '../../../auth/presentation/screens/sign_in_screen/sign_in_screen.dart';
 import '../../../auth/presentation/screens/sign_up_screen/sign_up_screen.dart';

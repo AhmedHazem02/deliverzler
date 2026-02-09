@@ -27,6 +27,26 @@ class ForgotPasswordRoute extends GoRouteData {
       FadeTransitionPage(state.pageKey, const ForgotPasswordScreen());
 }
 
+@TypedGoRoute<ForgotPasswordMethodRoute>(path: '/forgot-password-method')
+class ForgotPasswordMethodRoute extends GoRouteData {
+  const ForgotPasswordMethodRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      FadeTransitionPage(
+          state.pageKey, const ForgotPasswordMethodScreen());
+}
+
+@TypedGoRoute<ForgotPasswordPhoneRoute>(path: '/forgot-password-phone')
+class ForgotPasswordPhoneRoute extends GoRouteData {
+  const ForgotPasswordPhoneRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) =>
+      FadeTransitionPage(
+          state.pageKey, const ForgotPasswordPhoneScreen());
+}
+
 @TypedGoRoute<EmailVerificationRoute>(path: '/verify-email/:email')
 class EmailVerificationRoute extends GoRouteData {
   const EmailVerificationRoute({required this.email});

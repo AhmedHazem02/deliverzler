@@ -258,5 +258,21 @@
   "refusalReason": "Reason",
   "pendingAdminReview": "Orders pending review",
   "buttonsDisabledUntilReview": "Actions disabled until admin reviews your request",
-  "pleaseGoOnlineToReceiveOrders": "Please go online to receive orders"
+  "pleaseGoOnlineToReceiveOrders": "Please go online to receive orders",
+  "@_FORGOT_PASSWORD_PHONE": {},
+  "chooseResetMethod": "Choose how you'd like to reset your password",
+  "resetByEmail": "Reset by Email",
+  "resetByEmailDesc": "We'll send a password reset link to your email",
+  "resetByPhone": "Reset by Phone",
+  "resetByPhoneDesc": "Verify your phone number and set a new password",
+  "sendOtpCode": "Send Verification Code",
+  "enterPhoneToReset": "Enter the phone number linked to your account",
+  "setNewPassword": "Set New Password",
+  "enterNewPasswordDesc": "Enter your new password below",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm Password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "updatePassword": "Update Password",
+  "passwordUpdatedSuccessfully": "Password Updated Successfully!",
+  "youCanNowSignIn": "You can now sign in with your new password"
 }

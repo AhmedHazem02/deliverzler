@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, avoid_manual_providers_as_generated_provider_dependency
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

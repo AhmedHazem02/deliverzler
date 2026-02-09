@@ -1579,6 +1579,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please go online to receive orders'**
   String get pleaseGoOnlineToReceiveOrders;
+
+  /// No description provided for @chooseResetMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how you\'d like to reset your password'**
+  String get chooseResetMethod;
+
+  /// No description provided for @resetByEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset by Email'**
+  String get resetByEmail;
+
+  /// No description provided for @resetByEmailDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send a password reset link to your email'**
+  String get resetByEmailDesc;
+
+  /// No description provided for @resetByPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset by Phone'**
+  String get resetByPhone;
+
+  /// No description provided for @resetByPhoneDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your phone number and set a new password'**
+  String get resetByPhoneDesc;
+
+  /// No description provided for @sendOtpCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Verification Code'**
+  String get sendOtpCode;
+
+  /// No description provided for @enterPhoneToReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the phone number linked to your account'**
+  String get enterPhoneToReset;
+
+  /// No description provided for @setNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Set New Password'**
+  String get setNewPassword;
+
+  /// No description provided for @enterNewPasswordDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new password below'**
+  String get enterNewPasswordDesc;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @updatePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get updatePassword;
+
+  /// No description provided for @passwordUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Updated Successfully!'**
+  String get passwordUpdatedSuccessfully;
+
+  /// No description provided for @youCanNowSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'You can now sign in with your new password'**
+  String get youCanNowSignIn;
 }
 
 class _AppLocalizationsDelegate

@@ -126,7 +126,7 @@ class LoginFormComponent extends HookConsumerWidget {
           Align(
             alignment: AlignmentDirectional.centerEnd,
             child: TextButton(
-              onPressed: () => const ForgotPasswordRoute().go(context),
+              onPressed: () => const ForgotPasswordMethodRoute().go(context),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 minimumSize: Size.zero,

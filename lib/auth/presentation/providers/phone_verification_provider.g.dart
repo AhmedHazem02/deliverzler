@@ -6,7 +6,7 @@ part of 'phone_verification_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$phoneVerificationHash() => r'2c85ef536d596fe719cb19dacceffabae379f479';
+String _$phoneVerificationHash() => r'0c1281ef10a04ec9d3babaddce44f23ffb224dc4';
 
 /// Copied from Dart SDK
 class _SystemHash {

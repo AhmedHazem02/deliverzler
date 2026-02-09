@@ -736,7 +736,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmPassword => 'تأكيد كلمة المرور';
 
   @override
-  String get passwordsDoNotMatch => 'كلمات المرور غير متطابقة';
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
 
   @override
   String get fillAllFields => 'الرجاء ملء جميع الحقول المطلوبة';
@@ -786,4 +786,44 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get pleaseGoOnlineToReceiveOrders =>
       'يرجى الاتصال بالإنترنت لاستقبال الطلبات';
+
+  @override
+  String get chooseResetMethod => 'اختر طريقة إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetByEmail => 'إعادة التعيين بالبريد الإلكتروني';
+
+  @override
+  String get resetByEmailDesc =>
+      'سنرسل رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني';
+
+  @override
+  String get resetByPhone => 'إعادة التعيين برقم الهاتف';
+
+  @override
+  String get resetByPhoneDesc => 'تحقق من رقم هاتفك وعيّن كلمة مرور جديدة';
+
+  @override
+  String get sendOtpCode => 'إرسال رمز التحقق';
+
+  @override
+  String get enterPhoneToReset => 'أدخل رقم الهاتف المرتبط بحسابك';
+
+  @override
+  String get setNewPassword => 'تعيين كلمة مرور جديدة';
+
+  @override
+  String get enterNewPasswordDesc => 'أدخل كلمة المرور الجديدة أدناه';
+
+  @override
+  String get newPassword => 'كلمة المرور الجديدة';
+
+  @override
+  String get updatePassword => 'تحديث كلمة المرور';
+
+  @override
+  String get passwordUpdatedSuccessfully => 'تم تحديث كلمة المرور بنجاح!';
+
+  @override
+  String get youCanNowSignIn => 'يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة';
 }

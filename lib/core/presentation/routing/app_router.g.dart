@@ -12,6 +12,8 @@ List<RouteBase> get $appRoutes => [
       $signInRoute,
       $signUpRoute,
       $forgotPasswordRoute,
+      $forgotPasswordMethodRoute,
+      $forgotPasswordPhoneRoute,
       $emailVerificationRoute,
       $phoneVerificationRoute,
       $verificationMethodRoute,
@@ -121,6 +123,52 @@ extension $ForgotPasswordRouteExtension on ForgotPasswordRoute {
 
   String get location => GoRouteData.$location(
         '/forgot-password',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgotPasswordMethodRoute => GoRouteData.$route(
+      path: '/forgot-password-method',
+      factory: $ForgotPasswordMethodRouteExtension._fromState,
+    );
+
+extension $ForgotPasswordMethodRouteExtension on ForgotPasswordMethodRoute {
+  static ForgotPasswordMethodRoute _fromState(GoRouterState state) =>
+      const ForgotPasswordMethodRoute();
+
+  String get location => GoRouteData.$location(
+        '/forgot-password-method',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $forgotPasswordPhoneRoute => GoRouteData.$route(
+      path: '/forgot-password-phone',
+      factory: $ForgotPasswordPhoneRouteExtension._fromState,
+    );
+
+extension $ForgotPasswordPhoneRouteExtension on ForgotPasswordPhoneRoute {
+  static ForgotPasswordPhoneRoute _fromState(GoRouterState state) =>
+      const ForgotPasswordPhoneRoute();
+
+  String get location => GoRouteData.$location(
+        '/forgot-password-phone',
       );
 
   void go(BuildContext context) => context.go(location);

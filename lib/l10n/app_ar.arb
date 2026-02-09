@@ -258,5 +258,21 @@
   "refusalReason": "السبب",
   "pendingAdminReview": "طلبات بانتظار المراجعة",
   "buttonsDisabledUntilReview": "الأزرار معطلة لحين مراجعة الإدارة لطلبك",
-  "pleaseGoOnlineToReceiveOrders": "يرجى الاتصال بالإنترنت لاستقبال الطلبات"
+  "pleaseGoOnlineToReceiveOrders": "يرجى الاتصال بالإنترنت لاستقبال الطلبات",
+  "@_FORGOT_PASSWORD_PHONE": {},
+  "chooseResetMethod": "اختر طريقة إعادة تعيين كلمة المرور",
+  "resetByEmail": "إعادة التعيين بالبريد الإلكتروني",
+  "resetByEmailDesc": "سنرسل رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+  "resetByPhone": "إعادة التعيين برقم الهاتف",
+  "resetByPhoneDesc": "تحقق من رقم هاتفك وعيّن كلمة مرور جديدة",
+  "sendOtpCode": "إرسال رمز التحقق",
+  "enterPhoneToReset": "أدخل رقم الهاتف المرتبط بحسابك",
+  "setNewPassword": "تعيين كلمة مرور جديدة",
+  "enterNewPasswordDesc": "أدخل كلمة المرور الجديدة أدناه",
+  "newPassword": "كلمة المرور الجديدة",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "updatePassword": "تحديث كلمة المرور",
+  "passwordUpdatedSuccessfully": "تم تحديث كلمة المرور بنجاح!",
+  "youCanNowSignIn": "يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة"
 }
